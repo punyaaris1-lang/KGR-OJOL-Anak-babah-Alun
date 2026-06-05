@@ -52,16 +52,22 @@
             }
         }
 
-        /* --- BACKGROUND FOTO KOMUNITAS --- */
+                /* --- BACKGROUND FOTO KOMUNITAS --- */
         .bg-photo {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            /* Ganti nama file di bawah ini kalau fotonya beda */
-            background: url('1000417166.jpg') center/cover no-repeat;
-            opacity: 0.15; /* Atur angka ini (0.1 sampai 1.0) untuk ngubah ketebalan foto */
-            filter: grayscale(50%); /* Bikin foto agak hitam putih biar nyatu sama warna gold */
+            background-image: url('1000417166.jpg');
+            background-position: center; /* Posisikan pas di tengah layar */
+            background-size: 100% auto; /* Paksa foto pas dengan lebar layar HP (tidak kepotong) */
+            background-repeat: no-repeat;
+            opacity: 0.18; /* Sedikit dinaikkan biar makin jelas */
+            filter: grayscale(50%); 
+            /* Efek gradasi supaya batas atas dan bawah foto memudar halus ke background */
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
             z-index: 0;
         }
+
 
         /* --- ORBS BACKGROUND --- */
         .orb { position: absolute; border-radius: 50%; filter: blur(60px); z-index: 1; animation: floatOrb 8s infinite alternate ease-in-out; }
