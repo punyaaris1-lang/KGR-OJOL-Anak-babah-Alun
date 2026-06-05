@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#F5F5F7">
+    <title>Pusat Informasi - KGR</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-base: #F5F5F7; --text-dark: #1C1C1E; --text-black: #111111; --text-gray: #8E8E93;
+            --gold-primary: #D4AF37; --gold-deep: linear-gradient(135deg, #A67C00, #D4AF37, #8B6914, #B38728);
+            --glass-bg: rgba(255, 255, 255, 0.75); --glass-border: rgba(255, 255, 255, 0.9);
+            --urgent-color: #E04B4B; --urgent-light: rgba(224, 75, 75, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        body { background-color: #E5E5E5; background-image: radial-gradient(circle at 15% 50%, rgba(212, 175, 55, 0.08), transparent 25%), radial-gradient(circle at 85% 30%, rgba(10, 132, 255, 0.05), transparent 25%); display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        
+        .app-container { width: 100%; max-width: 414px; height: 100vh; background-color: var(--bg-base); position: relative; overflow: hidden; display: flex; flex-direction: column; color: var(--text-dark); }
+        @media (min-width: 600px) { .app-container { max-width: 480px; height: 90vh; max-height: 900px; border-radius: 40px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15), inset 0 0 0 8px #FFFFFF; border: 1px solid rgba(0,0,0,0.05); } }
+
+        .orb { position: absolute; border-radius: 50%; filter: blur(60px); z-index: 0; animation: floatOrb 8s infinite alternate ease-in-out; }
+        .orb-1 { width: 300px; height: 300px; background: rgba(212, 175, 55, 0.25); top: -50px; right: -50px; }
+        .orb-2 { width: 250px; height: 250px; background: rgba(10, 132, 255, 0.15); bottom: 100px; left: -50px; animation-delay: -3s; }
+        @keyframes floatOrb { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-30px, 40px) scale(1.1); } }
+
+        .header-page { padding: 40px 24px 20px; display: flex; align-items: center; gap: 15px; z-index: 10; position: relative; border-bottom: 1px solid rgba(0,0,0,0.05); background: rgba(245,245,247,0.8); backdrop-filter: blur(20px); }
+        .btn-back { width: 40px; height: 40px; border-radius: 14px; background: #FFF; color: var(--text-dark); display: flex; justify-content: center; align-items: center; font-size: 18px; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.1); transition: 0.2s;}
+        .btn-back:active { transform: scale(0.9); }
+        .header-page h2 { font-size: 18px; font-weight: 900; letter-spacing: -0.5px; }
+
+        .content-area { flex-grow: 1; overflow-y: auto; padding: 20px 24px 110px; scrollbar-width: none; z-index: 2; position: relative; }
+        .content-area::-webkit-scrollbar { display: none; }
+
+        /* BUTTON BUAT PENGUMUMAN */
+        .btn-add-info { width: 100%; padding: 16px; border-radius: 16px; font-size: 13px; font-weight: 900; background: var(--text-dark); color: var(--gold-primary); border: none; margin-bottom: 25px; display: flex; justify-content: center; align-items: center; gap: 8px; cursor: pointer; transition: 0.2s; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); }
+        .btn-add-info:active { transform: scale(0.97); }
+
+        .section-title { font-size: 13px; font-weight: 900; margin: 0 0 15px; color: var(--text-dark); text-transform: uppercase; letter-spacing: 1px;}
+
+        /* INFO CARD STYLE */
+        .info-card { padding: 20px 18px; border-radius: 20px; margin-bottom: 15px; background: #FFF; border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 5px 20px rgba(0,0,0,0.02); transition: 0.2s; cursor: pointer; position: relative; overflow: hidden;}
+        .info-card:active { transform: scale(0.98); background: var(--bg-base); }
+        
+        /* Left border accent */
+        .info-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: var(--gold-primary); }
+        .info-card.urgent::before { background: var(--urgent-color); }
+        .info-card.urgent { background: linear-gradient(to right, rgba(224, 75, 75, 0.02), #FFF); border-color: rgba(224, 75, 75, 0.1); }
+
+        .info-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        
+        .badge { padding: 4px 10px; border-radius: 8px; font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
+        .badge.gold { background: rgba(212, 175, 55, 0.15); color: #A67C00; }
+        .badge.red { background: var(--urgent-light); color: var(--urgent-color); }
+        
+        .info-date { font-size: 10px; font-weight: 800; color: var(--text-gray); }
+
+        .info-card h3 { font-size: 15px; font-weight: 900; color: var(--text-dark); margin-bottom: 8px; line-height: 1.4; letter-spacing: -0.3px;}
+        .info-card p { font-size: 12px; font-weight: 600; color: var(--text-gray); line-height: 1.6; margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+        .read-more { font-size: 11px; font-weight: 800; color: var(--text-dark); display: flex; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: 0.5px;}
+        .read-more i { font-size: 10px; color: var(--gold-primary); transition: 0.2s; }
+        .info-card:hover .read-more i { transform: translateX(3px); }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+
+        <div class="header-page">
+            <div class="btn-back" onclick="window.location.href='index.html'"><i class="fa-solid fa-arrow-left"></i></div>
+            <h2>Pusat Informasi</h2>
+        </div>
+
+        <div class="content-area">
+            
+            <!-- Tombol Tambah Info (Disembunyikan via JS jika bukan Admin) -->
+            <button id="btnTambahInfo" class="btn-add-info" onclick="alert('Buka Editor Teks untuk membuat pengumuman baru')">
+                <i class="fa-solid fa-bullhorn"></i> Buat Informasi Baru
+            </button>
+
+            <div class="section-title">Papan Pengumuman</div>
+            <!-- KARTU PENGUMUMAN 1 (PENTING/URGENT) -->
+            <!-- Tambahkan class 'urgent' agar ada aksen garis tepi warna Merah -->
+            <div class="info-card urgent" onclick="alert('Membuka halaman detail pengumuman...')">
+                <div class="info-header">
+                    <div class="badge red"><i class="fa-solid fa-triangle-exclamation" style="margin-right: 3px;"></i> Wajib Dibaca</div>
+                    <div class="info-date">05 Jun 2026</div>
+                </div>
+                <h3>Pemberitahuan Wajib QRIS untuk Setoran Kas</h3>
+                <p>Mulai pertengahan bulan ini, seluruh setoran kas wajib menggunakan scan QRIS resmi yang tertera di aplikasi untuk mempermudah rekap otomatis sistem.</p>
+                <div class="read-more">Baca Selengkapnya <i class="fa-solid fa-arrow-right"></i></div>
+            </div>
+
+            <!-- KARTU PENGUMUMAN 2 (NORMAL/KEGIATAN) -->
+            <div class="info-card" onclick="alert('Membuka halaman detail pengumuman...')">
+                <div class="info-header">
+                    <div class="badge gold"><i class="fa-solid fa-calendar-check" style="margin-right: 3px;"></i> Undangan Kegiatan</div>
+                    <div class="info-date">01 Jun 2026</div>
+                </div>
+                <h3>Undangan Kopi Darat & Silaturahmi Bulanan</h3>
+                <p>Mengharap kehadiran seluruh rekan-rekan pada acara silaturahmi bulanan yang akan diadakan pada hari Minggu besok di Basecamp Pusat. Jangan lupa membawa atribut lengkap.</p>
+                <div class="read-more">Baca Selengkapnya <i class="fa-solid fa-arrow-right"></i></div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Script Sederhana untuk Proteksi Tombol Buat Pengumuman -->
+    <script>
+        // ======= SIMULASI JABATAN (Ganti teks di bawah untuk ngetes) =======
+        const roleSaatIni = "Super Admin"; // Coba ganti jadi "Member"
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const btnTambah = document.getElementById('btnTambahInfo');
+            
+            // Logika Pembatasan: Hanya Pengurus yang bisa bikin pengumuman
+            if (roleSaatIni === "Super Admin" || roleSaatIni === "Admin") {
+                btnTambah.style.display = 'flex'; 
+            } else {
+                btnTambah.style.display = 'none'; // Sembunyikan untuk Member biasa dan Bendahara
+            }
+        });
+    </script>
+</body>
+</html>
