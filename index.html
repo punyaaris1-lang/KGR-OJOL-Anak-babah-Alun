@@ -52,8 +52,19 @@
             }
         }
 
+        /* --- BACKGROUND FOTO KOMUNITAS --- */
+        .bg-photo {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            /* Ganti nama file di bawah ini kalau fotonya beda */
+            background: url('1000417166.jpg') center/cover no-repeat;
+            opacity: 0.15; /* Atur angka ini (0.1 sampai 1.0) untuk ngubah ketebalan foto */
+            filter: grayscale(50%); /* Bikin foto agak hitam putih biar nyatu sama warna gold */
+            z-index: 0;
+        }
+
         /* --- ORBS BACKGROUND --- */
-        .orb { position: absolute; border-radius: 50%; filter: blur(60px); z-index: 0; animation: floatOrb 8s infinite alternate ease-in-out; }
+        .orb { position: absolute; border-radius: 50%; filter: blur(60px); z-index: 1; animation: floatOrb 8s infinite alternate ease-in-out; }
         .orb-1 { width: 300px; height: 300px; background: rgba(212, 175, 55, 0.25); top: -50px; right: -50px; }
         .orb-2 { width: 250px; height: 250px; background: rgba(10, 132, 255, 0.15); bottom: 100px; left: -50px; animation-delay: -3s; }
         @keyframes floatOrb { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-30px, 40px) scale(1.1); } }
@@ -64,18 +75,14 @@
             z-index: 2; position: relative;
         }
 
-        /* ========================================================= */
-        /* BRANDING HEADER - EFEK SHIMMER ANIMASI & FONT RESPONSIF   */
-        /* ========================================================= */
+        /* --- BRANDING HEADER --- */
         .top-branding { text-align: center; padding-top: 40px; z-index: 10; position: relative; }
         
         .top-branding h1 { 
-            /* Menggunakan clamp agar ukuran font membesar/mengecil otomatis sesuai lebar layar (min 22px, max 28px) */
             font-size: clamp(22px, 6vw, 28px); 
             font-weight: 900; 
             letter-spacing: 1px; 
             margin-bottom: 2px;
-            /* Efek Animasi Cahaya Berjalan (Shimmer) */
             background: linear-gradient(90deg, var(--text-dark) 0%, #D4AF37 40%, #FFF 50%, #D4AF37 60%, var(--text-dark) 100%);
             background-size: 200% auto;
             -webkit-background-clip: text;
@@ -95,10 +102,7 @@
             filter: drop-shadow(0 2px 3px rgba(0,0,0,0.25));
         }
 
-        @keyframes shineText {
-            to { background-position: 200% center; }
-        }
-        /* ========================================================= */
+        @keyframes shineText { to { background-position: 200% center; } }
 
         .header { padding: 25px 24px 15px; display: flex; justify-content: space-between; align-items: center; z-index: 10; position: relative; }
         
@@ -172,7 +176,7 @@
         .modal-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s ease; padding: 24px; }
         .modal-overlay.show { opacity: 1; visibility: visible; }
 
-        /* --- QRIS MODAL MANUAL KHUSUS UPLOAD --- */
+        /* --- QRIS MODAL MANUAL --- */
         .qris-card { background: #FFF; border-radius: 28px; padding: 25px 20px; width: 100%; max-width: 360px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.2); position: relative; transform: scale(0.8); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .modal-overlay.show .qris-card { transform: scale(1); }
         
@@ -195,7 +199,11 @@
 <body>
 
     <main class="app-container">
-        <!-- Background Ambient -->
+        
+        <!-- === TAMBAHAN BACKGROUND FOTO === -->
+        <div class="bg-photo"></div>
+
+        <!-- Background Ambient (Orbs) -->
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
 
@@ -212,7 +220,6 @@
                     <h2>Rizky_Admin</h2>
                 </div>
             </div>
-            <!-- Tombol Gear Setting Profil -->
             <div class="btn-settings" onclick="window.location.href='profil.html'">
                 <i class="fa-solid fa-gear"></i>
             </div>
@@ -222,9 +229,7 @@
             <div class="main-card glass-panel">
                 <div class="label-text">Total Kas (Keseluruhan)</div>
                 <div class="total-all" id="uiTotalAll">Rp 0</div>
-                
                 <hr class="divider">
-                
                 <div class="label-text">Saldo Kas Bulan Ini</div>
                 <div class="total-month" id="uiTotalMonth">Rp 0</div>
             </div>
@@ -273,19 +278,16 @@
 
         <div class="bottom-nav-container">
             <div class="floating-nav">
-                <!-- Navigasi Beranda -->
                 <div class="nav-item active" onclick="window.location.href='index.html'">
                     <i class="fa-solid fa-house"></i>
                     <span>Beranda</span>
                 </div>
                 
-                <!-- TOMBOL QRIS TENGAH (Manggil Modal Upload Bukti) -->
                 <div class="nav-item center-btn" onclick="openQrisModal()">
                     <div class="icon-bg"><i class="fa-solid fa-qrcode"></i></div>
                     <span>Sedekah</span>
                 </div>
                 
-                <!-- Navigasi Laporan -->
                 <div class="nav-item" onclick="window.location.href='laporan.html'">
                     <i class="fa-solid fa-chart-pie"></i>
                     <span>Laporan</span>
@@ -293,15 +295,12 @@
             </div>
         </div>
 
-        <!-- ======================================================== -->
-        <!-- MODAL SEDEKAH QRIS MANUAL (UPLOAD BUKTI)                 -->
-        <!-- ======================================================== -->
+        <!-- MODAL SEDEKAH QRIS MANUAL -->
         <div id="modalQrisManual" class="modal-overlay">
             <div class="qris-card">
                 <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 5px;">Scan QRIS Kas</h3>
                 <p style="font-size: 11px; font-weight: 600; color: var(--text-gray); margin-bottom: 15px;">KGR Ojol Anak Babah Alun</p>
                 
-                <!-- Ganti src di bawah dengan link/file QRIS KGR asli -->
                 <div class="qris-img">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" alt="QRIS KGR">
                 </div>
@@ -328,19 +327,13 @@
 
     </main>
 
-    <!-- ======================================================== -->
-    <!-- SCRIPT FIREBASE & LOGIKA APLIKASI                        -->
-    <!-- ======================================================== -->
+    <!-- FIREBASE & UI LOGIC -->
     <script type="module">
-        // 1. IMPORT SEMUA FUNGSI FIREBASE
         import { db } from './db-config.js';
         import { collection, query, orderBy, limit, onSnapshot, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
         const trxRef = collection(db, "transactions");
 
-        // ---------------------------------------------------------
-        // A. UI LOGIC: MODAL QRIS & UPLOAD BUKTI
-        // ---------------------------------------------------------
         window.openQrisModal = function() {
             document.getElementById('modalQrisManual').classList.add('show');
         }
@@ -360,7 +353,6 @@
             }
         }
 
-        // Fungsi Convert Gambar -> Base64 (Teks)
         const getBase64 = (file) => {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -370,7 +362,6 @@
             });
         };
 
-        // Fungsi Simpan Sedekah ke Firebase
         window.submitSedekah = async function(e) {
             e.preventDefault();
             const btn = document.getElementById('btnSubmitSedekah');
@@ -383,8 +374,6 @@
 
             try {
                 let base64Image = await getBase64(fileInput);
-
-                // Menyimpan transaksi dengan status PENDING
                 await addDoc(trxRef, {
                     jenis: "Pemasukan",
                     metode: "QRIS Manual",
@@ -407,37 +396,25 @@
             }
         }
 
-        // ---------------------------------------------------------
-        // B. FIREBASE LOGIC: HITUNG SALDO (Filter Status 'Pending')
-        // ---------------------------------------------------------
         onSnapshot(trxRef, (snapshot) => {
             let totalSaldo = 0;
             let saldoBulanIni = 0;
-            
             const dateNow = new Date();
             const currentMonth = dateNow.getMonth();
             const currentYear = dateNow.getFullYear();
 
             snapshot.forEach((doc) => {
                 const data = doc.data();
-                
-                // PERBAIKAN: Hanya hitung saldo jika status BUKAN pending (alias sudah ACC / sukses)
                 if (data.status !== "pending") {
                     const nominal = Number(data.nominal) || 0;
                     const tgl = data.tanggal ? data.tanggal.toDate() : new Date(); 
                     
-                    if (data.jenis === "Pemasukan") {
-                        totalSaldo += nominal;
-                    } else if (data.jenis === "Pengeluaran") {
-                        totalSaldo -= nominal;
-                    }
+                    if (data.jenis === "Pemasukan") totalSaldo += nominal;
+                    else if (data.jenis === "Pengeluaran") totalSaldo -= nominal;
 
                     if (tgl.getMonth() === currentMonth && tgl.getFullYear() === currentYear) {
-                        if (data.jenis === "Pemasukan") {
-                            saldoBulanIni += nominal;
-                        } else if (data.jenis === "Pengeluaran") {
-                            saldoBulanIni -= nominal;
-                        }
+                        if (data.jenis === "Pemasukan") saldoBulanIni += nominal;
+                        else if (data.jenis === "Pengeluaran") saldoBulanIni -= nominal;
                     }
                 }
             });
@@ -446,11 +423,7 @@
             document.getElementById('uiTotalMonth').innerText = "Rp " + saldoBulanIni.toLocaleString('id-ID');
         });
 
-        // ---------------------------------------------------------
-        // C. FIREBASE LOGIC: TAMPILKAN 3 TRANSAKSI TERAKHIR
-        // ---------------------------------------------------------
-        // Query untuk memunculkan transaksi yang sudah ter-ACC/sukses saja di halaman depan
-        const recentQuery = query(trxRef, orderBy("tanggal", "desc"), limit(5)); // Ambil 5 buat jaga-jaga kalau ada yg pending
+        const recentQuery = query(trxRef, orderBy("tanggal", "desc"), limit(5));
         const listContainer = document.getElementById('trxListContainer');
 
         onSnapshot(recentQuery, (snapshot) => {
@@ -459,8 +432,6 @@
 
             snapshot.forEach((doc) => {
                 const data = doc.data();
-                
-                // Hanya tampilkan di dashboard riwayat yang bukan "pending" dan batasi max 3
                 if (data.status !== "pending" && count < 3) {
                     count++;
                     const nominal = Number(data.nominal).toLocaleString('id-ID');
