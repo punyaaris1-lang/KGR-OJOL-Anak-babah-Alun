@@ -5,14 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#F5F5F7">
     <meta name="description" content="Kotak Gotong Royong - Ojol Anak Babah Alun">
-    <title>Kotak Gotong Royong</title>
+    <title>Dashboard - KGR</title>
     
     <link rel="manifest" href="manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="KGR Babah Alun">
-    <link rel="apple-touch-icon" href="icon-192x192.png">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;800;900&display=swap" rel="stylesheet">
     
@@ -32,8 +27,6 @@
         
         body { 
             background-color: #E5E5E5; 
-            background-image: radial-gradient(circle at 15% 50%, rgba(212, 175, 55, 0.08), transparent 25%), 
-                              radial-gradient(circle at 85% 30%, rgba(10, 132, 255, 0.05), transparent 25%);
             display: flex; justify-content: center; align-items: center; min-height: 100vh;
         }
 
@@ -52,123 +45,125 @@
             }
         }
 
-                /* --- BACKGROUND FOTO KOMUNITAS --- */
-        .bg-photo {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('1000417166.jpg');
-            background-position: center; /* Posisikan pas di tengah layar */
-            background-size: 100% auto; /* Paksa foto pas dengan lebar layar HP (tidak kepotong) */
-            background-repeat: no-repeat;
-            opacity: 0.75; /* Sedikit dinaikkan biar makin jelas */
-            filter: grayscale(50%); 
-            /* Efek gradasi supaya batas atas dan bawah foto memudar halus ke background */
-            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
-            mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
-            z-index: 0;
+        /* ======================================================== */
+        /* HEADER ALA FACEBOOK / TWITTER (COVER PHOTO)              */
+        /* ======================================================== */
+        .cover-photo-container {
+            position: relative;
+            width: 100%; height: 230px; /* Tinggi banner */
+            border-bottom-left-radius: 35px; /* Sisi bawah melengkung */
+            border-bottom-right-radius: 35px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            flex-shrink: 0;
+            z-index: 5;
         }
 
+        .bg-photo {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('1000417166.jpg');
+            background-position: center 25%; /* Geser dikit biar wajah di tengah */
+            background-size: cover;
+            z-index: 1;
+        }
 
-        /* --- ORBS BACKGROUND --- */
-        .orb { position: absolute; border-radius: 50%; filter: blur(60px); z-index: 1; animation: floatOrb 8s infinite alternate ease-in-out; }
-        .orb-1 { width: 300px; height: 300px; background: rgba(212, 175, 55, 0.25); top: -50px; right: -50px; }
-        .orb-2 { width: 250px; height: 250px; background: rgba(10, 132, 255, 0.15); bottom: 100px; left: -50px; animation-delay: -3s; }
-        @keyframes floatOrb { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-30px, 40px) scale(1.1); } }
+        /* Bayangan transparan biar teks Emas di atas foto tetap kontras */
+        .cover-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(28,28,30,0.75) 0%, rgba(28,28,30,0.1) 40%, rgba(28,28,30,0.4) 100%);
+            z-index: 2;
+        }
+
+        .top-branding { 
+            position: relative; z-index: 3;
+            text-align: center; padding-top: 35px; 
+        }
+        .top-branding h1 { 
+            font-size: clamp(22px, 6vw, 28px); font-weight: 900; letter-spacing: 1px; margin-bottom: 2px;
+            background: linear-gradient(90deg, #FFF 0%, #D4AF37 40%, #FFF 50%, #D4AF37 60%, #FFF 100%);
+            background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: shineText 3.5s linear infinite;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.8)); /* Drop shadow tebal biar tulisan pop-out */
+        }
+        .top-branding p { 
+            font-size: clamp(11px, 3.5vw, 14px); font-weight: 900; color: #FFF; 
+            letter-spacing: 2px; text-transform: uppercase; 
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+        @keyframes shineText { to { background-position: 200% center; } }
+
+        /* ======================================================== */
+        /* FOTO PROFIL OVERLAP (NUMPUK DI GARIS BANNER)             */
+        /* ======================================================== */
+        .profile-section {
+            display: flex; justify-content: space-between; align-items: flex-end;
+            padding: 0 24px;
+            margin-top: -45px; /* Ini yang bikin fotonya naik numpuk ke atas banner */
+            position: relative; z-index: 10;
+        }
+
+        .profile-pic { 
+            width: 90px; height: 90px; /* Ukuran dibesarkan */
+            border-radius: 50%; 
+            background: url('https://ui-avatars.com/api/?name=User&background=1C1C1E&color=D4AF37') center/cover; 
+            border: 5px solid var(--bg-base); /* Border tebal sewarna background abu-abu app */
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15); 
+        }
+
+        .btn-settings {
+            width: 42px; height: 42px; border-radius: 50%; 
+            background: var(--text-dark); color: var(--gold-primary);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            display: flex; justify-content: center; align-items: center; font-size: 18px; 
+            cursor: pointer; transition: 0.2s; margin-bottom: 5px;
+        }
+        .btn-settings:active { transform: scale(0.9); }
+
+        .user-info-section {
+            padding: 8px 24px 15px; position: relative; z-index: 10;
+        }
+        .user-info-section h2 { font-size: 24px; font-weight: 900; letter-spacing: -0.5px; color: var(--text-dark);}
+        .user-info-section p { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 2px;}
+
+        /* ======================================================== */
+
+        .content-area { flex-grow: 1; overflow-y: auto; padding: 0 24px 110px; scrollbar-width: none; z-index: 2; position: relative; }
+        .content-area::-webkit-scrollbar { display: none; }
 
         .glass-panel {
             background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--glass-border); box-shadow: var(--shadow-soft), inset 0 0 20px rgba(255,255,255,0.5);
-            z-index: 2; position: relative;
         }
 
-        /* --- BRANDING HEADER --- */
-        .top-branding { text-align: center; padding-top: 40px; z-index: 10; position: relative; }
-        
-        .top-branding h1 { 
-            font-size: clamp(22px, 6vw, 28px); 
-            font-weight: 900; 
-            letter-spacing: 1px; 
-            margin-bottom: 2px;
-            background: linear-gradient(90deg, var(--text-dark) 0%, #D4AF37 40%, #FFF 50%, #D4AF37 60%, var(--text-dark) 100%);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shineText 3.5s linear infinite;
-        }
-        
-        .top-branding p { 
-            font-size: clamp(11px, 3.5vw, 14px); 
-            font-weight: 900; 
-            background: var(--gold-deep); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; 
-            letter-spacing: 2px; 
-            text-transform: uppercase; 
-            -webkit-text-stroke: 0.3px rgba(0, 0, 0, 0.4); 
-            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.25));
-        }
-
-        @keyframes shineText { to { background-position: 200% center; } }
-
-        .header { padding: 25px 24px 15px; display: flex; justify-content: space-between; align-items: center; z-index: 10; position: relative; }
-        
-        .header-left { display: flex; align-items: center; gap: 15px; }
-        .profile-pic { width: 50px; height: 50px; border-radius: 50%; background: url('https://ui-avatars.com/api/?name=Rizky+Admin&background=1C1C1E&color=D4AF37&size=100') center/cover; border: 2px solid #FFF; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .user-info p { font-size: 12px; color: var(--text-gray); margin-bottom: 2px; font-weight: 600;}
-        .user-info h2 { font-size: 20px; font-weight: 900; letter-spacing: -0.5px;}
-
-        .btn-settings {
-            width: 42px; height: 42px; border-radius: 14px; background: var(--glass-bg); backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border); box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            display: flex; justify-content: center; align-items: center; font-size: 18px; color: var(--text-dark);
-            cursor: pointer; transition: 0.2s;
-        }
-        .btn-settings:active { transform: scale(0.9); background: var(--text-dark); color: var(--gold-primary); }
-
-        /* --- SCROLL AREA --- */
-        .content-area { flex-grow: 1; overflow-y: auto; padding: 0 24px 110px; scrollbar-width: none; z-index: 2; position: relative; }
-        .content-area::-webkit-scrollbar { display: none; }
-
-        /* --- KARTU TOTAL --- */
-        .main-card { border-radius: 24px; padding: 30px 20px; margin-top: 10px; text-align: center; }
+        /* --- KARTU SALDO --- */
+        .main-card { border-radius: 24px; padding: 30px 20px; text-align: center; }
         .label-text { font-size: 11px; color: var(--text-gray); font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 5px; }
-        
         .total-all { font-size: 32px; font-weight: 900; margin-bottom: 15px; color: var(--text-dark); letter-spacing: -1px; }
         .total-month { font-size: 24px; font-weight: 900; background: var(--gold-deep); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; -webkit-text-stroke: 0.5px rgba(0, 0, 0, 0.25); filter: drop-shadow(0 3px 5px rgba(0,0,0,0.2)); }
-        
         hr.divider { border: 0; border-top: 1px solid rgba(0,0,0,0.06); margin: 0 20px 15px; }
 
         /* --- MENU UTAMA --- */
         .section-title { font-size: 15px; font-weight: 800; margin: 25px 0 15px; color: var(--text-dark); display: flex; justify-content: space-between; align-items: center;}
         .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-        .menu-item { padding: 15px 5px; border-radius: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer; transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); }
-        
-        .menu-item:active { transform: scale(0.94); background: rgba(212, 175, 55, 0.12); border-color: var(--gold-primary); box-shadow: 0 10px 25px rgba(212, 175, 55, 0.3), inset 0 0 15px rgba(255,255,255,0.8); }
-        .menu-item:active .menu-icon { background: var(--gold-deep); color: #FFF; transform: scale(0.9); box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4); }
-        .menu-item:active span { color: #A67C00; }
-        
+        .menu-item { padding: 15px 5px; border-radius: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer; transition: 0.2s; }
+        .menu-item:active { transform: scale(0.94); background: rgba(212, 175, 55, 0.12); border-color: var(--gold-primary); }
         .menu-icon { width: 48px; height: 48px; border-radius: 16px; background: #FFF; color: var(--text-dark); display: flex; justify-content: center; align-items: center; font-size: 20px; box-shadow: 0 8px 15px rgba(0,0,0,0.05); transition: 0.3s; }
-        .menu-item span { font-size: 13px; font-weight: 800; color: var(--text-dark); text-align: center; line-height: 1.3; transition: 0.2s;}
+        .menu-item span { font-size: 12px; font-weight: 800; color: var(--text-dark); text-align: center; line-height: 1.3;}
 
-        /* --- EMPTY STATE --- */
-        .empty-state {
-            padding: 30px 20px; border-radius: 18px; text-align: center; margin-bottom: 10px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
+        /* --- HIGHLIGHT PANEL PENGURUS --- */
+        .pengurus-panel { border: 2px dashed rgba(212, 175, 55, 0.5); padding: 15px; border-radius: 24px; background: rgba(255,255,255,0.4); margin-bottom: 10px;}
+
+        /* --- AKTIVITAS --- */
+        .empty-state { padding: 30px 20px; border-radius: 18px; text-align: center; margin-bottom: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .empty-state i { font-size: 32px; color: var(--text-gray); opacity: 0.4; margin-bottom: 12px; }
         .empty-state p { font-size: 12px; font-weight: 700; color: var(--text-gray); }
 
-        /* --- SMART BUTTON --- */
-        .dynamic-btn-container { margin-top: 15px; display: flex; flex-direction: column; gap: 10px; }
-        .btn-smart { position: relative; overflow: hidden; width: 100%; padding: 16px; border-radius: 16px; background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-dark); font-size: 13px; font-weight: 800; text-align: center; box-shadow: 0 8px 20px rgba(0,0,0,0.05); cursor: pointer; transition: 0.2s; }
-        .btn-smart::before { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent); transform: skewX(-20deg); animation: shimmer 2.5s infinite; }
-        @keyframes shimmer { 100% { left: 200%; } }
-        .btn-smart:active { transform: scale(0.96); background: #FFF; }
+        .btn-smart { width: 100%; padding: 16px; border-radius: 16px; background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-dark); font-size: 13px; font-weight: 800; text-align: center; margin-top: 15px; cursor: pointer; }
 
-        /* --- FLOATING BOTTOM NAV --- */
+        /* --- BOTTOM NAV --- */
         .bottom-nav-container { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 85%; z-index: 20; }
-        .floating-nav { display: flex; justify-content: space-between; align-items: center; padding: 10px 30px; border-radius: 40px; background: rgba(28, 28, 30, 0.85); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
-        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: #C7C7CC; cursor: pointer; transition: 0.3s; }
+        .floating-nav { display: flex; justify-content: space-between; align-items: center; padding: 10px 30px; border-radius: 40px; background: rgba(28, 28, 30, 0.85); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: #C7C7CC; cursor: pointer; }
         .nav-item i { font-size: 20px; }
         .nav-item span { font-size: 10px; font-weight: 700; }
         .nav-item.active { color: #FFFFFF; }
@@ -178,27 +173,17 @@
         .center-btn .icon-bg i { font-size: 26px; color: var(--text-dark); }
         .center-btn span { color: #FFFFFF; font-weight: 800; }
         
-        /* --- MODAL OVERLAY --- */
+        /* --- MODAL QRIS --- */
         .modal-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s ease; padding: 24px; }
         .modal-overlay.show { opacity: 1; visibility: visible; }
-
-        /* --- QRIS MODAL MANUAL --- */
-        .qris-card { background: #FFF; border-radius: 28px; padding: 25px 20px; width: 100%; max-width: 360px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.2); position: relative; transform: scale(0.8); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .modal-overlay.show .qris-card { transform: scale(1); }
-        
+        .qris-card { background: #FFF; border-radius: 28px; padding: 25px 20px; width: 100%; max-width: 360px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.2); }
         .qris-img { width: 180px; height: 180px; margin: 0 auto 15px; border-radius: 16px; border: 3px solid var(--gold-primary); padding: 5px; }
         .qris-img img { width: 100%; height: 100%; object-fit: contain; border-radius: 10px; }
-        
-        .form-input { width: 100%; padding: 16px; border-radius: 14px; border: 2px solid rgba(0,0,0,0.06); font-size: 14px; font-weight: 600; color: var(--text-dark); outline: none; background: #F9F9F9; transition: 0.2s; margin-bottom: 12px; }
-        .form-input:focus { border-color: var(--gold-primary); background: #FFF; }
-        
+        .form-input { width: 100%; padding: 16px; border-radius: 14px; border: 2px solid rgba(0,0,0,0.06); font-size: 14px; font-weight: 600; outline: none; background: #F9F9F9; margin-bottom: 12px; }
         .file-upload-wrapper { position: relative; width: 100%; margin-bottom: 15px; }
-        .file-upload-input { position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 2; }
-        .file-upload-btn { width: 100%; padding: 15px; border-radius: 14px; background: #F5F5F7; border: 2px dashed #D4AF37; color: var(--text-dark); font-size: 13px; font-weight: 800; display: flex; justify-content: center; align-items: center; gap: 8px; transition: 0.2s; }
-        .file-upload-input:hover + .file-upload-btn { background: rgba(212, 175, 55, 0.1); }
-        
-        .btn-auth { width: 100%; padding: 16px; border-radius: 14px; font-size: 14px; font-weight: 800; background: var(--text-dark); color: #FFF; border: none; cursor: pointer; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; }
-        .btn-auth:active { transform: scale(0.95); }
+        .file-upload-input { position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0; z-index: 2; }
+        .file-upload-btn { width: 100%; padding: 15px; border-radius: 14px; background: #F5F5F7; border: 2px dashed #D4AF37; font-size: 13px; font-weight: 800; display: flex; justify-content: center; align-items: center; gap: 8px; }
+        .btn-auth { width: 100%; padding: 16px; border-radius: 14px; font-size: 14px; font-weight: 800; background: var(--text-dark); color: #FFF; border: none; display: flex; justify-content: center; align-items: center; gap: 8px; }
         .btn-outline { background: transparent; color: var(--text-dark); border: 2px solid rgba(0,0,0,0.1); }
     </style>
 </head>
@@ -206,29 +191,28 @@
 
     <main class="app-container">
         
-        <!-- === TAMBAHAN BACKGROUND FOTO === -->
-        <div class="bg-photo"></div>
-
-        <!-- Background Ambient (Orbs) -->
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-
-        <div class="top-branding">
-            <h1>KOTAK GOTONG ROYONG</h1>
-            <p>Ojol Anak Babah Alun</p>
+        <!-- COVER PHOTO BANNER (ALA FACEBOOK/TWITTER) -->
+        <div class="cover-photo-container">
+            <div class="bg-photo"></div>
+            <div class="cover-overlay"></div>
+            <div class="top-branding">
+                <h1>KOTAK GOTONG ROYONG</h1>
+                <p>Ojol Anak Babah Alun</p>
+            </div>
         </div>
 
-        <div class="header">
-            <div class="header-left">
-                <div class="profile-pic"></div>
-                <div class="user-info">
-                    <p>Selamat Pagi,</p>
-                    <h2>Rizky</h2>
-                </div>
-            </div>
+        <!-- FOTO PROFIL OVERLAP -->
+        <div class="profile-section">
+            <div class="profile-pic" id="uiProfilePic"></div>
             <div class="btn-settings" onclick="window.location.href='profil.html'">
                 <i class="fa-solid fa-gear"></i>
             </div>
+        </div>
+
+        <!-- INFO NAMA & JABATAN -->
+        <div class="user-info-section">
+            <h2 id="uiUserName">Sistem KGR</h2>
+            <p id="uiRoleText">Status Memuat...</p>
         </div>
 
         <div class="content-area">
@@ -240,36 +224,52 @@
                 <div class="total-month" id="uiTotalMonth">Rp 0</div>
             </div>
 
-            <div class="section-title">Menu Utama</div>
+            <!-- PANEL PENGURUS -->
+            <div id="panelPengurus" style="display: none;">
+                <div class="section-title" style="color: #A67C00;">
+                    Panel Pengurus <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div class="pengurus-panel">
+                    <div class="menu-grid" id="gridPengurus">
+                        <div class="menu-item glass-panel" id="menuSuperadmin" style="display: none;" onclick="window.location.href='superadmin.html'">
+                            <div class="menu-icon" style="background:#1C1C1E; color:#D4AF37;"><i class="fa-solid fa-crown"></i></div>
+                            <span>Sistem<br>Superadmin</span>
+                        </div>
+                        <div class="menu-item glass-panel" id="menuBendahara" style="display: none;" onclick="window.location.href='keuangan.html'">
+                            <div class="menu-icon" style="background:#28A745; color:#FFF;"><i class="fa-solid fa-vault"></i></div>
+                            <span>Kelola<br>Keuangan</span>
+                        </div>
+                        <div class="menu-item glass-panel" id="menuAdmin" style="display: none;" onclick="window.location.href='kelola_anggota.html'">
+                            <div class="menu-icon" style="background:#0A84FF; color:#FFF;"><i class="fa-solid fa-user-gear"></i></div>
+                            <span>Kelola<br>Anggota</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-title">Menu Anggota KGR</div>
             <div class="menu-grid">
                 <div class="menu-item glass-panel" onclick="window.location.href='anggota.html'">
-                    <div class="menu-icon"><i class="fa-solid fa-users"></i></div>
-                    <span>Data<br>Anggota</span>
+                    <div class="menu-icon"><i class="fa-solid fa-users"></i></div><span>Data<br>Anggota</span>
                 </div>
                 <div class="menu-item glass-panel" onclick="window.location.href='laporan.html'">
-                    <div class="menu-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
-                    <span>Laporan<br>Kas</span>
+                    <div class="menu-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div><span>Laporan<br>Kas</span>
                 </div>
                 <div class="menu-item glass-panel" onclick="window.location.href='kegiatan.html'">
-                    <div class="menu-icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
-                    <span>Kegiatan<br>Sosial</span>
+                    <div class="menu-icon"><i class="fa-solid fa-hand-holding-heart"></i></div><span>Kegiatan<br>Sosial</span>
                 </div>
                 <div class="menu-item glass-panel" onclick="window.location.href='info.html'">
-                    <div class="menu-icon"><i class="fa-solid fa-circle-info"></i></div>
-                    <span>Pusat<br>Informasi</span>
+                    <div class="menu-icon"><i class="fa-solid fa-circle-info"></i></div><span>Pusat<br>Informasi</span>
                 </div>
                 <div class="menu-item glass-panel" onclick="window.location.href='donatur.html'">
-                    <div class="menu-icon"><i class="fa-solid fa-ranking-star"></i></div>
-                    <span>Daftar<br>Donatur</span>
+                    <div class="menu-icon"><i class="fa-solid fa-ranking-star"></i></div><span>Daftar<br>Donatur</span>
                 </div>
                 <div class="menu-item glass-panel" onclick="window.location.href='pengajuan.html'">
-                    <div class="menu-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
-                    <span>Pengajuan<br>Dana</span>
+                    <div class="menu-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div><span>Pengajuan<br>Dana</span>
                 </div>
             </div>
 
             <div class="section-title">Aktivitas Terkini</div>
-            
             <div id="trxListContainer">
                 <div class="empty-state">
                     <i class="fa-solid fa-spinner fa-spin"></i>
@@ -277,43 +277,35 @@
                 </div>
             </div>
 
-            <div class="dynamic-btn-container">
-                <div class="btn-smart" onclick="window.location.href='laporan.html'">Lihat Semua Riwayat <i class="fa-solid fa-angles-right" style="margin-left: 5px;"></i></div>
-            </div>
+            <div class="btn-smart" onclick="window.location.href='laporan.html'">Lihat Semua Riwayat <i class="fa-solid fa-angles-right"></i></div>
         </div>
 
         <div class="bottom-nav-container">
             <div class="floating-nav">
                 <div class="nav-item active" onclick="window.location.href='index.html'">
-                    <i class="fa-solid fa-house"></i>
-                    <span>Beranda</span>
+                    <i class="fa-solid fa-house"></i><span>Beranda</span>
                 </div>
-                
                 <div class="nav-item center-btn" onclick="openQrisModal()">
-                    <div class="icon-bg"><i class="fa-solid fa-qrcode"></i></div>
-                    <span>Sedekah</span>
+                    <div class="icon-bg"><i class="fa-solid fa-qrcode"></i></div><span>Sedekah</span>
                 </div>
-                
                 <div class="nav-item" onclick="window.location.href='laporan.html'">
-                    <i class="fa-solid fa-chart-pie"></i>
-                    <span>Laporan</span>
+                    <i class="fa-solid fa-chart-pie"></i><span>Laporan</span>
                 </div>
             </div>
         </div>
 
-        <!-- MODAL SEDEKAH QRIS MANUAL -->
+        <!-- MODAL SEDEKAH QRIS -->
         <div id="modalQrisManual" class="modal-overlay">
             <div class="qris-card">
                 <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 5px;">Scan QRIS Kas</h3>
                 <p style="font-size: 11px; font-weight: 600; color: var(--text-gray); margin-bottom: 15px;">KGR Ojol Anak Babah Alun</p>
                 
                 <div class="qris-img">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" alt="QRIS KGR">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" alt="QRIS">
                 </div>
 
                 <form id="formSedekah" onsubmit="submitSedekah(event)">
                     <input type="number" id="inputNominal" class="form-input" placeholder="Nominal (Contoh: 50000)" required style="text-align: center; font-size: 16px; font-weight: 800;">
-                    
                     <input type="text" id="inputPesan" class="form-input" placeholder="Pesan / Doa (Opsional)">
 
                     <div class="file-upload-wrapper">
@@ -333,150 +325,146 @@
 
     </main>
 
-    <!-- FIREBASE & UI LOGIC -->
+    <!-- FIREBASE & LOGIC -->
     <script type="module">
         import { db } from './db-config.js';
-        import { collection, query, orderBy, limit, onSnapshot, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+        import { doc, getDoc, collection, query, orderBy, limit, onSnapshot, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-        const trxRef = collection(db, "transactions");
+        // ========================================================
+        // LOGIKA PENGECEKAN HAK AKSES (RBAC) - TEST MODE
+        // ========================================================
+        const nomorHpUserLogin = "+6281234567890"; 
 
-        window.openQrisModal = function() {
-            document.getElementById('modalQrisManual').classList.add('show');
-        }
+        async function jalankanSistemKeamanan() {
+            try {
+                const userRef = doc(db, "users", nomorHpUserLogin);
+                
+                onSnapshot(userRef, (docSnap) => {
+                    if (docSnap.exists()) {
+                        const dataUser = docSnap.data();
+                        const role = dataUser.role || "member";
+                        const namaLengkap = dataUser.nama_lengkap || "Tanpa Nama";
 
-        window.closeQrisModal = function() {
-            document.getElementById('modalQrisManual').classList.remove('show');
-            document.getElementById('formSedekah').reset();
-            document.getElementById('btnUploadText').innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Upload Bukti Transfer';
-            document.getElementById('btnUploadText').style.borderColor = "#D4AF37";
-        }
+                        document.getElementById('uiUserName').innerText = namaLengkap;
+                        document.getElementById('uiRoleText').innerText = role.toUpperCase();
+                        
+                        const panelPengurus = document.getElementById('panelPengurus');
+                        const menuSuperadmin = document.getElementById('menuSuperadmin');
+                        const menuBendahara = document.getElementById('menuBendahara');
+                        const menuAdmin = document.getElementById('menuAdmin');
 
-        window.tampilkanNamaFile = function(input) {
-            const btnText = document.getElementById('btnUploadText');
-            if (input.files && input.files[0]) {
-                btnText.innerHTML = `<i class="fa-solid fa-check-circle" style="color:#28A745;"></i> Bukti Siap Dikirim`;
-                btnText.style.borderColor = "#28A745";
+                        panelPengurus.style.display = "none";
+                        menuSuperadmin.style.display = "none";
+                        menuBendahara.style.display = "none";
+                        menuAdmin.style.display = "none";
+
+                        if (role === "superadmin") {
+                            panelPengurus.style.display = "block";
+                            menuSuperadmin.style.display = "flex";
+                            menuBendahara.style.display = "flex";
+                            menuAdmin.style.display = "flex";
+                            document.getElementById('uiRoleText').style.color = "#D4AF37"; 
+                        } 
+                        else if (role === "bendahara") {
+                            panelPengurus.style.display = "block";
+                            menuBendahara.style.display = "flex";
+                            document.getElementById('uiRoleText').style.color = "#28A745"; 
+                        } 
+                        else if (role === "admin") {
+                            panelPengurus.style.display = "block";
+                            menuAdmin.style.display = "flex";
+                            document.getElementById('uiRoleText').style.color = "#0A84FF"; 
+                        }
+                        else {
+                            document.getElementById('uiRoleText').innerText = "ANGGOTA KGR";
+                            document.getElementById('uiRoleText').style.color = "#8E8E93"; 
+                        }
+                    } else {
+                        document.getElementById('uiUserName').innerText = "Guest Mode";
+                        document.getElementById('uiRoleText').innerText = "TESTING APLIKASI";
+                    }
+                });
+            } catch (error) {
+                console.error("Gagal verifikasi role:", error);
             }
         }
 
-        const getBase64 = (file) => {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = error => reject(error);
-            });
-        };
+        jalankanSistemKeamanan();
+
+        // ========================================================
+        // LOGIKA SEDEKAH QRIS & SALDO KAS
+        // ========================================================
+        const trxRef = collection(db, "transactions");
+
+        window.openQrisModal = function() { document.getElementById('modalQrisManual').classList.add('show'); }
+        window.closeQrisModal = function() { 
+            document.getElementById('modalQrisManual').classList.remove('show');
+            document.getElementById('formSedekah').reset();
+            document.getElementById('btnUploadText').innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Upload Bukti Transfer';
+        }
+        window.tampilkanNamaFile = function(input) {
+            if (input.files && input.files[0]) {
+                document.getElementById('btnUploadText').innerHTML = `<i class="fa-solid fa-check-circle" style="color:#28A745;"></i> Bukti Siap Dikirim`;
+            }
+        }
+
+        const getBase64 = (file) => new Promise((res, rej) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => res(reader.result); reader.onerror = error => rej(error); });
 
         window.submitSedekah = async function(e) {
             e.preventDefault();
             const btn = document.getElementById('btnSubmitSedekah');
-            const nominal = document.getElementById('inputNominal').value;
-            const pesan = document.getElementById('inputPesan').value || "Sedekah QRIS KGR";
-            const fileInput = document.getElementById('inputBukti').files[0];
-
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Proses...';
-            btn.disabled = true;
-
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Proses...'; btn.disabled = true;
             try {
-                let base64Image = await getBase64(fileInput);
+                let base64Image = await getBase64(document.getElementById('inputBukti').files[0]);
                 await addDoc(trxRef, {
-                    jenis: "Pemasukan",
-                    metode: "QRIS Manual",
-                    nama_keterangan: pesan,
-                    nominal: Number(nominal),
-                    bukti_image: base64Image,
-                    status: "pending", 
-                    tanggal: serverTimestamp()
+                    jenis: "Pemasukan", metode: "QRIS Manual", status: "pending", 
+                    nama_keterangan: document.getElementById('inputPesan').value || "Sedekah QRIS KGR",
+                    nominal: Number(document.getElementById('inputNominal').value),
+                    bukti_image: base64Image, tanggal: serverTimestamp()
                 });
-                
-                alert("Alhamdulillah! Bukti transfer berhasil dikirim. Menunggu konfirmasi Admin.");
+                alert("Alhamdulillah! Menunggu konfirmasi dari Bendahara/Superadmin.");
                 window.closeQrisModal();
-                
-            } catch (error) {
-                console.error("Gagal kirim bukti:", error);
-                alert("Gagal mengirim bukti transfer. Coba lagi.");
-            } finally {
-                btn.innerHTML = 'Kirim <i class="fa-solid fa-paper-plane"></i>';
-                btn.disabled = false;
-            }
+            } catch (err) { alert("Gagal mengirim bukti transfer."); } 
+            finally { btn.innerHTML = 'Kirim <i class="fa-solid fa-paper-plane"></i>'; btn.disabled = false; }
         }
 
         onSnapshot(trxRef, (snapshot) => {
-            let totalSaldo = 0;
-            let saldoBulanIni = 0;
-            const dateNow = new Date();
-            const currentMonth = dateNow.getMonth();
-            const currentYear = dateNow.getFullYear();
-
+            let totalSaldo = 0, saldoBulanIni = 0;
+            const now = new Date();
             snapshot.forEach((doc) => {
                 const data = doc.data();
                 if (data.status !== "pending") {
                     const nominal = Number(data.nominal) || 0;
                     const tgl = data.tanggal ? data.tanggal.toDate() : new Date(); 
-                    
-                    if (data.jenis === "Pemasukan") totalSaldo += nominal;
-                    else if (data.jenis === "Pengeluaran") totalSaldo -= nominal;
-
-                    if (tgl.getMonth() === currentMonth && tgl.getFullYear() === currentYear) {
-                        if (data.jenis === "Pemasukan") saldoBulanIni += nominal;
-                        else if (data.jenis === "Pengeluaran") saldoBulanIni -= nominal;
+                    if (data.jenis === "Pemasukan") totalSaldo += nominal; else totalSaldo -= nominal;
+                    if (tgl.getMonth() === now.getMonth() && tgl.getFullYear() === now.getFullYear()) {
+                        if (data.jenis === "Pemasukan") saldoBulanIni += nominal; else saldoBulanIni -= nominal;
                     }
                 }
             });
-
             document.getElementById('uiTotalAll').innerText = "Rp " + totalSaldo.toLocaleString('id-ID');
             document.getElementById('uiTotalMonth').innerText = "Rp " + saldoBulanIni.toLocaleString('id-ID');
         });
 
-        const recentQuery = query(trxRef, orderBy("tanggal", "desc"), limit(5));
-        const listContainer = document.getElementById('trxListContainer');
-
-        onSnapshot(recentQuery, (snapshot) => {
-            listContainer.innerHTML = ""; 
+        onSnapshot(query(trxRef, orderBy("tanggal", "desc"), limit(5)), (snapshot) => {
+            const list = document.getElementById('trxListContainer'); list.innerHTML = ""; 
             let count = 0;
-
             snapshot.forEach((doc) => {
-                const data = doc.data();
-                if (data.status !== "pending" && count < 3) {
+                const d = doc.data();
+                if (d.status !== "pending" && count < 3) {
                     count++;
-                    const nominal = Number(data.nominal).toLocaleString('id-ID');
-                    const isMasuk = data.jenis === "Pemasukan";
-                    
-                    const card = document.createElement('div');
-                    card.className = 'glass-panel';
-                    card.style.padding = '15px';
-                    card.style.marginBottom = '10px';
-                    card.style.borderRadius = '16px';
-                    card.style.display = 'flex';
-                    card.style.justifyContent = 'space-between';
-                    card.style.alignItems = 'center';
-
-                    card.innerHTML = `
-                        <div style="display:flex; align-items:center; gap:10px;">
-                            <div style="width:40px; height:40px; border-radius:12px; background:${isMasuk ? '#D4EDDA' : '#F8D7DA'}; display:flex; justify-content:center; align-items:center; color:${isMasuk ? '#155724' : '#721c24'};">
-                                <i class="fa-solid ${isMasuk ? 'fa-arrow-down' : 'fa-arrow-up'}"></i>
+                    const isMsk = d.jenis === "Pemasukan";
+                    list.innerHTML += `
+                        <div class="glass-panel" style="padding:15px; margin-bottom:10px; border-radius:16px; display:flex; justify-content:space-between; align-items:center;">
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <div style="width:40px; height:40px; border-radius:12px; background:${isMsk?'#D4EDDA':'#F8D7DA'}; color:${isMsk?'#155724':'#721c24'}; display:flex; justify-content:center; align-items:center;"><i class="fa-solid ${isMsk?'fa-arrow-down':'fa-arrow-up'}"></i></div>
+                                <div><h4 style="font-size:13px; font-weight:800; color:#1C1C1E;">${d.nama_keterangan}</h4><p style="font-size:10px; color:#8E8E93;">${d.jenis}</p></div>
                             </div>
-                            <div>
-                                <h4 style="font-size:13px; font-weight:800; color:#1C1C1E;">${data.nama_keterangan}</h4>
-                                <p style="font-size:10px; color:#8E8E93;">${data.jenis}</p>
-                            </div>
-                        </div>
-                        <div style="font-weight:900; font-size:13px; color:${isMasuk ? '#28A745' : '#DC3545'};">
-                            ${isMasuk ? '+' : '-'} Rp ${nominal}
-                        </div>
-                    `;
-                    listContainer.appendChild(card);
+                            <div style="font-weight:900; font-size:13px; color:${isMsk?'#28A745':'#DC3545'};">${isMsk?'+':'-'} Rp ${Number(d.nominal).toLocaleString('id-ID')}</div>
+                        </div>`;
                 }
             });
-
-            if (count === 0) {
-                listContainer.innerHTML = `
-                    <div class="empty-state glass-panel">
-                        <i class="fa-solid fa-folder-open"></i>
-                        <p>Belum ada aktivitas transaksi.</p>
-                    </div>`;
-            }
+            if(count===0) list.innerHTML = `<div class="empty-state glass-panel"><i class="fa-solid fa-folder-open"></i><p>Belum ada aktivitas.</p></div>`;
         });
     </script>
 </body>
