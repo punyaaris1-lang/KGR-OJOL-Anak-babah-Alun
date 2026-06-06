@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#F5F5F7">
+    <title>Keamanan & Login - KGR</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-base: #F5F5F7; --text-dark: #1C1C1E; --text-gray: #8E8E93;
+            --gold-primary: #D4AF37; --gold-deep: linear-gradient(135deg, #A67C00, #D4AF37, #8B6914, #B38728);
+            --glass-bg: rgba(255, 255, 255, 0.75); --glass-border: rgba(255, 255, 255, 0.9);
+            --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.04);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        body { background-color: #E5E5E5; background-image: radial-gradient(circle at 15% 50%, rgba(212, 175, 55, 0.08), transparent 25%), radial-gradient(circle at 85% 30%, rgba(10, 132, 255, 0.05), transparent 25%); display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        
+        .app-container { width: 100%; max-width: 414px; height: 100vh; background-color: var(--bg-base); position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: center; padding: 30px; color: var(--text-dark); }
+        @media (min-width: 600px) { .app-container { max-width: 400px; height: 85vh; max-height: 800px; border-radius: 40px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15), inset 0 0 0 8px #FFFFFF; border: 1px solid rgba(0,0,0,0.05); } }
+
+        .orb { position: absolute; border-radius: 50%; filter: blur(60px); z-index: 0; animation: floatOrb 8s infinite alternate ease-in-out; }
+        .orb-1 { width: 300px; height: 300px; background: rgba(212, 175, 55, 0.25); top: -100px; right: -50px; }
+        .orb-2 { width: 250px; height: 250px; background: rgba(10, 132, 255, 0.15); bottom: -50px; left: -50px; animation-delay: -3s; }
+        @keyframes floatOrb { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-30px, 40px) scale(1.1); } }
+
+        .auth-card { background: var(--glass-bg); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); box-shadow: var(--shadow-soft), inset 0 0 20px rgba(255,255,255,0.5); border-radius: 30px; padding: 40px 24px; z-index: 2; position: relative; text-align: center; }
+
+        .branding h1 { font-size: 20px; font-weight: 900; letter-spacing: 1px; color: var(--text-dark); margin-bottom: 5px; }
+        .branding p { font-size: 11px; font-weight: 900; background: var(--gold-deep); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 30px; }
+        .logo-icon { width: 70px; height: 70px; border-radius: 20px; background: var(--gold-deep); color: #FFF; display: flex; justify-content: center; align-items: center; font-size: 32px; margin: 0 auto 20px; box-shadow: 0 10px 20px rgba(212, 175, 55, 0.4); border: 3px solid #FFF; }
+
+        .form-group { margin-bottom: 16px; text-align: left; position: relative; }
+        .form-group i.input-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-gray); font-size: 14px; }
+        .phone-prefix { position: absolute; left: 45px; top: 50%; transform: translateY(-50%); font-weight: 800; color: var(--text-dark); font-size: 14px; }
+        
+        .form-input { width: 100%; padding: 16px 16px 16px 45px; border-radius: 16px; border: 1.5px solid rgba(0,0,0,0.06); font-size: 14px; font-weight: 600; color: var(--text-dark); outline: none; background: #FFF; transition: 0.2s; box-shadow: inset 0 2px 5px rgba(0,0,0,0.01); }
+        .form-input.input-phone { padding-left: 75px; }
+        .form-input:focus { border-color: var(--gold-primary); box-shadow: 0 0 0 3px rgba(212,175,55,0.1); }
+
+        .otp-container { display: flex; gap: 8px; justify-content: center; margin-bottom: 25px; }
+        .otp-box { width: 45px; height: 50px; border-radius: 12px; border: 1.5px solid rgba(0,0,0,0.06); text-align: center; font-size: 18px; font-weight: 800; color: var(--text-dark); background: #FFF; outline: none; transition: 0.2s; box-shadow: inset 0 2px 5px rgba(0,0,0,0.01); }
+        .otp-box:focus { border-color: var(--gold-primary); box-shadow: 0 0 0 3px rgba(212,175,55,0.1); }
+
+        .btn-auth { width: 100%; padding: 18px; border-radius: 16px; font-size: 14px; font-weight: 900; background: var(--text-dark); color: #FFF; border: none; margin-top: 10px; cursor: pointer; transition: 0.2s; box-shadow: 0 10px 25px rgba(0,0,0,0.15); display: flex; justify-content: center; align-items: center; gap: 8px; }
+        .btn-auth:active { transform: scale(0.97); }
+        .btn-auth i { color: var(--gold-primary); }
+
+        .btn-outline { background: transparent; color: var(--text-dark); border: 2px solid rgba(0,0,0,0.1); box-shadow: none; margin-top: 10px; }
+        .btn-outline:active { background: rgba(0,0,0,0.05); }
+
+        .toggle-view { display: none; }
+        .toggle-view.active { display: block; animation: fadeIn 0.4s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .bio-icon { font-size: 60px; color: var(--gold-primary); margin: 20px 0; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.8; } 100% { transform: scale(1); opacity: 1; } }
+
+        /* ================================================== */
+        /* CSS UNTUK ANIMASI TYPEWRITER (FULLSCREEN)          */
+        /* ================================================== */
+        .intro-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-base); z-index: 9999;
+            display: none; flex-direction: column; justify-content: center; align-items: center;
+        }
+        .intro-overlay.active { display: flex; }
+        
+        .typewriter-box {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .type-line-1 {
+            font-size: 24px; font-weight: 900; 
+            color: var(--text-dark); 
+            margin-bottom: 5px; min-height: 29px;
+            letter-spacing: 1px;
+        }
+        
+        .type-line-2 {
+            font-size: 14px; font-weight: 900; 
+            background: var(--gold-deep); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            min-height: 18px; letter-spacing: 2px;
+        }
+
+        .cursor {
+            display: inline-block; width: 3px; height: 1em; 
+            background: var(--gold-primary); 
+            vertical-align: middle; margin-left: 2px;
+            animation: blink 0.7s infinite;
+        }
+        .cursor.hidden { display: none; }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+    </style>
+</head>
+<body>
+    
+    <!-- OVERLAY ANIMASI TYPEWRITER SEBELUM MASUK HOME -->
+    <div id="introAnimation" class="intro-overlay">
+        <div class="logo-icon" style="margin-bottom: 30px; transform: scale(1.2);"><i class="fa-solid fa-hands-holding-child"></i></div>
+        <div class="typewriter-box">
+            <div class="type-line-1"><span id="text1"></span><span id="cursor1" class="cursor"></span></div>
+            <div class="type-line-2"><span id="text2"></span><span id="cursor2" class="cursor hidden"></span></div>
+        </div>
+    </div>
+
+    <!-- KONTEN APLIKASI LOGIN -->
+    <div class="app-container">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+
+        <div class="auth-card">
+            <div class="logo-icon"><i class="fa-solid fa-hands-holding-child"></i></div>
+            <div class="branding">
+                <h1>KOTAK GOTONG ROYONG</h1>
+                <p>Ojol Anak Babah Alun</p>
+            </div>
+
+            <!-- Wadah Captcha untuk Firebase Phone Auth -->
+            <div id="recaptcha-container"></div>
+
+            <!-- STEP 0: QUICK LOGIN BIOMETRIK (Khusus User Lama) -->
+            <div id="stepQuickLogin" class="toggle-view">
+                <h2 style="font-size: 18px; font-weight: 900; color: var(--text-dark); margin-bottom: 5px;">Selamat Datang Kembali!</h2>
+                <p style="font-size: 12px; font-weight: 600; color: var(--text-gray); margin-bottom: 10px;">Ketuk tombol di bawah untuk masuk dengan cepat.</p>
+                <div class="bio-icon"><i class="fa-solid fa-fingerprint"></i></div>
+                <button class="btn-auth" onclick="fastLoginBiometric()">Masuk <i class="fa-solid fa-bolt"></i></button>
+                <button class="btn-auth btn-outline" onclick="switchView('stepPhone')">Login dengan Akun Lain</button>
+            </div>
+
+            <!-- STEP 1: NOMOR WHATSAPP -->
+            <div id="stepPhone" class="toggle-view">
+                <p style="font-size: 12px; font-weight: 700; color: var(--text-gray); margin-bottom: 20px;">Masukkan Nomor WhatsApp Aktif</p>
+                <form id="formPhone">
+                    <div class="form-group">
+                        <i class="fa-brands fa-whatsapp input-icon" style="color: #25D366;"></i>
+                        <span class="phone-prefix">+62</span>
+                        <input type="tel" id="loginPhone" class="form-input input-phone" placeholder="81234567890" required maxlength="13" autocomplete="tel">
+                    </div>
+                    <button type="submit" class="btn-auth" id="btnPhoneSubmit">Kirim Kode OTP <i class="fa-solid fa-paper-plane"></i></button>
+                </form>
+            </div>
+
+            <!-- STEP 2: MASUKKAN OTP -->
+            <div id="stepOTP" class="toggle-view">
+                <p style="font-size: 12px; font-weight: 700; color: var(--text-gray); margin-bottom: 20px;">Verifikasi Kode dari WhatsApp</p>
+                <div class="otp-container">
+                    <input type="text" class="otp-box" maxlength="1">
+                    <input type="text" class="otp-box" maxlength="1">
+                    <input type="text" class="otp-box" maxlength="1">
+                    <input type="text" class="otp-box" maxlength="1">
+                    <input type="text" class="otp-box" maxlength="1">
+                    <input type="text" class="otp-box" maxlength="1">
+                </div>
+                <button class="btn-auth" id="btnOTPSubmit">Verifikasi Kode <i class="fa-solid fa-check-circle"></i></button>
+                <button class="btn-auth btn-outline" onclick="switchView('stepPhone')">Ubah Nomor</button>
+            </div>
+
+            <!-- STEP 3: NIK KTP & NAMA -->
+            <div id="stepRegister" class="toggle-view">
+                <p style="font-size: 12px; font-weight: 700; color: var(--text-gray); margin-bottom: 20px;">Lengkapi Data Sesuai KTP Asli</p>
+                <form id="formRegister">
+                    <div class="form-group">
+                        <i class="fa-solid fa-user input-icon"></i>
+                        <input type="text" id="regName" class="form-input" placeholder="Nama Lengkap (Sesuai KTP)" required autocomplete="name">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 10px;">
+                        <i class="fa-solid fa-id-card input-icon"></i>
+                        <input type="tel" id="regNik" class="form-input" placeholder="16 Digit NIK KTP" required maxlength="16" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                    </div>
+                    <span style="font-size: 10px; color: #DC3545; font-weight: 600; text-align: left; margin-top: -10px; margin-bottom: 15px; display: block;">*Satu NIK hanya dapat digunakan untuk 1 akun.</span>
+                    <button type="submit" class="btn-auth" id="btnRegSubmit">Verifikasi Data <i class="fa-solid fa-shield-check"></i></button>
+                </form>
+            </div>
+
+            <!-- STEP 4: KUNCI BIOMETRIK -->
+            <div id="stepBiometric" class="toggle-view">
+                <h2 style="font-size: 18px; font-weight: 900; color: var(--text-dark); margin-bottom: 5px;">Keamanan Ekstra</h2>
+                <p style="font-size: 12px; font-weight: 600; color: var(--text-gray); margin-bottom: 10px;">Kunci akun ke perangkat ini agar Anda dapat login cepat di kemudian hari.</p>
+                <div class="bio-icon"><i class="fa-solid fa-fingerprint"></i></div>
+                <button class="btn-auth" onclick="registerBiometric()">Aktifkan Biometrik <i class="fa-solid fa-lock"></i></button>
+                <button class="btn-auth btn-outline" onclick="playTypewriterAndRedirect()">Lewati Dulu</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MODULE FIREBASE & LOGIKA APLIKASI -->
+    <script type="module">
+        // Import langsung dari file konfigurasi Bapak
+        import { auth, db } from './db-config.js'; 
+        import { RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+        import { doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+        // Variabel global untuk menyimpan sesi OTP
+        window.confirmationResult = null;
+        let globalPhoneNumber = "";
+
+        // Fungsi Ganti Tampilan
+        window.switchView = function(viewId) {
+            document.querySelectorAll('.toggle-view').forEach(el => el.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+        }
+
+        // Cek LocalStorage untuk Quick Login
+        window.onload = function() {
+            if (localStorage.getItem('kgr_biometric_registered') === 'true') {
+                window.switchView('stepQuickLogin');
+            } else {
+                window.switchView('stepPhone');
+            }
+            
+            // Inisialisasi Recaptcha (Wajib untuk Firebase Phone Auth)
+            window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+                'size': 'invisible'
+            });
+        };
+
+        // Logic Pindah Kotak OTP
+        const otpBoxes = document.querySelectorAll('.otp-box');
+        otpBoxes.forEach((box, index) => {
+            box.addEventListener('input', function() {
+                if(this.value.length === 1 && index < otpBoxes.length - 1) otpBoxes[index + 1].focus();
+            });
+            box.addEventListener('keydown', function(e) {
+                if(e.key === 'Backspace' && !this.value && index > 0) otpBoxes[index - 1].focus();
+            });
+        });
+
+        // 1. KIRIM OTP (Connect to Firebase Auth)
+        document.getElementById('formPhone').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const rawPhone = document.getElementById('loginPhone').value;
+            
+            // Format nomor HP ke standar internasional (+62)
+            const formattedPhone = rawPhone.startsWith('0') ? "+62" + rawPhone.substring(1) : "+62" + rawPhone;
+            globalPhoneNumber = formattedPhone;
+
+            const btn = document.getElementById('btnPhoneSubmit');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim...';
+            btn.disabled = true;
+
+            try {
+                // Proses mengirim SMS OTP via Firebase
+                window.confirmationResult = await signInWithPhoneNumber(auth, formattedPhone, window.recaptchaVerifier);
+                window.switchView('stepOTP');
+            } catch (error) {
+                console.error("Gagal mengirim OTP:", error);
+                alert("Gagal mengirim kode OTP. Pastikan koneksi internet stabil atau coba lagi nanti.");
+            } finally {
+                btn.innerHTML = 'Kirim Kode OTP <i class="fa-solid fa-paper-plane"></i>';
+                btn.disabled = false;
+            }
+        });
+
+        // 2. VERIFIKASI OTP & CEK DATABASE
+        document.getElementById('btnOTPSubmit').addEventListener('click', async () => {
+            let otpCode = "";
+            otpBoxes.forEach(box => otpCode += box.value);
+            if(otpCode.length < 6) { alert("Masukkan 6 digit kode OTP!"); return; }
+
+            const btn = document.getElementById('btnOTPSubmit');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengecek Database...';
+            btn.disabled = true;
+
+            try {
+                // Verifikasi kode OTP ke Firebase
+                await window.confirmationResult.confirm(otpCode);
+                
+                // CEK FIRESTORE DATABASE: Apakah member ini sudah terdaftar?
+                const userDocRef = doc(db, "users", globalPhoneNumber);
+                const userProfile = await getDoc(userDocRef);
+
+                if (userProfile.exists()) {
+                    // MEMBER LAMA: Tawarkan kunci sidik jari / langsung masuk
+                    window.switchView('stepBiometric');
+                } else {
+                    // MEMBER BARU: Arahkan ke isi form NIK & Nama
+                    window.switchView('stepRegister');
+                }
+            } catch (error) {
+                console.error("OTP Salah:", error);
+                alert("Kode OTP salah atau telah kedaluwarsa!");
+            } finally {
+                btn.innerHTML = 'Verifikasi Kode <i class="fa-solid fa-check-circle"></i>';
+                btn.disabled = false;
+            }
+        });
+
+        // 3. DAFTAR MEMBER BARU KE DATABASE
+        document.getElementById('formRegister').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('regName').value;
+            const nik = document.getElementById('regNik').value;
+            if(nik.length !== 16) { alert("GAGAL: NIK wajib 16 digit!"); return; }
+
+            const btn = document.getElementById('btnRegSubmit');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan Data...';
+            btn.disabled = true;
+
+            try {
+                // Simpan profil baru ke Firestore
+                await setDoc(doc(db, "users", globalPhoneNumber), {
+                    nama_lengkap: name,
+                    nik: nik,
+                    role: "member",
+                    status: "pending",
+                    created_at: serverTimestamp()
+                });
+                
+                window.switchView('stepBiometric');
+            } catch (error) {
+                console.error("Gagal simpan NIK:", error);
+                alert("Terjadi kesalahan sistem saat menyimpan NIK.");
+            } finally {
+                btn.innerHTML = 'Verifikasi Data <i class="fa-solid fa-shield-check"></i>';
+                btn.disabled = false;
+            }
+        });
+
+        // 4A. DAFTARKAN BIOMETRIK
+        window.registerBiometric = async function() {
+            if (!window.PublicKeyCredential) {
+                alert("Perangkat ini tidak mendukung kunci Sidik Jari via web.");
+                window.playTypewriterAndRedirect();
+                return;
+            }
+            try {
+                const credential = await navigator.credentials.create({
+                    publicKey: {
+                        challenge: new Uint8Array(32),
+                        rp: { name: "KGR Babah Alun" },
+                        user: {
+                            id: new Uint8Array(16), 
+                            name: "kgr_member",
+                            displayName: "Anggota KGR"
+                        },
+                        pubKeyCredParams: [{alg: -7, type: "public-key"}],
+                        authenticatorSelection: { userVerification: "required" },
+                        timeout: 60000
+                    }
+                });
+                localStorage.setItem('kgr_biometric_registered', 'true');
+                window.playTypewriterAndRedirect();
+            } catch (err) {
+                console.error(err);
+                alert("Aktivasi biometrik dibatalkan. Melanjutkan masuk...");
+                window.playTypewriterAndRedirect();
+            }
+        }
+
+        // 4B. LOGIN CEPAT BIOMETRIK
+        window.fastLoginBiometric = async function() {
+            if (!window.PublicKeyCredential) {
+                window.switchView('stepPhone');
+                return;
+            }
+            try {
+                const assertion = await navigator.credentials.get({
+                    publicKey: {
+                        challenge: new Uint8Array(32),
+                        rpId: window.location.hostname || "localhost",
+                        userVerification: "required",
+                        timeout: 60000
+                    }
+                });
+                window.playTypewriterAndRedirect();
+            } catch (err) {
+                console.error("Login biometrik batal", err);
+                alert("Gagal membaca sidik jari. Silakan coba pakai Nomor WhatsApp.");
+            }
+        }
+
+        // ================================================== //
+        // 5. ANIMASI TYPEWRITER & PINDAH KE HOME             //
+        // ================================================== //
+        window.playTypewriterAndRedirect = async function() {
+            // Tampilkan layar hitam full screen
+            document.getElementById('introAnimation').classList.add('active');
+            
+            const text1 = "KOTAK GOTONG ROYONG";
+            const text2 = "ANAK OJOL BABAH ALUN";
+            const el1 = document.getElementById('text1');
+            const el2 = document.getElementById('text2');
+            const cur1 = document.getElementById('cursor1');
+            const cur2 = document.getElementById('cursor2');
+
+            // Fungsi ngetik huruf per huruf (durasi 40ms per huruf agar cepat)
+            const typeText = async (text, element) => {
+                for (let i = 0; i < text.length; i++) {
+                    element.innerHTML += text.charAt(i);
+                    await new Promise(r => setTimeout(r, 40)); 
+                }
+            };
+
+            // Mulai animasi baris 1
+            await typeText(text1, el1);
+            cur1.classList.add('hidden'); // Matikan kursor baris 1
+            cur2.classList.remove('hidden'); // Hidupkan kursor baris 2
+            
+            // Jeda dikit sebelum baris 2
+            await new Promise(r => setTimeout(r, 200)); 
+            
+            // Mulai animasi baris 2
+            await typeText(text2, el2);
+            
+            // Tunggu 0.8 detik buat user baca, baru lempar ke Home
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 800);
+        }
+    </script>
+</body>
+</html>

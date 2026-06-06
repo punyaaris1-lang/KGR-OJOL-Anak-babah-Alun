@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#1C1C1E">
+    <title>Sistem Superadmin - KGR</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-base: #F5F5F7; --text-dark: #1C1C1E; --text-gray: #8E8E93;
+            --gold-primary: #D4AF37; --gold-deep: linear-gradient(135deg, #A67C00, #D4AF37, #8B6914, #B38728);
+            --danger-red: #DC3545;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        body { background-color: #E5E5E5; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .app-container { width: 100%; height: 100vh; background-color: var(--bg-base); position: relative; overflow: hidden; display: flex; flex-direction: column; }
+
+        @media (min-width: 600px) {
+            .app-container { max-width: 480px; height: 90vh; max-height: 900px; border-radius: 40px; border: 1px solid rgba(0,0,0,0.05); }
+        }
+
+        /* --- HEADER PREMIUM DARK --- */
+        .header-top { padding: 40px 24px 20px; display: flex; align-items: center; gap: 15px; background: var(--text-dark); color: #FFF; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 10; position: relative;}
+        .header-top::after { content: ''; position: absolute; top: 0; right: 0; width: 150px; height: 150px; background: radial-gradient(circle, rgba(212,175,55,0.15) 0%, transparent 70%); }
+        .btn-back { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.1); display: flex; justify-content: center; align-items: center; font-size: 18px; color: var(--gold-primary); cursor: pointer; position: relative; z-index: 2;}
+        .btn-back:active { background: rgba(255,255,255,0.2); }
+        .header-title { position: relative; z-index: 2; }
+        .header-title h1 { font-size: 20px; font-weight: 900; color: #FFF; letter-spacing: -0.5px;}
+        .header-title p { font-size: 10px; font-weight: 800; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 2px; }
+
+        .content-area { flex-grow: 1; overflow-y: auto; padding: 20px 24px; scrollbar-width: none; }
+        .content-area::-webkit-scrollbar { display: none; }
+
+        /* --- SYSTEM STATS --- */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        .stat-box { background: #FFF; border-radius: 18px; padding: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.05); display: flex; align-items: center; gap: 12px;}
+        .stat-icon { width: 40px; height: 40px; border-radius: 12px; background: rgba(212,175,55,0.1); color: var(--gold-primary); display: flex; justify-content: center; align-items: center; font-size: 18px;}
+        .stat-info h3 { font-size: 18px; font-weight: 900; color: var(--text-dark); }
+        .stat-info p { font-size: 10px; font-weight: 700; color: var(--text-gray); text-transform: uppercase; }
+
+        .section-title { font-size: 14px; font-weight: 800; margin-bottom: 15px; margin-top: 10px; color: var(--text-dark); display: flex; justify-content: space-between; align-items: center;}
+        
+        /* --- MASTER CONTROL PANELS --- */
+        .master-menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
+        .master-btn { background: #FFF; padding: 15px; border-radius: 18px; text-align: center; border: 2px solid transparent; cursor: pointer; transition: 0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.03); }
+        .master-btn:active { transform: scale(0.95); }
+        .master-btn i { font-size: 24px; margin-bottom: 10px; }
+        .master-btn h4 { font-size: 12px; font-weight: 800; color: var(--text-dark); }
+        
+        .btn-qris { border-color: rgba(10, 132, 255, 0.3); }
+        .btn-qris i { color: #0A84FF; }
+        .btn-qris:active { background: rgba(10, 132, 255, 0.1); }
+
+        /* DANGER ZONE */
+        .btn-danger { border-color: rgba(220, 53, 69, 0.3); }
+        .btn-danger i { color: var(--danger-red); }
+        .btn-danger h4 { color: var(--danger-red); }
+        .btn-danger:active { background: rgba(220, 53, 69, 0.1); }
+
+        /* --- USER CARD --- */
+        .user-card { background: #FFF; border-radius: 18px; padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 5px 15px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.03);}
+        .user-info { display: flex; align-items: center; gap: 12px; }
+        .user-avatar { width: 45px; height: 45px; border-radius: 50%; background: #1C1C1E; display: flex; justify-content: center; align-items: center; font-size: 18px; font-weight: 800; color: var(--gold-primary); }
+        .user-details h4 { font-size: 14px; font-weight: 800; color: var(--text-dark); }
+        .user-details p { font-size: 10px; font-weight: 700; color: var(--text-gray); margin-top: 2px; letter-spacing: 0.5px;}
+        
+        .badge { padding: 4px 8px; border-radius: 6px; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;}
+        .role-superadmin { background: rgba(212, 175, 55, 0.15); color: #A67C00; }
+        .role-bendahara { background: rgba(40, 167, 69, 0.15); color: #155724; }
+        .role-admin { background: rgba(10, 132, 255, 0.15); color: #0A84FF; }
+        .role-member { background: rgba(142, 142, 147, 0.15); color: #48484A; }
+
+        .btn-edit-role { width: 35px; height: 35px; border-radius: 10px; background: #F5F5F7; border: none; color: var(--text-dark); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s;}
+        .btn-edit-role:active { background: var(--text-dark); color: var(--gold-primary); }
+
+        .empty-state { text-align: center; padding: 30px 20px; }
+        .empty-state i { font-size: 30px; color: var(--text-gray); opacity: 0.5; margin-bottom: 10px; }
+        .empty-state p { font-size: 12px; font-weight: 600; color: var(--text-gray); }
+
+        /* --- MODAL UBAH JABATAN --- */
+        .modal-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 100; display: flex; justify-content: center; align-items: flex-end; opacity: 0; visibility: hidden; transition: 0.3s; }
+        .modal-overlay.show { opacity: 1; visibility: visible; }
+        .bottom-sheet { width: 100%; background: #FFF; border-top-left-radius: 30px; border-top-right-radius: 30px; padding: 30px 24px; transform: translateY(100%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1); }
+        .modal-overlay.show .bottom-sheet { transform: translateY(0); }
+        
+        .sheet-header { text-align: center; margin-bottom: 20px; }
+        .sheet-header h3 { font-size: 18px; font-weight: 900; color: var(--text-dark); }
+        .sheet-header p { font-size: 12px; font-weight: 600; color: var(--gold-primary); margin-top: 5px; }
+
+        .role-option { width: 100%; padding: 15px; border-radius: 16px; border: 2px solid #E5E5EA; margin-bottom: 10px; text-align: left; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 15px; transition: 0.2s; }
+        .role-option i { font-size: 20px; width: 30px; text-align: center; }
+        .role-option span { font-size: 14px; font-weight: 800; color: var(--text-dark); }
+        .role-option:active { transform: scale(0.98); }
+        
+        .btn-close-modal { width: 100%; padding: 15px; border-radius: 16px; background: var(--text-dark); color: #FFF; font-size: 14px; font-weight: 800; border: none; margin-top: 10px; cursor: pointer;}
+    </style>
+</head>
+<body>
+
+    <main class="app-container">
+        
+        <div class="header-top">
+            <div class="btn-back" onclick="window.location.href='index.html'"><i class="fa-solid fa-arrow-left"></i></div>
+            <div class="header-title">
+                <h1>Superadmin Console</h1>
+                <p><i class="fa-solid fa-bolt"></i> God Mode Enabled</p>
+            </div>
+        </div>
+
+        <div class="content-area">
+            
+            <!-- LIVE STATS PENGGUNA & TRANSAKSI -->
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+                    <div class="stat-info">
+                        <h3 id="uiTotalUsers">0</h3>
+                        <p>Total User</p>
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-icon" style="background: rgba(220,53,69,0.1); color: #DC3545;"><i class="fa-solid fa-file-circle-exclamation"></i></div>
+                    <div class="stat-info">
+                        <h3 id="uiTotalPending">0</h3>
+                        <p>Pending ACC</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ZONA MASTER CONTROL -->
+            <div class="section-title">Master Control <i class="fa-solid fa-sliders"></i></div>
+            <div class="master-menu-grid">
+                <div class="master-btn btn-qris" onclick="gantiQRIS()">
+                    <i class="fa-solid fa-qrcode"></i>
+                    <h4>Update QRIS Pusat</h4>
+                </div>
+                <div class="master-btn btn-danger" onclick="resetBuku()">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <h4>Reset Tutup Buku</h4>
+                </div>
+            </div>
+
+            <div class="section-title">
+                Role Access Control (RBAC)
+                <i class="fa-solid fa-shield-halved" style="color: var(--gold-primary);"></i>
+            </div>
+
+            <div id="usersListContainer">
+                <div class="empty-state">
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                    <p>Memuat data pengguna...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL BOTTOM SHEET PILIH JABATAN -->
+        <div class="modal-overlay" id="modalRole">
+            <div class="bottom-sheet">
+                <div class="sheet-header">
+                    <h3>Ubah Jabatan Pengguna</h3>
+                    <p id="targetUserName">Nama User</p>
+                </div>
+
+                <input type="hidden" id="targetUserId">
+
+                <button class="role-option opt-superadmin" onclick="updateRole('superadmin')" style="border-color: #D4AF37; background: rgba(212, 175, 55, 0.05);">
+                    <i class="fa-solid fa-crown" style="color: #D4AF37;"></i>
+                    <span>Jadikan Superadmin</span>
+                </button>
+                <button class="role-option opt-bendahara" onclick="updateRole('bendahara')">
+                    <i class="fa-solid fa-vault" style="color: #28A745;"></i>
+                    <span>Jadikan Bendahara</span>
+                </button>
+                <button class="role-option opt-admin" onclick="updateRole('admin')">
+                    <i class="fa-solid fa-user-gear" style="color: #0A84FF;"></i>
+                    <span>Jadikan Admin (HRD)</span>
+                </button>
+                <button class="role-option opt-member" onclick="updateRole('member')">
+                    <i class="fa-solid fa-user" style="color: #8E8E93;"></i>
+                    <span>Turunkan Jadi Member</span>
+                </button>
+
+                <button class="btn-close-modal" onclick="closeModal()">Batal</button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FIREBASE & LOGIC -->
+    <script type="module">
+        import { db } from './db-config.js';
+        import { collection, onSnapshot, doc, updateDoc, query, where } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+        const usersRef = collection(db, "users");
+        const trxRef = collection(db, "transactions");
+        const listContainer = document.getElementById('usersListContainer');
+
+        // --- 1. TARIK TOTAL PENGGUNA (LIVE) ---
+        onSnapshot(usersRef, (snapshot) => {
+            document.getElementById('uiTotalUsers').innerText = snapshot.size;
+            listContainer.innerHTML = "";
+            
+            if (snapshot.size === 0) {
+                listContainer.innerHTML = `<div class="empty-state"><i class="fa-solid fa-user-slash"></i><p>Belum ada pengguna terdaftar.</p></div>`;
+                return;
+            }
+
+            // Tampilkan list user
+            snapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                const id = docSnap.id; 
+                const nama = data.nama_lengkap || "Tanpa Nama";
+                const role = data.role || "member";
+                const inisial = nama.charAt(0).toUpperCase();
+
+                let badgeClass = "role-member"; let roleText = "MEMBER KGR";
+                if (role === "superadmin") { badgeClass = "role-superadmin"; roleText = "SUPERADMIN"; }
+                if (role === "bendahara") { badgeClass = "role-bendahara"; roleText = "BENDAHARA"; }
+                if (role === "admin") { badgeClass = "role-admin"; roleText = "ADMIN (HRD)"; }
+
+                const card = document.createElement('div');
+                card.className = 'user-card';
+                card.innerHTML = `
+                    <div class="user-info">
+                        <div class="user-avatar">${inisial}</div>
+                        <div class="user-details">
+                            <h4>${nama}</h4>
+                            <p>${id}</p>
+                            <div style="margin-top:5px;"><span class="badge ${badgeClass}">${roleText}</span></div>
+                        </div>
+                    </div>
+                    <button class="btn-edit-role" onclick="bukaModalRole('${id}', '${nama}')"><i class="fa-solid fa-sliders"></i></button>
+                `;
+                listContainer.appendChild(card);
+            });
+        });
+
+        // --- 2. TARIK TOTAL TRANSAKSI PENDING (LIVE) ---
+        const pendingQuery = query(trxRef, where("status", "==", "pending"));
+        onSnapshot(pendingQuery, (snapshot) => {
+            document.getElementById('uiTotalPending').innerText = snapshot.size;
+        });
+
+        // --- 3. FUNGSI TOMBOL MASTER CONTROL ---
+        window.gantiQRIS = function() {
+            // Nanti ini disambungin ke form upload gambar QRIS
+            alert("Sistem Siap: Fitur upload foto QRIS baru akan diarahkan ke Firebase Storage. Nanti kita aktifkan saat rilis final.");
+        }
+
+        window.resetBuku = function() {
+            // Sistem peringatan ketat ala Superadmin
+            const konfirmasi1 = confirm("⚠️ PERINGATAN SUPERADMIN ⚠️\n\nAnda akan mereset SALDO BULAN INI menjadi Rp 0. Fitur ini biasanya dipakai saat akhir bulan/tutup buku.\n\nLanjutkan?");
+            
+            if(konfirmasi1) {
+                const konfirmasi2 = prompt("Ketik kata 'RESET' (huruf besar) untuk mengkonfirmasi:");
+                if(konfirmasi2 === "RESET") {
+                    alert("Berhasil! Semua transaksi bulan ini telah diarsipkan dan saldo bulan ini kembali ke 0. (Simulasi berhasil)");
+                    // Nanti ditaruh script update field database disini
+                } else {
+                    alert("Gagal. Kata kunci salah, aksi dibatalkan demi keamanan.");
+                }
+            }
+        }
+
+        // --- 4. LOGIKA MODAL JABATAN ---
+        window.bukaModalRole = function(userId, userName) {
+            document.getElementById('targetUserId').value = userId;
+            document.getElementById('targetUserName').innerText = userName;
+            document.getElementById('modalRole').classList.add('show');
+        }
+
+        window.closeModal = function() {
+            document.getElementById('modalRole').classList.remove('show');
+        }
+
+        window.updateRole = async function(newRole) {
+            const userId = document.getElementById('targetUserId').value;
+            const userName = document.getElementById('targetUserName').innerText;
+            const konfirmasi = confirm(`Ubah jabatan ${userName} menjadi ${newRole.toUpperCase()}?`);
+            if (!konfirmasi) return;
+
+            try {
+                const docRef = doc(db, "users", userId);
+                await updateDoc(docRef, { role: newRole });
+                closeModal();
+            } catch (error) {
+                alert("Gagal update jabatan.");
+            }
+        }
+    </script>
+</body>
+</html>

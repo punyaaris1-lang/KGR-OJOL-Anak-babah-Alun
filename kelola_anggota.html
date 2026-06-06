@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#F5F5F7">
+    <title>Kelola Anggota - KGR</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-base: #F5F5F7; --text-dark: #1C1C1E; --text-gray: #8E8E93;
+            --blue-primary: #0A84FF; --danger-red: #DC3545; --gold-primary: #D4AF37;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        body { background-color: #E5E5E5; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .app-container { width: 100%; height: 100vh; background-color: var(--bg-base); position: relative; overflow: hidden; display: flex; flex-direction: column; }
+
+        @media (min-width: 600px) {
+            .app-container { max-width: 480px; height: 90vh; max-height: 900px; border-radius: 40px; border: 1px solid rgba(0,0,0,0.05); }
+        }
+
+        /* --- HEADER BIRU --- */
+        .header-top { padding: 40px 24px 20px; display: flex; align-items: center; gap: 15px; background: #FFF; box-shadow: 0 4px 15px rgba(0,0,0,0.03); z-index: 10;}
+        .btn-back { width: 40px; height: 40px; border-radius: 12px; background: #F5F5F7; display: flex; justify-content: center; align-items: center; font-size: 18px; color: var(--text-dark); cursor: pointer; transition: 0.2s;}
+        .btn-back:active { background: #E5E5EA; }
+        .header-title h1 { font-size: 18px; font-weight: 900; color: var(--text-dark); }
+        .header-title p { font-size: 11px; font-weight: 700; color: var(--blue-primary); text-transform: uppercase; letter-spacing: 1px; }
+
+        .content-area { flex-grow: 1; overflow-y: auto; padding: 20px 24px 100px; scrollbar-width: none; }
+        .content-area::-webkit-scrollbar { display: none; }
+
+        /* --- INFO PANEL --- */
+        .info-panel { background: var(--blue-primary); border-radius: 20px; padding: 20px; color: #FFF; margin-bottom: 20px; position: relative; overflow: hidden;}
+        .info-panel::after { content:''; position:absolute; top:-50%; right:-20%; width:150px; height:150px; background:#FFF; opacity:0.1; border-radius:50%; }
+        .info-panel h3 { font-size: 14px; font-weight: 800; margin-bottom: 5px; }
+        .info-panel p { font-size: 12px; font-weight: 500; line-height: 1.4; opacity: 0.9; }
+
+        .section-title { font-size: 14px; font-weight: 800; margin-bottom: 15px; color: var(--text-dark); display: flex; justify-content: space-between; align-items: center;}
+        
+        .badge-count { background: var(--blue-primary); color: #FFF; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 800;}
+
+        /* --- TOMBOL TAMBAH ANGGOTA --- */
+        .btn-add-member { width: 100%; background: #FFF; border: 2px dashed var(--blue-primary); padding: 15px; border-radius: 16px; color: var(--blue-primary); font-size: 13px; font-weight: 800; display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 20px; cursor: pointer; transition: 0.2s; box-shadow: 0 5px 15px rgba(10, 132, 255, 0.05);}
+        .btn-add-member:active { background: rgba(10, 132, 255, 0.1); transform: scale(0.98); }
+
+        /* --- USER CARD --- */
+        .user-card { background: #FFF; border-radius: 18px; padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 5px 15px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.03); }
+        .user-info { display: flex; align-items: center; gap: 12px; }
+        .user-avatar { width: 45px; height: 45px; border-radius: 50%; background: #F5F5F7; display: flex; justify-content: center; align-items: center; font-size: 18px; font-weight: 800; color: var(--blue-primary); }
+        .user-details h4 { font-size: 14px; font-weight: 800; color: var(--text-dark); }
+        .user-details p { font-size: 10px; font-weight: 700; color: var(--text-gray); margin-top: 2px; }
+        
+        /* Badge Jabatan (Admin View) */
+        .role-tag { font-size: 9px; font-weight: 800; padding: 3px 6px; border-radius: 4px; margin-top: 4px; display: inline-block; text-transform: uppercase;}
+        .tag-superadmin { background: rgba(212,175,55,0.1); color: #A67C00; }
+        .tag-pengurus { background: rgba(10,132,255,0.1); color: var(--blue-primary); }
+        
+        .btn-delete { width: 35px; height: 35px; border-radius: 10px; background: rgba(220, 53, 69, 0.1); border: none; color: var(--danger-red); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s;}
+        .btn-delete:active { background: var(--danger-red); color: #FFF; }
+        .btn-delete:disabled { opacity: 0.3; cursor: not-allowed; }
+
+        /* --- EMPTY STATE --- */
+        .empty-state { text-align: center; padding: 30px 20px; }
+        .empty-state i { font-size: 30px; color: var(--text-gray); opacity: 0.5; margin-bottom: 10px; }
+        .empty-state p { font-size: 12px; font-weight: 600; color: var(--text-gray); }
+
+        /* --- MODAL TAMBAH ANGGOTA --- */
+        .modal-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 100; display: flex; justify-content: center; align-items: flex-end; opacity: 0; visibility: hidden; transition: 0.3s; }
+        .modal-overlay.show { opacity: 1; visibility: visible; }
+        .bottom-sheet { width: 100%; background: #FFF; border-top-left-radius: 30px; border-top-right-radius: 30px; padding: 30px 24px; transform: translateY(100%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1); }
+        .modal-overlay.show .bottom-sheet { transform: translateY(0); }
+        
+        .sheet-header { text-align: center; margin-bottom: 20px; }
+        .sheet-header h3 { font-size: 18px; font-weight: 900; color: var(--text-dark); }
+        .sheet-header p { font-size: 11px; font-weight: 600; color: var(--text-gray); margin-top: 5px; }
+
+        .form-input { width: 100%; padding: 15px; border-radius: 14px; border: 2px solid rgba(0,0,0,0.06); font-size: 14px; font-weight: 600; color: var(--text-dark); outline: none; background: #F9F9F9; margin-bottom: 15px; transition: 0.2s; }
+        .form-input:focus { border-color: var(--blue-primary); background: #FFF; }
+        
+        .btn-submit { width: 100%; padding: 16px; border-radius: 14px; font-size: 14px; font-weight: 800; background: var(--blue-primary); color: #FFF; border: none; cursor: pointer; transition: 0.2s; margin-bottom: 10px;}
+        .btn-submit:active { transform: scale(0.96); }
+        .btn-cancel { width: 100%; padding: 16px; border-radius: 14px; font-size: 14px; font-weight: 800; background: #F5F5F7; color: var(--text-dark); border: none; cursor: pointer;}
+    </style>
+</head>
+<body>
+
+    <main class="app-container">
+        
+        <div class="header-top">
+            <div class="btn-back" onclick="window.location.href='index.html'"><i class="fa-solid fa-arrow-left"></i></div>
+            <div class="header-title">
+                <h1>Data Anggota</h1>
+                <p><i class="fa-solid fa-user-gear"></i> Panel Admin (HRD)</p>
+            </div>
+        </div>
+
+        <div class="content-area">
+            <div class="info-panel">
+                <h3>Sistem Manajemen Keanggotaan</h3>
+                <p>Tambah data anggota baru secara manual atau hapus anggota yang sudah tidak aktif di KGR.</p>
+            </div>
+
+            <!-- TOMBOL TRIGGER MODAL -->
+            <button class="btn-add-member" onclick="openModalAdd()">
+                <i class="fa-solid fa-user-plus"></i> Tambah Anggota Manual
+            </button>
+
+            <div class="section-title">
+                Daftar Seluruh Anggota
+                <span class="badge-count" id="totalCount">0</span>
+            </div>
+
+            <!-- CONTAINER LIST USER -->
+            <div id="usersListContainer">
+                <div class="empty-state">
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                    <p>Memuat data anggota...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL BOTTOM SHEET TAMBAH ANGGOTA -->
+        <div class="modal-overlay" id="modalAddMember">
+            <div class="bottom-sheet">
+                <div class="sheet-header">
+                    <h3>Tambah Anggota Baru</h3>
+                    <p>Data ini akan digunakan anggota untuk Login.</p>
+                </div>
+
+                <form id="formAddMember" onsubmit="submitNewMember(event)">
+                    <input type="text" id="inputNama" class="form-input" placeholder="Nama Lengkap / Panggilan" required autocomplete="off">
+                    
+                    <!-- Input Nomor HP ini bakal jadi Document ID di Firebase -->
+                    <input type="tel" id="inputHP" class="form-input" placeholder="Nomor HP (Contoh: +62812...)" required autocomplete="off">
+
+                    <button type="submit" class="btn-submit" id="btnSubmitAdd">Simpan Anggota <i class="fa-solid fa-check"></i></button>
+                    <button type="button" class="btn-cancel" onclick="closeModalAdd()">Batal</button>
+                </form>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FIREBASE & LOGIC -->
+    <script type="module">
+        import { db } from './db-config.js';
+        import { collection, onSnapshot, doc, setDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+        const usersRef = collection(db, "users");
+        const listContainer = document.getElementById('usersListContainer');
+        const countBadge = document.getElementById('totalCount');
+
+        // --- 1. TARIK DATA ANGGOTA (REAL-TIME) ---
+        onSnapshot(usersRef, (snapshot) => {
+            listContainer.innerHTML = "";
+            countBadge.innerText = snapshot.size;
+
+            if (snapshot.size === 0) {
+                listContainer.innerHTML = `<div class="empty-state"><i class="fa-solid fa-users-slash"></i><p>Belum ada data anggota.</p></div>`;
+                return;
+            }
+
+            snapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                const id = docSnap.id; // Nomor HP
+                const nama = data.nama_lengkap || "Tanpa Nama";
+                const role = data.role || "member";
+                const inisial = nama.charAt(0).toUpperCase();
+
+                // Perlindungan UI: Admin nggak boleh ngehapus Superadmin atau sesama Pengurus biar aman
+                let isProtected = false;
+                let roleTagHTML = '';
+
+                if (role === "superadmin") { 
+                    isProtected = true; 
+                    roleTagHTML = `<span class="role-tag tag-superadmin"><i class="fa-solid fa-crown"></i> Superadmin</span>`;
+                } else if (role === "admin" || role === "bendahara") {
+                    isProtected = true;
+                    roleTagHTML = `<span class="role-tag tag-pengurus"><i class="fa-solid fa-shield"></i> Pengurus</span>`;
+                }
+
+                const card = document.createElement('div');
+                card.className = 'user-card';
+                card.innerHTML = `
+                    <div class="user-info">
+                        <div class="user-avatar">${inisial}</div>
+                        <div class="user-details">
+                            <h4>${nama}</h4>
+                            <p><i class="fa-solid fa-phone"></i> ${id}</p>
+                            ${roleTagHTML}
+                        </div>
+                    </div>
+                    <!-- Tombol Hapus (Disabled kalau targetnya Pengurus/Superadmin) -->
+                    <button class="btn-delete" ${isProtected ? 'disabled' : ''} onclick="hapusAnggota('${id}', '${nama}')" title="${isProtected ? 'Tidak bisa menghapus pengurus' : 'Hapus Anggota'}">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                `;
+                listContainer.appendChild(card);
+            });
+        });
+
+        // --- 2. LOGIKA MODAL TAMBAH ANGGOTA ---
+        window.openModalAdd = function() {
+            document.getElementById('modalAddMember').classList.add('show');
+        }
+
+        window.closeModalAdd = function() {
+            document.getElementById('modalAddMember').classList.remove('show');
+            document.getElementById('formAddMember').reset();
+        }
+
+        // --- 3. PROSES SIMPAN ANGGOTA BARU KE FIREBASE ---
+        window.submitNewMember = async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btnSubmitAdd');
+            const nama = document.getElementById('inputNama').value;
+            let hp = document.getElementById('inputHP').value;
+
+            // Pastikan format nomor HP benar (biasanya Firebase Auth butuh +62)
+            if(!hp.startsWith('+')) {
+                alert("Harap masukkan nomor HP dengan kode negara (Contoh: +62...)");
+                return;
+            }
+
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+            btn.disabled = true;
+
+            try {
+                // setDoc dipakai agar Document ID-nya menggunakan Nomor HP yang diinput
+                await setDoc(doc(db, "users", hp), {
+                    nama_lengkap: nama,
+                    role: "member", // Otomatis jadi member biasa
+                    tanggal_daftar: serverTimestamp()
+                });
+                
+                closeModalAdd();
+            } catch (error) {
+                console.error("Gagal menambah anggota:", error);
+                alert("Gagal menyimpan data ke database. Coba lagi.");
+            } finally {
+                btn.innerHTML = 'Simpan Anggota <i class="fa-solid fa-check"></i>';
+                btn.disabled = false;
+            }
+        }
+
+        // --- 4. PROSES HAPUS ANGGOTA ---
+        window.hapusAnggota = async function(idHp, nama) {
+            const konfirmasi = confirm(`PERINGATAN!\n\nApakah Anda yakin ingin menghapus anggota bernama:\n"${nama}" (${idHp})?\n\nData yang dihapus tidak dapat dikembalikan.`);
+            
+            if (konfirmasi) {
+                try {
+                    await deleteDoc(doc(db, "users", idHp));
+                    // Nggak perlu alert, karena UI card-nya bakal otomatis hilang (Real-time Firebase)
+                } catch (error) {
+                    alert("Gagal menghapus anggota.");
+                }
+            }
+        }
+    </script>
+</body>
+</html>

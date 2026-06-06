@@ -100,7 +100,7 @@
         .profile-pic { 
             width: 90px; height: 90px; 
             border-radius: 50%; 
-            background: #1C1C1E; /* Default hitam dulu */
+            background: #1C1C1E; 
             border: 5px solid var(--bg-base); 
             box-shadow: 0 8px 20px rgba(0,0,0,0.15); 
         }
@@ -184,6 +184,7 @@
 
     <main class="app-container">
         
+        <!-- COVER PHOTO BANNER -->
         <div class="cover-photo-container">
             <div class="bg-photo"></div>
             <div class="cover-overlay"></div>
@@ -193,6 +194,7 @@
             </div>
         </div>
 
+        <!-- FOTO PROFIL OVERLAP -->
         <div class="profile-section">
             <div class="profile-pic" id="uiProfilePic"></div>
             <div class="btn-settings" onclick="window.location.href='profil.html'">
@@ -200,9 +202,10 @@
             </div>
         </div>
 
+        <!-- INFO NAMA & JABATAN -->
         <div class="user-info-section">
-            <h2 id="uiUserName">Nama Memuat...</h2>
-            <p id="uiRoleText">Status Memuat...</p>
+            <h2 id="uiUserName">Sistem Mengunci...</h2>
+            <p id="uiRoleText">Mengecek Kredensial</p>
         </div>
 
         <div class="content-area">
@@ -214,6 +217,7 @@
                 <div class="total-month" id="uiTotalMonth">Rp 0</div>
             </div>
 
+            <!-- PANEL PENGURUS -->
             <div id="panelPengurus" style="display: none;">
                 <div class="section-title" style="color: #A67C00;">
                     Panel Pengurus <i class="fa-solid fa-shield-halved"></i>
@@ -283,6 +287,7 @@
             </div>
         </div>
 
+        <!-- MODAL SEDEKAH QRIS -->
         <div id="modalQrisManual" class="modal-overlay">
             <div class="qris-card">
                 <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 5px;">Scan QRIS Kas</h3>
@@ -313,31 +318,82 @@
 
     </main>
 
+    <!-- FIREBASE & LOGIC -->
     <script type="module">
-        import { db } from './db-config.js';
-        import { collection, query, orderBy, limit, onSnapshot, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+        import { auth, db } from './db-config.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+        import { collection, query, orderBy, limit, onSnapshot, addDoc, serverTimestamp, doc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
         // ========================================================
-        // LOGIKA BYPASS (TAMPILAN LANGSUNG SUPERADMIN)
+        // LOGIKA KEAMANAN ASLI (FIREBASE AUTH & RBAC)
         // ========================================================
-        function jalankanSistemKeamanan() {
-            // Langsung ubah UI jadi nama lu
-            document.getElementById('uiUserName').innerText = "Rizky_Admin";
-            document.getElementById('uiRoleText').innerText = "SUPERADMIN";
-            document.getElementById('uiRoleText').style.color = "#D4AF37"; 
-            
-            // Ubah inisial foto profil otomatis jadi "RA"
-            document.getElementById('uiProfilePic').style.background = "url('https://ui-avatars.com/api/?name=Rizky+Admin&background=1C1C1E&color=D4AF37') center/cover";
-            
-            // Langsung paksa buka Panel Pengurus
-            document.getElementById('panelPengurus').style.display = "block";
-            document.getElementById('menuSuperadmin').style.display = "flex";
-            document.getElementById('menuBendahara').style.display = "flex";
-            document.getElementById('menuAdmin').style.display = "flex";
-        }
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const nomorHp = user.phoneNumber; 
+                const userRef = doc(db, "users", nomorHp);
+                
+                onSnapshot(userRef, (docSnap) => {
+                    if (docSnap.exists()) {
+                        const dataUser = docSnap.data();
+                        const role = dataUser.role || "member";
+                        const namaLengkap = dataUser.nama_lengkap || "Tanpa Nama";
+                        
+                        document.getElementById('uiUserName').innerText = namaLengkap;
+                        document.getElementById('uiRoleText').innerText = role.toUpperCase();
+                        
+                        const inisial = namaLengkap.charAt(0).toUpperCase();
+                        const profilePic = document.getElementById('uiProfilePic');
+                        profilePic.style.display = "flex";
+                        profilePic.style.justifyContent = "center";
+                        profilePic.style.alignItems = "center";
+                        profilePic.style.fontSize = "35px";
+                        profilePic.style.fontWeight = "900";
+                        profilePic.style.color = "#D4AF37";
+                        profilePic.innerText = inisial;
+                        profilePic.style.background = "#1C1C1E"; 
 
-        // Jalankan saat web dibuka
-        jalankanSistemKeamanan();
+                        const panelPengurus = document.getElementById('panelPengurus');
+                        const menuSuperadmin = document.getElementById('menuSuperadmin');
+                        const menuBendahara = document.getElementById('menuBendahara');
+                        const menuAdmin = document.getElementById('menuAdmin');
+
+                        panelPengurus.style.display = "none";
+                        menuSuperadmin.style.display = "none";
+                        menuBendahara.style.display = "none";
+                        menuAdmin.style.display = "none";
+
+                        if (role === "superadmin") {
+                            panelPengurus.style.display = "block";
+                            menuSuperadmin.style.display = "flex";
+                            menuBendahara.style.display = "flex";
+                            menuAdmin.style.display = "flex";
+                            document.getElementById('uiRoleText').style.color = "#D4AF37"; 
+                        } 
+                        else if (role === "bendahara") {
+                            panelPengurus.style.display = "block";
+                            menuBendahara.style.display = "flex";
+                            document.getElementById('uiRoleText').style.color = "#28A745"; 
+                        } 
+                        else if (role === "admin") {
+                            panelPengurus.style.display = "block";
+                            menuAdmin.style.display = "flex";
+                            document.getElementById('uiRoleText').style.color = "#0A84FF"; 
+                        }
+                        else {
+                            document.getElementById('uiRoleText').innerText = "ANGGOTA KGR";
+                            document.getElementById('uiRoleText').style.color = "#8E8E93"; 
+                        }
+                    } else {
+                        // User terautentikasi tapi datanya ga ada di Firestore
+                        auth.signOut();
+                        window.location.href = 'login.html';
+                    }
+                });
+            } else {
+                // JIKA USER BELUM LOGIN, TENDANG KE HALAMAN LOGIN!
+                window.location.href = 'login.html';
+            }
+        });
 
         // ========================================================
         // LOGIKA SEDEKAH QRIS & SALDO KAS
