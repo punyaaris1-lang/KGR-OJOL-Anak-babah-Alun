@@ -45,7 +45,6 @@
             }
         }
 
-        /* --- HEADER ALA FACEBOOK / TWITTER (COVER PHOTO) --- */
         .cover-photo-container {
             position: relative;
             width: 100%; height: 230px; 
@@ -89,7 +88,6 @@
         }
         @keyframes shineText { to { background-position: 200% center; } }
 
-        /* --- FOTO PROFIL OVERLAP --- */
         .profile-section {
             display: flex; justify-content: space-between; align-items: flex-end;
             padding: 0 24px;
@@ -120,7 +118,6 @@
         .user-info-section h2 { font-size: 24px; font-weight: 900; letter-spacing: -0.5px; color: var(--text-dark);}
         .user-info-section p { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 2px;}
 
-        /* --- KONTEN AREA --- */
         .content-area { flex-grow: 1; overflow-y: auto; padding: 0 24px 110px; scrollbar-width: none; z-index: 2; position: relative; }
         .content-area::-webkit-scrollbar { display: none; }
 
@@ -135,7 +132,6 @@
         .total-month { font-size: 24px; font-weight: 900; background: var(--gold-deep); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; -webkit-text-stroke: 0.5px rgba(0, 0, 0, 0.25); filter: drop-shadow(0 3px 5px rgba(0,0,0,0.2)); }
         hr.divider { border: 0; border-top: 1px solid rgba(0,0,0,0.06); margin: 0 20px 15px; }
 
-        /* --- MENU --- */
         .section-title { font-size: 15px; font-weight: 800; margin: 25px 0 15px; color: var(--text-dark); display: flex; justify-content: space-between; align-items: center;}
         .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
         .menu-item { padding: 15px 5px; border-radius: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer; transition: 0.2s; }
@@ -143,17 +139,14 @@
         .menu-icon { width: 48px; height: 48px; border-radius: 16px; background: #FFF; color: var(--text-dark); display: flex; justify-content: center; align-items: center; font-size: 20px; box-shadow: 0 8px 15px rgba(0,0,0,0.05); transition: 0.3s; }
         .menu-item span { font-size: 12px; font-weight: 800; color: var(--text-dark); text-align: center; line-height: 1.3;}
 
-        /* --- HIGHLIGHT PANEL PENGURUS --- */
         .pengurus-panel { border: 2px dashed rgba(212, 175, 55, 0.5); padding: 15px; border-radius: 24px; background: rgba(255,255,255,0.4); margin-bottom: 10px;}
 
-        /* --- AKTIVITAS --- */
         .empty-state { padding: 30px 20px; border-radius: 18px; text-align: center; margin-bottom: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .empty-state i { font-size: 32px; color: var(--text-gray); opacity: 0.4; margin-bottom: 12px; }
         .empty-state p { font-size: 12px; font-weight: 700; color: var(--text-gray); }
 
         .btn-smart { width: 100%; padding: 16px; border-radius: 16px; background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-dark); font-size: 13px; font-weight: 800; text-align: center; margin-top: 15px; cursor: pointer; }
 
-        /* --- BOTTOM NAV --- */
         .bottom-nav-container { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 85%; z-index: 20; }
         .floating-nav { display: flex; justify-content: space-between; align-items: center; padding: 10px 30px; border-radius: 40px; background: rgba(28, 28, 30, 0.85); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
         .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: #C7C7CC; cursor: pointer; }
@@ -166,7 +159,6 @@
         .center-btn .icon-bg i { font-size: 26px; color: var(--text-dark); }
         .center-btn span { color: #FFFFFF; font-weight: 800; }
         
-        /* --- MODAL QRIS --- */
         .modal-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s ease; padding: 24px; }
         .modal-overlay.show { opacity: 1; visibility: visible; }
         .qris-card { background: #FFF; border-radius: 28px; padding: 25px 20px; width: 100%; max-width: 360px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.2); }
@@ -184,7 +176,6 @@
 
     <main class="app-container">
         
-        <!-- COVER PHOTO BANNER -->
         <div class="cover-photo-container">
             <div class="bg-photo"></div>
             <div class="cover-overlay"></div>
@@ -194,7 +185,6 @@
             </div>
         </div>
 
-        <!-- FOTO PROFIL OVERLAP -->
         <div class="profile-section">
             <div class="profile-pic" id="uiProfilePic"></div>
             <div class="btn-settings" onclick="window.location.href='profil.html'">
@@ -202,9 +192,8 @@
             </div>
         </div>
 
-        <!-- INFO NAMA & JABATAN -->
         <div class="user-info-section">
-            <h2 id="uiUserName">Sistem Mengunci...</h2>
+            <h2 id="uiUserName">Memuat...</h2>
             <p id="uiRoleText">Mengecek Kredensial</p>
         </div>
 
@@ -217,7 +206,6 @@
                 <div class="total-month" id="uiTotalMonth">Rp 0</div>
             </div>
 
-            <!-- PANEL PENGURUS -->
             <div id="panelPengurus" style="display: none;">
                 <div class="section-title" style="color: #A67C00;">
                     Panel Pengurus <i class="fa-solid fa-shield-halved"></i>
@@ -287,7 +275,6 @@
             </div>
         </div>
 
-        <!-- MODAL SEDEKAH QRIS -->
         <div id="modalQrisManual" class="modal-overlay">
             <div class="qris-card">
                 <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 5px;">Scan QRIS Kas</h3>
@@ -324,18 +311,19 @@
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
         import { collection, query, orderBy, limit, onSnapshot, addDoc, serverTimestamp, doc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-        // ========================================================
-        // LOGIKA KEAMANAN ASLI (FIREBASE AUTH & RBAC)
-        // ========================================================
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                const nomorHp = user.phoneNumber; 
-                const userRef = doc(db, "users", nomorHp);
+                // DI SINI BUG-NYA UDAH KITA BASMI! SEKARANG PAKAI UID EMAIL
+                const userId = user.uid; 
+                const userRef = doc(db, "users", userId);
                 
                 onSnapshot(userRef, (docSnap) => {
                     if (docSnap.exists()) {
                         const dataUser = docSnap.data();
-                        const role = dataUser.role || "member";
+                        
+                        // PAKSA ROLE JADI HURUF KECIL BIAR GAK MISS
+                        const role = (dataUser.role || "member").toLowerCase(); 
+                        const status = dataUser.status || "Pending Admin";
                         const namaLengkap = dataUser.nama_lengkap || "Tanpa Nama";
                         
                         document.getElementById('uiUserName').innerText = namaLengkap;
@@ -362,6 +350,19 @@
                         menuBendahara.style.display = "none";
                         menuAdmin.style.display = "none";
 
+                        // JIKA STATUS MASIH PENDING & BUKAN ADMIN -> BLOKIR AKSES BAWAHNYA
+                        if (status === "Pending Admin" && role !== "superadmin" && role !== "admin") {
+                            document.getElementById('uiUserName').innerText = "Menunggu Verifikasi";
+                            document.getElementById('uiRoleText').innerText = "STATUS PENDING";
+                            document.getElementById('uiRoleText').style.color = "#DC3545"; 
+                            document.querySelector('.content-area').style.opacity = '0.3'; 
+                            document.querySelector('.content-area').style.pointerEvents = 'none';
+                            return; // Stop di sini, menu gak bakal bisa di-klik
+                        } else {
+                            document.querySelector('.content-area').style.opacity = '1'; 
+                            document.querySelector('.content-area').style.pointerEvents = 'auto';
+                        }
+
                         if (role === "superadmin") {
                             panelPengurus.style.display = "block";
                             menuSuperadmin.style.display = "flex";
@@ -380,17 +381,14 @@
                             document.getElementById('uiRoleText').style.color = "#0A84FF"; 
                         }
                         else {
-                            document.getElementById('uiRoleText').innerText = "ANGGOTA KGR";
                             document.getElementById('uiRoleText').style.color = "#8E8E93"; 
                         }
                     } else {
-                        // User terautentikasi tapi datanya ga ada di Firestore
                         auth.signOut();
                         window.location.href = 'login.html';
                     }
                 });
             } else {
-                // JIKA USER BELUM LOGIN, TENDANG KE HALAMAN LOGIN!
                 window.location.href = 'login.html';
             }
         });
