@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#F5F5F7">
-    <title>Keamanan & Login - KGR</title>
+    <title>Keamanan Maksimal - KGR</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
+    <script defer src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.12/dist/face-api.min.js"></script>
+
     <style>
         :root {
             --bg-base: #F5F5F7; --text-dark: #1C1C1E; --text-gray: #8E8E93;
@@ -20,334 +22,319 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
         
-        body { background-color: #E5E5E5; background-image: radial-gradient(circle at 15% 50%, rgba(212, 175, 55, 0.08), transparent 25%), radial-gradient(circle at 85% 30%, rgba(10, 132, 255, 0.05), transparent 25%); display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        
-        .app-container { width: 100%; max-width: 414px; height: 100vh; background-color: var(--bg-base); position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: center; padding: 30px; color: var(--text-dark); }
-        @media (min-width: 600px) { .app-container { max-width: 400px; height: 85vh; max-height: 800px; border-radius: 40px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15), inset 0 0 0 8px #FFFFFF; border: 1px solid rgba(0,0,0,0.05); } }
+        body { background-color: #E5E5E5; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .app-container { width: 100%; max-width: 414px; height: 100vh; background-color: var(--bg-base); position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: center; padding: 30px; }
+        @media (min-width: 600px) { .app-container { max-width: 400px; height: 85vh; max-height: 800px; border-radius: 40px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15); border: 1px solid rgba(0,0,0,0.05); } }
 
-        .orb { position: absolute; border-radius: 50%; filter: blur(60px); z-index: 0; animation: floatOrb 8s infinite alternate ease-in-out; }
-        .orb-1 { width: 300px; height: 300px; background: rgba(212, 175, 55, 0.25); top: -100px; right: -50px; }
-        .orb-2 { width: 250px; height: 250px; background: rgba(10, 132, 255, 0.15); bottom: -50px; left: -50px; animation-delay: -3s; }
-        @keyframes floatOrb { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-30px, 40px) scale(1.1); } }
+        .auth-card { background: var(--glass-bg); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); box-shadow: var(--shadow-soft); border-radius: 30px; padding: 40px 24px; z-index: 2; position: relative; text-align: center; }
 
-        .auth-card { background: var(--glass-bg); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); box-shadow: var(--shadow-soft), inset 0 0 20px rgba(255,255,255,0.5); border-radius: 30px; padding: 40px 24px; z-index: 2; position: relative; text-align: center; }
-
-        .branding h1 { font-size: 20px; font-weight: 900; letter-spacing: 1px; color: var(--text-dark); margin-bottom: 5px; }
-        .branding p { font-size: 11px; font-weight: 900; background: var(--gold-deep); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 30px; }
+        .branding h1 { font-size: 20px; font-weight: 900; color: var(--text-dark); margin-bottom: 5px; }
+        .branding p { font-size: 11px; font-weight: 900; background: var(--gold-deep); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 2px; margin-bottom: 25px; }
         .logo-icon { width: 70px; height: 70px; border-radius: 20px; background: var(--gold-deep); color: #FFF; display: flex; justify-content: center; align-items: center; font-size: 32px; margin: 0 auto 20px; box-shadow: 0 10px 20px rgba(212, 175, 55, 0.4); border: 3px solid #FFF; }
 
-        .form-group { margin-bottom: 16px; text-align: left; position: relative; }
+        .form-group { margin-bottom: 15px; text-align: left; position: relative; }
         .form-group i.input-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-gray); font-size: 14px; }
-        .form-input { width: 100%; padding: 16px 16px 16px 45px; border-radius: 16px; border: 1.5px solid rgba(0,0,0,0.06); font-size: 14px; font-weight: 600; color: var(--text-dark); outline: none; background: #FFF; transition: 0.2s; box-shadow: inset 0 2px 5px rgba(0,0,0,0.01); }
-        .form-input:focus { border-color: var(--gold-primary); box-shadow: 0 0 0 3px rgba(212,175,55,0.1); }
+        .form-input { width: 100%; padding: 15px 15px 15px 45px; border-radius: 14px; border: 1.5px solid rgba(0,0,0,0.06); font-size: 13px; font-weight: 600; color: var(--text-dark); outline: none; background: #FFF; }
+        .form-input:focus { border-color: var(--gold-primary); }
 
-        .btn-auth { width: 100%; padding: 18px; border-radius: 16px; font-size: 14px; font-weight: 900; background: var(--text-dark); color: #FFF; border: none; margin-top: 10px; cursor: pointer; transition: 0.2s; box-shadow: 0 10px 25px rgba(0,0,0,0.15); display: flex; justify-content: center; align-items: center; gap: 10px; }
-        .btn-auth:active { transform: scale(0.97); }
-        .btn-auth i { font-size: 18px; }
+        .btn-auth { width: 100%; padding: 16px; border-radius: 14px; font-size: 14px; font-weight: 900; background: var(--text-dark); color: #FFF; border: none; margin-top: 5px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; }
+        .btn-auth:disabled { background: var(--text-gray); cursor: not-allowed; }
+        .btn-auth i { color: var(--gold-primary); }
 
-        .btn-google { background: #FFF; color: var(--text-dark); border: 1.5px solid rgba(0,0,0,0.08); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .btn-google img { width: 20px; height: 20px; }
-        
-        .btn-outline { background: transparent; color: var(--text-dark); border: 2px solid rgba(0,0,0,0.1); box-shadow: none; margin-top: 10px; }
-        .btn-outline:active { background: rgba(0,0,0,0.05); }
+        .link-text { font-size: 12px; font-weight: 700; color: var(--text-dark); margin-top: 20px; display: inline-block; cursor: pointer; }
+        .link-text span { color: var(--gold-primary); }
 
         .toggle-view { display: none; }
         .toggle-view.active { display: block; animation: fadeIn 0.4s ease forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .bio-icon { font-size: 60px; color: var(--gold-primary); margin: 20px 0; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.8; } 100% { transform: scale(1); opacity: 1; } }
+        /* VIDEO CONTAINER FOR SELFIE */
+        .video-container { position: relative; width: 100%; aspect-ratio: 1/1; border-radius: 20px; overflow: hidden; margin-bottom: 15px; border: 3px solid var(--gold-primary); box-shadow: 0 10px 20px rgba(0,0,0,0.1); background: #000; }
+        #webcam { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); /* Mirror effect */ }
+        #overlayCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
-        /* CUSTOM NOTIFICATION MODAL */
-        .custom-alert-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 99999; opacity: 0; visibility: hidden; transition: 0.3s ease; padding: 24px; }
+        /* CUSTOM ALERT */
+        .custom-alert-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 99999; opacity: 0; visibility: hidden; transition: 0.3s; padding: 24px; }
         .custom-alert-overlay.show { opacity: 1; visibility: visible; }
-        .custom-alert-box { background: #FFF; border-radius: 24px; padding: 30px 24px; width: 100%; max-width: 320px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.3); transform: scale(0.9); transition: 0.3s; }
-        .custom-alert-overlay.show .custom-alert-box { transform: scale(1); }
+        .custom-alert-box { background: #FFF; border-radius: 24px; padding: 30px 24px; width: 100%; max-width: 320px; text-align: center; }
         .alert-icon { font-size: 50px; margin-bottom: 15px; }
         .alert-icon.error { color: var(--danger-red); }
-        .alert-icon.info { color: var(--gold-primary); }
         .alert-icon.success { color: var(--success-green); }
         .alert-title { font-size: 18px; font-weight: 900; color: var(--text-dark); margin-bottom: 8px; }
-        .alert-msg { font-size: 13px; font-weight: 600; color: var(--text-gray); margin-bottom: 25px; line-height: 1.5; }
-        .btn-alert { width: 100%; padding: 16px; border-radius: 14px; font-size: 14px; font-weight: 800; border: none; cursor: pointer; transition: 0.2s; color: #FFF;}
-        .btn-alert.error { background: var(--danger-red); }
-        .btn-alert.info { background: var(--text-dark); }
-        .btn-alert.success { background: var(--success-green); }
-
-        /* ANIMASI TYPEWRITER */
-        .intro-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-base); z-index: 9999; display: none; flex-direction: column; justify-content: center; align-items: center; }
-        .intro-overlay.active { display: flex; }
-        .typewriter-box { text-align: center; padding: 20px; }
-        .type-line-1 { font-size: 24px; font-weight: 900; color: var(--text-dark); margin-bottom: 5px; min-height: 29px; letter-spacing: 1px; }
-        .type-line-2 { font-size: 14px; font-weight: 900; background: var(--gold-deep); -webkit-background-clip: text; -webkit-text-fill-color: transparent; min-height: 18px; letter-spacing: 2px; }
-        .cursor { display: inline-block; width: 3px; height: 1em; background: var(--gold-primary); vertical-align: middle; margin-left: 2px; animation: blink 0.7s infinite; }
-        .cursor.hidden { display: none; }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .alert-msg { font-size: 13px; font-weight: 600; color: var(--text-gray); margin-bottom: 25px; }
+        .btn-alert { width: 100%; padding: 16px; border-radius: 14px; font-size: 14px; font-weight: 800; border: none; cursor: pointer; color: #FFF; background: var(--text-dark); }
     </style>
 </head>
 <body>
 
-    <!-- CUSTOM NOTIFICATION MODAL -->
     <div id="customAlert" class="custom-alert-overlay">
         <div class="custom-alert-box">
-            <div id="alertIcon" class="alert-icon info"><i class="fa-solid fa-circle-info"></i></div>
-            <h3 id="alertTitle" class="alert-title">Informasi</h3>
-            <p id="alertMessage" class="alert-msg">Pesan ditampilkan di sini.</p>
-            <button id="alertBtn" class="btn-alert info" onclick="closeCustomAlert()">Mengerti</button>
-        </div>
-    </div>
-    
-    <!-- OVERLAY ANIMASI TYPEWRITER -->
-    <div id="introAnimation" class="intro-overlay">
-        <div class="logo-icon" style="margin-bottom: 30px; transform: scale(1.2);"><i class="fa-solid fa-hands-holding-child"></i></div>
-        <div class="typewriter-box">
-            <div class="type-line-1"><span id="text1"></span><span id="cursor1" class="cursor"></span></div>
-            <div class="type-line-2"><span id="text2"></span><span id="cursor2" class="cursor hidden"></span></div>
+            <div id="alertIcon" class="alert-icon"><i class="fa-solid fa-circle-info"></i></div>
+            <h3 id="alertTitle" class="alert-title">Info</h3>
+            <p id="alertMessage" class="alert-msg">Pesan</p>
+            <button class="btn-alert" onclick="document.getElementById('customAlert').classList.remove('show')">Mengerti</button>
         </div>
     </div>
 
-    <!-- KONTEN APLIKASI LOGIN -->
     <div class="app-container">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-
         <div class="auth-card">
             <div class="logo-icon"><i class="fa-solid fa-hands-holding-child"></i></div>
             <div class="branding">
                 <h1>KOTAK GOTONG ROYONG</h1>
-                <p>Ojol Anak Babah Alun</p>
+                <p>Akses Member Terverifikasi</p>
             </div>
 
-            <!-- STEP 0: QUICK LOGIN BIOMETRIK -->
-            <div id="stepQuickLogin" class="toggle-view">
-                <h2 style="font-size: 18px; font-weight: 900; color: var(--text-dark); margin-bottom: 5px;">Selamat Datang!</h2>
-                <p style="font-size: 12px; font-weight: 600; color: var(--text-gray); margin-bottom: 10px;">Ketuk tombol di bawah untuk masuk cepat.</p>
-                <div class="bio-icon"><i class="fa-solid fa-fingerprint"></i></div>
-                <button class="btn-auth" onclick="fastLoginBiometric()">Masuk <i class="fa-solid fa-bolt"></i></button>
-                <button class="btn-auth btn-outline" onclick="switchView('stepGoogle')">Ganti Akun</button>
+            <div id="stepLogin" class="toggle-view active">
+                <form id="formLogin">
+                    <div class="form-group">
+                        <i class="fa-solid fa-envelope input-icon"></i>
+                        <input type="email" id="logEmail" class="form-input" placeholder="Email Terdaftar" required>
+                    </div>
+                    <div class="form-group">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input type="password" id="logPass" class="form-input" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="btn-auth" id="btnLoginSubmit">Masuk Aplikasi <i class="fa-solid fa-right-to-bracket"></i></button>
+                </form>
+                <span class="link-text" onclick="switchView('stepRegister')">Belum punya akun? <span>Daftar disini</span></span>
             </div>
 
-            <!-- STEP 1: GOOGLE LOGIN -->
-            <div id="stepGoogle" class="toggle-view">
-                <p style="font-size: 12px; font-weight: 700; color: var(--text-gray); margin-bottom: 25px; padding: 0 10px;">Gunakan Akun Google Anda untuk masuk ke dalam sistem KGR.</p>
-                
-                <button class="btn-auth btn-google" id="btnGoogleLogin">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google">
-                    Lanjutkan dengan Google
-                </button>
-            </div>
-
-            <!-- STEP 2: NIK KTP (UNTUK MEMBER BARU) -->
             <div id="stepRegister" class="toggle-view">
-                <p style="font-size: 12px; font-weight: 700; color: var(--text-gray); margin-bottom: 20px;">Lengkapi Data Sesuai KTP Asli</p>
+                <p style="font-size: 11px; font-weight: 700; color: var(--danger-red); margin-bottom: 15px;"></p>
                 <form id="formRegister">
                     <div class="form-group">
                         <i class="fa-solid fa-user input-icon"></i>
-                        <input type="text" id="regName" class="form-input" placeholder="Nama Lengkap (Sesuai KTP)" required autocomplete="name">
+                        <input type="text" id="regName" class="form-input" placeholder="Nama Sesuai KTP" required>
+                    </div>
+                    <div class="form-group">
+                        <i class="fa-solid fa-id-card input-icon"></i>
+                        <input type="tel" id="regNik" class="form-input" placeholder="16 Digit NIK" required maxlength="16" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                    </div>
+                    <div class="form-group">
+                        <i class="fa-solid fa-envelope input-icon"></i>
+                        <input type="email" id="regEmail" class="form-input" placeholder="Email Aktif (Gmail/Yahoo)" required>
                     </div>
                     <div class="form-group" style="margin-bottom: 10px;">
-                        <i class="fa-solid fa-id-card input-icon"></i>
-                        <input type="tel" id="regNik" class="form-input" placeholder="16 Digit NIK KTP" required maxlength="16" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input type="password" id="regPass" class="form-input" placeholder="Password (Min. 6 huruf)" required minlength="6">
                     </div>
-                    <span style="font-size: 10px; color: #DC3545; font-weight: 600; text-align: left; margin-top: -10px; margin-bottom: 15px; display: block;">*Satu NIK hanya dapat digunakan untuk 1 akun.</span>
-                    <button type="submit" class="btn-auth" id="btnRegSubmit">Verifikasi Data <i class="fa-solid fa-shield-check"></i></button>
+                    <button type="submit" class="btn-auth" id="btnNextStep">Lanjut Pindai Wajah <i class="fa-solid fa-camera"></i></button>
                 </form>
+                <span class="link-text" onclick="switchView('stepLogin')">Sudah punya akun? <span>Masuk</span></span>
             </div>
 
-            <!-- STEP 3: KUNCI BIOMETRIK -->
-            <div id="stepBiometric" class="toggle-view">
-                <h2 style="font-size: 18px; font-weight: 900; color: var(--text-dark); margin-bottom: 5px;">Keamanan Ekstra</h2>
-                <p style="font-size: 12px; font-weight: 600; color: var(--text-gray); margin-bottom: 10px;">Kunci akun ke perangkat ini agar Anda dapat login cepat di kemudian hari.</p>
-                <div class="bio-icon"><i class="fa-solid fa-fingerprint"></i></div>
-                <button class="btn-auth" onclick="registerBiometric()">Aktifkan Biometrik <i class="fa-solid fa-lock"></i></button>
-                <button class="btn-auth btn-outline" onclick="playTypewriterAndRedirect()">Lewati Dulu</button>
+            <div id="stepSelfie" class="toggle-view">
+                <h3 style="font-size: 15px; font-weight: 900; margin-bottom: 5px;">Pindai Wajah (Liveness)</h3>
+                <p style="font-size: 11px; color: var(--text-gray); margin-bottom: 15px;">Pastikan wajah Anda berada di tengah dan terang.</p>
+                
+                <div class="video-container">
+                    <video id="webcam" autoplay muted playsinline></video>
+                    <canvas id="overlayCanvas"></canvas>
+                </div>
+
+                <button class="btn-auth" id="btnCaptureFace" disabled>Tunggu AI Memindai... <i class="fa-solid fa-spinner fa-spin"></i></button>
+                <span class="link-text" onclick="stopCamera(); switchView('stepRegister')">Batal dan Kembali</span>
             </div>
 
         </div>
     </div>
 
-    <!-- MODULE FIREBASE & LOGIKA APLIKASI -->
     <script type="module">
         import { auth, db } from './db-config.js'; 
-        import { GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+        import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
         import { doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-        // ================================================== //
-        // SISTEM CUSTOM ALERT PREMIUM                        //
-        // ================================================== //
-        window.showPremiumAlert = function(type, title, message) {
-            const overlay = document.getElementById('customAlert');
-            const iconDiv = document.getElementById('alertIcon');
-            const btn = document.getElementById('alertBtn');
-            
-            document.getElementById('alertTitle').innerText = title;
-            document.getElementById('alertMessage').innerText = message;
-            
-            iconDiv.className = 'alert-icon ' + type;
-            btn.className = 'btn-alert ' + type;
-            
-            if (type === 'error') {
-                iconDiv.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i>'; btn.innerText = 'Coba Lagi';
-            } else if (type === 'success') {
-                iconDiv.innerHTML = '<i class="fa-solid fa-circle-check"></i>'; btn.innerText = 'Lanjutkan';
-            } else {
-                iconDiv.innerHTML = '<i class="fa-solid fa-circle-info"></i>'; btn.innerText = 'Mengerti';
+        // GLOBAL DATA SEMENTARA
+        let tempData = {};
+        let videoStream = null;
+
+        // ==========================================
+        // 1. DEVICE BINDING (KUNCI PERANGKAT)
+        // ==========================================
+        function getDeviceID() {
+            let deviceId = localStorage.getItem('kgr_device_id');
+            if (!deviceId) {
+                deviceId = crypto.randomUUID(); // Membuat ID unik untuk HP ini
+                localStorage.setItem('kgr_device_id', deviceId);
             }
-            overlay.classList.add('show');
+            return deviceId;
         }
 
-        window.closeCustomAlert = function() { document.getElementById('customAlert').classList.remove('show'); }
+        // ==========================================
+        // 2. VALIDASI RUMUS NIK DUKCAPIL
+        // ==========================================
+        function isValidNIK(nik) {
+            if (!/^\d{16}$/.test(nik)) return false;
+            let hari = parseInt(nik.substring(6, 8));
+            let bulan = parseInt(nik.substring(8, 10));
+            // Rumus wanita: tanggal lahir ditambah 40
+            if (hari > 40) hari -= 40;
+            // Validasi kelogisan kalender
+            if (hari < 1 || hari > 31 || bulan < 1 || bulan > 12) return false;
+            // Mencegah nomor dummy seperti 1111111111111111
+            if (/^(.)\1{15}$/.test(nik)) return false; 
+            return true;
+        }
 
-        let globalUserEmail = "";
-
+        // ==========================================
+        // 3. UI HELPER
+        // ==========================================
+        window.showAlert = function(type, title, message) {
+            document.getElementById('alertTitle').innerText = title;
+            document.getElementById('alertMessage').innerText = message;
+            document.getElementById('alertIcon').className = 'alert-icon ' + type;
+            document.getElementById('customAlert').classList.add('show');
+        }
         window.switchView = function(viewId) {
             document.querySelectorAll('.toggle-view').forEach(el => el.classList.remove('active'));
             document.getElementById(viewId).classList.add('active');
         }
 
-        window.onload = function() {
-            if (localStorage.getItem('kgr_biometric_registered') === 'true') {
-                window.switchView('stepQuickLogin');
-            } else {
-                window.switchView('stepGoogle');
+        // ==========================================
+        // 4. PENDAFTARAN TAHAP 1 (DATA & WHITELIST)
+        // ==========================================
+        document.getElementById('formRegister').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('regEmail').value.toLowerCase();
+            const nik = document.getElementById('regNik').value;
+
+            // Whitelist Email
+            const allowedDomains = ["gmail.com", "yahoo.com"];
+            const domain = email.split('@')[1];
+            if (!allowedDomains.includes(domain)) {
+                showAlert('error', 'Domain Ditolak', 'Gunakan alamat email @gmail.com atau @yahoo.com untuk mendaftar.'); return;
             }
-        };
 
-        // 1. LOGIN GOOGLE
-        document.getElementById('btnGoogleLogin').addEventListener('click', async () => {
-            const provider = new GoogleAuthProvider();
-            const btn = document.getElementById('btnGoogleLogin');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses...';
-            btn.disabled = true;
-
-            try {
-                const result = await signInWithPopup(auth, provider);
-                const user = result.user;
-                globalUserEmail = user.email; // Pakai Email sebagai ID unik database
-
-                // Cek apakah user sudah pernah daftar (punya NIK)
-                const userDocRef = doc(db, "users", globalUserEmail);
-                const userProfile = await getDoc(userDocRef);
-
-                if (userProfile.exists()) {
-                    window.switchView('stepBiometric'); // Kalo udah, tawarkan biometrik
-                } else {
-                    // Kalo baru pertama kali login, otomatis isiin namanya dari Google
-                    document.getElementById('regName').value = user.displayName || "";
-                    window.switchView('stepRegister');
-                }
-            } catch (error) {
-                console.error("Login Batal/Gagal:", error);
-                window.showPremiumAlert('error', 'Login Dibatalkan', 'Gagal terhubung dengan akun Google Anda.');
-            } finally {
-                btn.innerHTML = '<img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google"> Lanjutkan dengan Google';
-                btn.disabled = false;
+            // Validasi NIK
+            if (!isValidNIK(nik)) {
+                showAlert('error', 'NIK Palsu', 'Sistem mendeteksi format NIK tidak valid sesuai standar Dukcapil.'); return;
             }
+
+            // Simpan data sementara, lanjut ke kamera
+            tempData = {
+                name: document.getElementById('regName').value,
+                nik: nik, email: email, pass: document.getElementById('regPass').value
+            };
+            
+            switchView('stepSelfie');
+            startFaceAPI();
         });
 
-        // 2. DAFTAR MEMBER BARU (SAVE NIK)
-        document.getElementById('formRegister').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const name = document.getElementById('regName').value;
-            const nik = document.getElementById('regNik').value;
+        // ==========================================
+        // 5. FACE API (LIVENESS DETECTOR)
+        // ==========================================
+        async function startFaceAPI() {
+            const btnCapture = document.getElementById('btnCaptureFace');
+            const video = document.getElementById('webcam');
             
-            if(nik.length !== 16) { 
-                window.showPremiumAlert('error', 'Data Tidak Valid', 'NIK wajib 16 digit!'); return; 
-            }
+            try {
+                // Load Model AI dari CDN Public
+                await faceapi.nets.tinyFaceDetector.loadFromUri('https://vladmandic.github.io/face-api/model/');
+                
+                // Nyalakan Kamera
+                videoStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+                video.srcObject = videoStream;
 
-            const btn = document.getElementById('btnRegSubmit');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+                video.addEventListener('play', () => {
+                    const canvas = document.getElementById('overlayCanvas');
+                    faceapi.matchDimensions(canvas, { width: video.videoWidth, height: video.videoHeight });
+
+                    // Scan wajah setiap 500ms
+                    const interval = setInterval(async () => {
+                        if(video.paused || video.ended) return clearInterval(interval);
+                        const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions());
+                        
+                        if (detections.length === 1) {
+                            btnCapture.disabled = false;
+                            btnCapture.innerHTML = 'Rekam & Selesaikan <i class="fa-solid fa-check-double"></i>';
+                            btnCapture.style.background = '#28A745';
+                        } else {
+                            btnCapture.disabled = true;
+                            btnCapture.innerHTML = detections.length === 0 ? 'Wajah tidak terdeteksi...' : 'Terdeteksi > 1 Orang!';
+                            btnCapture.style.background = 'var(--text-dark)';
+                        }
+                    }, 500);
+                });
+            } catch (err) {
+                showAlert('error', 'Kamera Gagal', 'Berikan izin akses kamera untuk memverifikasi wajah.');
+            }
+        }
+
+        window.stopCamera = function() {
+            if(videoStream) { videoStream.getTracks().forEach(track => track.stop()); }
+        }
+
+        // ==========================================
+        // 6. SUBMIT AKHIR & SIMPAN DEVICE ID
+        // ==========================================
+        document.getElementById('btnCaptureFace').addEventListener('click', async () => {
+            const btn = document.getElementById('btnCaptureFace');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan ke Server...';
             btn.disabled = true;
 
             try {
-                // Simpan database pakai Email sebagai ID
-                await setDoc(doc(db, "users", globalUserEmail), {
-                    nama_lengkap: name,
-                    nik: nik,
-                    email: globalUserEmail,
-                    role: "member",
-                    status: "pending",
+                // Buat Akun Firebase
+                const userCredential = await createUserWithEmailAndPassword(auth, tempData.email, tempData.pass);
+                await sendEmailVerification(userCredential.user);
+
+                // Simpan Data + DEVICE BINDING ID
+                await setDoc(doc(db, "users", userCredential.user.uid), {
+                    nama_lengkap: tempData.name,
+                    nik: tempData.nik,
+                    email: tempData.email,
+                    role: "Member",
+                    status: "Pending Admin",
+                    device_id: getDeviceID(), // Mengunci ID perangkat ini
                     created_at: serverTimestamp()
                 });
-                window.switchView('stepBiometric');
+
+                stopCamera();
+                showAlert('success', 'Berhasil & Terkunci', 'Data terkirim, wajah terekam, dan Perangkat ini telah dikunci ke akun Anda. Silakan cek Inbox/Spam email Anda untuk verifikasi.');
+                setTimeout(() => { switchView('stepLogin'); }, 4000);
             } catch (error) {
-                window.showPremiumAlert('error', 'Gagal Disimpan', 'Terjadi kesalahan sistem saat menyimpan data.');
-            } finally {
-                btn.innerHTML = 'Verifikasi Data <i class="fa-solid fa-shield-check"></i>';
+                showAlert('error', 'Gagal', error.message);
                 btn.disabled = false;
             }
         });
 
-        // 3. DAFTAR & LOGIN BIOMETRIK (SIDIK JARI)
-        window.registerBiometric = async function() {
-            if (!window.PublicKeyCredential) {
-                window.showPremiumAlert('info', 'Tidak Didukung', 'Perangkat ini tidak mendukung kunci Sidik Jari via web.');
-                setTimeout(window.playTypewriterAndRedirect, 2500);
-                return;
-            }
+        // ==========================================
+        // 7. LOGIN + CEK DEVICE BINDING
+        // ==========================================
+        document.getElementById('formLogin').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btnLoginSubmit');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memverifikasi...';
+            btn.disabled = true;
+
             try {
-                const credential = await navigator.credentials.create({
-                    publicKey: {
-                        challenge: new Uint8Array(32),
-                        rp: { name: "KGR Babah Alun" },
-                        user: { id: new Uint8Array(16), name: "kgr_member", displayName: "Anggota KGR" },
-                        pubKeyCredParams: [{alg: -7, type: "public-key"}],
-                        authenticatorSelection: { userVerification: "required" },
-                        timeout: 60000
-                    }
-                });
-                localStorage.setItem('kgr_biometric_registered', 'true');
-                window.playTypewriterAndRedirect();
-            } catch (err) {
-                window.playTypewriterAndRedirect();
-            }
-        }
-
-        window.fastLoginBiometric = async function() {
-            if (!window.PublicKeyCredential) {
-                window.switchView('stepGoogle');
-                return;
-            }
-            try {
-                const assertion = await navigator.credentials.get({
-                    publicKey: {
-                        challenge: new Uint8Array(32),
-                        rpId: window.location.hostname || "localhost",
-                        userVerification: "required",
-                        timeout: 60000
-                    }
-                });
-                window.playTypewriterAndRedirect();
-            } catch (err) {
-                window.showPremiumAlert('error', 'Gagal Membaca', 'Sidik jari tidak dikenali. Silakan pakai tombol Google.');
-            }
-        }
-
-        // 4. ANIMASI TYPEWRITER & PINDAH KE HOME
-        window.playTypewriterAndRedirect = async function() {
-            document.getElementById('introAnimation').classList.add('active');
-            
-            const text1 = "KOTAK GOTONG ROYONG";
-            const text2 = "ANAK OJOL BABAH ALUN";
-            const el1 = document.getElementById('text1');
-            const el2 = document.getElementById('text2');
-            const cur1 = document.getElementById('cursor1');
-            const cur2 = document.getElementById('cursor2');
-
-            const typeText = async (text, element) => {
-                for (let i = 0; i < text.length; i++) {
-                    element.innerHTML += text.charAt(i);
-                    await new Promise(r => setTimeout(r, 40)); 
+                const uc = await signInWithEmailAndPassword(auth, document.getElementById('logEmail').value, document.getElementById('logPass').value);
+                
+                // Mencegah login jika email belum diklik link verifikasinya
+                if (!uc.user.emailVerified) {
+                    throw new Error("Email belum diverifikasi. Cek kotak masuk Anda.");
                 }
-            };
 
-            await typeText(text1, el1);
-            cur1.classList.add('hidden'); cur2.classList.remove('hidden'); 
-            await new Promise(r => setTimeout(r, 200)); 
-            await typeText(text2, el2);
-            
-            setTimeout(() => { window.location.href = 'index.html'; }, 800);
-        }
+                // Cek Device Binding dari Firestore
+                const userDoc = await getDoc(doc(db, "users", uc.user.uid));
+                if (userDoc.exists()) {
+                    const dbDeviceId = userDoc.data().device_id;
+                    const currentDeviceId = getDeviceID();
+
+                    if (dbDeviceId && dbDeviceId !== currentDeviceId) {
+                        // Kunci perangkat bekerja! Orang mencoba login di HP lain
+                        auth.signOut();
+                        throw new Error("AKSES DITOLAK: Akun ini terkunci untuk perangkat (HP) lain.");
+                    }
+                }
+                
+                window.location.href = 'index.html'; // Sukses masuk
+            } catch (error) {
+                showAlert('error', 'Gagal Masuk', error.message.replace('Firebase: ', ''));
+            } finally {
+                btn.innerHTML = 'Masuk Aplikasi <i class="fa-solid fa-right-to-bracket"></i>';
+                btn.disabled = false;
+            }
+        });
     </script>
 </body>
 </html>
