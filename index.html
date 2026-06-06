@@ -313,15 +313,14 @@
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // DI SINI BUG-NYA UDAH KITA BASMI! SEKARANG PAKAI UID EMAIL
-                const userId = user.uid; 
-                const userRef = doc(db, "users", userId);
+                // FIX: KITA PAKAI EMAIL BUAT NARIK DATA DARI DATABASE
+                const userEmail = user.email; 
+                const userRef = doc(db, "users", userEmail);
                 
                 onSnapshot(userRef, (docSnap) => {
                     if (docSnap.exists()) {
                         const dataUser = docSnap.data();
                         
-                        // PAKSA ROLE JADI HURUF KECIL BIAR GAK MISS
                         const role = (dataUser.role || "member").toLowerCase(); 
                         const status = dataUser.status || "Pending Admin";
                         const namaLengkap = dataUser.nama_lengkap || "Tanpa Nama";
@@ -350,14 +349,14 @@
                         menuBendahara.style.display = "none";
                         menuAdmin.style.display = "none";
 
-                        // JIKA STATUS MASIH PENDING & BUKAN ADMIN -> BLOKIR AKSES BAWAHNYA
+                        // JIKA STATUS MASIH PENDING & BUKAN ADMIN -> BLOKIR AKSES
                         if (status === "Pending Admin" && role !== "superadmin" && role !== "admin") {
                             document.getElementById('uiUserName').innerText = "Menunggu Verifikasi";
                             document.getElementById('uiRoleText').innerText = "STATUS PENDING";
                             document.getElementById('uiRoleText').style.color = "#DC3545"; 
                             document.querySelector('.content-area').style.opacity = '0.3'; 
                             document.querySelector('.content-area').style.pointerEvents = 'none';
-                            return; // Stop di sini, menu gak bakal bisa di-klik
+                            return; 
                         } else {
                             document.querySelector('.content-area').style.opacity = '1'; 
                             document.querySelector('.content-area').style.pointerEvents = 'auto';
@@ -384,6 +383,7 @@
                             document.getElementById('uiRoleText').style.color = "#8E8E93"; 
                         }
                     } else {
+                        // KALO DATA GA KETEMU, TENDANG KE LOGIN
                         auth.signOut();
                         window.location.href = 'login.html';
                     }

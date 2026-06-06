@@ -263,7 +263,8 @@
                 const userCredential = await createUserWithEmailAndPassword(auth, tempData.email, tempData.pass);
                 await sendEmailVerification(userCredential.user);
 
-                await setDoc(doc(db, "users", userCredential.user.uid), {
+                // FIX: Pakai Email sebagai nama Dokumen
+                await setDoc(doc(db, "users", userCredential.user.email), {
                     nama_lengkap: tempData.name,
                     nik: tempData.nik,
                     email: tempData.email,
@@ -295,7 +296,8 @@
                     throw new Error("Email belum diverifikasi. Cek kotak masuk Anda.");
                 }
 
-                const userDoc = await getDoc(doc(db, "users", uc.user.uid));
+                // FIX: Narik data dari DB pakai Email, bukan UID lagi
+                const userDoc = await getDoc(doc(db, "users", uc.user.email));
                 if (userDoc.exists()) {
                     const dbDeviceId = userDoc.data().device_id;
                     const currentDeviceId = getDeviceID();
@@ -305,7 +307,6 @@
                     }
                 }
                 
-                // MEMAINKAN ANIMASI SEBELUM PINDAH KE HALAMAN DEPAN
                 window.playTypewriterAndRedirect();
             } catch (error) {
                 showAlert('error', 'Gagal Masuk', error.message.replace('Firebase: ', ''));

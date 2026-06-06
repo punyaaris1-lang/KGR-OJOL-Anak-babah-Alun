@@ -24,14 +24,14 @@
         .content-area { flex-grow: 1; overflow-y: auto; padding: 20px 24px 110px; scrollbar-width: none; z-index: 2; position: relative; }
         .content-area::-webkit-scrollbar { display: none; }
         .profile-card { border-radius: 24px; padding: 30px 20px; margin-bottom: 25px; display: flex; flex-direction: column; align-items: center; text-align: center; }
-        .profile-avatar { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 10px; background-size: cover; background-position: center; border: 4px solid #FFF; box-shadow: 0 10px 25px rgba(0,0,0,0.1); position: relative; }
+        .profile-avatar { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 10px; background-size: cover; background-position: center; background-color: #1C1C1E; color: var(--gold-primary); display: flex; justify-content: center; align-items: center; font-size: 40px; font-weight: 900; border: 4px solid #FFF; box-shadow: 0 10px 25px rgba(0,0,0,0.1); position: relative; }
         .btn-edit-foto { position: absolute; bottom: 0; right: 0; width: 32px; height: 32px; background: var(--text-dark); color: var(--gold-primary); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 14px; border: 2px solid #FFF; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .role-badge { display: inline-block; padding: 4px 12px; border-radius: 8px; font-size: 10px; font-weight: 800; background: var(--gold-deep); color: #FFF; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 25px; box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3); }
         .form-group { width: 100%; margin-bottom: 15px; text-align: left; }
         .form-label { display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; color: var(--text-gray); }
         .form-input { width: 100%; padding: 14px 16px; border-radius: 14px; border: 1.5px solid rgba(0,0,0,0.06); font-size: 14px; font-weight: 700; color: var(--text-dark); outline: none; background: #FFF; transition: 0.2s; }
         .form-input:focus { border-color: var(--gold-primary); box-shadow: 0 0 0 3px rgba(212,175,55,0.1); }
-        .form-input:disabled { background: #F0F0F0; color: #A0A0A0; cursor: not-allowed; border-color: transparent; }
+        .form-input:disabled { background: #E5E5E5; color: var(--text-gray); cursor: not-allowed; border-color: transparent; }
         .btn-save { width: 100%; padding: 16px; border-radius: 16px; font-size: 13px; font-weight: 900; background: var(--text-dark); color: #FFF; border: none; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .btn-save i { color: var(--gold-primary); }
         .btn-save:disabled { background: #CCC; cursor: not-allowed; box-shadow: none; }
@@ -51,76 +51,154 @@
 
         <div class="content-area">
             <div class="profile-card glass-panel">
-                <div class="profile-avatar" id="avatarPreview" style="background-image: url('https://ui-avatars.com/api/?name=Ahmad+Rizky&background=1C1C1E&color=D4AF37&size=200');">
+                <div class="profile-avatar" id="avatarPreview">
+                    <span id="avatarInitials">...</span>
                     <div class="btn-edit-foto" onclick="document.getElementById('uploadFoto').click()"><i class="fa-solid fa-camera"></i></div>
                     <input type="file" id="uploadFoto" accept="image/*" hidden onchange="previewImage(event)">
                 </div>
                 
-                <div class="role-badge" id="uiRoleBadge"><i class="fa-solid fa-crown" style="margin-right: 4px;"></i> Memuat...</div>
+                <div class="role-badge" id="uiRoleBadge"><i class="fa-solid fa-spinner fa-spin" style="margin-right: 4px;"></i> Memuat...</div>
 
-                <div class="form-group"><label class="form-label">Nama Lengkap</label><input type="text" id="inputNama" class="form-input" value="Ahmad Rizky" oninput="checkChanges()"></div>
-                <div class="form-group"><label class="form-label">Nomor WhatsApp</label><input type="tel" id="inputWa" class="form-input" value="0812-3456-7890" oninput="checkChanges()"></div>
-                <div class="form-group"><label class="form-label">ID Member (Hanya Baca)</label><input type="text" class="form-input" value="OBA-001" disabled></div>
+                <div class="form-group">
+                    <label class="form-label">Nama Lengkap</label>
+                    <input type="text" id="inputNama" class="form-input" value="Memuat..." oninput="checkChanges()">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email Terdaftar</label>
+                    <input type="email" id="inputEmail" class="form-input" value="Memuat..." disabled>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Data NIK (Hanya Baca)</label>
+                    <input type="text" id="inputIdMember" class="form-input" value="Memuat..." disabled>
+                </div>
 
                 <button class="btn-save" id="btnSave" onclick="saveProfile()" disabled><i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan</button>
             </div>
 
-            <button id="btnPanelAdmin" class="btn-superadmin" style="display: none;" onclick="window.location.href='admin.html'">
-                <i class="fa-solid fa-user-shield"></i> Buka Panel Admin
+            <!-- Tombol ini akan otomatis nyesuain sama hak akses lu -->
+            <button id="btnPanelAdmin" class="btn-superadmin" style="display: none;" onclick="window.location.href='kelola_anggota.html'">
+                <i class="fa-solid fa-user-shield"></i> Buka Panel Pengurus
             </button>
 
             <button class="btn-logout" onclick="confirmLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar Akun</button>
         </div>
     </div>
 
-    <script>
-        // ======= SIMULASI JABATAN (Ganti teks di bawah untuk ngetes) =======
-        const roleSaatIni = "Super Admin"; // Coba ganti jadi "Admin", "Bendahara", atau "Member"
+    <!-- MODULE FIREBASE & LOGIKA PROFIL -->
+    <script type="module">
+        import { auth, db } from './db-config.js';
+        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+        import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-        // Render UI Berdasarkan Jabatan
-        document.addEventListener("DOMContentLoaded", () => {
-            document.getElementById('uiRoleBadge').innerHTML = `<i class="fa-solid fa-star" style="margin-right: 4px;"></i> ${roleSaatIni}`;
-            
-            // Logika Pembatasan Tombol Panel Admin
-            if (roleSaatIni === "Admin" || roleSaatIni === "Super Admin") {
-                document.getElementById('btnPanelAdmin').style.display = 'flex'; // Munculkan Tombol
+        let currentUserEmail = "";
+        let originalName = "";
+        let newImageUploaded = false;
+
+        // 1. CEK LOGIN & AMBIL DATA ASLI DARI DATABASE
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUserEmail = user.email;
+                const userRef = doc(db, "users", currentUserEmail);
+                
+                try {
+                    const docSnap = await getDoc(userRef);
+                    
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        const role = (data.role || "member").toLowerCase();
+                        const namaLengkap = data.nama_lengkap || "Tanpa Nama";
+
+                        // Update Jabatan / Role
+                        document.getElementById('uiRoleBadge').innerHTML = `<i class="fa-solid fa-star" style="margin-right: 4px;"></i> ${role.toUpperCase()}`;
+                        
+                        // Update Form Text
+                        document.getElementById('inputNama').value = namaLengkap;
+                        document.getElementById('inputEmail').value = currentUserEmail;
+                        document.getElementById('inputIdMember').value = data.nik || "Tidak ada NIK";
+                        
+                        originalName = namaLengkap; // Kunci nama awal buat deteksi perubahan form
+
+                        // Bikin Inisial Avatar otomatis
+                        document.getElementById('avatarInitials').innerText = namaLengkap.charAt(0).toUpperCase();
+
+                        // Munculkan Tombol Admin kalau dia punya akses
+                        if (role === "superadmin" || role === "admin" || role === "bendahara") {
+                            document.getElementById('btnPanelAdmin').style.display = 'flex';
+                        }
+                    } else {
+                        alert("Data profil tidak ditemukan di Database!");
+                    }
+                } catch (error) {
+                    console.error("Gagal memuat profil:", error);
+                }
+            } else {
+                // Kalau gak login, tendang balik
+                window.location.href = 'login.html';
             }
         });
 
-        // Logika Editor Profil
-        let originalName = document.getElementById('inputNama').value;
-        let originalWa = document.getElementById('inputWa').value;
-        let newImageUploaded = false;
+        // 2. FUNGSI LOGOUT (ASLI)
+        window.confirmLogout = function() { 
+            if(confirm("Yakin ingin keluar dari aplikasi?")) {
+                signOut(auth).then(() => {
+                    window.location.href = 'login.html';
+                }).catch((error) => {
+                    alert("Gagal keluar: " + error.message);
+                });
+            }
+        }
 
-        function previewImage(event) {
+        // 3. FUNGSI SIMPAN PERUBAHAN NAMA KE DATABASE
+        window.saveProfile = async function() {
+            const btnSave = document.getElementById('btnSave');
+            btnSave.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...'; 
+            btnSave.disabled = true;
+
+            const newName = document.getElementById('inputNama').value;
+
+            try {
+                const userRef = doc(db, "users", currentUserEmail);
+                await updateDoc(userRef, {
+                    nama_lengkap: newName
+                });
+                
+                // Animasi Sukses
+                originalName = newName;
+                newImageUploaded = false;
+                document.getElementById('avatarInitials').innerText = newName.charAt(0).toUpperCase();
+                
+                btnSave.innerHTML = '<i class="fa-solid fa-check" style="color: #28A745;"></i> Berhasil Disimpan';
+                setTimeout(() => { 
+                    btnSave.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan'; 
+                    btnSave.disabled = true; 
+                }, 2000);
+
+            } catch (error) {
+                alert("Gagal menyimpan ke database!");
+                btnSave.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Coba Lagi'; 
+                btnSave.disabled = false;
+            }
+        }
+
+        // FUNGSI CEK KETIKAN FORM (Untuk nyalain tombol save)
+        window.checkChanges = function() {
+            const currentName = document.getElementById('inputNama').value;
+            document.getElementById('btnSave').disabled = !(currentName !== originalName || newImageUploaded);
+        }
+
+        // FUNGSI PREVIEW FOTO (Cuma UI Sementara)
+        window.previewImage = function(event) {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
+                    document.getElementById('avatarInitials').style.display = 'none';
                     document.getElementById('avatarPreview').style.backgroundImage = `url('${e.target.result}')`;
                     newImageUploaded = true; checkChanges();
                 }
                 reader.readAsDataURL(file);
             }
         }
-
-        function checkChanges() {
-            const currentName = document.getElementById('inputNama').value;
-            const currentWa = document.getElementById('inputWa').value;
-            document.getElementById('btnSave').disabled = !(currentName !== originalName || currentWa !== originalWa || newImageUploaded);
-        }
-
-        function saveProfile() {
-            const btnSave = document.getElementById('btnSave');
-            btnSave.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...'; btnSave.disabled = true;
-            setTimeout(() => {
-                originalName = document.getElementById('inputNama').value; originalWa = document.getElementById('inputWa').value; newImageUploaded = false;
-                btnSave.innerHTML = '<i class="fa-solid fa-check" style="color: #28A745;"></i> Berhasil Disimpan';
-                setTimeout(() => { btnSave.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan'; btnSave.disabled = true; }, 2000);
-            }, 1000);
-        }
-
-        function confirmLogout() { if(confirm("Yakin ingin keluar?")) alert("Berhasil Keluar."); }
     </script>
 </body>
 </html>
