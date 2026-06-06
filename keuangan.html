@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#F5F5F7">
+    <title>Kelola Keuangan - KGR</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-base: #F5F5F7; --text-dark: #1C1C1E; --text-gray: #8E8E93;
+            --gold-primary: #D4AF37; --gold-deep: linear-gradient(135deg, #A67C00, #D4AF37, #8B6914, #B38728);
+            --glass-bg: rgba(255, 255, 255, 0.85); --glass-border: rgba(255, 255, 255, 0.9);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        body { background-color: #E5E5E5; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .app-container { width: 100%; height: 100vh; background-color: var(--bg-base); position: relative; overflow: hidden; display: flex; flex-direction: column; }
+
+        @media (min-width: 600px) {
+            .app-container { max-width: 480px; height: 90vh; max-height: 900px; border-radius: 40px; border: 1px solid rgba(0,0,0,0.05); }
+        }
+
+        /* --- HEADER --- */
+        .header-top { padding: 40px 24px 20px; display: flex; align-items: center; gap: 15px; background: #FFF; box-shadow: 0 4px 15px rgba(0,0,0,0.03); z-index: 10;}
+        .btn-back { width: 40px; height: 40px; border-radius: 12px; background: #F5F5F7; display: flex; justify-content: center; align-items: center; font-size: 18px; color: var(--text-dark); cursor: pointer; }
+        .btn-back:active { background: #E5E5EA; }
+        .header-title h1 { font-size: 18px; font-weight: 900; color: var(--text-dark); }
+        .header-title p { font-size: 11px; font-weight: 700; color: var(--text-gray); text-transform: uppercase; letter-spacing: 1px; }
+
+        .content-area { flex-grow: 1; overflow-y: auto; padding: 20px 24px; scrollbar-width: none; }
+        .content-area::-webkit-scrollbar { display: none; }
+
+        /* --- INFO PANEL --- */
+        .info-panel { background: var(--text-dark); border-radius: 20px; padding: 20px; color: #FFF; margin-bottom: 20px; position: relative; overflow: hidden;}
+        .info-panel::after { content:''; position:absolute; top:-50%; right:-20%; width:150px; height:150px; background:var(--gold-primary); opacity:0.2; border-radius:50%; filter:blur(30px); }
+        .info-panel h3 { font-size: 14px; font-weight: 800; margin-bottom: 5px; color: var(--gold-primary); }
+        .info-panel p { font-size: 12px; font-weight: 500; line-height: 1.4; color: #E5E5EA; }
+
+        .section-title { font-size: 14px; font-weight: 800; margin-bottom: 15px; color: var(--text-dark); display: flex; justify-content: space-between;}
+        .badge-count { background: #DC3545; color: #FFF; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 800;}
+
+        /* --- KARTU PENDING --- */
+        .pending-card { background: #FFF; border-radius: 18px; padding: 16px; margin-bottom: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.03); }
+        .pending-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px dashed #E5E5EA; }
+        .pending-user h4 { font-size: 14px; font-weight: 800; color: var(--text-dark); }
+        .pending-user p { font-size: 10px; font-weight: 600; color: var(--text-gray); }
+        .pending-amount { font-size: 16px; font-weight: 900; color: var(--gold-primary); }
+
+        /* Tombol Aksi */
+        .action-group { display: flex; gap: 8px; margin-top: 15px; }
+        .btn-action { flex: 1; padding: 12px; border-radius: 12px; font-size: 12px; font-weight: 800; cursor: pointer; border: none; display: flex; justify-content: center; align-items: center; gap: 6px; }
+        .btn-lihat { background: #F5F5F7; color: var(--text-dark); }
+        .btn-tolak { background: #FFF0F1; color: #DC3545; }
+        .btn-acc { background: var(--text-dark); color: var(--gold-primary); }
+        .btn-action:active { transform: scale(0.96); }
+
+        /* --- EMPTY STATE --- */
+        .empty-state { text-align: center; padding: 40px 20px; }
+        .empty-state i { font-size: 40px; color: #D4EDDA; margin-bottom: 15px; }
+        .empty-state h3 { font-size: 16px; font-weight: 800; color: var(--text-dark); margin-bottom: 5px; }
+        .empty-state p { font-size: 12px; font-weight: 600; color: var(--text-gray); }
+
+        /* --- MODAL PREVIEW GAMBAR --- */
+        .modal-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 100; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px;}
+        .modal-overlay.show { opacity: 1; visibility: visible; }
+        .img-preview-box { width: 100%; max-width: 350px; background: #FFF; border-radius: 20px; overflow: hidden; position: relative; }
+        .img-preview-box img { width: 100%; max-height: 70vh; object-fit: contain; background: #E5E5E5; display: block;}
+        .btn-close-modal { position: absolute; top: 10px; right: 10px; width: 35px; height: 35px; background: rgba(0,0,0,0.5); color: #FFF; border-radius: 50%; display: flex; justify-content: center; align-items: center; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <main class="app-container">
+        
+        <div class="header-top">
+            <div class="btn-back" onclick="window.location.href='index.html'"><i class="fa-solid fa-arrow-left"></i></div>
+            <div class="header-title">
+                <h1>Verifikasi Sedekah</h1>
+                <p>Panel Bendahara KGR</p>
+            </div>
+        </div>
+
+        <div class="content-area">
+            <div class="info-panel">
+                <h3><i class="fa-solid fa-shield-halved"></i> Area Terbatas</h3>
+                <p>Pastikan Anda telah mengecek mutasi masuk di rekening bank/e-Wallet KGR sebelum menekan tombol ACC (Terima).</p>
+            </div>
+
+            <div class="section-title">
+                Menunggu Verifikasi 
+                <span class="badge-count" id="pendingCount">0</span>
+            </div>
+
+            <div id="pendingListContainer">
+                <div class="empty-state">
+                    <i class="fa-solid fa-spinner fa-spin" style="color: var(--text-gray);"></i>
+                    <p>Memuat data...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL LIHAT BUKTI GAMBAR -->
+        <div class="modal-overlay" id="modalPreview">
+            <div class="img-preview-box">
+                <button class="btn-close-modal" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+                <img id="previewImage" src="" alt="Bukti Transfer">
+            </div>
+        </div>
+
+    </main>
+
+    <script type="module">
+        import { db } from './db-config.js';
+        import { collection, query, where, orderBy, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+        const trxRef = collection(db, "transactions");
+        
+        // Query ambil data yang statusnya 'pending'
+        const pendingQuery = query(trxRef, where("status", "==", "pending"), orderBy("tanggal", "asc"));
+        
+        const listContainer = document.getElementById('pendingListContainer');
+        const badgeCount = document.getElementById('pendingCount');
+
+        // Tarik data Real-time
+        onSnapshot(pendingQuery, (snapshot) => {
+            listContainer.innerHTML = "";
+            let count = snapshot.size;
+            badgeCount.innerText = count;
+
+            if (count === 0) {
+                listContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-solid fa-check-circle"></i>
+                        <h3>Semua Beres!</h3>
+                        <p>Tidak ada sedekah yang menunggu verifikasi saat ini.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            snapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                const id = docSnap.id;
+                const nominal = Number(data.nominal).toLocaleString('id-ID');
+                
+                // Format Tanggal
+                let tglText = "Waktu tidak diketahui";
+                if(data.tanggal) {
+                    const dateObj = data.tanggal.toDate();
+                    tglText = dateObj.toLocaleDateString('id-ID', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'});
+                }
+
+                const card = document.createElement('div');
+                card.className = 'pending-card';
+                card.innerHTML = `
+                    <div class="pending-header">
+                        <div class="pending-user">
+                            <h4>${data.nama_keterangan}</h4>
+                            <p><i class="fa-regular fa-clock"></i> ${tglText}</p>
+                        </div>
+                        <div class="pending-amount">Rp ${nominal}</div>
+                    </div>
+                    <div style="font-size: 11px; font-weight: 600; color: var(--text-gray); margin-bottom: 5px;">Metode: ${data.metode}</div>
+                    
+                    <div class="action-group">
+                        <!-- Kirim Base64 Gambar ke Fungsi Modal -->
+                        <button class="btn-action btn-lihat" onclick="bukaModal('${data.bukti_image}')">
+                            <i class="fa-solid fa-image"></i> Lihat Bukti
+                        </button>
+                        <button class="btn-action btn-tolak" onclick="prosesValidasi('${id}', 'failed')">
+                            <i class="fa-solid fa-xmark"></i> Tolak
+                        </button>
+                        <button class="btn-action btn-acc" onclick="prosesValidasi('${id}', 'success')">
+                            <i class="fa-solid fa-check"></i> ACC
+                        </button>
+                    </div>
+                `;
+                listContainer.appendChild(card);
+            });
+        });
+
+        // FUNGSI UPDATE STATUS KE FIREBASE
+        window.prosesValidasi = async function(docId, aksi) {
+            const isAcc = aksi === 'success';
+            const konfirmasi = confirm(isAcc ? "Yakin ingin MENG-ACC sedekah ini? Saldo kas akan bertambah." : "Yakin ingin MENOLAK bukti ini? Data akan dianggap gagal.");
+            
+            if (!konfirmasi) return;
+
+            try {
+                const docRef = doc(db, "transactions", docId);
+                await updateDoc(docRef, {
+                    status: aksi // Ubah status jadi 'success' atau 'failed'
+                });
+                // Jika sukses, modal alert nggak usah, biar cepat nge-klik yang lain.
+            } catch (error) {
+                console.error("Gagal update status:", error);
+                alert("Terjadi kesalahan sistem. Coba lagi.");
+            }
+        }
+
+        // FUNGSI MODAL GAMBAR BUKTI TRANSFER
+        window.bukaModal = function(base64Str) {
+            document.getElementById('previewImage').src = base64Str;
+            document.getElementById('modalPreview').classList.add('show');
+        }
+        window.closeModal = function() {
+            document.getElementById('modalPreview').classList.remove('show');
+            document.getElementById('previewImage').src = "";
+        }
+    </script>
+</body>
+</html>
