@@ -13,6 +13,7 @@
         :root {
             --bg-base: #F5F5F7; --text-dark: #1C1C1E; --text-gray: #8E8E93;
             --gold-primary: #D4AF37; --gold-deep: linear-gradient(135deg, #A67C00, #D4AF37, #8B6914, #B38728);
+            --danger-red: #DC3545; --success-green: #28A745;
             --glass-bg: rgba(255, 255, 255, 0.75); --glass-border: rgba(255, 255, 255, 0.9);
             --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.04);
         }
@@ -62,7 +63,40 @@
         @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.8; } 100% { transform: scale(1); opacity: 1; } }
 
         /* ================================================== */
-        /* CSS UNTUK ANIMASI TYPEWRITER (FULLSCREEN)          */
+        /* CUSTOM NOTIFICATION MODAL (ANTI ALERT JELEK)       */
+        /* ================================================== */
+        .custom-alert-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 99999; opacity: 0; visibility: hidden; transition: 0.3s ease;
+            padding: 24px;
+        }
+        .custom-alert-overlay.show { opacity: 1; visibility: visible; }
+        
+        .custom-alert-box {
+            background: #FFF; border-radius: 24px; padding: 30px 24px; width: 100%; max-width: 320px;
+            text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            transform: scale(0.9); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .custom-alert-overlay.show .custom-alert-box { transform: scale(1); }
+        
+        .alert-icon { font-size: 50px; margin-bottom: 15px; }
+        .alert-icon.error { color: var(--danger-red); }
+        .alert-icon.info { color: var(--gold-primary); }
+        .alert-icon.success { color: var(--success-green); }
+        
+        .alert-title { font-size: 18px; font-weight: 900; color: var(--text-dark); margin-bottom: 8px; }
+        .alert-msg { font-size: 13px; font-weight: 600; color: var(--text-gray); margin-bottom: 25px; line-height: 1.5; }
+        
+        .btn-alert { width: 100%; padding: 16px; border-radius: 14px; font-size: 14px; font-weight: 800; border: none; cursor: pointer; transition: 0.2s; color: #FFF;}
+        .btn-alert.error { background: var(--danger-red); }
+        .btn-alert.info { background: var(--text-dark); }
+        .btn-alert.success { background: var(--success-green); }
+        .btn-alert:active { transform: scale(0.95); }
+
+        /* ================================================== */
+        /* CSS ANIMASI TYPEWRITER (FULLSCREEN)                */
         /* ================================================== */
         .intro-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -70,39 +104,25 @@
             display: none; flex-direction: column; justify-content: center; align-items: center;
         }
         .intro-overlay.active { display: flex; }
-        
-        .typewriter-box {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .type-line-1 {
-            font-size: 24px; font-weight: 900; 
-            color: var(--text-dark); 
-            margin-bottom: 5px; min-height: 29px;
-            letter-spacing: 1px;
-        }
-        
-        .type-line-2 {
-            font-size: 14px; font-weight: 900; 
-            background: var(--gold-deep); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; 
-            min-height: 18px; letter-spacing: 2px;
-        }
-
-        .cursor {
-            display: inline-block; width: 3px; height: 1em; 
-            background: var(--gold-primary); 
-            vertical-align: middle; margin-left: 2px;
-            animation: blink 0.7s infinite;
-        }
+        .typewriter-box { text-align: center; padding: 20px; }
+        .type-line-1 { font-size: 24px; font-weight: 900; color: var(--text-dark); margin-bottom: 5px; min-height: 29px; letter-spacing: 1px; }
+        .type-line-2 { font-size: 14px; font-weight: 900; background: var(--gold-deep); -webkit-background-clip: text; -webkit-text-fill-color: transparent; min-height: 18px; letter-spacing: 2px; }
+        .cursor { display: inline-block; width: 3px; height: 1em; background: var(--gold-primary); vertical-align: middle; margin-left: 2px; animation: blink 0.7s infinite; }
         .cursor.hidden { display: none; }
-
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
     </style>
 </head>
 <body>
+
+    <!-- CUSTOM NOTIFICATION MODAL PREMIUM -->
+    <div id="customAlert" class="custom-alert-overlay">
+        <div class="custom-alert-box">
+            <div id="alertIcon" class="alert-icon info"><i class="fa-solid fa-circle-info"></i></div>
+            <h3 id="alertTitle" class="alert-title">Informasi</h3>
+            <p id="alertMessage" class="alert-msg">Pesan ditampilkan di sini.</p>
+            <button id="alertBtn" class="btn-alert info" onclick="closeCustomAlert()">Mengerti</button>
+        </div>
+    </div>
     
     <!-- OVERLAY ANIMASI TYPEWRITER SEBELUM MASUK HOME -->
     <div id="introAnimation" class="intro-overlay">
@@ -128,7 +148,7 @@
             <!-- Wadah Captcha untuk Firebase Phone Auth -->
             <div id="recaptcha-container"></div>
 
-            <!-- STEP 0: QUICK LOGIN BIOMETRIK (Khusus User Lama) -->
+            <!-- STEP 0: QUICK LOGIN BIOMETRIK -->
             <div id="stepQuickLogin" class="toggle-view">
                 <h2 style="font-size: 18px; font-weight: 900; color: var(--text-dark); margin-bottom: 5px;">Selamat Datang Kembali!</h2>
                 <p style="font-size: 12px; font-weight: 600; color: var(--text-gray); margin-bottom: 10px;">Ketuk tombol di bawah untuk masuk dengan cepat.</p>
@@ -196,12 +216,44 @@
 
     <!-- MODULE FIREBASE & LOGIKA APLIKASI -->
     <script type="module">
-        // Import langsung dari file konfigurasi Bapak
         import { auth, db } from './db-config.js'; 
         import { RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
         import { doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-        // Variabel global untuk menyimpan sesi OTP
+        // ================================================== //
+        // SISTEM CUSTOM ALERT PREMIUM (PENGGANTI ALERT)      //
+        // ================================================== //
+        window.showPremiumAlert = function(type, title, message) {
+            const overlay = document.getElementById('customAlert');
+            const iconDiv = document.getElementById('alertIcon');
+            const btn = document.getElementById('alertBtn');
+            
+            document.getElementById('alertTitle').innerText = title;
+            document.getElementById('alertMessage').innerText = message;
+            
+            // Reset Class
+            iconDiv.className = 'alert-icon ' + type;
+            btn.className = 'btn-alert ' + type;
+            
+            if (type === 'error') {
+                iconDiv.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i>';
+                btn.innerText = 'Coba Lagi';
+            } else if (type === 'success') {
+                iconDiv.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+                btn.innerText = 'Lanjutkan';
+            } else {
+                iconDiv.innerHTML = '<i class="fa-solid fa-circle-info"></i>';
+                btn.innerText = 'Mengerti';
+            }
+            
+            overlay.classList.add('show');
+        }
+
+        window.closeCustomAlert = function() {
+            document.getElementById('customAlert').classList.remove('show');
+        }
+
+        // Variabel global
         window.confirmationResult = null;
         let globalPhoneNumber = "";
 
@@ -211,7 +263,6 @@
             document.getElementById(viewId).classList.add('active');
         }
 
-        // Cek LocalStorage untuk Quick Login
         window.onload = function() {
             if (localStorage.getItem('kgr_biometric_registered') === 'true') {
                 window.switchView('stepQuickLogin');
@@ -219,7 +270,6 @@
                 window.switchView('stepPhone');
             }
             
-            // Inisialisasi Recaptcha (Wajib untuk Firebase Phone Auth)
             window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
                 'size': 'invisible'
             });
@@ -236,12 +286,10 @@
             });
         });
 
-        // 1. KIRIM OTP (Connect to Firebase Auth)
+        // 1. KIRIM OTP
         document.getElementById('formPhone').addEventListener('submit', async (e) => {
             e.preventDefault();
             const rawPhone = document.getElementById('loginPhone').value;
-            
-            // Format nomor HP ke standar internasional (+62)
             const formattedPhone = rawPhone.startsWith('0') ? "+62" + rawPhone.substring(1) : "+62" + rawPhone;
             globalPhoneNumber = formattedPhone;
 
@@ -250,65 +298,64 @@
             btn.disabled = true;
 
             try {
-                // Proses mengirim SMS OTP via Firebase
                 window.confirmationResult = await signInWithPhoneNumber(auth, formattedPhone, window.recaptchaVerifier);
                 window.switchView('stepOTP');
             } catch (error) {
-                console.error("Gagal mengirim OTP:", error);
-                alert("Gagal mengirim kode OTP. Pastikan koneksi internet stabil atau coba lagi nanti.");
+                console.error("Error OTP:", error);
+                window.showPremiumAlert('error', 'Gagal Mengirim OTP', 'Kode Error: ' + error.code + '\nPastikan domain sudah terdaftar di Firebase.');
             } finally {
                 btn.innerHTML = 'Kirim Kode OTP <i class="fa-solid fa-paper-plane"></i>';
                 btn.disabled = false;
             }
         });
 
-        // 2. VERIFIKASI OTP & CEK DATABASE
+        // 2. VERIFIKASI OTP
         document.getElementById('btnOTPSubmit').addEventListener('click', async () => {
             let otpCode = "";
             otpBoxes.forEach(box => otpCode += box.value);
-            if(otpCode.length < 6) { alert("Masukkan 6 digit kode OTP!"); return; }
+            if(otpCode.length < 6) { 
+                window.showPremiumAlert('info', 'Peringatan', 'Masukkan 6 digit kode OTP!'); 
+                return; 
+            }
 
             const btn = document.getElementById('btnOTPSubmit');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengecek Database...';
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengecek...';
             btn.disabled = true;
 
             try {
-                // Verifikasi kode OTP ke Firebase
                 await window.confirmationResult.confirm(otpCode);
-                
-                // CEK FIRESTORE DATABASE: Apakah member ini sudah terdaftar?
                 const userDocRef = doc(db, "users", globalPhoneNumber);
                 const userProfile = await getDoc(userDocRef);
 
                 if (userProfile.exists()) {
-                    // MEMBER LAMA: Tawarkan kunci sidik jari / langsung masuk
                     window.switchView('stepBiometric');
                 } else {
-                    // MEMBER BARU: Arahkan ke isi form NIK & Nama
                     window.switchView('stepRegister');
                 }
             } catch (error) {
-                console.error("OTP Salah:", error);
-                alert("Kode OTP salah atau telah kedaluwarsa!");
+                window.showPremiumAlert('error', 'Verifikasi Gagal', 'Kode OTP salah atau telah kedaluwarsa!');
             } finally {
                 btn.innerHTML = 'Verifikasi Kode <i class="fa-solid fa-check-circle"></i>';
                 btn.disabled = false;
             }
         });
 
-        // 3. DAFTAR MEMBER BARU KE DATABASE
+        // 3. DAFTAR MEMBER BARU
         document.getElementById('formRegister').addEventListener('submit', async (e) => {
             e.preventDefault();
             const name = document.getElementById('regName').value;
             const nik = document.getElementById('regNik').value;
-            if(nik.length !== 16) { alert("GAGAL: NIK wajib 16 digit!"); return; }
+            
+            if(nik.length !== 16) { 
+                window.showPremiumAlert('error', 'Data Tidak Valid', 'NIK wajib 16 digit!'); 
+                return; 
+            }
 
             const btn = document.getElementById('btnRegSubmit');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan Data...';
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
             btn.disabled = true;
 
             try {
-                // Simpan profil baru ke Firestore
                 await setDoc(doc(db, "users", globalPhoneNumber), {
                     nama_lengkap: name,
                     nik: nik,
@@ -316,22 +363,20 @@
                     status: "pending",
                     created_at: serverTimestamp()
                 });
-                
                 window.switchView('stepBiometric');
             } catch (error) {
-                console.error("Gagal simpan NIK:", error);
-                alert("Terjadi kesalahan sistem saat menyimpan NIK.");
+                window.showPremiumAlert('error', 'Gagal Disimpan', 'Terjadi kesalahan sistem saat menyimpan NIK.');
             } finally {
                 btn.innerHTML = 'Verifikasi Data <i class="fa-solid fa-shield-check"></i>';
                 btn.disabled = false;
             }
         });
 
-        // 4A. DAFTARKAN BIOMETRIK
+        // 4. DAFTAR & LOGIN BIOMETRIK
         window.registerBiometric = async function() {
             if (!window.PublicKeyCredential) {
-                alert("Perangkat ini tidak mendukung kunci Sidik Jari via web.");
-                window.playTypewriterAndRedirect();
+                window.showPremiumAlert('info', 'Tidak Didukung', 'Perangkat ini tidak mendukung kunci Sidik Jari via web.');
+                setTimeout(window.playTypewriterAndRedirect, 2500);
                 return;
             }
             try {
@@ -339,11 +384,7 @@
                     publicKey: {
                         challenge: new Uint8Array(32),
                         rp: { name: "KGR Babah Alun" },
-                        user: {
-                            id: new Uint8Array(16), 
-                            name: "kgr_member",
-                            displayName: "Anggota KGR"
-                        },
+                        user: { id: new Uint8Array(16), name: "kgr_member", displayName: "Anggota KGR" },
                         pubKeyCredParams: [{alg: -7, type: "public-key"}],
                         authenticatorSelection: { userVerification: "required" },
                         timeout: 60000
@@ -352,13 +393,10 @@
                 localStorage.setItem('kgr_biometric_registered', 'true');
                 window.playTypewriterAndRedirect();
             } catch (err) {
-                console.error(err);
-                alert("Aktivasi biometrik dibatalkan. Melanjutkan masuk...");
                 window.playTypewriterAndRedirect();
             }
         }
 
-        // 4B. LOGIN CEPAT BIOMETRIK
         window.fastLoginBiometric = async function() {
             if (!window.PublicKeyCredential) {
                 window.switchView('stepPhone');
@@ -375,8 +413,7 @@
                 });
                 window.playTypewriterAndRedirect();
             } catch (err) {
-                console.error("Login biometrik batal", err);
-                alert("Gagal membaca sidik jari. Silakan coba pakai Nomor WhatsApp.");
+                window.showPremiumAlert('error', 'Gagal Membaca', 'Gagal membaca sidik jari. Silakan pakai Nomor WhatsApp.');
             }
         }
 
@@ -384,7 +421,6 @@
         // 5. ANIMASI TYPEWRITER & PINDAH KE HOME             //
         // ================================================== //
         window.playTypewriterAndRedirect = async function() {
-            // Tampilkan layar hitam full screen
             document.getElementById('introAnimation').classList.add('active');
             
             const text1 = "KOTAK GOTONG ROYONG";
@@ -394,7 +430,6 @@
             const cur1 = document.getElementById('cursor1');
             const cur2 = document.getElementById('cursor2');
 
-            // Fungsi ngetik huruf per huruf (durasi 40ms per huruf agar cepat)
             const typeText = async (text, element) => {
                 for (let i = 0; i < text.length; i++) {
                     element.innerHTML += text.charAt(i);
@@ -402,18 +437,13 @@
                 }
             };
 
-            // Mulai animasi baris 1
             await typeText(text1, el1);
-            cur1.classList.add('hidden'); // Matikan kursor baris 1
-            cur2.classList.remove('hidden'); // Hidupkan kursor baris 2
+            cur1.classList.add('hidden'); 
+            cur2.classList.remove('hidden'); 
             
-            // Jeda dikit sebelum baris 2
             await new Promise(r => setTimeout(r, 200)); 
-            
-            // Mulai animasi baris 2
             await typeText(text2, el2);
             
-            // Tunggu 0.8 detik buat user baca, baru lempar ke Home
             setTimeout(() => {
                 window.location.href = 'index.html';
             }, 800);
