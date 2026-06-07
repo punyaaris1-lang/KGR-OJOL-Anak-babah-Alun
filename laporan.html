@@ -3,85 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#064E3B">
+    <meta name="theme-color" content="#F4F6F5">
     <title>Laporan Keuangan Kas</title>
     
-    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
-        :root { --bg-base: #F4F6F5; --text-dark: #111827; --text-gray: #4B5563; --emerald-main: #059669; --emerald-card: linear-gradient(135deg, #065F46 0%, #022C22 100%); --color-in: #059669; --color-out: #DC2626; }
+        :root { 
+            --bg-base: #F4F6F5; --text-dark: #111827; --text-gray: #4B5563; 
+            --emerald-main: #059669; --emerald-dark: #064E3B; 
+            --color-in: #059669; --color-out: #DC2626; --gold-accent: #FBBF24;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: #E2E8E4; display: flex; justify-content: center; min-height: 100vh; }
-        .app-container { width: 100%; max-width: 480px; background: var(--bg-base); background-image: radial-gradient(circle at 50% 35%, rgba(5, 150, 105, 0.12) 0%, rgba(5, 150, 105, 0.03) 35%, var(--bg-base) 70%); display: flex; flex-direction: column; height: 100vh; }
-        @media (min-width: 600px) { .app-container { height: 90vh; max-height: 850px; border-radius: 40px; border: 8px solid #FFFFFF; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15); margin: auto; } }
-
-        .header-page { padding: 40px 24px 20px; display: flex; align-items: center; gap: 15px; background: #FFF; border-bottom: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 15px rgba(0,0,0,0.02);}
-        .btn-back { width: 42px; height: 42px; border-radius: 14px; background: #F5F5F7; display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text-dark); transition: 0.2s;}
-        .btn-back:active { transform: scale(0.85); background: var(--emerald-main); color: #FFF; }
-        .header-page h2 { font-size: 18px; font-weight: 900; letter-spacing: -0.5px; }
-
-        .content-area { flex-grow: 1; overflow-y: auto; padding: 25px 24px 100px; scrollbar-width: none;}
-        .content-area::-webkit-scrollbar { display: none; }
-
-        .balance-card { background: var(--emerald-card); color: #FFF; border-radius: 24px; padding: 25px; margin-bottom: 25px; box-shadow: 0 20px 40px rgba(5, 150, 105, 0.25); position: relative; overflow: hidden;}
-        .balance-card::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(to bottom right, rgba(255,255,255,0.15) 0%, transparent 40%, transparent 100%); transform: rotate(30deg); pointer-events: none; }
-        .total-balance { font-size: clamp(30px, 8vw, 40px); font-weight: 900; margin: 5px 0 10px; color: #FFF; text-shadow: 0 4px 10px rgba(0,0,0,0.3); letter-spacing: -1px;}
+        .app-container { width: 100%; max-width: 480px; background: var(--bg-base); display: flex; flex-direction: column; height: 100vh; }
+        .header-page { padding: 30px 24px 20px; display: flex; align-items: center; gap: 15px; background: #FFF; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .btn-back { width: 40px; height: 40px; border-radius: 12px; background: #F4F6F5; display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text-dark); transition: 0.2s;}
+        .btn-back:active { transform: scale(0.9); }
+        .content-area { flex-grow: 1; overflow-y: auto; padding: 20px 24px 100px; }
         
-        .btn-add { width: 100%; padding: 18px; border-radius: 16px; background: var(--text-dark); color: #FFF; font-weight: 900; border: none; cursor: pointer; margin-bottom: 25px; transition: 0.2s; box-shadow: 0 10px 20px rgba(0,0,0,0.15);}
-        .btn-add:active { transform: scale(0.96); }
-
-        .tabs-container { display: flex; gap: 10px; margin-bottom: 20px; }
-        .tab-btn { flex: 1; padding: 14px; border-radius: 14px; font-size: 13px; font-weight: 800; background: #FFF; border: 1px solid rgba(0,0,0,0.05); cursor: pointer; text-align: center; color: var(--text-gray); transition: 0.2s; }
-        .tab-btn.active { background: var(--emerald-main); color: #FFF; border-color: var(--emerald-main); box-shadow: 0 5px 15px rgba(5,150,105,0.3);}
-
-        .trx-item { background: #FFF; padding: 18px 20px; border-radius: 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(0,0,0,0.02); box-shadow: 0 5px 15px rgba(0,0,0,0.03); }
+        .balance-card { background: var(--emerald-dark); color: #FFF; border-radius: 24px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(5, 150, 105, 0.2); }
+        .total-balance { font-size: 28px; font-weight: 900; margin: 10px 0; color: var(--gold-accent); }
         
-        /* MODAL PREMIUM */
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: flex-end; z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s ease; }
+        .btn-add { width: 100%; padding: 15px; border-radius: 14px; background: var(--emerald-main); color: #FFF; font-weight: 900; border: none; cursor: pointer; margin-bottom: 20px; transition: 0.2s; box-shadow: 0 5px 15px rgba(5, 150, 105, 0.2);}
+        .btn-add:active { transform: scale(0.97); }
+        
+        .tabs-container { display: flex; gap: 8px; margin-bottom: 15px; }
+        .tab-btn { flex: 1; padding: 10px; border-radius: 10px; font-size: 11px; font-weight: 800; background: #FFF; border: 1px solid rgba(0,0,0,0.1); cursor: pointer; text-align: center; color: var(--text-dark); transition: 0.2s;}
+        .tab-btn.active { background: var(--emerald-main); color: #FFF; border-color: transparent;}
+        
+        .trx-item { background: #FFF; padding: 15px; border-radius: 16px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 10px rgba(0,0,0,0.02);}
+        
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: flex-end; z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s; }
         .modal-overlay.show { opacity: 1; visibility: visible; }
-        .modal-content { background: #FFF; border-radius: 32px 32px 0 0; padding: 30px 24px 40px; width: 100%; max-width: 480px; transform: translateY(100%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1); box-shadow: 0 -10px 40px rgba(0,0,0,0.15);}
+        .modal-content { background: #FFF; border-radius: 28px 28px 0 0; padding: 25px; width: 100%; max-width: 480px; transform: translateY(100%); transition: 0.4s;}
         .modal-overlay.show .modal-content { transform: translateY(0); }
-        .sheet-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;}
-        .btn-close-sheet { width: 32px; height: 32px; border-radius: 50%; background: #F5F5F7; border: none; font-size: 14px; cursor: pointer; transition: 0.2s;}
-        .btn-close-sheet:active { transform: scale(0.9); }
-        .form-input { width: 100%; padding: 16px; border-radius: 14px; border: 2px solid rgba(0,0,0,0.06); margin-bottom: 15px; font-size: 14px; font-weight: 700; background: #F9F9F9; outline: none; transition: 0.2s;}
-        .form-input:focus { border-color: var(--emerald-main); background: #FFF; }
+        
+        .form-input { width: 100%; padding: 14px; border-radius: 12px; border: 1.5px solid rgba(0,0,0,0.08); margin-bottom: 15px; font-weight: 700; color: var(--text-dark); outline: none;}
+        .form-input:focus { border-color: var(--emerald-main); }
+        
+        .export-group { display: flex; gap: 8px; margin-bottom: 15px;}
+        .btn-export { flex: 1; padding: 10px; border-radius: 10px; border: none; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; color: #FFF; transition: 0.2s; }
+        .btn-export.excel { background: #1D6F42; }
+        .btn-export.pdf { background: #E04B4B; }
+        .btn-export:active { transform: scale(0.95); }
+        
+        .empty-state { text-align: center; padding: 30px; font-size: 12px; font-weight: 700; color: var(--text-gray); }
     </style>
 </head>
 <body>
     <div class="app-container">
         <div class="header-page">
             <div class="btn-back" onclick="window.location.href='index.html'"><i class="fa-solid fa-arrow-left"></i></div>
-            <h2>Laporan Keuangan</h2>
+            <h2 style="font-weight: 900; color: var(--text-dark);">Laporan Keuangan</h2>
         </div>
         <div class="content-area">
-            <button id="btnTambahTrx" class="btn-add" style="display: none;" onclick="document.getElementById('trxModal').classList.add('show')"><i class="fa-solid fa-plus"></i> Catat Transaksi Baru</button>
+            <button id="btnTambahTrx" class="btn-add" style="display: none;" onclick="document.getElementById('trxModal').classList.add('show')"><i class="fa-solid fa-plus"></i> Catat Transaksi</button>
+            
             <div class="balance-card">
-                <div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.8);">Total Kas Tersedia</div>
+                <div style="font-size: 10px; text-transform: uppercase; font-weight: 800; opacity: 0.8;">Total Kas Tersedia</div>
                 <div class="total-balance" id="uiTotalSaldo">Rp 0</div>
             </div>
+
+            <div class="export-group">
+                <button class="btn-export excel" onclick="exportToExcel()"><i class="fa-solid fa-file-excel"></i> Export Excel</button>
+                <button class="btn-export pdf" onclick="exportToPDF()"><i class="fa-solid fa-file-pdf"></i> Export PDF</button>
+            </div>
+
             <div class="tabs-container">
                 <div class="tab-btn active" onclick="filterTrx('Semua', this)">Semua</div>
                 <div class="tab-btn" onclick="filterTrx('Pemasukan', this)">Masuk</div>
                 <div class="tab-btn" onclick="filterTrx('Pengeluaran', this)">Keluar</div>
             </div>
-            <div id="trxList"></div>
+            
+            <div id="trxList">
+                <div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i> Memuat Laporan...</div>
+            </div>
         </div>
     </div>
 
+    <!-- MODAL CATAT TRANSAKSI -->
     <div id="trxModal" class="modal-overlay">
         <div class="modal-content">
-            <div class="sheet-header">
-                <h3 style="font-size: 18px; font-weight: 900;">Catat Transaksi</h3>
-                <button class="btn-close-sheet" onclick="document.getElementById('trxModal').classList.remove('show')"><i class="fa-solid fa-xmark"></i></button>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="font-weight: 900;">Catat Transaksi</h3>
+                <button type="button" onclick="document.getElementById('trxModal').classList.remove('show')" style="width:30px; height:30px; border-radius:50%; border:none; background:#F4F6F5; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <form id="formTrx">
-                <select id="trxType" class="form-input"><option value="Pemasukan">Pemasukan (Uang Masuk)</option><option value="Pengeluaran">Pengeluaran (Uang Keluar)</option></select>
-                <input type="text" id="trxName" class="form-input" placeholder="Keterangan / Nama Transaksi" required>
-                <input type="number" id="trxAmount" class="form-input" placeholder="Nominal (Contoh: 100000)" required>
-                <button type="submit" class="btn-add" style="margin-bottom: 0;">Simpan Transaksi</button>
+                <select id="trxType" class="form-input">
+                    <option value="Pemasukan">Pemasukan (Uang Masuk)</option>
+                    <option value="Pengeluaran">Pengeluaran (Uang Keluar)</option>
+                </select>
+                <input type="text" id="trxName" class="form-input" placeholder="Keterangan Transaksi" required autocomplete="off">
+                <input type="number" id="trxAmount" class="form-input" placeholder="Nominal Rupiah" required autocomplete="off">
+                <button type="submit" class="btn-add">Simpan ke Laporan</button>
             </form>
         </div>
     </div>
@@ -89,24 +106,39 @@
     <script type="module">
         import { auth, db } from './db-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
-        import { collection, query, orderBy, onSnapshot, addDoc, serverTimestamp, getDoc, doc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+        import { collection, query, orderBy, onSnapshot, addDoc, serverTimestamp, getDoc, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-        let currentFilter = 'Semua'; let transactions = [];
+        let currentFilter = 'Semua';
+        window.rawTransactions = [];
+        let userRole = "member";
 
         onAuthStateChanged(auth, async (user) => {
             if (!user) window.location.href = 'login.html';
             const userSnap = await getDoc(doc(db, "users", user.email));
-            const role = userSnap.data().role;
-            if (role === 'superadmin' || role === 'bendahara') document.getElementById('btnTambahTrx').style.display = 'block';
+            userRole = (userSnap.data().role || "").toLowerCase();
+            
+            if (userRole === 'superadmin' || userRole === 'bendahara') {
+                document.getElementById('btnTambahTrx').style.display = 'block';
+            }
+            // Panggil ulang render biar tombol hapus muncul jika role udah dapet
+            render(); 
         });
 
         const trxRef = collection(db, "transactions");
         onSnapshot(query(trxRef, orderBy("tanggal", "desc")), (snap) => {
-            transactions = []; let total = 0;
+            window.rawTransactions = [];
+            let total = 0;
             snap.forEach(d => {
-                const data = d.data(); transactions.push(data);
+                const data = d.data();
+                
                 if(data.status !== "pending" && data.status !== "rejected") {
-                    if(data.jenis === 'Pemasukan') total += Number(data.nominal); else total -= Number(data.nominal);
+                    let recDate = new Date();
+                    if(data.tanggal) recDate = data.tanggal.toDate();
+                    
+                    // Simpan doc.id agar bisa dihapus
+                    window.rawTransactions.push({ ...data, parsedDate: recDate, docId: d.id });
+                    if(data.jenis === 'Pemasukan') total += Number(data.nominal); 
+                    else total -= Number(data.nominal);
                 }
             });
             document.getElementById('uiTotalSaldo').innerText = "Rp " + total.toLocaleString('id-ID');
@@ -116,31 +148,105 @@
         window.filterTrx = (f, el) => {
             currentFilter = f;
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            el.classList.add('active'); render();
+            el.classList.add('active');
+            render();
         }
 
         function render() {
             const list = document.getElementById('trxList');
-            const filtered = transactions.filter(t => currentFilter === 'Semua' || t.jenis === currentFilter);
+            const filtered = window.rawTransactions.filter(t => currentFilter === 'Semua' || t.jenis === currentFilter);
             
-            if(filtered.length === 0) { list.innerHTML = `<div style="text-align:center; padding:30px; color:#4B5563; font-weight:700; font-size:12px; border:2px dashed rgba(0,0,0,0.1); border-radius:20px;">Belum ada catatan.</div>`; return; }
+            if(filtered.length === 0) {
+                list.innerHTML = '<div class="empty-state">Tidak ada transaksi.</div>';
+                return;
+            }
 
-            list.innerHTML = filtered.map(t => `
+            list.innerHTML = filtered.map(t => {
+                const isMasuk = t.jenis === 'Pemasukan';
+                const fDate = t.parsedDate.toLocaleDateString('id-ID', {day:'numeric', month:'short'});
+                
+                // Tombol hapus hanya untuk Superadmin / Bendahara
+                const btnDelete = (userRole === 'superadmin' || userRole === 'bendahara') 
+                    ? `<button onclick="hapusLaporan('${t.docId}')" style="background:none; border:none; color:var(--color-out); cursor:pointer; padding:8px; font-size:16px; transition:0.2s;"><i class="fa-solid fa-trash-can"></i></button>` 
+                    : '';
+
+                return `
                 <div class="trx-item">
-                    <div><strong style="font-size:14px; font-weight:900;">${t.nama_keterangan}</strong><br><small style="font-weight:700; color:#4B5563;">${t.jenis}</small></div>
-                    <div style="font-weight:900; font-size:16px; color: ${t.jenis === 'Pemasukan' ? 'var(--color-in)' : 'var(--color-out)'}">${t.jenis === 'Pemasukan' ? '+' : '-'} Rp ${Number(t.nominal).toLocaleString('id-ID')}</div>
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <div style="width:40px; height:40px; border-radius:12px; background:${isMasuk?'#D1FAE5':'#FEE2E2'}; color:${isMasuk?'#059669':'#DC2626'}; display:flex; justify-content:center; align-items:center; flex-shrink:0;"><i class="fa-solid ${isMasuk?'fa-arrow-down':'fa-arrow-up'}"></i></div>
+                        <div>
+                            <strong style="font-size:13px; color:var(--text-dark);">${t.nama_keterangan}</strong><br>
+                            <small style="font-size:10px; color:var(--text-gray);">${fDate} • ${t.jenis}</small>
+                        </div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <div style="font-weight:900; font-size:14px; color: ${isMasuk ? '#059669' : '#DC2626'}">${isMasuk?'+':'-'} Rp ${Number(t.nominal).toLocaleString('id-ID')}</div>
+                        ${btnDelete}
+                    </div>
                 </div>
-            `).join('');
+            `}).join('');
+        }
+
+        // FUNGSI HAPUS LAPORAN
+        window.hapusLaporan = async function(id) {
+            if(confirm("PERINGATAN!\n\nYakin ingin MENGHAPUS riwayat transaksi ini? Saldo Kas akan otomatis disesuaikan kembali.")) {
+                try {
+                    await deleteDoc(doc(db, "transactions", id));
+                } catch(e) { alert("Gagal menghapus data."); }
+            }
         }
 
         document.getElementById('formTrx').onsubmit = async (e) => {
             e.preventDefault();
-            await addDoc(trxRef, {
-                jenis: document.getElementById('trxType').value, nama_keterangan: document.getElementById('trxName').value, nominal: Number(document.getElementById('trxAmount').value), status: "approved", tanggal: serverTimestamp()
-            });
-            document.getElementById('trxModal').classList.remove('show');
-            document.getElementById('formTrx').reset();
+            const btn = e.target.querySelector('button[type="submit"]');
+            btn.innerHTML = 'Menyimpan...'; btn.disabled = true;
+            try {
+                await addDoc(trxRef, {
+                    jenis: document.getElementById('trxType').value,
+                    nama_keterangan: document.getElementById('trxName').value,
+                    nominal: Number(document.getElementById('trxAmount').value),
+                    status: "approved",
+                    tanggal: serverTimestamp()
+                });
+                document.getElementById('trxModal').classList.remove('show');
+                e.target.reset();
+            } catch(err) { alert("Gagal menyimpan."); }
+            finally { btn.innerHTML = 'Simpan ke Laporan'; btn.disabled = false; }
         }
+
+        // FUNGSI EXPORT (EXCEL & PDF)
+        window.exportToExcel = () => {
+            let csv = "data:text/csv;charset=utf-8,Tanggal,Keterangan,Jenis,Nominal\n";
+            window.rawTransactions.forEach(t => {
+                csv += `${t.parsedDate.toISOString().split('T')[0]},${(t.nama_keterangan||"").replace(/,/g,' ')},${t.jenis},${t.nominal}\n`;
+            });
+            const link = document.createElement("a");
+            link.href = encodeURI(csv); link.download = `Laporan_Kas_KGR.csv`;
+            document.body.appendChild(link); link.click(); document.body.removeChild(link);
+        };
+
+        window.exportToPDF = () => {
+            const el = document.createElement('div');
+            el.style.padding = '20px'; el.style.fontFamily = 'Montserrat, sans-serif';
+            let rows = "";
+            window.rawTransactions.forEach(t => {
+                rows += `<tr style="border-bottom: 1px solid #CCC;">
+                    <td style="padding:8px; font-size:12px;">${t.parsedDate.toLocaleDateString('id-ID')}</td>
+                    <td style="padding:8px; font-size:12px; font-weight:700;">${t.nama_keterangan}</td>
+                    <td style="padding:8px; font-size:12px;">${t.jenis}</td>
+                    <td style="padding:8px; font-size:12px; text-align:right;">Rp ${Number(t.nominal).toLocaleString('id-ID')}</td>
+                </tr>`;
+            });
+            el.innerHTML = `
+                <h2 style="text-align:center; color:#064E3B; margin-bottom:20px;">Laporan Kas KGR</h2>
+                <table style="width:100%; border-collapse:collapse;">
+                    <tr style="background:#064E3B; color:#FFF; text-align:left;">
+                        <th style="padding:10px;">Tanggal</th><th style="padding:10px;">Keterangan</th><th style="padding:10px;">Jenis</th><th style="padding:10px; text-align:right;">Nominal</th>
+                    </tr>
+                    ${rows}
+                </table>`;
+            html2pdf().set({margin:10, filename:'Laporan_Kas_KGR.pdf'}).from(el).save();
+        };
     </script>
 </body>
 </html>

@@ -50,7 +50,7 @@
         .btn-god { width: 100%; padding: 16px; border-radius: 12px; font-size: 13px; font-weight: 900; background: var(--gold-primary); color: #000; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.2s; box-shadow: 0 0 20px var(--gold-glow); display: flex; justify-content: center; align-items: center; gap: 8px;}
         .btn-god:active { transform: scale(0.97); }
 
-        /* USER LIST CARD (MANAJEMEN KASTA) */
+        /* USER LIST CARD */
         .user-card { border: 1px solid var(--border-dark); background: rgba(255,255,255,0.02); border-radius: 16px; padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
         .user-info { display: flex; align-items: center; gap: 12px; }
         .user-avatar { width: 40px; height: 40px; border-radius: 50%; background: rgba(212,175,55,0.1); border: 1px solid var(--gold-primary); display: flex; justify-content: center; align-items: center; font-size: 16px; font-weight: 900; color: var(--gold-primary); }
@@ -62,21 +62,6 @@
         .role-tag.approve { background: rgba(40,167,69,0.2); color: var(--success-green); }
         .btn-edit-user { width: 35px; height: 35px; border-radius: 10px; background: rgba(212,175,55,0.1); color: var(--gold-primary); border: none; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s;}
         .btn-edit-user:active { background: var(--gold-primary); color: #000; }
-
-        /* BYPASS CARD */
-        .bypass-card { border: 1px dashed var(--gold-primary); background: rgba(212,175,55,0.03); border-radius: 16px; padding: 15px; margin-bottom: 15px; }
-        .bp-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
-        .bp-title { font-size: 14px; font-weight: 900; color: var(--gold-primary); }
-        .bp-amount { font-size: 14px; font-weight: 900; color: var(--text-light); }
-        .bp-desc { font-size: 11px; color: var(--text-muted); font-weight: 600; margin-bottom: 12px; line-height: 1.4; }
-        .bp-author { font-size: 9px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border-dark);}
-        
-        .bp-actions { display: flex; gap: 10px; }
-        .btn-bp { flex: 1; padding: 12px; border-radius: 10px; font-size: 11px; font-weight: 900; cursor: pointer; border: none; text-transform: uppercase; letter-spacing: 0.5px; transition: 0.2s; }
-        .btn-bp.acc { background: var(--gold-primary); color: #000; }
-        .btn-bp.acc:active { transform: scale(0.95); }
-        .btn-bp.rej { background: transparent; border: 1px solid var(--danger-red); color: var(--danger-red); }
-        .btn-bp.rej:active { background: var(--danger-red); color: #FFF; }
 
         /* DANGER ZONE */
         .danger-panel { border: 1px solid var(--danger-red); background: rgba(224, 75, 75, 0.05); }
@@ -122,6 +107,7 @@
 
         <div class="content-area">
             
+            <!-- MANAJEMEN KASTA & ADMIN -->
             <div class="section-title"><i class="fa-solid fa-users-gear"></i> Kontrol Kasta & Member</div>
             <div class="god-panel" style="padding: 10px;">
                 <div id="godUserList" style="max-height: 280px; overflow-y: auto; padding: 10px; scrollbar-width: none;">
@@ -129,6 +115,7 @@
                 </div>
             </div>
 
+            <!-- KONTROL SISTEM (QRIS & LIMIT) -->
             <div class="section-title"><i class="fa-solid fa-sliders"></i> Konfigurasi Sistem Utama</div>
             <div class="god-panel">
                 <div class="form-group">
@@ -142,14 +129,7 @@
                 <button class="btn-god" id="btnSaveConfig" onclick="saveAppConfig()"><i class="fa-solid fa-microchip"></i> Terapkan ke Sistem</button>
             </div>
 
-            <div class="section-title"><i class="fa-solid fa-bolt"></i> Bypass Pengajuan Dana</div>
-            <div class="god-panel" style="padding: 15px;">
-                <p style="font-size: 10px; color: var(--text-muted); margin-bottom: 15px; font-weight: 600; line-height: 1.4;">Gunakan fitur ini untuk mencairkan/menolak pengajuan dana secara paksa tanpa menunggu persetujuan Bendahara atau Admin lain.</p>
-                <div id="godBypassList">
-                    <div class="empty-state"><i class="fa-solid fa-check-double"></i> Tidak ada antrean.</div>
-                </div>
-            </div>
-
+            <!-- DANGER ZONE -->
             <div class="section-title" style="color: var(--danger-red); margin-top: 40px;"><i class="fa-solid fa-skull"></i> Zona Berbahaya</div>
             <div class="god-panel danger-panel">
                 <div class="danger-title"><i class="fa-solid fa-triangle-exclamation"></i> Reset Pembukuan Kas</div>
@@ -160,6 +140,7 @@
         </div>
     </div>
 
+    <!-- MODAL EDIT USER -->
     <div class="modal-overlay" id="modalEditUser">
         <div class="modal-content">
             <div class="modal-header">
@@ -193,10 +174,11 @@
         </div>
     </div>
 
+    <!-- FIREBASE & GOD LOGIC -->
     <script type="module">
         import { auth, db } from './db-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
-        import { doc, getDoc, setDoc, updateDoc, collection, query, where, orderBy, onSnapshot, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+        import { doc, getDoc, setDoc, updateDoc, collection, query, orderBy, onSnapshot, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
         let targetEditEmail = "";
 
@@ -212,10 +194,9 @@
                         alert("SECURITY BREACH: Akses ditolak! Halaman ini hanya untuk Dewa.");
                         window.location.href = "index.html";
                     } else {
-                        // Jalankan semua modul kekuatan dewa
+                        // Jalankan modul dewa
                         loadAllUsers();
                         loadConfig();
-                        loadPendingPengajuan();
                     }
                 }
             } else {
@@ -334,47 +315,7 @@
         }
 
         // ==========================================
-        // 4. BYPASS PENGAJUAN DANA
-        // ==========================================
-        function loadPendingPengajuan() {
-            const q = query(collection(db, "pengajuan_dana"), where("status", "==", "pending"));
-            onSnapshot(q, (snapshot) => {
-                const list = document.getElementById('godBypassList');
-                list.innerHTML = "";
-                if (snapshot.empty) { list.innerHTML = '<div class="empty-state">Tidak ada pengajuan tertunda.</div>'; return; }
-
-                snapshot.forEach((docSnap) => {
-                    const data = docSnap.data();
-                    list.innerHTML += `
-                        <div class="bypass-card">
-                            <div class="bp-header">
-                                <div class="bp-title">${data.judul}</div><div class="bp-amount">Rp ${Number(data.nominal).toLocaleString('id-ID')}</div>
-                            </div>
-                            <div class="bp-desc">${data.deskripsi}</div>
-                            <div class="bp-author"><i class="fa-solid fa-user"></i> Pengaju: ${data.pengaju_email}</div>
-                            <div class="bp-actions">
-                                <button class="btn-bp rej" onclick="forceReject('${docSnap.id}')"><i class="fa-solid fa-xmark"></i> Tolak</button>
-                                <button class="btn-bp acc" onclick="forceApprove('${docSnap.id}')"><i class="fa-solid fa-bolt"></i> Force Approve</button>
-                            </div>
-                        </div>
-                    `;
-                });
-            });
-        }
-
-        window.forceApprove = async function(docId) {
-            if(confirm("SYSTEM OVERRIDE: Cairkan dana secara paksa?")) {
-                await updateDoc(doc(db, "pengajuan_dana", docId), { status: "approved", forced_by: "Superadmin Override" });
-            }
-        }
-        window.forceReject = async function(docId) {
-            if(confirm("Tolak pengajuan secara permanen?")) {
-                await updateDoc(doc(db, "pengajuan_dana", docId), { status: "rejected", forced_by: "Superadmin Override" });
-            }
-        }
-
-        // ==========================================
-        // 5. NUKLIR (HAPUS SEMUA TRANSAKSI)
+        // 4. NUKLIR (HAPUS SEMUA TRANSAKSI)
         // ==========================================
         window.nukeTransactions = async function() {
             const pass = prompt("PERINGATAN NUKLIR! \n\nSemua riwayat transaksi akan hangus dan saldo menjadi Rp 0. \n\nKetik 'HANCURKAN' untuk eksekusi:");
