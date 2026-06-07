@@ -3,40 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#F5F5F7">
+    <meta name="theme-color" content="#064E3B">
     <title>Setting Profil - KGR</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800;900&display=swap" rel="stylesheet">
     <style>
-        :root { --bg-base: #F5F5F7; --text-dark: #000000; --text-black: #111111; --text-gray: #8E8E93; --gold-primary: #D4AF37; --gold-deep: linear-gradient(135deg, #A67C00, #D4AF37, #8B6914, #B38728); --glass-bg: rgba(255, 255, 255, 0.75); --glass-border: rgba(255, 255, 255, 0.9); --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.04); --color-out: #DC3545; }
+        :root { 
+            --bg-base: #F4F6F5; --text-dark: #111827; --text-gray: #4B5563; 
+            --emerald-dark: #064E3B; --emerald-main: #059669; --emerald-card: linear-gradient(135deg, #065F46 0%, #022C22 100%);
+            --glass-bg: rgba(255, 255, 255, 0.75); --glass-border: rgba(255, 255, 255, 0.9); 
+            --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.04); --color-out: #DC2626; 
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: #E5E5E5; background-image: radial-gradient(circle at 15% 50%, rgba(212, 175, 55, 0.08), transparent 25%), radial-gradient(circle at 85% 30%, rgba(10, 132, 255, 0.05), transparent 25%); display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .app-container { width: 100%; max-width: 414px; height: 100vh; background-color: var(--bg-base); position: relative; overflow: hidden; display: flex; flex-direction: column; color: var(--text-dark); }
-        @media (min-width: 600px) { .app-container { max-width: 480px; height: 90vh; max-height: 900px; border-radius: 40px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15), inset 0 0 0 8px #FFFFFF; border: 1px solid rgba(0,0,0,0.05); } }
+        
+        body { background-color: #E2E8E4; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        
+        .app-container { 
+            width: 100%; max-width: 414px; height: 100vh; background-color: var(--bg-base); 
+            background-image: radial-gradient(circle at 50% 35%, rgba(5, 150, 105, 0.12) 0%, rgba(5, 150, 105, 0.03) 35%, var(--bg-base) 70%);
+            position: relative; overflow: hidden; display: flex; flex-direction: column; color: var(--text-dark); 
+        }
+        @media (min-width: 600px) { .app-container { max-width: 480px; height: 90vh; max-height: 900px; border-radius: 40px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15); border: 8px solid #FFFFFF; margin: auto; } }
+        
         .orb { position: absolute; border-radius: 50%; filter: blur(60px); z-index: 0; animation: floatOrb 8s infinite alternate ease-in-out; }
-        .orb-1 { width: 300px; height: 300px; background: rgba(212, 175, 55, 0.25); top: -50px; right: -50px; }
-        .orb-2 { width: 250px; height: 250px; background: rgba(10, 132, 255, 0.15); bottom: 100px; left: -50px; animation-delay: -3s; }
+        .orb-1 { width: 300px; height: 300px; background: rgba(5, 150, 105, 0.2); top: -50px; right: -50px; }
+        .orb-2 { width: 250px; height: 250px; background: rgba(6, 78, 59, 0.15); bottom: 100px; left: -50px; animation-delay: -3s; }
         @keyframes floatOrb { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-30px, 40px) scale(1.1); } }
+        
         .glass-panel { background: var(--glass-bg); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); box-shadow: var(--shadow-soft), inset 0 0 20px rgba(255,255,255,0.5); z-index: 2; position: relative; }
-        .header-page { padding: 40px 24px 20px; display: flex; align-items: center; gap: 15px; z-index: 10; position: relative; border-bottom: 1px solid rgba(0,0,0,0.05); background: rgba(245,245,247,0.8); backdrop-filter: blur(20px); }
+        
+        .header-page { padding: 40px 24px 20px; display: flex; align-items: center; gap: 15px; z-index: 10; position: relative; border-bottom: 1px solid rgba(0,0,0,0.05); background: rgba(244,246,245,0.8); backdrop-filter: blur(20px); }
         .btn-back { width: 40px; height: 40px; border-radius: 14px; background: #FFF; color: var(--text-dark); display: flex; justify-content: center; align-items: center; font-size: 18px; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.1); }
+        .btn-back:active { transform: scale(0.9); }
         .header-page h2 { font-size: 18px; font-weight: 900; letter-spacing: -0.5px; }
+        
         .content-area { flex-grow: 1; overflow-y: auto; padding: 20px 24px 110px; scrollbar-width: none; z-index: 2; position: relative; }
         .content-area::-webkit-scrollbar { display: none; }
+        
         .profile-card { border-radius: 24px; padding: 30px 20px; margin-bottom: 25px; display: flex; flex-direction: column; align-items: center; text-align: center; }
-        .profile-avatar { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 10px; background-size: cover; background-position: center; background-color: #1C1C1E; color: var(--gold-primary); display: flex; justify-content: center; align-items: center; font-size: 40px; font-weight: 900; border: 4px solid #FFF; box-shadow: 0 10px 25px rgba(0,0,0,0.1); position: relative; }
-        .btn-edit-foto { position: absolute; bottom: 0; right: 0; width: 32px; height: 32px; background: var(--text-dark); color: var(--gold-primary); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 14px; border: 2px solid #FFF; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .role-badge { display: inline-block; padding: 4px 12px; border-radius: 8px; font-size: 10px; font-weight: 800; background: var(--gold-deep); color: #FFF; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 25px; box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3); }
+        .profile-avatar { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 10px; background-size: cover; background-position: center; background-color: #111827; color: var(--emerald-main); display: flex; justify-content: center; align-items: center; font-size: 40px; font-weight: 900; border: 4px solid #FFF; box-shadow: 0 10px 25px rgba(0,0,0,0.1); position: relative; }
+        .btn-edit-foto { position: absolute; bottom: 0; right: 0; width: 32px; height: 32px; background: var(--text-dark); color: var(--emerald-main); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 14px; border: 2px solid #FFF; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        
+        .role-badge { display: inline-block; padding: 4px 12px; border-radius: 8px; font-size: 10px; font-weight: 800; background: var(--emerald-main); color: #FFF; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 25px; box-shadow: 0 4px 10px rgba(5, 150, 105, 0.3); }
+        
         .form-group { width: 100%; margin-bottom: 15px; text-align: left; }
         .form-label { display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; color: var(--text-gray); }
         .form-input { width: 100%; padding: 14px 16px; border-radius: 14px; border: 1.5px solid rgba(0,0,0,0.06); font-size: 14px; font-weight: 700; color: var(--text-dark); outline: none; background: #FFF; transition: 0.2s; }
-        .form-input:focus { border-color: var(--gold-primary); box-shadow: 0 0 0 3px rgba(212,175,55,0.1); }
+        .form-input:focus { border-color: var(--emerald-main); box-shadow: 0 0 0 3px rgba(5,150,105,0.1); }
         .form-input:disabled { background: #E5E5E5; color: var(--text-gray); cursor: not-allowed; border-color: transparent; }
-        .btn-save { width: 100%; padding: 16px; border-radius: 16px; font-size: 13px; font-weight: 900; background: var(--text-dark); color: #FFF; border: none; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        .btn-save i { color: var(--gold-primary); }
+        
+        .btn-save { width: 100%; padding: 16px; border-radius: 16px; font-size: 13px; font-weight: 900; background: var(--text-dark); color: #FFF; border: none; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.1); transition: 0.2s;}
+        .btn-save i { color: var(--emerald-main); }
         .btn-save:disabled { background: #CCC; cursor: not-allowed; box-shadow: none; }
-        .btn-superadmin { width: 100%; padding: 16px; border-radius: 16px; font-size: 13px; font-weight: 800; background: var(--text-dark); color: var(--gold-primary); border: none; margin-bottom: 12px; display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer; }
-        .btn-logout { width: 100%; padding: 16px; border-radius: 16px; font-size: 13px; font-weight: 800; background: #FFF; color: var(--color-out); border: 2px solid var(--color-out); display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer; }
+        .btn-save:active:not(:disabled) { transform: scale(0.97); }
+        
+        .btn-superadmin { width: 100%; padding: 16px; border-radius: 16px; font-size: 13px; font-weight: 800; background: var(--text-dark); color: var(--emerald-main); border: none; margin-bottom: 12px; display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer; transition: 0.2s;}
+        .btn-superadmin:active { transform: scale(0.97); }
+        
+        .btn-logout { width: 100%; padding: 16px; border-radius: 16px; font-size: 13px; font-weight: 800; background: #FFF; color: var(--color-out); border: 2px solid var(--color-out); display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer; transition: 0.2s;}
+        .btn-logout:active { background: var(--color-out); color: #FFF; }
     </style>
 </head>
 <body>
@@ -64,7 +89,6 @@
                     <input type="text" id="inputNama" class="form-input" value="Memuat..." oninput="checkChanges()">
                 </div>
                 
-                <!-- NOMOR WHATSAPP DITAMBAHKAN DI SINI -->
                 <div class="form-group">
                     <label class="form-label">Nomor WhatsApp Aktif</label>
                     <input type="tel" id="inputWa" class="form-input" value="Memuat..." oninput="this.value = this.value.replace(/[^0-9]/g, ''); checkChanges();">
@@ -82,7 +106,6 @@
                 <button class="btn-save" id="btnSave" onclick="saveProfile()" disabled><i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan</button>
             </div>
 
-            <!-- Tombol Pengurus (Otomatis Tampil/Sembunyi) -->
             <button id="btnPanelAdmin" class="btn-superadmin" style="display: none;" onclick="window.location.href='index.html'">
                 <i class="fa-solid fa-user-shield"></i> Akses Menu Pengurus (Di Beranda)
             </button>
@@ -91,7 +114,6 @@
         </div>
     </div>
 
-    <!-- MODULE FIREBASE & LOGIKA PROFIL -->
     <script type="module">
         import { auth, db } from './db-config.js';
         import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
@@ -102,7 +124,6 @@
         let originalWa = "";
         let newImageUploaded = false;
 
-        // 1. CEK LOGIN & AMBIL DATA ASLI DARI DATABASE
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentUserEmail = user.email;
@@ -117,40 +138,32 @@
                         const namaLengkap = data.nama_lengkap || "Tanpa Nama";
                         const nomorWa = data.no_wa || "";
 
-                        // Update Jabatan / Role
                         document.getElementById('uiRoleBadge').innerHTML = `<i class="fa-solid fa-star" style="margin-right: 4px;"></i> ${role.toUpperCase()}`;
                         
-                        // Update Form Text
                         document.getElementById('inputNama').value = namaLengkap;
-                        document.getElementById('inputWa').value = nomorWa; // Masukkan WA ke form
+                        document.getElementById('inputWa').value = nomorWa;
                         document.getElementById('inputEmail').value = currentUserEmail;
                         document.getElementById('inputIdMember').value = data.nik || "Tidak ada NIK";
                         
-                        // Kunci nama & wa awal buat deteksi perubahan form
                         originalName = namaLengkap; 
                         originalWa = nomorWa;
 
-                        // Bikin Inisial Avatar otomatis
                         document.getElementById('avatarInitials').innerText = namaLengkap.charAt(0).toUpperCase();
 
-                        // Munculkan Tombol Admin kalau dia Pengurus (Superadmin/Admin/Bendahara)
                         if (role === "superadmin" || role === "admin" || role === "bendahara") {
                             document.getElementById('btnPanelAdmin').style.display = 'flex';
                         }
                     } else {
-                        // Kalo akunnya ada di Auth tapi database profilnya kosong/dihapus
                         auth.signOut();
                     }
                 } catch (error) {
                     console.error("Gagal memuat profil:", error);
                 }
             } else {
-                // Kalau gak login, tendang balik ke login
                 window.location.href = 'login.html';
             }
         });
 
-        // 2. FUNGSI LOGOUT (ASLI)
         window.confirmLogout = function() { 
             if(confirm("Yakin ingin keluar dari aplikasi? (Sistem Device Binding akan ter-reset jika Anda login di HP lain)")) {
                 signOut(auth).then(() => {
@@ -161,7 +174,6 @@
             }
         }
 
-        // 3. FUNGSI SIMPAN PERUBAHAN KE DATABASE
         window.saveProfile = async function() {
             const btnSave = document.getElementById('btnSave');
             btnSave.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...'; 
@@ -184,13 +196,12 @@
                     no_wa: newWa
                 });
                 
-                // Animasi Sukses
                 originalName = newName;
                 originalWa = newWa;
                 newImageUploaded = false;
                 document.getElementById('avatarInitials').innerText = newName.charAt(0).toUpperCase();
                 
-                btnSave.innerHTML = '<i class="fa-solid fa-check" style="color: #28A745;"></i> Berhasil Disimpan';
+                btnSave.innerHTML = '<i class="fa-solid fa-check" style="color: #059669;"></i> Berhasil Disimpan';
                 setTimeout(() => { 
                     btnSave.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan'; 
                     btnSave.disabled = true; 
@@ -203,14 +214,12 @@
             }
         }
 
-        // FUNGSI CEK KETIKAN FORM (Untuk nyalain tombol save kalau ada yang berubah)
         window.checkChanges = function() {
             const currentName = document.getElementById('inputNama').value;
             const currentWa = document.getElementById('inputWa').value;
             document.getElementById('btnSave').disabled = !(currentName !== originalName || currentWa !== originalWa || newImageUploaded);
         }
 
-        // FUNGSI PREVIEW FOTO (UI Sementara)
         window.previewImage = function(event) {
             const file = event.target.files[0];
             if (file) {
