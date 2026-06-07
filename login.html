@@ -156,6 +156,7 @@
         </div>
     </div>
 
+    <!-- MODULE FIREBASE & LOGIKA APLIKASI -->
     <script type="module">
         import { auth, db } from './db-config.js'; 
         import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
@@ -254,35 +255,62 @@
             if(videoStream) { videoStream.getTracks().forEach(track => track.stop()); }
         }
 
+        // ==========================================
+        // 6. SUBMIT AKHIR (VERSI ANTI-NYANGKUT)
+        // ==========================================
         document.getElementById('btnCaptureFace').addEventListener('click', async () => {
             const btn = document.getElementById('btnCaptureFace');
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
             btn.disabled = true;
 
             try {
-                const userCredential = await createUserWithEmailAndPassword(auth, tempData.email, tempData.pass);
-                await sendEmailVerification(userCredential.user);
+                let currentUserEmail = tempData.email;
+                let userRecord;
 
-                // FIX: Pakai Email sebagai nama Dokumen
-                await setDoc(doc(db, "users", userCredential.user.email), {
+                try {
+                    // Tahap 1: Coba bikin akun Auth baru
+                    const uc = await createUserWithEmailAndPassword(auth, currentUserEmail, tempData.pass);
+                    userRecord = uc.user;
+                    // Kirim verifikasi cuma kalau ini beneran pendaftaran pertama
+                    await sendEmailVerification(userRecord);
+                    
+                } catch (authErr) {
+                    // JIKA NYANGKUT: Auth udah ada tapi user ngetes daftar lagi
+                    if (authErr.code === 'auth/email-already-in-use') {
+                        // Paksa login di latar belakang biar bisa nerusin simpan data!
+                        const uc = await signInWithEmailAndPassword(auth, currentUserEmail, tempData.pass);
+                        userRecord = uc.user;
+                    } else {
+                        throw authErr; 
+                    }
+                }
+
+                // Tahap 2: Tembak data Profil ke Firestore Database (pake email sebagai ID Dokumen)
+                await setDoc(doc(db, "users", userRecord.email), {
                     nama_lengkap: tempData.name,
                     nik: tempData.nik,
-                    email: tempData.email,
+                    email: currentUserEmail,
                     role: "Member",
                     status: "Pending Admin",
-                    device_id: getDeviceID(),
+                    device_id: getDeviceID(), // Gembok HP
                     created_at: serverTimestamp()
                 });
 
                 stopCamera();
-                showAlert('success', 'Berhasil & Terkunci', 'Data terkirim. Silakan cek Inbox/Spam email Anda untuk verifikasi lalu login.');
-                setTimeout(() => { switchView('stepLogin'); }, 4000);
+                showAlert('success', 'Pendaftaran Selesai', 'Wajah terekam dan akun terkunci di perangkat ini. Silakan masuk.');
+                setTimeout(() => { switchView('stepLogin'); }, 3000);
+                
             } catch (error) {
-                showAlert('error', 'Gagal', error.message);
+                // Tampilkan error aslinya ke layar biar ketahuan penyakitnya apa
+                showAlert('error', 'Gagal Sistem', error.message.replace('Firebase: ', ''));
+                btn.innerHTML = 'Rekam & Selesaikan <i class="fa-solid fa-check-double"></i>';
                 btn.disabled = false;
             }
         });
 
+        // ==========================================
+        // 7. LOGIN & CEK DEVICE BINDING
+        // ==========================================
         document.getElementById('formLogin').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btnLoginSubmit');
@@ -292,21 +320,24 @@
             try {
                 const uc = await signInWithEmailAndPassword(auth, document.getElementById('logEmail').value, document.getElementById('logPass').value);
                 
+                // Mencegah login jika email belum diklik link verifikasinya
                 if (!uc.user.emailVerified) {
                     throw new Error("Email belum diverifikasi. Cek kotak masuk Anda.");
                 }
 
-                // FIX: Narik data dari DB pakai Email, bukan UID lagi
+                // Cek Device Binding dari Firestore (pakai ID email)
                 const userDoc = await getDoc(doc(db, "users", uc.user.email));
                 if (userDoc.exists()) {
                     const dbDeviceId = userDoc.data().device_id;
                     const currentDeviceId = getDeviceID();
+
                     if (dbDeviceId && dbDeviceId !== currentDeviceId) {
                         auth.signOut();
-                        throw new Error("AKSES DITOLAK: Akun terkunci untuk HP lain.");
+                        throw new Error("AKSES DITOLAK: Akun ini terkunci untuk perangkat (HP) lain.");
                     }
                 }
                 
+                // MEMAINKAN ANIMASI SEBELUM PINDAH KE HALAMAN DEPAN
                 window.playTypewriterAndRedirect();
             } catch (error) {
                 showAlert('error', 'Gagal Masuk', error.message.replace('Firebase: ', ''));
