@@ -14,6 +14,7 @@
             --bg-base: #F5F5F7; 
             --text-dark: #000000;
             --text-black: #111111; 
+            --text-gray: #8E8E93;
             
             --gold-primary: #D4AF37;
             --gold-deep: linear-gradient(135deg, #A67C00, #D4AF37, #8B6914, #B38728);
@@ -36,7 +37,7 @@
         }
 
         .app-container {
-            width: 100%; max-width: 414px; height: 100vh; max-height: 896px;
+            width: 100%; max-width: 414px; height: 100vh;
             background-color: var(--bg-base); position: relative; overflow: hidden;
             display: flex; flex-direction: column; color: var(--text-dark);
         }
@@ -45,7 +46,7 @@
             .app-container {
                 max-width: 480px; height: 90vh; max-height: 900px;
                 border-radius: 40px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15), inset 0 0 0 8px #FFFFFF;
-                border: 1px solid rgba(0,0,0,0.05);
+                border: 1px solid rgba(0,0,0,0.05); margin: auto;
             }
         }
 
@@ -83,7 +84,7 @@
         }
         .info-block { display: flex; flex-direction: column; align-items: center; }
         .info-block h3 { font-size: 24px; font-weight: 900; color: var(--text-dark); margin-bottom: 4px; }
-        .info-block p { font-size: 10px; font-weight: 800; color: var(--text-black); text-transform: uppercase; }
+        .info-block p { font-size: 10px; font-weight: 800; color: var(--text-gray); text-transform: uppercase; }
         .info-divider { width: 1px; height: 40px; background: rgba(0,0,0,0.1); }
 
         .section-title { font-size: 14px; font-weight: 900; margin: 0 0 15px; color: var(--text-dark); text-transform: uppercase; letter-spacing: 1px;}
@@ -106,30 +107,32 @@
 
         .avatar { 
             width: 45px; height: 45px; border-radius: 50%; margin: 0 12px; 
-            background-color: var(--bg-base); background-size: cover; background-position: center;
+            background-color: #F5F5F7; background-size: cover; background-position: center;
             border: 2px solid #FFF; box-shadow: 0 2px 8px rgba(0,0,0,0.1); flex-shrink: 0;
+            display: flex; justify-content: center; align-items: center; font-size: 18px; font-weight: 800; color: var(--text-dark);
         }
         
-        .info { flex-grow: 1; }
-        .info h4 { font-size: 14px; font-weight: 900; color: var(--text-dark); margin-bottom: 2px; }
-        .info p { font-size: 10px; color: var(--text-black); font-weight: 700;}
+        .info { flex-grow: 1; overflow: hidden; }
+        .info h4 { font-size: 14px; font-weight: 900; color: var(--text-dark); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+        .info p { font-size: 10px; color: var(--text-gray); font-weight: 700;}
         
-        .amount { font-size: 15px; font-weight: 900; color: var(--text-dark); text-align: right;}
-        .amount span { font-size: 9px; display: block; font-weight: 800; text-transform: uppercase; margin-top: 2px;}
+        .amount { font-size: 15px; font-weight: 900; color: var(--text-dark); text-align: right; flex-shrink: 0;}
+        .amount span { font-size: 9px; display: block; font-weight: 800; text-transform: uppercase; margin-top: 2px; color: var(--text-gray);}
 
         /* Styling Khusus Kartu Top 1 agar lebih stand out */
-        .list-item.gold-border { border: 2px solid var(--gold-primary); background: linear-gradient(to right, #FFF, rgba(212, 175, 55, 0.05)); }
+        .list-item.gold-border { border: 2px solid var(--gold-primary); background: linear-gradient(to right, #FFF, rgba(212, 175, 55, 0.08)); }
 
+        .empty-state { text-align: center; padding: 40px 20px; color: var(--text-gray); }
+        .empty-state i { font-size: 30px; margin-bottom: 10px; opacity: 0.5; }
+        .empty-state p { font-size: 12px; font-weight: 700; }
     </style>
 </head>
 <body>
 
     <div class="app-container">
-        <!-- Background Orbs -->
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
 
-        <!-- Header -->
         <div class="header-page">
             <div class="btn-back" onclick="window.location.href='index.html'">
                 <i class="fa-solid fa-arrow-left"></i>
@@ -141,104 +144,140 @@
             
             <div class="info-card glass-panel">
                 <div class="info-block">
-                    <h3>5</h3>
-                    <p>Total Donatur</p>
+                    <h3 id="uiTotalDonatur">0</h3>
+                    <p>Orang Berdonasi</p>
                 </div>
                 <div class="info-divider"></div>
                 <div class="info-block">
-                    <h3>Rp 12,5jt</h3>
+                    <h3 id="uiTotalDana">Rp 0</h3>
                     <p>Total Terkumpul</p>
                 </div>
             </div>
 
-            <div class="section-title">Klasemen Kebaikan (Bulan Ini)</div>
+            <div class="section-title">Klasemen Kebaikan (Keseluruhan)</div>
 
-            <!-- PERINGKAT 1 (GOLD) -->
-            <div class="list-item gold-border">
-                <div class="rank top-1"><i class="fa-solid fa-crown"></i></div>
-                <div class="avatar" style="background-image: url('https://ui-avatars.com/api/?name=Hamba+Allah&background=1C1C1E&color=D4AF37&size=150');"></div>
-                <div class="info">
-                    <h4>Hamba Allah</h4>
-                    <p>3x Transaksi</p>
-                </div>
-                <div class="amount">
-                    Rp 5.000.000
-                    <span>Total Sedekah</span>
-                </div>
-            </div>
-
-            <!-- PERINGKAT 2 (SILVER) -->
-            <div class="list-item">
-                <div class="rank top-2"><i class="fa-solid fa-medal"></i></div>
-                <div class="avatar" style="background-image: url('https://ui-avatars.com/api/?name=Ahmad+Rizky&background=F5F5F7&color=111&size=150');"></div>
-                <div class="info">
-                    <h4>Ahmad Rizky</h4>
-                    <p>1x Transaksi</p>
-                </div>
-                <div class="amount">
-                    Rp 2.500.000
-                    <span>Total Sedekah</span>
-                </div>
-            </div>
-
-            <!-- PERINGKAT 3 (BRONZE) -->
-            <div class="list-item">
-                <div class="rank top-3"><i class="fa-solid fa-award"></i></div>
-                <div class="avatar" style="background-image: url('https://ui-avatars.com/api/?name=Ferry+Setiawan&background=F5F5F7&color=111&size=150');"></div>
-                <div class="info">
-                    <h4>Ferry Setiawan</h4>
-                    <p>2x Transaksi</p>
-                </div>
-                <div class="amount">
-                    Rp 1.000.000
-                    <span>Total Sedekah</span>
-                </div>
-            </div>
-
-            <!-- PERINGKAT 4 (NORMAL) -->
-            <div class="list-item">
-                <div class="rank">4</div>
-                <div class="avatar" style="background-image: url('https://ui-avatars.com/api/?name=Sandi+Wibowo&background=F5F5F7&color=111&size=150');"></div>
-                <div class="info">
-                    <h4>Sandi Wibowo</h4>
-                    <p>1x Transaksi</p>
-                </div>
-                <div class="amount">
-                    Rp 500.000
-                    <span>Total Sedekah</span>
-                </div>
-            </div>
-
-            <!-- PERINGKAT 5 (NORMAL) -->
-            <div class="list-item">
-                <div class="rank">5</div>
-                <div class="avatar" style="background-image: url('https://ui-avatars.com/api/?name=Ogi+Pranata&background=F5F5F7&color=111&size=150');"></div>
-                <div class="info">
-                    <h4>Ogi Pranata</h4>
-                    <p>1x Transaksi</p>
-                </div>
-                <div class="amount">
-                    Rp 250.000
-                    <span>Total Sedekah</span>
-                </div>
-            </div>
-
-             <!-- PERINGKAT 6 (NORMAL) -->
-             <div class="list-item">
-                <div class="rank">6</div>
-                <div class="avatar" style="background-image: url('https://ui-avatars.com/api/?name=Amelia+Sari&background=F5F5F7&color=111&size=150');"></div>
-                <div class="info">
-                    <h4>Amelia Sari</h4>
-                    <p>1x Transaksi</p>
-                </div>
-                <div class="amount">
-                    Rp 100.000
-                    <span>Total Sedekah</span>
+            <div id="donaturList">
+                <div class="empty-state">
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                    <p>Mengambil data klasemen kebaikan...</p>
                 </div>
             </div>
 
         </div>
     </div>
+
+    <script type="module">
+        import { auth, db } from './db-config.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+        import { collection, query, where, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+        // Cek Auth (Hanya memastikan user masuk aplikasi)
+        onAuthStateChanged(auth, (user) => {
+            if (!user) window.location.href = 'login.html';
+        });
+
+        async function loadKlasemenDonatur() {
+            try {
+                // 1. Ambil Data Semua User (Untuk nge-map nama berdasarkan Email)
+                const usersSnap = await getDocs(collection(db, "users"));
+                let userMap = {};
+                usersSnap.forEach(doc => {
+                    const data = doc.data();
+                    userMap[data.email] = data.nama_lengkap || "Hamba Allah";
+                });
+
+                // 2. Ambil Semua Transaksi Pemasukan (Sedekah)
+                const trxRef = collection(db, "transactions");
+                const q = query(trxRef, where("jenis", "==", "Pemasukan"));
+
+                onSnapshot(q, (snapshot) => {
+                    let donorMap = {};
+                    let grandTotal = 0;
+                    let validDonorsCount = 0;
+
+                    // Menggabungkan donasi per-email pengirim
+                    snapshot.forEach((docSnap) => {
+                        const data = docSnap.data();
+                        
+                        // Hanya hitung donasi yang sudah disetujui/cair (bukan pending/rejected)
+                        // Jika sistem index.html kalian memakai "status !== pending", kita samakan.
+                        if (data.status !== "pending" && data.status !== "rejected" && data.pengirim) {
+                            const emailPengirim = data.pengirim;
+                            const nominal = Number(data.nominal) || 0;
+
+                            if (!donorMap[emailPengirim]) {
+                                donorMap[emailPengirim] = { total_donasi: 0, count: 0 };
+                                validDonorsCount++;
+                            }
+                            
+                            donorMap[emailPengirim].total_donasi += nominal;
+                            donorMap[emailPengirim].count += 1;
+                            grandTotal += nominal;
+                        }
+                    });
+
+                    // Update UI Rekap
+                    document.getElementById('uiTotalDonatur').innerText = validDonorsCount;
+                    document.getElementById('uiTotalDana').innerText = "Rp " + (grandTotal >= 1000000 ? (grandTotal/1000000).toFixed(1) + 'Jt' : grandTotal.toLocaleString('id-ID'));
+
+                    // Ubah Object Map menjadi Array agar bisa di-Sorting (Diurutkan dari terbesar)
+                    let sortedDonors = Object.keys(donorMap).map(email => {
+                        return {
+                            email: email,
+                            nama: userMap[email] || "Anggota KGR",
+                            total: donorMap[email].total_donasi,
+                            frekuensi: donorMap[email].count
+                        }
+                    }).sort((a, b) => b.total - a.total); // Urut Terbesar ke Terkecil
+
+                    // Render ke HTML
+                    const listContainer = document.getElementById('donaturList');
+                    listContainer.innerHTML = "";
+
+                    if (sortedDonors.length === 0) {
+                        listContainer.innerHTML = `<div class="empty-state"><i class="fa-solid fa-box-open"></i><p>Belum ada catatan donatur yang disetujui Bendahara.</p></div>`;
+                        return;
+                    }
+
+                    sortedDonors.forEach((donor, index) => {
+                        const rankPos = index + 1;
+                        let rankIcon = rankPos;
+                        let rankClass = "";
+                        let borderClass = "";
+
+                        // Styling Top 3
+                        if (rankPos === 1) { rankIcon = '<i class="fa-solid fa-crown"></i>'; rankClass = "top-1"; borderClass = "gold-border"; }
+                        else if (rankPos === 2) { rankIcon = '<i class="fa-solid fa-medal"></i>'; rankClass = "top-2"; }
+                        else if (rankPos === 3) { rankIcon = '<i class="fa-solid fa-award"></i>'; rankClass = "top-3"; }
+
+                        const inisial = donor.nama.charAt(0).toUpperCase();
+
+                        const htmlItem = `
+                            <div class="list-item ${borderClass}">
+                                <div class="rank ${rankClass}">${rankIcon}</div>
+                                <div class="avatar">${inisial}</div>
+                                <div class="info">
+                                    <h4>${donor.nama}</h4>
+                                    <p>${donor.frekuensi}x Transaksi Sedekah</p>
+                                </div>
+                                <div class="amount">
+                                    Rp ${donor.total.toLocaleString('id-ID')}
+                                    <span>Total Sedekah</span>
+                                </div>
+                            </div>
+                        `;
+                        listContainer.innerHTML += htmlItem;
+                    });
+                });
+            } catch (error) {
+                console.error("Gagal memuat klasemen", error);
+                document.getElementById('donaturList').innerHTML = `<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><p>Gagal terhubung ke database server.</p></div>`;
+            }
+        }
+
+        // Panggil fungsi saat web di-load
+        loadKlasemenDonatur();
+    </script>
 
 </body>
 </html>
