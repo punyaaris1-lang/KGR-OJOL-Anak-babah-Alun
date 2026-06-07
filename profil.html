@@ -63,8 +63,15 @@
                     <label class="form-label">Nama Lengkap</label>
                     <input type="text" id="inputNama" class="form-input" value="Memuat..." oninput="checkChanges()">
                 </div>
+                
+                <!-- NOMOR WHATSAPP DITAMBAHKAN DI SINI -->
                 <div class="form-group">
-                    <label class="form-label">Email Terdaftar</label>
+                    <label class="form-label">Nomor WhatsApp Aktif</label>
+                    <input type="tel" id="inputWa" class="form-input" value="Memuat..." oninput="this.value = this.value.replace(/[^0-9]/g, ''); checkChanges();">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email Terdaftar (Login)</label>
                     <input type="email" id="inputEmail" class="form-input" value="Memuat..." disabled>
                 </div>
                 <div class="form-group">
@@ -75,12 +82,12 @@
                 <button class="btn-save" id="btnSave" onclick="saveProfile()" disabled><i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan</button>
             </div>
 
-            <!-- Tombol ini akan otomatis nyesuain sama hak akses lu -->
-            <button id="btnPanelAdmin" class="btn-superadmin" style="display: none;" onclick="window.location.href='kelola_anggota.html'">
-                <i class="fa-solid fa-user-shield"></i> Buka Panel Pengurus
+            <!-- Tombol Pengurus (Otomatis Tampil/Sembunyi) -->
+            <button id="btnPanelAdmin" class="btn-superadmin" style="display: none;" onclick="window.location.href='index.html'">
+                <i class="fa-solid fa-user-shield"></i> Akses Menu Pengurus (Di Beranda)
             </button>
 
-            <button class="btn-logout" onclick="confirmLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar Akun</button>
+            <button class="btn-logout" onclick="confirmLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar Akun (Sign Out)</button>
         </div>
     </div>
 
@@ -92,6 +99,7 @@
 
         let currentUserEmail = "";
         let originalName = "";
+        let originalWa = "";
         let newImageUploaded = false;
 
         // 1. CEK LOGIN & AMBIL DATA ASLI DARI DATABASE
@@ -107,39 +115,44 @@
                         const data = docSnap.data();
                         const role = (data.role || "member").toLowerCase();
                         const namaLengkap = data.nama_lengkap || "Tanpa Nama";
+                        const nomorWa = data.no_wa || "";
 
                         // Update Jabatan / Role
                         document.getElementById('uiRoleBadge').innerHTML = `<i class="fa-solid fa-star" style="margin-right: 4px;"></i> ${role.toUpperCase()}`;
                         
                         // Update Form Text
                         document.getElementById('inputNama').value = namaLengkap;
+                        document.getElementById('inputWa').value = nomorWa; // Masukkan WA ke form
                         document.getElementById('inputEmail').value = currentUserEmail;
                         document.getElementById('inputIdMember').value = data.nik || "Tidak ada NIK";
                         
-                        originalName = namaLengkap; // Kunci nama awal buat deteksi perubahan form
+                        // Kunci nama & wa awal buat deteksi perubahan form
+                        originalName = namaLengkap; 
+                        originalWa = nomorWa;
 
                         // Bikin Inisial Avatar otomatis
                         document.getElementById('avatarInitials').innerText = namaLengkap.charAt(0).toUpperCase();
 
-                        // Munculkan Tombol Admin kalau dia punya akses
+                        // Munculkan Tombol Admin kalau dia Pengurus (Superadmin/Admin/Bendahara)
                         if (role === "superadmin" || role === "admin" || role === "bendahara") {
                             document.getElementById('btnPanelAdmin').style.display = 'flex';
                         }
                     } else {
-                        alert("Data profil tidak ditemukan di Database!");
+                        // Kalo akunnya ada di Auth tapi database profilnya kosong/dihapus
+                        auth.signOut();
                     }
                 } catch (error) {
                     console.error("Gagal memuat profil:", error);
                 }
             } else {
-                // Kalau gak login, tendang balik
+                // Kalau gak login, tendang balik ke login
                 window.location.href = 'login.html';
             }
         });
 
         // 2. FUNGSI LOGOUT (ASLI)
         window.confirmLogout = function() { 
-            if(confirm("Yakin ingin keluar dari aplikasi?")) {
+            if(confirm("Yakin ingin keluar dari aplikasi? (Sistem Device Binding akan ter-reset jika Anda login di HP lain)")) {
                 signOut(auth).then(() => {
                     window.location.href = 'login.html';
                 }).catch((error) => {
@@ -148,22 +161,32 @@
             }
         }
 
-        // 3. FUNGSI SIMPAN PERUBAHAN NAMA KE DATABASE
+        // 3. FUNGSI SIMPAN PERUBAHAN KE DATABASE
         window.saveProfile = async function() {
             const btnSave = document.getElementById('btnSave');
             btnSave.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...'; 
             btnSave.disabled = true;
 
             const newName = document.getElementById('inputNama').value;
+            const newWa = document.getElementById('inputWa').value;
+
+            if (newWa.length < 9) {
+                alert("Nomor WhatsApp tidak valid.");
+                btnSave.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan'; 
+                btnSave.disabled = false;
+                return;
+            }
 
             try {
                 const userRef = doc(db, "users", currentUserEmail);
                 await updateDoc(userRef, {
-                    nama_lengkap: newName
+                    nama_lengkap: newName,
+                    no_wa: newWa
                 });
                 
                 // Animasi Sukses
                 originalName = newName;
+                originalWa = newWa;
                 newImageUploaded = false;
                 document.getElementById('avatarInitials').innerText = newName.charAt(0).toUpperCase();
                 
@@ -180,13 +203,14 @@
             }
         }
 
-        // FUNGSI CEK KETIKAN FORM (Untuk nyalain tombol save)
+        // FUNGSI CEK KETIKAN FORM (Untuk nyalain tombol save kalau ada yang berubah)
         window.checkChanges = function() {
             const currentName = document.getElementById('inputNama').value;
-            document.getElementById('btnSave').disabled = !(currentName !== originalName || newImageUploaded);
+            const currentWa = document.getElementById('inputWa').value;
+            document.getElementById('btnSave').disabled = !(currentName !== originalName || currentWa !== originalWa || newImageUploaded);
         }
 
-        // FUNGSI PREVIEW FOTO (Cuma UI Sementara)
+        // FUNGSI PREVIEW FOTO (UI Sementara)
         window.previewImage = function(event) {
             const file = event.target.files[0];
             if (file) {

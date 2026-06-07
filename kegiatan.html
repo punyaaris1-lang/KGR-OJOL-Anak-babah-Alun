@@ -15,7 +15,7 @@
             --gold-primary: #D4AF37; --gold-deep: linear-gradient(135deg, #A67C00, #D4AF37, #8B6914, #B38728);
             --glass-bg: rgba(255, 255, 255, 0.75); --glass-border: rgba(255, 255, 255, 0.9);
             --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.04);
-            --color-out: #DC3545; /* Merah untuk nominal keluar */
+            --color-out: #DC3545;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -23,7 +23,7 @@
         body { background-color: #E5E5E5; background-image: radial-gradient(circle at 15% 50%, rgba(212, 175, 55, 0.08), transparent 25%), radial-gradient(circle at 85% 30%, rgba(10, 132, 255, 0.05), transparent 25%); display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         
         .app-container { width: 100%; max-width: 414px; height: 100vh; background-color: var(--bg-base); position: relative; overflow: hidden; display: flex; flex-direction: column; color: var(--text-dark); }
-        @media (min-width: 600px) { .app-container { max-width: 480px; height: 90vh; max-height: 900px; border-radius: 40px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15), inset 0 0 0 8px #FFFFFF; border: 1px solid rgba(0,0,0,0.05); } }
+        @media (min-width: 600px) { .app-container { max-width: 480px; height: 90vh; max-height: 900px; border-radius: 40px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15), inset 0 0 0 8px #FFFFFF; border: 1px solid rgba(0,0,0,0.05); margin: auto; } }
 
         .orb { position: absolute; border-radius: 50%; filter: blur(60px); z-index: 0; animation: floatOrb 8s infinite alternate ease-in-out; }
         .orb-1 { width: 300px; height: 300px; background: rgba(212, 175, 55, 0.25); top: -50px; right: -50px; }
@@ -50,15 +50,16 @@
         .section-title { font-size: 14px; font-weight: 900; margin: 0 0 15px; color: var(--text-dark); text-transform: uppercase; letter-spacing: 1px;}
         
         /* --- KARTU KEGIATAN --- */
-        .kegiatan-item { border-radius: 24px; overflow: hidden; margin-bottom: 25px; border: 1px solid rgba(0,0,0,0.05); background: #FFF; box-shadow: 0 8px 25px rgba(0,0,0,0.03); transition: 0.3s; cursor: pointer; }
-        .kegiatan-item:active { transform: scale(0.98); box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+        .kegiatan-item { border-radius: 24px; overflow: hidden; margin-bottom: 25px; border: 1px solid rgba(0,0,0,0.05); background: #FFF; box-shadow: 0 8px 25px rgba(0,0,0,0.03); position: relative; }
         
         .kegiatan-img { width: 100%; height: 220px; background-color: #E5E5E5; background-size: cover; background-position: center; position: relative; }
         
-        /* Gradien hitam di bawah foto agar teks putih terbaca */
         .img-overlay { position: absolute; bottom: 0; left: 0; right: 0; height: 60%; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); }
         
         .kegiatan-date { position: absolute; top: 15px; right: 15px; padding: 6px 12px; border-radius: 10px; background: rgba(255,255,255,0.95); backdrop-filter: blur(5px); color: var(--text-dark); font-size: 10px; font-weight: 800; text-transform: uppercase; box-shadow: 0 4px 10px rgba(0,0,0,0.1);}
+
+        /* Tombol Hapus (Untuk Admin) */
+        .btn-delete-kegiatan { position: absolute; top: 15px; left: 15px; width: 32px; height: 32px; border-radius: 10px; background: rgba(220,53,69,0.9); color: #FFF; display: flex; justify-content: center; align-items: center; cursor: pointer; border: none; z-index: 5; box-shadow: 0 4px 10px rgba(0,0,0,0.2);}
 
         .kegiatan-detail { padding: 20px 18px; }
         .kegiatan-detail h3 { font-size: 16px; font-weight: 900; color: var(--text-dark); margin-bottom: 8px; line-height: 1.3; }
@@ -73,6 +74,30 @@
         
         .btn-tambah { width: 100%; padding: 16px; border-radius: 16px; font-size: 13px; font-weight: 900; background: var(--text-dark); color: var(--gold-primary); border: none; display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 25px; cursor: pointer; transition: 0.2s; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
         .btn-tambah:active { transform: scale(0.97); }
+
+        .empty-state { text-align: center; padding: 40px 20px; color: var(--text-gray); }
+        .empty-state i { font-size: 30px; margin-bottom: 10px; opacity: 0.5; }
+        .empty-state p { font-size: 12px; font-weight: 700; }
+
+        /* MODAL UPLOAD */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: flex-end; z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s; }
+        .modal-overlay.show { opacity: 1; visibility: visible; }
+        .modal-content { background: #FFF; border-radius: 28px 28px 0 0; padding: 25px 24px 35px; width: 100%; max-width: 480px; transform: translateY(100%); transition: 0.35s cubic-bezier(0.15, 1, 0.3, 1); overflow-y: auto; max-height: 85vh;}
+        .modal-overlay.show .modal-content { transform: translateY(0); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-header h3 { font-size: 16px; font-weight: 900; color: var(--text-dark); }
+        .btn-close-modal { width: 32px; height: 32px; border-radius: 50%; border: none; background: #F5F5F7; display: flex; justify-content: center; align-items: center; font-size: 14px; cursor: pointer; color: var(--text-dark); }
+        
+        .form-group { margin-bottom: 15px; }
+        .form-label { display: block; font-size: 10px; font-weight: 800; text-transform: uppercase; margin-bottom: 6px; color: var(--text-gray); }
+        .form-input { width: 100%; padding: 14px; border-radius: 12px; border: 1.5px solid rgba(0,0,0,0.08); font-size: 13px; font-weight: 700; outline: none; background: #F9F9F9; color: var(--text-dark); }
+        .form-input:focus { border-color: var(--gold-primary); background: #FFF; }
+        
+        .file-upload-wrapper { position: relative; width: 100%; margin-bottom: 5px; }
+        .file-upload-input { position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0; z-index: 2; cursor: pointer;}
+        .file-upload-btn { width: 100%; padding: 15px; border-radius: 12px; background: #F5F5F7; border: 2px dashed #D4AF37; font-size: 12px; font-weight: 800; display: flex; justify-content: center; align-items: center; gap: 8px; color: var(--text-dark);}
+
+        .btn-submit { width: 100%; padding: 15px; border-radius: 14px; font-size: 13px; font-weight: 900; background: var(--text-dark); color: #FFF; border: none; margin-top: 10px; cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
@@ -87,56 +112,219 @@
 
         <div class="content-area">
             
-            <!-- Tombol Tambah (Disembunyikan jika bukan Admin) -->
-            <button class="btn-tambah" onclick="alert('Membuka form upload dokumentasi kegiatan baru...')">
+            <!-- Tombol Tambah (Disembunyikan otomatis jika bukan Admin/Superadmin) -->
+            <button id="btnTambahKegiatan" class="btn-tambah" style="display: none;" onclick="openModal()">
                 <i class="fa-solid fa-camera"></i> Upload Dokumentasi Baru
             </button>
 
-            <!-- Kartu Ringkasan -->
+            <!-- Kartu Ringkasan (Real-time Firebase) -->
             <div class="summary-card glass-panel">
                 <div class="label">Total Dana Tersalurkan</div>
-                <div class="amount">Rp 2.250.000</div>
-                <div class="desc"><i class="fa-solid fa-hands-holding-child" style="color: var(--gold-primary); margin-right: 5px;"></i> Terkumpul dari 2 Kegiatan Sosial</div>
+                <div class="amount" id="uiTotalDana">Rp 0</div>
+                <div class="desc"><i class="fa-solid fa-hands-holding-child" style="color: var(--gold-primary); margin-right: 5px;"></i> Terkumpul dari <span id="uiTotalKegiatan">0</span> Kegiatan Sosial</div>
             </div>
 
             <div class="section-title">Dokumentasi Penyaluran</div>
-            <!-- KEGIATAN 1 -->
-            <div class="kegiatan-item" onclick="alert('Lihat foto penuh / Laporan detail')">
-                <div class="kegiatan-img" style="background-image: url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=600&auto=format&fit=crop');">
-                    <div class="img-overlay"></div>
-                    <div class="kegiatan-date">03 Jun 2026</div>
-                </div>
-                <div class="kegiatan-detail">
-                    <h3>Santunan & Bansos Panti Asuhan Cahaya Kasih</h3>
-                    <div class="kegiatan-meta">
-                        <i class="fa-solid fa-location-dot"></i> Jatinegara, Jakarta Timur
-                    </div>
-                    <div class="kegiatan-funds">
-                        <div class="funds-label">Dana Digunakan</div>
-                        <div class="funds-amount"><i class="fa-solid fa-arrow-right-from-bracket"></i> Rp 1.500.000</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- KEGIATAN 2 -->
-            <div class="kegiatan-item" onclick="alert('Lihat foto penuh / Laporan detail')">
-                <div class="kegiatan-img" style="background-image: url('https://images.unsplash.com/photo-1593113598332-cd288d649433?q=80&w=600&auto=format&fit=crop');">
-                    <div class="img-overlay"></div>
-                    <div class="kegiatan-date">28 Mei 2026</div>
-                </div>
-                <div class="kegiatan-detail">
-                    <h3>Berbagi Sembako & Takjil Jumat Berkah</h3>
-                    <div class="kegiatan-meta">
-                        <i class="fa-solid fa-location-dot"></i> Jl. Benyamin Sueb, Kemayoran
-                    </div>
-                    <div class="kegiatan-funds">
-                        <div class="funds-label">Dana Digunakan</div>
-                        <div class="funds-amount"><i class="fa-solid fa-arrow-right-from-bracket"></i> Rp 750.000</div>
-                    </div>
+            
+            <div id="listKegiatan">
+                <div class="empty-state">
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                    <p>Memuat dokumentasi kegiatan...</p>
                 </div>
             </div>
 
         </div>
     </div>
+
+    <!-- MODAL FORM UPLOAD KEGIATAN -->
+    <div id="modalKegiatan" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Upload Dokumentasi Baru</h3>
+                <button type="button" onclick="closeModal()" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="formKegiatan" onsubmit="submitKegiatan(event)">
+                <div class="form-group">
+                    <label class="form-label">Nama / Judul Kegiatan</label>
+                    <input type="text" id="kegJudul" class="form-input" placeholder="Contoh: Santunan Anak Yatim" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Lokasi Kegiatan</label>
+                    <input type="text" id="kegLokasi" class="form-input" placeholder="Contoh: Panti Asuhan Cahaya" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Total Dana Disalurkan (Rupiah)</label>
+                    <input type="number" id="kegNominal" class="form-input" placeholder="Contoh: 1500000" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Foto Dokumentasi Utama</label>
+                    <div class="file-upload-wrapper">
+                        <input type="file" id="kegFoto" class="file-upload-input" accept="image/*" required onchange="gantiTeksUpload(this)">
+                        <div class="file-upload-btn" id="btnUploadText">
+                            <i class="fa-solid fa-image"></i> Pilih Foto dari Galeri
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" id="btnKirimKegiatan" class="btn-submit"><i class="fa-solid fa-cloud-arrow-up"></i> Upload Kegiatan</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- FIREBASE MODULE & LOGIKA -->
+    <script type="module">
+        import { auth, db } from './db-config.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+        import { collection, onSnapshot, doc, getDoc, addDoc, deleteDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+        let userRole = "member";
+
+        // ==========================================
+        // 1. CEK LOGIN & OTORISASI TOMBOL TAMBAH
+        // ==========================================
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const docSnap = await getDoc(doc(db, "users", user.email));
+                if (docSnap.exists()) {
+                    userRole = (docSnap.data().role || "member").toLowerCase();
+                    
+                    // Tampilkan tombol upload & hapus cuma buat Superadmin & Admin
+                    if (userRole === "superadmin" || userRole === "admin") {
+                        document.getElementById('btnTambahKegiatan').style.display = 'flex';
+                    }
+                    
+                    loadDataKegiatan(); 
+                }
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+
+        // ==========================================
+        // 2. FUNGSI UI (MODAL)
+        // ==========================================
+        window.openModal = function() { document.getElementById('modalKegiatan').classList.add('show'); }
+        window.closeModal = function() { document.getElementById('modalKegiatan').classList.remove('show'); document.getElementById('formKegiatan').reset(); document.getElementById('btnUploadText').innerHTML = '<i class="fa-solid fa-image"></i> Pilih Foto dari Galeri';}
+        
+        window.gantiTeksUpload = function(input) {
+            if (input.files && input.files[0]) {
+                document.getElementById('btnUploadText').innerHTML = `<i class="fa-solid fa-check-circle" style="color:#28A745;"></i> Foto Siap Diupload`;
+            }
+        }
+
+        // ==========================================
+        // 3. FUNGSI KONVERSI GAMBAR (Base64) & SUBMIT
+        // ==========================================
+        const getBase64 = (file) => new Promise((res, rej) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => res(reader.result); reader.onerror = error => rej(error); });
+
+        window.submitKegiatan = async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btnKirimKegiatan');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengupload...';
+            btn.disabled = true;
+
+            try {
+                let base64Image = await getBase64(document.getElementById('kegFoto').files[0]);
+                
+                await addDoc(collection(db, "kegiatan_sosial"), {
+                    judul: document.getElementById('kegJudul').value,
+                    lokasi: document.getElementById('kegLokasi').value,
+                    nominal: Number(document.getElementById('kegNominal').value),
+                    bukti_image: base64Image,
+                    tanggal: serverTimestamp()
+                });
+                
+                alert('Dokumentasi Kegiatan berhasil ditambahkan!');
+                closeModal();
+            } catch (error) {
+                alert('Gagal mengupload kegiatan. Gambar mungkin terlalu besar atau koneksi terputus.');
+            } finally {
+                btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Upload Kegiatan';
+                btn.disabled = false;
+            }
+        }
+
+        // ==========================================
+        // 4. TARIK DATA KEGIATAN & HITUNG TOTAL DANA (REAL-TIME)
+        // ==========================================
+        function loadDataKegiatan() {
+            const reqRef = collection(db, "kegiatan_sosial");
+            const q = query(reqRef, orderBy("tanggal", "desc"));
+            
+            onSnapshot(q, (snapshot) => {
+                const listContainer = document.getElementById('listKegiatan');
+                listContainer.innerHTML = ""; 
+                
+                let totalDanaKeluar = 0;
+                let totalKegiatan = 0;
+
+                if (snapshot.empty) {
+                    listContainer.innerHTML = '<div class="empty-state"><i class="fa-solid fa-box-open"></i><p>Belum ada dokumentasi kegiatan sosial.</p></div>';
+                    document.getElementById('uiTotalDana').innerText = "Rp 0";
+                    document.getElementById('uiTotalKegiatan').innerText = "0";
+                    return;
+                }
+
+                snapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    const id = docSnap.id;
+                    
+                    // Hitung Kalkulasi Dashboard
+                    totalDanaKeluar += Number(data.nominal);
+                    totalKegiatan++;
+
+                    // Format Tanggal
+                    let tglText = "Baru saja";
+                    if(data.tanggal) { tglText = data.tanggal.toDate().toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }); }
+                    
+                    // Tombol Hapus Khusus Admin/Superadmin
+                    const deleteBtnHtml = (userRole === "superadmin" || userRole === "admin") 
+                        ? `<button class="btn-delete-kegiatan" onclick="hapusKegiatan('${id}')" title="Hapus Kegiatan"><i class="fa-solid fa-trash-can"></i></button>` 
+                        : ``;
+
+                    // Default image kalau base64-nya error/kosong
+                    const imgUrl = data.bukti_image || 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=600&auto=format&fit=crop';
+
+                    const htmlCard = `
+                        <div class="kegiatan-item">
+                            ${deleteBtnHtml}
+                            <div class="kegiatan-img" style="background-image: url('${imgUrl}');">
+                                <div class="img-overlay"></div>
+                                <div class="kegiatan-date">${tglText}</div>
+                            </div>
+                            <div class="kegiatan-detail">
+                                <h3>${data.judul}</h3>
+                                <div class="kegiatan-meta">
+                                    <i class="fa-solid fa-location-dot"></i> ${data.lokasi}
+                                </div>
+                                <div class="kegiatan-funds">
+                                    <div class="funds-label">Dana Disalurkan</div>
+                                    <div class="funds-amount"><i class="fa-solid fa-arrow-right-from-bracket"></i> Rp ${Number(data.nominal).toLocaleString('id-ID')}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    listContainer.innerHTML += htmlCard;
+                });
+
+                // Update UI Ringkasan Atas
+                document.getElementById('uiTotalDana').innerText = "Rp " + totalDanaKeluar.toLocaleString('id-ID');
+                document.getElementById('uiTotalKegiatan').innerText = totalKegiatan;
+            });
+        }
+
+        // ==========================================
+        // 5. FUNGSI HAPUS KEGIATAN
+        // ==========================================
+        window.hapusKegiatan = async function(docId) {
+            if(confirm("Apakah Anda yakin ingin menghapus dokumentasi kegiatan ini?")) {
+                try {
+                    await deleteDoc(doc(db, "kegiatan_sosial", docId));
+                } catch(e) {
+                    alert("Gagal menghapus kegiatan.");
+                }
+            }
+        }
+    </script>
 </body>
 </html>

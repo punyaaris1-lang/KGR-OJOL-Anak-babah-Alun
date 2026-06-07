@@ -11,64 +11,62 @@
     
     <style>
         :root {
-            --bg-base: #F5F5F7; --text-dark: #1C1C1E; --text-black: #111111; --text-gray: #8E8E93;
+            --bg-base: #F5F5F7; --text-dark: #1C1C1E; --text-gray: #8E8E93;
             --gold-primary: #D4AF37; --gold-deep: linear-gradient(135deg, #A67C00, #D4AF37, #8B6914, #B38728);
-            --glass-bg: rgba(255, 255, 255, 0.75); --glass-border: rgba(255, 255, 255, 0.9);
-            --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.04);
             --color-pending: #FD7E14; --color-approved: #28A745; --color-rejected: #DC3545;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: #E5E5E5; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        body { background-color: #E5E5E5; display: flex; justify-content: center; min-height: 100vh; }
         
-        .app-container { width: 100%; max-width: 414px; height: 100vh; background-color: var(--bg-base); position: relative; overflow: hidden; display: flex; flex-direction: column; color: var(--text-dark); }
-        @media (min-width: 600px) { .app-container { max-width: 480px; height: 90vh; max-height: 900px; border-radius: 40px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15), inset 0 0 0 8px #FFFFFF; border: 1px solid rgba(0,0,0,0.05); } }
+        .app-container { width: 100%; max-width: 480px; background: var(--bg-base); display: flex; flex-direction: column; height: 100vh; position: relative; overflow: hidden;}
+        
+        @media (min-width: 600px) { .app-container { height: 90vh; max-height: 900px; border-radius: 40px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15); border: 1px solid rgba(0,0,0,0.05); margin: auto; } }
 
-        .header-page { padding: 40px 24px 20px; display: flex; align-items: center; gap: 15px; background: rgba(245,245,247,0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,0,0,0.05); z-index: 10; position: relative; }
-        .btn-back { width: 40px; height: 40px; border-radius: 14px; background: #FFF; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.1); font-size: 16px; color: var(--text-dark); transition: 0.2s; }
-        .btn-back:active { transform: scale(0.92); background: var(--text-dark); color: #FFF; }
-        .header-page h2 { font-size: 17px; font-weight: 900; letter-spacing: -0.3px; }
-
-        .content-area { flex-grow: 1; overflow-y: auto; padding: 20px 24px 110px; scrollbar-width: none; }
+        .header-page { padding: 40px 24px 20px; display: flex; align-items: center; gap: 15px; background: #FFF; border-bottom: 1px solid rgba(0,0,0,0.05); z-index: 10; }
+        .btn-back { width: 40px; height: 40px; border-radius: 12px; background: #F5F5F7; display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text-dark); transition: 0.2s; }
+        .btn-back:active { transform: scale(0.9); }
+        .header-page h2 { font-size: 18px; font-weight: 900; }
+        
+        .content-area { flex-grow: 1; overflow-y: auto; padding: 20px 24px; scrollbar-width: none; }
         .content-area::-webkit-scrollbar { display: none; }
-
-        /* TABS */
+        
+        /* Tabs */
         .tabs-container { display: flex; gap: 8px; margin-bottom: 20px; }
-        .tab-btn { flex: 1; height: 40px; border-radius: 12px; font-size: 12px; font-weight: 800; background: #FFF; border: 1px solid rgba(0,0,0,0.08); color: var(--text-dark); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.25s ease; }
-        .tab-btn.active { background: var(--gold-deep); color: #FFF; border-color: transparent; box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3); }
+        .tab-btn { flex: 1; padding: 12px; border-radius: 12px; font-size: 12px; font-weight: 800; background: #FFF; border: 1px solid rgba(0,0,0,0.08); text-align: center; cursor: pointer; transition: 0.2s; }
+        .tab-btn.active { background: var(--gold-deep); color: #FFF; border-color: transparent; }
 
-        /* KARTU PENGAJUAN */
-        .request-card { background: #FFF; border-radius: 18px; padding: 18px; margin-bottom: 15px; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
-        .req-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
-        .req-title { font-size: 14px; font-weight: 900; color: var(--text-dark); margin-bottom: 3px; }
-        .req-date { font-size: 10px; font-weight: 700; color: var(--text-gray); }
-        .req-amount { font-size: 15px; font-weight: 900; color: var(--color-out); text-align: right; }
+        /* Card Pengajuan */
+        .request-card { background: #FFF; border-radius: 18px; padding: 18px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.05); }
+        .req-header { display: flex; justify-content: space-between; margin-bottom: 10px; }
+        .req-title { font-size: 14px; font-weight: 900; }
+        .req-date { font-size: 10px; color: var(--text-gray); font-weight: 700; margin-top: 3px;}
+        .req-amount { font-size: 15px; font-weight: 900; color: var(--color-rejected); }
+        .req-body { font-size: 11px; color: var(--text-gray); font-weight: 600; margin-bottom: 15px; line-height: 1.4;}
         
-        .req-body { font-size: 11px; font-weight: 600; color: var(--text-gray); margin-bottom: 15px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        
-        /* STATUS TRACKER */
-        .status-tracker { display: flex; align-items: center; justify-content: space-between; background: #F5F5F7; padding: 10px 15px; border-radius: 12px; }
-        .status-badge { display: flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+        .status-tracker { background: #F5F5F7; padding: 12px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .status-badge { font-size: 10px; font-weight: 800; text-transform: uppercase; display: flex; align-items: center; gap: 5px; }
         .status-badge.pending { color: var(--color-pending); }
         .status-badge.approved { color: var(--color-approved); }
         .status-badge.rejected { color: var(--color-rejected); }
         
-        .approval-count { font-size: 11px; font-weight: 900; color: var(--text-dark); background: #FFF; padding: 4px 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.03);}
-        
-        /* TOMBOL AKSI (Untuk Approver) */
-        .action-buttons { display: flex; gap: 10px; margin-top: 15px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 15px; }
-        .btn-act { flex: 1; padding: 12px; border-radius: 12px; font-size: 12px; font-weight: 800; cursor: pointer; border: none; display: flex; justify-content: center; align-items: center; gap: 6px; transition: 0.2s; }
-        .btn-act.approve { background: rgba(40, 167, 69, 0.1); color: var(--color-approved); }
+        .approval-info { font-size: 10px; font-weight: 800; background: #FFF; padding: 5px 10px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.05); display: flex; gap: 10px; }
+        .approval-info span.yes { color: var(--color-approved); }
+        .approval-info span.no { color: var(--text-gray); }
+
+        .action-buttons { display: flex; gap: 10px; margin-top: 15px; border-top: 1px dashed rgba(0,0,0,0.1); padding-top: 15px; }
+        .btn-act { flex: 1; padding: 12px; border-radius: 10px; font-size: 12px; font-weight: 800; cursor: pointer; border: none; transition: 0.2s;}
+        .btn-act.approve { background: rgba(40,167,69,0.1); color: var(--color-approved); }
         .btn-act.approve:active { background: var(--color-approved); color: #FFF; }
-        .btn-act.reject { background: rgba(220, 53, 69, 0.1); color: var(--color-rejected); }
+        .btn-act.reject { background: rgba(220,53,69,0.1); color: var(--color-rejected); }
         .btn-act.reject:active { background: var(--color-rejected); color: #FFF; }
 
-        /* BUTTON BUAT PENGAJUAN */
-        .btn-create { width: 100%; padding: 16px; border-radius: 16px; font-size: 13px; font-weight: 900; background: var(--text-dark); color: #FFF; border: none; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.15); transition: 0.2s; }
-        .btn-create i { color: var(--gold-primary); }
+        .btn-create { width: 100%; padding: 16px; border-radius: 16px; font-size: 13px; font-weight: 900; background: var(--text-dark); color: #FFF; border: none; margin-bottom: 20px; cursor: pointer; transition: 0.2s; box-shadow: 0 10px 25px rgba(0,0,0,0.15);}
         .btn-create:active { transform: scale(0.97); }
-
-        /* MODAL */
+        
+        .empty-state { text-align: center; padding: 40px 20px; color: var(--text-gray); font-size: 12px; font-weight: 700; border: 2px dashed rgba(0,0,0,0.08); border-radius: 20px;}
+        
+        /* Modal */
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: flex-end; z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s; }
         .modal-overlay.show { opacity: 1; visibility: visible; }
         .modal-content { background: #FFF; border-radius: 28px 28px 0 0; padding: 25px 24px 35px; width: 100%; max-width: 480px; transform: translateY(100%); transition: 0.35s cubic-bezier(0.15, 1, 0.3, 1); overflow-y: auto; max-height: 85vh; }
@@ -84,7 +82,6 @@
     </style>
 </head>
 <body>
-
     <div class="app-container">
         <div class="header-page">
             <div class="btn-back" onclick="window.location.href='index.html'"><i class="fa-solid fa-arrow-left"></i></div>
@@ -92,79 +89,23 @@
         </div>
 
         <div class="content-area">
-            
-            <!-- TABS -->
             <div class="tabs-container" id="tabContainer">
-                <div class="tab-btn active" onclick="switchTab('pengajuan-saya', this)">Pengajuan Saya</div>
-                <!-- Tab "Perlu Persetujuan" ini hanya akan muncul untuk Pengurus (Admin/Bendahara) -->
-                <div class="tab-btn" id="tabApproval" style="display: none;" onclick="switchTab('persetujuan', this)">Perlu Persetujuan</div>
+                <div class="tab-btn active" onclick="switchTab('pengajuan-saya')">Pengajuan Saya</div>
+                <div class="tab-btn" id="tabApproval" style="display: none;" onclick="switchTab('persetujuan')">Perlu Persetujuan</div>
             </div>
 
-            <!-- VIEW 1: PENGAJUAN SAYA -->
             <div id="viewPengajuanSaya">
                 <button class="btn-create" onclick="openModal()"><i class="fa-solid fa-file-circle-plus"></i> Buat Pengajuan Baru</button>
-                
-                <!-- Contoh Kartu Pengajuan Saya (Pending) -->
-                <div class="request-card">
-                    <div class="req-header">
-                        <div>
-                            <div class="req-title">Sembako Jumat Berkah</div>
-                            <div class="req-date">05 Jun 2026</div>
-                        </div>
-                        <div class="req-amount">Rp 450.000</div>
-                    </div>
-                    <div class="req-body">
-                        Pengajuan dana untuk pembelian 10 paket sembako untuk dibagikan di pangkalan Jatinegara.
-                    </div>
-                    <div class="status-tracker">
-                        <div class="status-badge pending"><i class="fa-solid fa-clock"></i> Diproses</div>
-                        <div class="approval-count"><i class="fa-solid fa-user-check" style="color: var(--gold-primary); margin-right: 4px;"></i> 1/3 Disetujui</div>
-                    </div>
-                </div>
-
-                <!-- Contoh Kartu Pengajuan Saya (Disetujui) -->
-                <div class="request-card">
-                    <div class="req-header">
-                        <div>
-                            <div class="req-title">Stiker Komunitas</div>
-                            <div class="req-date">20 Mei 2026</div>
-                        </div>
-                        <div class="req-amount">Rp 150.000</div>
-                    </div>
-                    <div class="status-tracker">
-                        <div class="status-badge approved"><i class="fa-solid fa-circle-check"></i> Dana Cair</div>
-                        <div class="approval-count">3/3 Disetujui</div>
-                    </div>
+                <div id="listSaya">
+                    <div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i> Memuat data...</div>
                 </div>
             </div>
 
-            <!-- VIEW 2: PERLU PERSETUJUAN (Hanya untuk Admin/Bendahara) -->
             <div id="viewPersetujuan" style="display: none;">
-                <!-- Kartu Pengajuan dari Member Lain -->
-                <div class="request-card">
-                    <div class="req-header">
-                        <div>
-                            <div class="req-title">Bansos Anggota Sakit</div>
-                            <div class="req-date">Oleh: Sandi Wibowo</div>
-                        </div>
-                        <div class="req-amount">Rp 500.000</div>
-                    </div>
-                    <div class="req-body">
-                        Pengajuan dana kas untuk menjenguk sdr. Budi yang sedang dirawat di RS.
-                    </div>
-                    <div class="status-tracker">
-                        <div class="status-badge pending"><i class="fa-solid fa-clock"></i> Butuh Validasi</div>
-                        <div class="approval-count">2/3 Disetujui</div>
-                    </div>
-                    
-                    <!-- Tombol Aksi -->
-                    <div class="action-buttons">
-                        <button class="btn-act reject" onclick="alert('Pengajuan ditolak')"><i class="fa-solid fa-xmark"></i> Tolak</button>
-                        <button class="btn-act approve" onclick="alert('Pengajuan disetujui. Skor menjadi 3/3 dan dana siap dicairkan.')"><i class="fa-solid fa-check"></i> Setujui</button>
-                    </div>
+                <div id="listPersetujuan">
+                    <div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i> Memuat antrean...</div>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -173,63 +114,243 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3>Form Pengajuan Kas</h3>
-                <button onclick="closeModal()" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+                <button type="button" onclick="closeModal()" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <form id="formReq" onsubmit="event.preventDefault(); alert('Pengajuan berhasil dikirim! Menunggu persetujuan pengurus.'); closeModal();">
+            <form id="formReq" onsubmit="submitPengajuan(event)">
                 <div class="form-group">
                     <label class="form-label">Tujuan / Nama Pengajuan</label>
-                    <input type="text" class="form-input" placeholder="Contoh: Dana Kopi Darat" required autocomplete="off">
+                    <input type="text" id="reqJudul" class="form-input" placeholder="Contoh: Dana Kopi Darat" required autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Nominal (Rupiah)</label>
-                    <input type="number" class="form-input" placeholder="Contoh: 300000" required autocomplete="off">
+                    <label class="form-label">Nominal Kas (Rupiah)</label>
+                    <input type="number" id="reqNominal" class="form-input" placeholder="Contoh: 300000" required autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Rincian & Penjelasan</label>
-                    <textarea class="form-input" rows="3" placeholder="Jelaskan rincian penggunaan dana secara singkat..." required style="resize: none;"></textarea>
+                    <label class="form-label">Rincian & Penjelasan Penggunaan</label>
+                    <textarea id="reqDeskripsi" class="form-input" rows="3" placeholder="Jelaskan rincian penggunaan dana secara singkat..." required style="resize: none;"></textarea>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Upload Dokumen/RAB (Opsional)</label>
-                    <input type="file" class="form-input" style="padding: 10px; font-size: 11px;">
-                </div>
-                <button type="submit" class="btn-submit"><i class="fa-solid fa-paper-plane"></i> Kirim Pengajuan</button>
+                <button type="submit" id="btnKirimPengajuan" class="btn-submit"><i class="fa-solid fa-paper-plane"></i> Kirim Pengajuan</button>
             </form>
         </div>
     </div>
 
-    <script>
-        // ======= SIMULASI JABATAN (Ganti teks di bawah untuk ngetes) =======
-        // Coba ganti jadi "Admin", "Bendahara", atau "Member"
-        const roleSaatIni = "Super Admin"; 
+    <!-- FIREBASE MODULE & LOGIKA -->
+    <script type="module">
+        import { auth, db } from './db-config.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+        import { collection, onSnapshot, doc, updateDoc, getDoc, addDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-        document.addEventListener("DOMContentLoaded", () => {
-            // Jika yang buka adalah Pengurus (Admin, Bendahara, Super Admin)
-            if (roleSaatIni === "Super Admin" || roleSaatIni === "Admin" || roleSaatIni === "Bendahara") {
-                document.getElementById('tabApproval').style.display = 'flex'; // Munculkan tab Perlu Persetujuan
+        let userRole = "member";
+        let userEmail = "";
+        let isApprover = false;
+
+        // ==========================================
+        // 1. AUTENTIKASI & CEK JABATAN PENGURUS
+        // ==========================================
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                userEmail = user.email;
+                const docSnap = await getDoc(doc(db, "users", userEmail));
+                
+                if (docSnap.exists()) {
+                    const dataUser = docSnap.data();
+                    userRole = (dataUser.role || "member").toLowerCase();
+                    
+                    // Cek izin khusus untuk Admin biasa
+                    isApprover = (dataUser.can_approve === true);
+                    
+                    // Semua Pengurus punya tab persetujuan (meski mungkin isinya kosong buat admin biasa)
+                    if (["superadmin", "admin", "bendahara"].includes(userRole)) {
+                        document.getElementById('tabApproval').style.display = 'block';
+                    }
+                    
+                    loadDataPengajuan(); 
+                }
+            } else {
+                window.location.href = 'login.html';
             }
         });
 
-        // Logika Perpindahan Tab
-        function switchTab(viewId, btnElement) {
-            // Ubah Warna Tab
-            const tabs = document.querySelectorAll('.tab-btn');
-            tabs.forEach(tab => tab.classList.remove('active'));
-            btnElement.classList.add('active');
+        // ==========================================
+        // 2. FUNGSI UI (TABS & MODAL)
+        // ==========================================
+        window.switchTab = function(viewId) {
+            document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            document.getElementById('viewPengajuanSaya').style.display = viewId === 'pengajuan-saya' ? 'block' : 'none';
+            document.getElementById('viewPersetujuan').style.display = viewId === 'persetujuan' ? 'block' : 'none';
+        }
 
-            // Sembunyikan semua view, lalu munculkan yang dipilih
-            document.getElementById('viewPengajuanSaya').style.display = 'none';
-            document.getElementById('viewPersetujuan').style.display = 'none';
+        window.openModal = function() { document.getElementById('reqModal').classList.add('show'); }
+        window.closeModal = function() { document.getElementById('reqModal').classList.remove('show'); document.getElementById('formReq').reset(); }
 
-            if(viewId === 'pengajuan-saya') {
-                document.getElementById('viewPengajuanSaya').style.display = 'block';
-            } else if(viewId === 'persetujuan') {
-                document.getElementById('viewPersetujuan').style.display = 'block';
+        // ==========================================
+        // 3. SUBMIT PENGAJUAN BARU
+        // ==========================================
+        window.submitPengajuan = async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btnKirimPengajuan');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim...';
+            btn.disabled = true;
+
+            try {
+                await addDoc(collection(db, "pengajuan_dana"), {
+                    pengaju_email: userEmail,
+                    judul: document.getElementById('reqJudul').value,
+                    nominal: Number(document.getElementById('reqNominal').value),
+                    deskripsi: document.getElementById('reqDeskripsi').value,
+                    status: "pending",
+                    admin_approvals: [],
+                    bendahara_approvals: [],
+                    tanggal: serverTimestamp()
+                });
+                
+                alert('Pengajuan berhasil dikirim! Menunggu persetujuan pengurus.');
+                closeModal();
+            } catch (error) {
+                alert('Gagal mengirim pengajuan. Periksa koneksi Anda.');
+            } finally {
+                btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Pengajuan';
+                btn.disabled = false;
             }
         }
 
-        // Logika Modal Buka/Tutup
-        function openModal() { document.getElementById('reqModal').classList.add('show'); }
-        function closeModal() { document.getElementById('reqModal').classList.remove('show'); }
+        // ==========================================
+        // 4. TARIK DATA PENGAJUAN
+        // ==========================================
+        function loadDataPengajuan() {
+            const reqRef = collection(db, "pengajuan_dana");
+            const q = query(reqRef, orderBy("tanggal", "desc"));
+            
+            onSnapshot(q, (snapshot) => {
+                const listSaya = document.getElementById('listSaya');
+                const listPersetujuan = document.getElementById('listPersetujuan');
+                listSaya.innerHTML = ""; listPersetujuan.innerHTML = "";
+                
+                let countSaya = 0, countPersetujuan = 0;
+
+                snapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    const id = docSnap.id;
+                    
+                    let tglText = "Baru saja";
+                    if(data.tanggal) { tglText = data.tanggal.toDate().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }); }
+                    
+                    const adminArray = data.admin_approvals || [];
+                    const bdhArray = data.bendahara_approvals || [];
+                    
+                    const sudahApprove = adminArray.includes(userEmail) || bdhArray.includes(userEmail);
+                    const isApproved = adminArray.length >= 2 && bdhArray.length >= 1;
+                    
+                    let statusText = data.status === 'rejected' ? 'Ditolak' : (isApproved || data.status === 'approved' ? 'Cair / Disetujui' : 'Diproses');
+                    let statusClass = data.status === 'rejected' ? 'rejected' : (isApproved || data.status === 'approved' ? 'approved' : 'pending');
+
+                    // --- LOGIKA RBAC: SIAPA YANG BOLEH LIHAT TOMBOL SETUJUI? ---
+                    let bolehMelihatTombol = false;
+                    
+                    // Syarat 1: Pengajuan ini bukan punya dia sendiri, belum dia setujui, dan statusnya masih nunggu
+                    if (data.pengaju_email !== userEmail && !isApproved && !sudahApprove && data.status === 'pending') {
+                        // Syarat 2: Kasta Jabatannya Sesuai
+                        if (userRole === "superadmin") {
+                            bolehMelihatTombol = true; // God Mode
+                        } else if (userRole === "bendahara") {
+                            bolehMelihatTombol = true; // Bendahara berhak approve
+                        } else if (userRole === "admin" && isApprover === true) {
+                            bolehMelihatTombol = true; // Hanya admin yg dicentang can_approve
+                        }
+                    }
+
+                    const htmlCard = `
+                        <div class="request-card">
+                            <div class="req-header">
+                                <div>
+                                    <div class="req-title">${data.judul}</div>
+                                    <div class="req-date">${tglText} | Oleh: ${data.pengaju_email}</div>
+                                </div>
+                                <div class="req-amount">Rp ${Number(data.nominal).toLocaleString('id-ID')}</div>
+                            </div>
+                            <div class="req-body">${data.deskripsi}</div>
+                            <div class="status-tracker">
+                                <div class="status-badge ${statusClass}"><i class="fa-solid ${statusClass === 'approved' ? 'fa-circle-check' : (statusClass === 'rejected' ? 'fa-circle-xmark' : 'fa-clock')}"></i> ${statusText}</div>
+                                <div class="approval-info">
+                                    <span class="${bdhArray.length >= 1 ? 'yes' : 'no'}" title="Butuh 1 Bendahara">Bdh: ${bdhArray.length}/1</span>
+                                    <span class="${adminArray.length >= 2 ? 'yes' : 'no'}" title="Butuh 2 Admin">Adm: ${adminArray.length}/2</span>
+                                </div>
+                            </div>
+                            
+                            <div class="action-buttons" style="display: ${bolehMelihatTombol ? 'flex' : 'none'};">
+                                <button class="btn-act reject" onclick="tolakDana('${id}')"><i class="fa-solid fa-xmark"></i> Tolak</button>
+                                <button class="btn-act approve" onclick="setujuiDana('${id}')"><i class="fa-solid fa-check"></i> Berikan Persetujuan</button>
+                            </div>
+                        </div>
+                    `;
+
+                    if (data.pengaju_email === userEmail) {
+                        listSaya.innerHTML += htmlCard;
+                        countSaya++;
+                    } else {
+                        listPersetujuan.innerHTML += htmlCard;
+                        countPersetujuan++;
+                    }
+                });
+
+                if(countSaya === 0) listSaya.innerHTML = '<div class="empty-state">Anda belum memiliki riwayat pengajuan dana kas.</div>';
+                if(countPersetujuan === 0) listPersetujuan.innerHTML = '<div class="empty-state">Tidak ada antrean pengajuan yang menunggu persetujuan Anda.</div>';
+            });
+        }
+
+        // ==========================================
+        // 5. FUNGSI PERSETUJUAN (1 Bendahara + 2 Admin)
+        // ==========================================
+        window.setujuiDana = async function(docId) {
+            try {
+                const reqRef = doc(db, "pengajuan_dana", docId);
+                const docSnap = await getDoc(reqRef);
+                const data = docSnap.data();
+                
+                let adminArray = data.admin_approvals || [];
+                let bdhArray = data.bendahara_approvals || [];
+
+                if (userRole === "bendahara") {
+                    bdhArray.push(userEmail);
+                } else if (userRole === "admin" || userRole === "superadmin") {
+                    adminArray.push(userEmail);
+                }
+
+                // Cek Korum
+                let statusBaru = "pending";
+                if (bdhArray.length >= 1 && adminArray.length >= 2) {
+                    statusBaru = "approved";
+                }
+
+                await updateDoc(reqRef, {
+                    admin_approvals: adminArray,
+                    bendahara_approvals: bdhArray,
+                    status: statusBaru
+                });
+
+                if(statusBaru === "approved") {
+                    alert("Korum Terpenuhi! Pengajuan resmi DISETUJUI.");
+                }
+
+            } catch(e) { 
+                alert("Gagal memproses persetujuan. Periksa koneksi internet Anda."); 
+            }
+        }
+
+        // ==========================================
+        // 6. FUNGSI TOLAK DANA
+        // ==========================================
+        window.tolakDana = async function(docId) {
+            if(confirm("Yakin ingin MENOLAK pengajuan ini secara permanen?")) {
+                try {
+                    await updateDoc(doc(db, "pengajuan_dana", docId), { status: "rejected" });
+                } catch(e) {
+                    alert("Gagal menolak pengajuan.");
+                }
+            }
+        }
     </script>
 </body>
 </html>

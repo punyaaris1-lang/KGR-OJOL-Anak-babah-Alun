@@ -22,7 +22,7 @@
         body { background-color: #E5E5E5; background-image: radial-gradient(circle at 15% 50%, rgba(212, 175, 55, 0.08), transparent 25%), radial-gradient(circle at 85% 30%, rgba(10, 132, 255, 0.05), transparent 25%); display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         
         .app-container { width: 100%; max-width: 414px; height: 100vh; background-color: var(--bg-base); position: relative; overflow: hidden; display: flex; flex-direction: column; color: var(--text-dark); }
-        @media (min-width: 600px) { .app-container { max-width: 480px; height: 90vh; max-height: 900px; border-radius: 40px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15), inset 0 0 0 8px #FFFFFF; border: 1px solid rgba(0,0,0,0.05); } }
+        @media (min-width: 600px) { .app-container { max-width: 480px; height: 90vh; max-height: 900px; border-radius: 40px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15), inset 0 0 0 8px #FFFFFF; border: 1px solid rgba(0,0,0,0.05); margin: auto;} }
 
         .orb { position: absolute; border-radius: 50%; filter: blur(60px); z-index: 0; animation: floatOrb 8s infinite alternate ease-in-out; }
         .orb-1 { width: 300px; height: 300px; background: rgba(212, 175, 55, 0.25); top: -50px; right: -50px; }
@@ -44,8 +44,7 @@
         .section-title { font-size: 13px; font-weight: 900; margin: 0 0 15px; color: var(--text-dark); text-transform: uppercase; letter-spacing: 1px;}
 
         /* INFO CARD STYLE */
-        .info-card { padding: 20px 18px; border-radius: 20px; margin-bottom: 15px; background: #FFF; border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 5px 20px rgba(0,0,0,0.02); transition: 0.2s; cursor: pointer; position: relative; overflow: hidden;}
-        .info-card:active { transform: scale(0.98); background: var(--bg-base); }
+        .info-card { padding: 20px 18px; border-radius: 20px; margin-bottom: 15px; background: #FFF; border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 5px 20px rgba(0,0,0,0.02); position: relative; overflow: hidden;}
         
         /* Left border accent */
         .info-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: var(--gold-primary); }
@@ -61,11 +60,34 @@
         .info-date { font-size: 10px; font-weight: 800; color: var(--text-gray); }
 
         .info-card h3 { font-size: 15px; font-weight: 900; color: var(--text-dark); margin-bottom: 8px; line-height: 1.4; letter-spacing: -0.3px;}
-        .info-card p { font-size: 12px; font-weight: 600; color: var(--text-gray); line-height: 1.6; margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .info-card p { font-size: 12px; font-weight: 600; color: var(--text-gray); line-height: 1.6; margin-bottom: 16px; white-space: pre-wrap;}
 
-        .read-more { font-size: 11px; font-weight: 800; color: var(--text-dark); display: flex; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: 0.5px;}
-        .read-more i { font-size: 10px; color: var(--gold-primary); transition: 0.2s; }
-        .info-card:hover .read-more i { transform: translateX(3px); }
+        /* Footer Pengumuman (Pembuat & Tombol Hapus) */
+        .info-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(0,0,0,0.08); padding-top: 12px; margin-top: 15px; }
+        .info-author { font-size: 10px; font-weight: 700; color: var(--text-gray); display: flex; align-items: center; gap: 5px;}
+        .info-author i { color: var(--gold-primary); }
+        .btn-delete { background: rgba(220,53,69,0.1); color: var(--urgent-color); border: none; padding: 6px 12px; border-radius: 8px; font-size: 10px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: 0.2s;}
+        .btn-delete:active { background: var(--urgent-color); color: #FFF; }
+
+        /* EMPTY STATE */
+        .empty-state { text-align: center; padding: 40px 20px; color: var(--text-gray); }
+        .empty-state i { font-size: 30px; margin-bottom: 10px; opacity: 0.5; }
+        .empty-state p { font-size: 12px; font-weight: 700; }
+
+        /* MODAL BUAT PENGUMUMAN */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: flex-end; z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s; }
+        .modal-overlay.show { opacity: 1; visibility: visible; }
+        .modal-content { background: #FFF; border-radius: 28px 28px 0 0; padding: 25px 24px 35px; width: 100%; max-width: 480px; transform: translateY(100%); transition: 0.35s cubic-bezier(0.15, 1, 0.3, 1); }
+        .modal-overlay.show .modal-content { transform: translateY(0); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-header h3 { font-size: 16px; font-weight: 900; color: var(--text-dark); }
+        .btn-close-modal { width: 32px; height: 32px; border-radius: 50%; border: none; background: #F5F5F7; display: flex; justify-content: center; align-items: center; font-size: 14px; cursor: pointer; color: var(--text-dark); }
+        
+        .form-group { margin-bottom: 15px; }
+        .form-label { display: block; font-size: 10px; font-weight: 800; text-transform: uppercase; margin-bottom: 6px; color: var(--text-gray); }
+        .form-input { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1.5px solid rgba(0,0,0,0.08); font-size: 13px; font-weight: 700; outline: none; background: #F9F9F9; color: var(--text-dark); appearance: none;}
+        .form-input:focus { border-color: var(--gold-primary); background: #FFF; }
+        .btn-submit { width: 100%; padding: 15px; border-radius: 14px; font-size: 13px; font-weight: 900; background: var(--text-dark); color: #FFF; border: none; margin-top: 10px; cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
@@ -80,53 +102,185 @@
 
         <div class="content-area">
             
-            <!-- Tombol Tambah Info (Disembunyikan via JS jika bukan Admin) -->
-            <button id="btnTambahInfo" class="btn-add-info" onclick="alert('Buka Editor Teks untuk membuat pengumuman baru')">
+            <!-- Tombol Tambah Info (Disembunyikan otomatis jika bukan Admin/Superadmin) -->
+            <button id="btnTambahInfo" class="btn-add-info" style="display: none;" onclick="openModal()">
                 <i class="fa-solid fa-bullhorn"></i> Buat Informasi Baru
             </button>
 
             <div class="section-title">Papan Pengumuman</div>
-            <!-- KARTU PENGUMUMAN 1 (PENTING/URGENT) -->
-            <!-- Tambahkan class 'urgent' agar ada aksen garis tepi warna Merah -->
-            <div class="info-card urgent" onclick="alert('Membuka halaman detail pengumuman...')">
-                <div class="info-header">
-                    <div class="badge red"><i class="fa-solid fa-triangle-exclamation" style="margin-right: 3px;"></i> Wajib Dibaca</div>
-                    <div class="info-date">05 Jun 2026</div>
+            
+            <!-- Container Pengumuman Firebase -->
+            <div id="infoListContainer">
+                <div class="empty-state">
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                    <p>Memuat pengumuman terbaru...</p>
                 </div>
-                <h3>Pemberitahuan Wajib QRIS untuk Setoran Kas</h3>
-                <p>Mulai pertengahan bulan ini, seluruh setoran kas wajib menggunakan scan QRIS resmi yang tertera di aplikasi untuk mempermudah rekap otomatis sistem.</p>
-                <div class="read-more">Baca Selengkapnya <i class="fa-solid fa-arrow-right"></i></div>
-            </div>
-
-            <!-- KARTU PENGUMUMAN 2 (NORMAL/KEGIATAN) -->
-            <div class="info-card" onclick="alert('Membuka halaman detail pengumuman...')">
-                <div class="info-header">
-                    <div class="badge gold"><i class="fa-solid fa-calendar-check" style="margin-right: 3px;"></i> Undangan Kegiatan</div>
-                    <div class="info-date">01 Jun 2026</div>
-                </div>
-                <h3>Undangan Kopi Darat & Silaturahmi Bulanan</h3>
-                <p>Mengharap kehadiran seluruh rekan-rekan pada acara silaturahmi bulanan yang akan diadakan pada hari Minggu besok di Basecamp Pusat. Jangan lupa membawa atribut lengkap.</p>
-                <div class="read-more">Baca Selengkapnya <i class="fa-solid fa-arrow-right"></i></div>
             </div>
 
         </div>
     </div>
 
-    <!-- Script Sederhana untuk Proteksi Tombol Buat Pengumuman -->
-    <script>
-        // ======= SIMULASI JABATAN (Ganti teks di bawah untuk ngetes) =======
-        const roleSaatIni = "Super Admin"; // Coba ganti jadi "Member"
+    <!-- MODAL FORM PENGUMUMAN -->
+    <div id="infoModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Buat Pengumuman</h3>
+                <button type="button" onclick="closeModal()" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="formInfo" onsubmit="submitPengumuman(event)">
+                <div class="form-group">
+                    <label class="form-label">Tingkat Kepentingan</label>
+                    <select id="infoTipe" class="form-input">
+                        <option value="normal">Normal (Kuning) - Kegiatan / Info</option>
+                        <option value="urgent">Penting (Merah) - Wajib Dibaca Segera</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Judul Pengumuman</label>
+                    <input type="text" id="infoJudul" class="form-input" placeholder="Contoh: Jadwal Kopdar Bulan Ini" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Isi Detail</label>
+                    <textarea id="infoIsi" class="form-input" rows="5" placeholder="Tuliskan isi pengumuman secara detail di sini..." required style="resize: none;"></textarea>
+                </div>
+                <button type="submit" id="btnSubmitInfo" class="btn-submit"><i class="fa-solid fa-paper-plane"></i> Terbitkan Sekarang</button>
+            </form>
+        </div>
+    </div>
 
-        document.addEventListener("DOMContentLoaded", () => {
-            const btnTambah = document.getElementById('btnTambahInfo');
-            
-            // Logika Pembatasan: Hanya Pengurus yang bisa bikin pengumuman
-            if (roleSaatIni === "Super Admin" || roleSaatIni === "Admin") {
-                btnTambah.style.display = 'flex'; 
+    <!-- SCRIPT FIREBASE & LOGIKA -->
+    <script type="module">
+        import { auth, db } from './db-config.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+        import { collection, onSnapshot, doc, getDoc, addDoc, deleteDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+        let userRole = "member";
+        let userName = "Admin KGR";
+
+        // ==========================================
+        // 1. CEK LOGIN & JABATAN PENGURUS
+        // ==========================================
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const docSnap = await getDoc(doc(db, "users", user.email));
+                if (docSnap.exists()) {
+                    userRole = (docSnap.data().role || "member").toLowerCase();
+                    userName = docSnap.data().nama_lengkap || "Pengurus";
+                    
+                    // Hanya Superadmin & Admin yang boleh bikin pengumuman
+                    if (userRole === "superadmin" || userRole === "admin") {
+                        document.getElementById('btnTambahInfo').style.display = 'flex'; 
+                    }
+                    
+                    loadPengumuman(); // Tarik data real-time
+                }
             } else {
-                btnTambah.style.display = 'none'; // Sembunyikan untuk Member biasa dan Bendahara
+                window.location.href = 'login.html';
             }
         });
+
+        // ==========================================
+        // 2. FUNGSI UI (MODAL)
+        // ==========================================
+        window.openModal = function() { document.getElementById('infoModal').classList.add('show'); }
+        window.closeModal = function() { document.getElementById('infoModal').classList.remove('show'); document.getElementById('formInfo').reset(); }
+
+        // ==========================================
+        // 3. TARIK DATA PENGUMUMAN (REAL-TIME)
+        // ==========================================
+        function loadPengumuman() {
+            const infoRef = collection(db, "pengumuman");
+            const q = query(infoRef, orderBy("tanggal", "desc"));
+            
+            onSnapshot(q, (snapshot) => {
+                const listContainer = document.getElementById('infoListContainer');
+                listContainer.innerHTML = ""; 
+
+                if (snapshot.empty) {
+                    listContainer.innerHTML = `<div class="empty-state"><i class="fa-solid fa-folder-open"></i><p>Belum ada pengumuman untuk saat ini.</p></div>`;
+                    return;
+                }
+
+                snapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    const id = docSnap.id;
+                    
+                    // Format Tanggal
+                    let tglText = "Baru saja";
+                    if(data.tanggal) {
+                        tglText = data.tanggal.toDate().toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+                    }
+                    
+                    const isUrgent = data.tipe === "urgent";
+                    const cardClass = isUrgent ? "info-card urgent" : "info-card";
+                    const badgeClass = isUrgent ? "badge red" : "badge gold";
+                    const badgeIcon = isUrgent ? "fa-triangle-exclamation" : "fa-bullhorn";
+                    const badgeText = isUrgent ? "Wajib Dibaca" : "Informasi";
+
+                    // Tombol Hapus (Hanya muncul jika yang login adalah Superadmin / Admin)
+                    const deleteBtnHtml = (userRole === "superadmin" || userRole === "admin") 
+                        ? `<button class="btn-delete" onclick="hapusPengumuman('${id}')"><i class="fa-solid fa-trash-can"></i> Hapus</button>` 
+                        : ``;
+
+                    const htmlCard = `
+                        <div class="${cardClass}">
+                            <div class="info-header">
+                                <div class="${badgeClass}"><i class="fa-solid ${badgeIcon}" style="margin-right: 4px;"></i> ${badgeText}</div>
+                                <div class="info-date">${tglText}</div>
+                            </div>
+                            <h3>${data.judul}</h3>
+                            <p>${data.isi}</p>
+                            <div class="info-footer">
+                                <div class="info-author"><i class="fa-solid fa-pen-nib"></i> Oleh: ${data.pembuat}</div>
+                                ${deleteBtnHtml}
+                            </div>
+                        </div>
+                    `;
+                    
+                    listContainer.innerHTML += htmlCard;
+                });
+            });
+        }
+
+        // ==========================================
+        // 4. SUBMIT PENGUMUMAN BARU KE FIREBASE
+        // ==========================================
+        window.submitPengumuman = async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btnSubmitInfo');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menerbitkan...';
+            btn.disabled = true;
+
+            try {
+                await addDoc(collection(db, "pengumuman"), {
+                    tipe: document.getElementById('infoTipe').value,
+                    judul: document.getElementById('infoJudul').value,
+                    isi: document.getElementById('infoIsi').value,
+                    pembuat: userName,
+                    tanggal: serverTimestamp()
+                });
+                
+                closeModal();
+            } catch (error) {
+                alert('Gagal menerbitkan pengumuman. Periksa koneksi Anda.');
+            } finally {
+                btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Terbitkan Sekarang';
+                btn.disabled = false;
+            }
+        }
+
+        // ==========================================
+        // 5. HAPUS PENGUMUMAN (KHUSUS ADMIN)
+        // ==========================================
+        window.hapusPengumuman = async function(docId) {
+            if(confirm("Apakah Anda yakin ingin menghapus pengumuman ini?")) {
+                try {
+                    await deleteDoc(doc(db, "pengumuman", docId));
+                } catch(e) {
+                    alert("Gagal menghapus pengumuman.");
+                }
+            }
+        }
     </script>
 </body>
 </html>

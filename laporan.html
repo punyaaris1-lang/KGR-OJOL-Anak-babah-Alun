@@ -4,561 +4,122 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#F5F5F7">
-    <title>Laporan Kas & Statistik - KGR</title>
+    <title>Laporan Keuangan Kas</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <!-- PDF Export Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
-        :root {
-            --bg-base: #F5F5F7; 
-            --text-dark: #1C1C1E; 
-            --text-black: #111111;
-            --text-gray: #8E8E93;
-            --gold-primary: #D4AF37; 
-            --gold-deep: linear-gradient(135deg, #A67C00, #D4AF37, #8B6914, #B38728);
-            --glass-bg: rgba(255, 255, 255, 0.65); 
-            --glass-border: rgba(255, 255, 255, 0.9);
-            --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.04);
-            --color-in: #28A745; 
-            --color-out: #DC3545;
-        }
-
+        :root { --bg-base: #F5F5F7; --text-dark: #1C1C1E; --text-gray: #8E8E93; --gold-primary: #D4AF37; --gold-deep: linear-gradient(135deg, #A67C00, #D4AF37, #8B6914, #B38728); --color-in: #28A745; --color-out: #DC3545; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
-        
-        body { 
-            background-color: #E5E5E5; 
-            background-image: radial-gradient(circle at 15% 50%, rgba(212, 175, 55, 0.08), transparent 25%), 
-                              radial-gradient(circle at 85% 30%, rgba(10, 132, 255, 0.05), transparent 25%);
-            display: flex; justify-content: center; align-items: center; min-height: 100vh; 
-        }
-        
-        .app-container { 
-            width: 100%; max-width: 414px; height: 100vh; 
-            background-color: var(--bg-base); display: flex; flex-direction: column; overflow: hidden; position: relative;
-        }
-
-        @media (min-width: 600px) {
-            .app-container {
-                max-width: 480px; height: 90vh; max-height: 900px;
-                border-radius: 40px; 
-                box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15), inset 0 0 0 8px #FFFFFF;
-                border: 1px solid rgba(0,0,0,0.05);
-            }
-        }
-
-        /* Ambient Orbs */
-        .orb { position: absolute; border-radius: 50%; filter: blur(60px); z-index: 0; animation: floatOrb 8s infinite alternate ease-in-out; }
-        .orb-1 { width: 250px; height: 250px; background: rgba(212, 175, 55, 0.18); top: -30px; right: -30px; }
-        .orb-2 { width: 200px; height: 200px; background: rgba(10, 132, 255, 0.1); bottom: 80px; left: -40px; animation-delay: -3s; }
-        @keyframes floatOrb { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-20px, 30px) scale(1.05); } }
-        
-        .header-page { 
-            padding: 40px 24px 20px; display: flex; align-items: center; gap: 15px; 
-            background: rgba(245,245,247,0.75); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(0,0,0,0.05); z-index: 10; position: relative;
-        }
-        
-        .btn-back { 
-            width: 40px; height: 40px; border-radius: 14px; background: #FFF; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.08); font-size: 16px; color: var(--text-dark); transition: 0.2s;
-        }
-        .btn-back:active { transform: scale(0.92); background: var(--text-dark); color: #FFF; }
-        .header-page h2 { font-size: 17px; font-weight: 900; color: var(--text-dark); letter-spacing: -0.3px; }
-        
-        .content-area { flex-grow: 1; overflow-y: auto; padding: 20px 24px 120px; scrollbar-width: none; z-index: 2; position: relative; }
-        .content-area::-webkit-scrollbar { display: none; }
-
-        .btn-add-trx { 
-            width: 100%; padding: 15px; border-radius: 16px; font-size: 13px; font-weight: 800; background: var(--text-dark); color: #FFF; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px; display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.12); transition: 0.2s;
-        }
-        .btn-add-trx i { color: var(--gold-primary); }
-        .btn-add-trx:active { transform: scale(0.97); }
-
-        /* HERO BALANCE CARD */
-        .balance-card { 
-            border-radius: 24px; padding: 25px 20px; margin-bottom: 25px; text-align: center; 
-            background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--glass-border); box-shadow: var(--shadow-soft), inset 0 0 20px rgba(255,255,255,0.4);
-        }
-        .label-text { font-size: 10px; color: var(--text-gray); font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 6px; }
-        .total-balance { font-size: 30px; font-weight: 900; color: var(--text-dark); margin-bottom: 20px; letter-spacing: -1px; }
-        
-        .cash-flow { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.8); padding: 16px 12px; border-radius: 16px; border: 1px solid rgba(0,0,0,0.03); gap: 10px; }
-        .flow-item { flex: 1; text-align: center; }
-        .flow-item:first-child { border-right: 1px solid rgba(0,0,0,0.06); }
-        .flow-label { font-size: 9px; font-weight: 800; color: var(--text-gray); text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px; }
-        .flow-amount { font-size: 14px; font-weight: 900; letter-spacing: -0.3px; }
-        .flow-amount.in { color: var(--color-in); }
-        .flow-amount.out { color: var(--color-out); }
-
-        .section-title { font-size: 12px; font-weight: 900; color: var(--text-dark); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
-        
-        /* TABS FILTER */
+        body { background-color: #E5E5E5; display: flex; justify-content: center; min-height: 100vh; }
+        .app-container { width: 100%; max-width: 480px; background: var(--bg-base); display: flex; flex-direction: column; height: 100vh; }
+        .header-page { padding: 30px 24px 20px; display: flex; align-items: center; gap: 15px; background: #FFF; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .btn-back { width: 40px; height: 40px; border-radius: 12px; background: #F5F5F7; display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text-dark); }
+        .content-area { flex-grow: 1; overflow-y: auto; padding: 20px 24px 100px; }
+        .balance-card { background: var(--text-dark); color: #FFF; border-radius: 24px; padding: 25px; margin-bottom: 20px; }
+        .total-balance { font-size: 28px; font-weight: 900; margin: 10px 0; color: var(--gold-primary); }
+        .btn-add { width: 100%; padding: 15px; border-radius: 14px; background: var(--gold-primary); color: #FFF; font-weight: 900; border: none; cursor: pointer; margin-bottom: 20px; }
         .tabs-container { display: flex; gap: 8px; margin-bottom: 15px; }
-        .tab-btn { 
-            flex: 1; height: 38px; border-radius: 12px; font-size: 12px; font-weight: 800; background: #FFF; border: 1px solid rgba(0,0,0,0.08); color: var(--text-dark); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.25s ease;
-        }
-        .tab-btn.active { 
-            background: var(--gold-deep); color: #FFF; border-color: transparent; box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3); 
-        }
-        
-        /* TOOLBAR FILTER & EXPORT */
-        .toolbar { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; background: #FFF; padding: 12px; border-radius: 16px; border: 1px solid rgba(0,0,0,0.04); }
-        .toolbar-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-        .filter-select { flex-grow: 1; padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.08); font-size: 12px; font-weight: 700; background: #F5F5F7; outline: none; color: var(--text-dark); cursor: pointer;}
-        
-        .export-group { display: flex; gap: 6px; }
-        .btn-export { padding: 10px 12px; border-radius: 10px; border: none; font-size: 11px; font-weight: 800; display: flex; align-items: center; gap: 6px; cursor: pointer; color: #FFF; transition: 0.2s; }
-        .btn-export.excel { background: #1D6F42; }
-        .btn-export.pdf { background: #E04B4B; }
-        .btn-export:active { transform: scale(0.95); }
-
-        /* CUSTOM DATE CONTAINER */
-        .custom-date-container { 
-            display: none; /* Default Hidden */
-            flex-direction: column; gap: 10px; border-top: 1px solid rgba(0,0,0,0.06); padding-top: 12px; margin-top: 2px; animation: slideDown 0.3s ease forwards;
-        }
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .date-inputs { display: flex; gap: 10px; align-items: center; width: 100%;}
-        .date-field { flex: 1; display: flex; flex-direction: column; gap: 6px; }
-        .date-field label { font-size: 9px; font-weight: 800; text-transform: uppercase; color: var(--text-gray); }
-        .date-field input { 
-            width: 100%; padding: 10px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.15); font-size: 12px; font-weight: 700; outline: none; background: #FFF; color: var(--text-dark); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); cursor: pointer;
-        }
-        .date-field input:focus { border-color: var(--gold-primary); }
-        .btn-apply-date { width: 100%; padding: 12px; border-radius: 10px; background: var(--text-dark); color: var(--gold-primary); border: none; font-size: 11px; font-weight: 900; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; transition: 0.2s;}
-        .btn-apply-date:active { transform: scale(0.97); background: var(--gold-deep); color: #FFF;}
-
-        /* TRANSACTION LIST */
-        .trx-item { display: flex; align-items: center; padding: 14px; border-radius: 18px; margin-bottom: 10px; background: #FFF; border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 4px 15px rgba(0,0,0,0.01); }
-        .trx-icon { width: 42px; height: 42px; border-radius: 12px; margin-right: 12px; display: flex; justify-content: center; align-items: center; font-size: 16px; flex-shrink: 0; }
-        .trx-icon.icon-in { background: rgba(40, 167, 69, 0.08); color: var(--color-in); }
-        .trx-icon.icon-out { background: rgba(220, 53, 69, 0.08); color: var(--color-out); }
-        
-        .info { flex-grow: 1; display: flex; flex-direction: column; gap: 2px; overflow: hidden; }
-        .info h4 { font-size: 13px; font-weight: 800; color: var(--text-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .info p { font-size: 10px; color: var(--text-gray); font-weight: 600; }
-        .btn-bukti { font-size: 9px; font-weight: 800; color: var(--gold-primary); text-transform: uppercase; text-decoration: none; display: flex; align-items: center; gap: 3px; margin-top: 2px; cursor: pointer; }
-        
-        .amount-detail { text-align: right; flex-shrink: 0; }
-        .amount-detail h4 { font-size: 14px; font-weight: 900; letter-spacing: -0.3px; }
-        .amount-detail h4.text-in { color: var(--color-in); }
-        .amount-detail h4.text-out { color: var(--color-out); }
-        .amount-detail p { font-size: 9px; font-weight: 700; text-transform: uppercase; color: var(--text-gray); margin-top: 1px; }
-
-        /* MODAL */
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: flex-end; z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s; }
+        .tab-btn { flex: 1; padding: 10px; border-radius: 10px; font-size: 11px; font-weight: 800; background: #FFF; border: 1px solid rgba(0,0,0,0.1); cursor: pointer; text-align: center; }
+        .tab-btn.active { background: var(--gold-deep); color: #FFF; }
+        .trx-item { background: #FFF; padding: 15px; border-radius: 16px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: flex-end; z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s; }
         .modal-overlay.show { opacity: 1; visibility: visible; }
-        .modal-content { background: #FFF; border-radius: 28px 28px 0 0; padding: 25px 24px 35px; width: 100%; max-width: 480px; transform: translateY(100%); transition: 0.35s cubic-bezier(0.15, 1, 0.3, 1); overflow-y: auto; max-height: 85vh; }
-        .modal-overlay.show .modal-content { transform: translateY(0); }
-        
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .modal-header h3 { font-size: 16px; font-weight: 900; color: var(--text-dark); }
-        .btn-close-modal { width: 32px; height: 32px; border-radius: 50%; border: none; background: #F5F5F7; display: flex; justify-content: center; align-items: center; font-size: 14px; cursor: pointer; color: var(--text-dark); }
-        
-        .form-group { margin-bottom: 14px; }
-        .form-label { display: block; font-size: 10px; font-weight: 800; text-transform: uppercase; margin-bottom: 6px; color: var(--text-gray); letter-spacing: 0.5px; }
-        .form-input { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1.5px solid rgba(0,0,0,0.08); font-size: 13px; font-weight: 700; outline: none; background: #F9F9F9; color: var(--text-dark); }
-        .form-input:focus { border-color: var(--gold-primary); background: #FFF; }
-        .btn-submit { width: 100%; padding: 15px; border-radius: 14px; font-size: 13px; font-weight: 900; background: var(--text-dark); color: #FFF; border: none; margin-top: 10px; cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
-
-        .empty-box { text-align: center; padding: 40px 20px; border: 2px dashed rgba(0,0,0,0.06); border-radius: 20px; background: #FFF; color: var(--text-gray); font-size: 12px; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 8px; }
-        .empty-box i { font-size: 24px; opacity: 0.5; }
+        .modal-content { background: #FFF; border-radius: 28px 28px 0 0; padding: 25px; width: 100%; max-width: 480px; }
+        .form-input { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #CCC; margin-bottom: 10px; }
     </style>
 </head>
 <body>
-
     <div class="app-container">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-
         <div class="header-page">
             <div class="btn-back" onclick="window.location.href='index.html'"><i class="fa-solid fa-arrow-left"></i></div>
-            <h2>Laporan Keuangan Kas</h2>
+            <h2>Laporan Keuangan</h2>
         </div>
-
         <div class="content-area">
-            <button id="btnTambahTrx" class="btn-add-trx" style="display: none;" onclick="openModal()"><i class="fa-solid fa-file-invoice-dollar"></i> Catat Transaksi & Upload Bukti</button>
-            <!-- Dashboard Balance Card -->
+            <button id="btnTambahTrx" class="btn-add" style="display: none;" onclick="document.getElementById('trxModal').classList.add('show')"><i class="fa-solid fa-plus"></i> Catat Transaksi</button>
             <div class="balance-card">
-                <div class="label-text">Total Saldo Kas Tersedia</div>
+                <div style="font-size: 10px; text-transform: uppercase;">Total Kas Tersedia</div>
                 <div class="total-balance" id="uiTotalSaldo">Rp 0</div>
-                <div class="cash-flow">
-                    <div class="flow-item">
-                        <div class="flow-label">Total Masuk</div>
-                        <div class="flow-amount in" id="uiFlowIn">Rp 0</div>
-                    </div>
-                    <div class="flow-item">
-                        <div class="flow-label">Total Keluar</div>
-                        <div class="flow-amount out" id="uiFlowOut">Rp 0</div>
-                    </div>
-                </div>
             </div>
-
-            <div class="section-title">Riwayat Transaksi</div>
-            
-            <!-- TABS FILTER -->
             <div class="tabs-container">
-                <div class="tab-btn active" onclick="handleTabClick(this, 'Semua')">Semua</div>
-                <div class="tab-btn" onclick="handleTabClick(this, 'Pemasukan')">Masuk</div>
-                <div class="tab-btn" onclick="handleTabClick(this, 'Pengeluaran')">Keluar</div>
+                <div class="tab-btn active" onclick="filterTrx('Semua', this)">Semua</div>
+                <div class="tab-btn" onclick="filterTrx('Pemasukan', this)">Masuk</div>
+                <div class="tab-btn" onclick="filterTrx('Pengeluaran', this)">Keluar</div>
             </div>
-
-            <!-- TOOLBAR FILTER & CUSTOM DATE -->
-            <div class="toolbar">
-                <div class="toolbar-row">
-                    <select id="dateRangeFilter" class="filter-select" onchange="handleDateFilterChange(this)">
-                        <option value="All">Semua Waktu</option>
-                        <option value="this_month">Bulan Berjalan</option>
-                        <option value="custom">Kustom Tanggal...</option>
-                    </select>
-                    <div class="export-group">
-                        <button class="btn-export excel" onclick="window.exportToExcel()"><i class="fa-solid fa-file-excel"></i> Excel</button>
-                        <button class="btn-export pdf" onclick="window.exportToPDF()"><i class="fa-solid fa-file-pdf"></i> PDF</button>
-                    </div>
-                </div>
-                
-                <!-- Expanded Custom Date Selector Widget -->
-                <div class="custom-date-container" id="customDateWidget">
-                    <div class="date-inputs">
-                        <div class="date-field">
-                            <label>Dari Tanggal</label>
-                            <input type="date" id="startDateInput">
-                        </div>
-                        <div class="date-field">
-                            <label>Sampai Tanggal</label>
-                            <input type="date" id="endDateInput">
-                        </div>
-                    </div>
-                    <button class="btn-apply-date" onclick="applyCustomDate()">Terapkan Rentang Tanggal</button>
-                </div>
-            </div>
-
-            <div id="trxListContainer">
-                <div class="empty-box"><i class="fa-solid fa-spinner fa-spin"></i> Memuat catatan keuangan...</div>
-            </div>
+            <div id="trxList"></div>
         </div>
     </div>
 
-    <!-- MODAL FORM CATAT TRANSAKSI -->
+    <!-- MODAL -->
     <div id="trxModal" class="modal-overlay">
         <div class="modal-content">
-            <div class="modal-header">
-                <h3>Catat Transaksi Baru</h3>
-                <button onclick="closeModal()" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
-            </div>
+            <h3>Catat Transaksi</h3>
             <form id="formTrx">
-                <div class="form-group">
-                    <label class="form-label">Jenis Transaksi</label>
-                    <select id="trxType" class="form-input" required>
-                        <option value="Pemasukan">Uang Masuk (Sedekah/Kas)</option>
-                        <option value="Pengeluaran">Uang Keluar (Bansos/Operasional)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Nama Anggota / Keterangan</label>
-                    <input type="text" id="trxName" class="form-input" placeholder="Contoh: Sedekah Hamba Allah" required autocomplete="off">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Nominal (Rupiah)</label>
-                    <input type="number" id="trxAmount" class="form-input" placeholder="Contoh: 50000" required autocomplete="off">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Upload Foto Bukti/Struk</label>
-                    <input type="file" id="trxProof" class="form-input file-input" accept="image/*">
-                </div>
-                <button type="submit" id="btnSubmit" class="btn-submit"><i class="fa-solid fa-check"></i> Simpan Laporan</button>
+                <select id="trxType" class="form-input"><option value="Pemasukan">Pemasukan</option><option value="Pengeluaran">Pengeluaran</option></select>
+                <input type="text" id="trxName" class="form-input" placeholder="Keterangan" required>
+                <input type="number" id="trxAmount" class="form-input" placeholder="Nominal" required>
+                <button type="submit" class="btn-add">Simpan</button>
             </form>
         </div>
     </div>
 
-    <!-- SCRIPT UTAMA UNTUK UI (TIDAK AKAN MATI WALAUPUN FIREBASE ERROR) -->
-    <script>
-        // State Global untuk Filter UI
-        window.activeTabFilter = 'Semua'; 
-        window.activeDateType = 'All';    
-        window.customStartDate = null;
-        window.customEndDate = null;
-        window.rawTransactions = []; // Tempat penampungan data
-
-        // Fungsi Modal
-        function openModal() { document.getElementById('trxModal').classList.add('show'); }
-        function closeModal() { document.getElementById('trxModal').classList.remove('show'); }
-
-        // Fungsi Tab Diklik
-        function handleTabClick(element, jenisFilter) {
-            // Ubah Visual Tombol Emas
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            element.classList.add('active');
-            
-            // Set logic data
-            window.activeTabFilter = jenisFilter;
-            if(typeof window.renderDataLaporan === 'function') window.renderDataLaporan();
-        }
-
-        // Fungsi Dropdown Waktu Berubah
-        function handleDateFilterChange(selectEl) {
-            window.activeDateType = selectEl.value;
-            const widgetDate = document.getElementById('customDateWidget');
-            
-            if (window.activeDateType === 'custom') {
-                widgetDate.style.display = 'flex'; // Munculkan Kalender
-            } else {
-                widgetDate.style.display = 'none'; // Sembunyikan Kalender
-                if(typeof window.renderDataLaporan === 'function') window.renderDataLaporan();
-            }
-        }
-
-        // Fungsi Terapkan Tanggal
-        function applyCustomDate() {
-            const startVal = document.getElementById('startDateInput').value;
-            const endVal = document.getElementById('endDateInput').value;
-            
-            if (!startVal || !endVal) {
-                alert("Silakan isi Dari Tanggal dan Sampai Tanggal dengan lengkap!");
-                return;
-            }
-            
-            window.customStartDate = new Date(startVal);
-            window.customStartDate.setHours(0,0,0,0);
-            window.customEndDate = new Date(endVal);
-            window.customEndDate.setHours(23,59,59,999);
-
-            if (window.customStartDate > window.customEndDate) {
-                alert("Peringatan: Tanggal awal tidak boleh melebihi tanggal akhir.");
-                return;
-            }
-            if(typeof window.renderDataLaporan === 'function') window.renderDataLaporan();
-        }
-
-        // Lihat Gambar Modal
-        window.viewProof = (id) => {
-            const match = window.rawTransactions.find(t => t.id === id);
-            if(match && match.bukti_image) {
-                const win = window.open();
-                win.document.write(`<iframe src="${match.bukti_image}" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>`);
-            }
-        };
-
-        // EXCEL EXPORT
-        window.exportToExcel = () => {
-            let csvContent = "data:text/csv;charset=utf-8,Tanggal,Keterangan,Jenis,Nominal\n";
-            window.rawTransactions.forEach(t => {
-                const rowDate = t.parsedDate.toISOString().split('T')[0];
-                const rowName = (t.nama_keterangan || "").replace(/,/g, ' ');
-                csvContent += `${rowDate},${rowName},${t.jenis},${t.nominal}\n`;
-            });
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", `Laporan_Kas_KGR_${new Date().toISOString().split('T')[0]}.csv`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        };
-
-        // PDF EXPORT
-        window.exportToPDF = () => {
-            const printWrapper = document.createElement('div');
-            printWrapper.style.padding = '35px';
-            printWrapper.style.fontFamily = "'Montserrat', sans-serif";
-            printWrapper.style.color = '#111';
-
-            let timelineHeading = "Semua Riwayat Catatan Keuangan";
-            if(window.activeDateType === 'this_month') timelineHeading = "Laporan Bulan Berjalan (" + new Date().toLocaleDateString('id-ID', {month: 'long', year: 'numeric'}) + ")";
-            else if(window.activeDateType === 'custom' && window.customStartDate && window.customEndDate) {
-                timelineHeading = `Periode: ${window.customStartDate.toLocaleDateString('id-ID')} s/d ${window.customEndDate.toLocaleDateString('id-ID')}`;
-            }
-
-            let tableRowsHTML = "";
-            let totalMasuk = 0;
-            let totalKeluar = 0;
-
-            window.rawTransactions.forEach(t => {
-                let matchesTime = false;
-                if (window.activeDateType === 'All') matchesTime = true;
-                else if (window.activeDateType === 'this_month') {
-                    const now = new Date();
-                    if (t.parsedDate.getMonth() === now.getMonth() && t.parsedDate.getFullYear() === now.getFullYear()) matchesTime = true;
-                } else if (window.activeDateType === 'custom' && window.customStartDate && window.customEndDate) {
-                    if (t.parsedDate >= window.customStartDate && t.parsedDate <= window.customEndDate) matchesTime = true;
-                }
-
-                if (matchesTime) {
-                    const isMasuk = t.jenis === 'Pemasukan';
-                    if(isMasuk) totalMasuk += Number(t.nominal);
-                    else totalKeluar += Number(t.nominal);
-
-                    tableRowsHTML += `
-                        <tr style="border-bottom: 1px solid #E5E5E5;">
-                            <td style="padding: 10px; font-size: 11px;">${t.parsedDate.toLocaleDateString('id-ID')}</td>
-                            <td style="padding: 10px; font-size: 11px; font-weight:600;">${t.nama_keterangan || '-'}</td>
-                            <td style="padding: 10px; font-size: 11px; font-weight:700; color: ${isMasuk ? '#28A745':'#DC3545'}">${t.jenis}</td>
-                            <td style="padding: 10px; font-size: 11px; font-weight:700; text-align: right;">Rp ${Number(t.nominal).toLocaleString('id-ID')}</td>
-                        </tr>
-                    `;
-                }
-            });
-
-            printWrapper.innerHTML = `
-                <div style="text-align: center; margin-bottom: 30px; border-bottom: 3px double #1C1C1E; padding-bottom: 15px;">
-                    <h1 style="font-size: 22px; font-weight: 900; letter-spacing: 0.5px; color:#1C1C1E;">KOTAK GOTONG ROYONG</h1>
-                    <p style="font-size: 11px; font-weight: 700; color: #D4AF37; text-transform: uppercase; letter-spacing: 1.5px; margin-top:3px;">Ojol Anak Babah Alun</p>
-                </div>
-                <h3 style="font-size: 13px; font-weight: 800; text-transform: uppercase; margin-bottom: 15px; color: #1C1C1E;">${timelineHeading}</h3>
-                <div style="display: flex; justify-content: space-between; margin-bottom: 25px; background: #F5F5F7; padding: 15px; border-radius: 12px; border: 1px solid #E5E5EA;">
-                    <div>
-                        <p style="font-size: 9px; font-weight:800; color:#8E8E93; text-transform:uppercase;">Total Pemasukan</p>
-                        <h4 style="font-size: 15px; font-weight:900; color:#28A745;">Rp ${totalMasuk.toLocaleString('id-ID')}</h4>
-                    </div>
-                    <div style="text-align:right;">
-                        <p style="font-size: 9px; font-weight:800; color:#8E8E93; text-transform:uppercase;">Total Pengeluaran</p>
-                        <h4 style="font-size: 15px; font-weight:900; color:#DC3545;">Rp ${totalKeluar.toLocaleString('id-ID')}</h4>
-                    </div>
-                </div>
-                <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
-                    <thead>
-                        <tr style="background: #1C1C1E; color: #FFF; text-align: left;">
-                            <th style="padding: 10px; font-size: 10px; font-weight: 800; text-transform: uppercase; border-top-left-radius:6px; border-bottom-left-radius:6px;">Tanggal</th>
-                            <th style="padding: 10px; font-size: 10px; font-weight: 800; text-transform: uppercase;">Keterangan</th>
-                            <th style="padding: 10px; font-size: 10px; font-weight: 800; text-transform: uppercase;">Jenis</th>
-                            <th style="padding: 10px; font-size: 10px; font-weight: 800; text-transform: uppercase; text-align: right; border-top-right-radius:6px; border-bottom-right-radius:6px;">Nominal</th>
-                        </tr>
-                    </thead>
-                    <tbody>${tableRowsHTML || '<tr><td colspan="4" style="text-align:center; padding:20px;">Tidak ada data laporan.</td></tr>'}</tbody>
-                </table>
-                <div style="margin-top: 50px; text-align: right; font-size: 11px; font-weight: 700; color: #8E8E93;">
-                    <p>Dicetak Otomatis oleh Sistem KGR</p><p style="margin-top: 5px; color:#1C1C1E;">Sistem Berstatus Terverifikasi</p>
-                </div>
-            `;
-
-            html2pdf().set({
-                margin: 12, filename: `Laporan_Kas_KGR_${new Date().toISOString().split('T')[0]}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2.5, useCORS: true }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            }).from(printWrapper).save();
-        };
-    </script>
-
-    <!-- SCRIPT FIREBASE -->
     <script type="module">
-        import { db } from './db-config.js';
-        import { collection, addDoc, serverTimestamp, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+        import { auth, db } from './db-config.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+        import { collection, query, orderBy, onSnapshot, addDoc, serverTimestamp, getDoc, doc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-        // Fungsi Render Data HTML yg Terhubung dengan UI di atas
-        window.renderDataLaporan = function() {
-            const listContainer = document.getElementById('trxListContainer');
-            let totalSaldoGlobal = 0, filteredInTotal = 0, filteredOutTotal = 0;
-            const now = new Date();
-            let processedList = [];
+        let currentFilter = 'Semua';
+        let transactions = [];
 
-            window.rawTransactions.forEach(item => {
-                const amount = Number(item.nominal) || 0;
-                
-                if (item.jenis === 'Pemasukan') totalSaldoGlobal += amount;
-                else if (item.jenis === 'Pengeluaran') totalSaldoGlobal -= amount;
-
-                let passesTime = false;
-                if (window.activeDateType === 'All') passesTime = true;
-                else if (window.activeDateType === 'this_month') {
-                    if (item.parsedDate.getMonth() === now.getMonth() && item.parsedDate.getFullYear() === now.getFullYear()) passesTime = true;
-                } else if (window.activeDateType === 'custom' && window.customStartDate && window.customEndDate) {
-                    if (item.parsedDate >= window.customStartDate && item.parsedDate <= window.customEndDate) passesTime = true;
-                }
-
-                if (passesTime) {
-                    if (item.jenis === 'Pemasukan') filteredInTotal += amount;
-                    else if (item.jenis === 'Pengeluaran') filteredOutTotal += amount;
-
-                    if (window.activeTabFilter === 'Semua' || item.jenis === window.activeTabFilter) {
-                        processedList.push(item);
-                    }
-                }
-            });
-
-            document.getElementById('uiTotalSaldo').innerText = "Rp " + totalSaldoGlobal.toLocaleString('id-ID');
-            document.getElementById('uiFlowIn').innerText = "Rp " + filteredInTotal.toLocaleString('id-ID');
-            document.getElementById('uiFlowOut').innerText = "Rp " + filteredOutTotal.toLocaleString('id-ID');
-
-            if (processedList.length === 0) {
-                listContainer.innerHTML = `<div class="empty-box"><i class="fa-solid fa-folder-open"></i><p>Tidak ditemukan data catatan.</p></div>`;
-                return;
-            }
-
-            listContainer.innerHTML = "";
-            processedList.forEach(item => {
-                const trxCard = document.createElement('div');
-                trxCard.className = 'trx-item';
-                const isIn = item.jenis === 'Pemasukan';
-                const fDate = item.parsedDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-
-                trxCard.innerHTML = `
-                    <div class="trx-icon ${isIn ? 'icon-in' : 'icon-out'}"><i class="${isIn ? 'fa-solid fa-arrow-trend-up' : 'fa-solid fa-arrow-trend-down'}"></i></div>
-                    <div class="info">
-                        <h4 class="trx-title-text"></h4>
-                        <p>${fDate}</p>
-                        ${item.bukti_image ? `<span class="btn-bukti" onclick="viewProof('${item.id}')"><i class="fa-solid fa-image"></i> Lihat Bukti</span>` : ''}
-                    </div>
-                    <div class="amount-detail">
-                        <h4 class="${isIn ? 'text-in' : 'text-out'}">${isIn ? '+' : '-'} Rp ${Number(item.nominal).toLocaleString('id-ID')}</h4>
-                        <p>${isIn ? 'Masuk' : 'Keluar'}</p>
-                    </div>
-                `;
-                trxCard.querySelector('.trx-title-text').textContent = item.nama_keterangan || "Tanpa Keterangan";
-                listContainer.appendChild(trxCard);
-            });
-        };
-
-        // Firebase Realtime Listener
-        const listContainer = document.getElementById('trxListContainer');
-        const q = query(collection(db, "transactions"), orderBy("tanggal", "desc"));
-        
-        onSnapshot(q, (snapshot) => {
-            window.rawTransactions = [];
-            snapshot.forEach((doc) => {
-                const data = doc.data();
-                let recordDate = new Date();
-                if (data.tanggal && typeof data.tanggal.toDate === 'function') recordDate = data.tanggal.toDate();
-                window.rawTransactions.push({ id: doc.id, ...data, parsedDate: recordDate });
-            });
-            window.renderDataLaporan();
-        }, (error) => {
-            listContainer.innerHTML = `<div class="empty-box"><p>Pastikan Anda terhubung ke internet dan database server aktif.</p></div>`;
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) window.location.href = 'login.html';
+            const userSnap = await getDoc(doc(db, "users", user.email));
+            const role = userSnap.data().role;
+            if (role === 'superadmin' || role === 'bendahara') document.getElementById('btnTambahTrx').style.display = 'block';
         });
 
-        // Firebase Submit
-        document.getElementById('formTrx').addEventListener('submit', async (e) => {
+        const trxRef = collection(db, "transactions");
+        onSnapshot(query(trxRef, orderBy("tanggal", "desc")), (snap) => {
+            transactions = [];
+            let total = 0;
+            snap.forEach(d => {
+                const data = d.data();
+                transactions.push(data);
+                if(data.jenis === 'Pemasukan') total += Number(data.nominal); else total -= Number(data.nominal);
+            });
+            document.getElementById('uiTotalSaldo').innerText = "Rp " + total.toLocaleString('id-ID');
+            render();
+        });
+
+        window.filterTrx = (f, el) => {
+            currentFilter = f;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            render();
+        }
+
+        function render() {
+            const list = document.getElementById('trxList');
+            list.innerHTML = transactions.filter(t => currentFilter === 'Semua' || t.jenis === currentFilter).map(t => `
+                <div class="trx-item">
+                    <div><strong>${t.nama_keterangan}</strong><br><small>${t.jenis}</small></div>
+                    <div style="color: ${t.jenis === 'Pemasukan' ? '#28A745' : '#DC3545'}">Rp ${Number(t.nominal).toLocaleString('id-ID')}</div>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('formTrx').onsubmit = async (e) => {
             e.preventDefault();
-            const btn = document.getElementById('btnSubmit');
-            const fileInput = document.getElementById('trxProof').files[0];
-            btn.innerText = "Memproses..."; btn.disabled = true;
-
-            try {
-                let base64Image = "";
-                if(fileInput) {
-                    base64Image = await new Promise((res, rej) => { const r = new FileReader(); r.readAsDataURL(fileInput); r.onload = () => res(r.result); });
-                }
-                await addDoc(collection(db, "transactions"), {
-                    jenis: document.getElementById('trxType').value, nama_keterangan: document.getElementById('trxName').value, nominal: Number(document.getElementById('trxAmount').value), bukti_image: base64Image, tanggal: serverTimestamp()
-                });
-                document.getElementById('formTrx').reset();
-                closeModal(); alert("Transaksi dicatat!");
-            } catch (err) { alert("Gagal mengamankan data ke server."); } 
-            finally { btn.innerHTML = '<i class="fa-solid fa-check"></i> Simpan Laporan'; btn.disabled = false; }
-        });
-        // ======= SIMULASI JABATAN =======
-const roleSaatIni = "Bendahara"; // Coba ganti jadi "Admin" atau "Member"
-
-document.addEventListener("DOMContentLoaded", () => {
-    // Tombol Catat Transaksi HANYA muncul untuk Bendahara & Super Admin
-    if (roleSaatIni === "Bendahara" || roleSaatIni === "Super Admin") {
-        document.getElementById('btnTambahTrx').style.display = 'flex';
-    }
-});
-
+            await addDoc(trxRef, {
+                jenis: document.getElementById('trxType').value,
+                nama_keterangan: document.getElementById('trxName').value,
+                nominal: Number(document.getElementById('trxAmount').value),
+                tanggal: serverTimestamp()
+            });
+            document.getElementById('trxModal').classList.remove('show');
+        }
     </script>
 </body>
 </html>

@@ -206,12 +206,14 @@
                 <div class="total-month" id="uiTotalMonth">Rp 0</div>
             </div>
 
+            <!-- PANEL PENGURUS (Hanya tampil untuk Superadmin, Admin, Bendahara) -->
             <div id="panelPengurus" style="display: none;">
                 <div class="section-title" style="color: #A67C00;">
                     Panel Pengurus <i class="fa-solid fa-shield-halved"></i>
                 </div>
                 <div class="pengurus-panel">
                     <div class="menu-grid" id="gridPengurus">
+                        <!-- Menu khusus Superadmin -->
                         <div class="menu-item glass-panel" id="menuSuperadmin" style="display: none;" onclick="window.location.href='superadmin.html'">
                             <div class="menu-icon" style="background:#1C1C1E; color:#D4AF37;"><i class="fa-solid fa-crown"></i></div>
                             <span>Sistem<br>Superadmin</span>
@@ -275,12 +277,14 @@
             </div>
         </div>
 
+        <!-- MODAL SEDEKAH QRIS -->
         <div id="modalQrisManual" class="modal-overlay">
             <div class="qris-card">
                 <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 5px;">Scan QRIS Kas</h3>
                 <p style="font-size: 11px; font-weight: 600; color: var(--text-gray); margin-bottom: 15px;">KGR Ojol Anak Babah Alun</p>
                 
                 <div class="qris-img">
+                    <!-- GANTI LINK IMG INI DENGAN QRIS ASLI KGR NANTINYA -->
                     <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" alt="QRIS">
                 </div>
 
@@ -309,11 +313,13 @@
     <script type="module">
         import { auth, db } from './db-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
-        import { collection, query, orderBy, limit, onSnapshot, addDoc, serverTimestamp, doc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+        import { collection, query, orderBy, limit, onSnapshot, addDoc, serverTimestamp, doc, getDoc, getDocs, where } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
+        // ========================================================
+        // 1. CEK LOGIN & AMBIL DATA PROFIL
+        // ========================================================
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // FIX: KITA PAKAI EMAIL BUAT NARIK DATA DARI DATABASE
                 const userEmail = user.email; 
                 const userRef = doc(db, "users", userEmail);
                 
@@ -349,8 +355,8 @@
                         menuBendahara.style.display = "none";
                         menuAdmin.style.display = "none";
 
-                        // JIKA STATUS MASIH PENDING & BUKAN ADMIN -> BLOKIR AKSES
-                        if (status === "Pending Admin" && role !== "superadmin" && role !== "admin") {
+                        // JIKA STATUS MASIH PENDING & BUKAN ADMIN -> BLOKIR AKSES BAWAH
+                        if (status === "Pending Admin" && role !== "superadmin" && role !== "admin" && role !== "bendahara") {
                             document.getElementById('uiUserName').innerText = "Menunggu Verifikasi";
                             document.getElementById('uiRoleText').innerText = "STATUS PENDING";
                             document.getElementById('uiRoleText').style.color = "#DC3545"; 
@@ -362,28 +368,29 @@
                             document.querySelector('.content-area').style.pointerEvents = 'auto';
                         }
 
+                        // ATUR VISIBILITAS MENU BERDASARKAN KASTA JABATAN
                         if (role === "superadmin") {
                             panelPengurus.style.display = "block";
-                            menuSuperadmin.style.display = "flex";
+                            menuSuperadmin.style.display = "flex"; // Superadmin bisa akses SEMUA
                             menuBendahara.style.display = "flex";
                             menuAdmin.style.display = "flex";
                             document.getElementById('uiRoleText').style.color = "#D4AF37"; 
                         } 
                         else if (role === "bendahara") {
                             panelPengurus.style.display = "block";
-                            menuBendahara.style.display = "flex";
+                            menuBendahara.style.display = "flex"; // Hanya akses menu keuangan
                             document.getElementById('uiRoleText').style.color = "#28A745"; 
                         } 
                         else if (role === "admin") {
                             panelPengurus.style.display = "block";
-                            menuAdmin.style.display = "flex";
+                            menuAdmin.style.display = "flex"; // Hanya akses menu anggota
                             document.getElementById('uiRoleText').style.color = "#0A84FF"; 
                         }
                         else {
                             document.getElementById('uiRoleText').style.color = "#8E8E93"; 
                         }
                     } else {
-                        // KALO DATA GA KETEMU, TENDANG KE LOGIN
+                        // Kalo email terdaftar di Auth tapi ngga ada di Database, tendang
                         auth.signOut();
                         window.location.href = 'login.html';
                     }
@@ -394,7 +401,7 @@
         });
 
         // ========================================================
-        // LOGIKA SEDEKAH QRIS & SALDO KAS
+        // 2. LOGIKA SEDEKAH QRIS DENGAN LIMIT PER BULAN
         // ========================================================
         const trxRef = collection(db, "transactions");
 
@@ -414,33 +421,88 @@
 
         window.submitSedekah = async function(e) {
             e.preventDefault();
+            const nominalInput = Number(document.getElementById('inputNominal').value);
+            const currentUserEmail = auth.currentUser.email;
+
             const btn = document.getElementById('btnSubmitSedekah');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Proses...'; btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Proses...'; 
+            btn.disabled = true;
+
             try {
+                // A. Tarik Setting Limit dari Superadmin di Firestore (Default 10.000)
+                let limitMaksimal = 10000; 
+                const configDoc = await getDoc(doc(db, "settings", "app_config"));
+                if (configDoc.exists() && configDoc.data().limit_sedekah) {
+                    limitMaksimal = configDoc.data().limit_sedekah;
+                }
+
+                // B. Hitung total sedekah user ini khusus bulan berjalan
+                const now = new Date();
+                const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+                
+                const qTrx = query(trxRef, 
+                    where("pengirim", "==", currentUserEmail),
+                    where("jenis", "==", "Pemasukan"),
+                    where("tanggal", ">=", startOfMonth)
+                );
+                
+                const snapshotTrx = await getDocs(qTrx);
+                let totalSedekahBulanIni = 0;
+                snapshotTrx.forEach(doc => { 
+                    totalSedekahBulanIni += Number(doc.data().nominal); 
+                });
+
+                // C. Validasi Limit (Jika total bulan ini + inputan > limit)
+                if ((totalSedekahBulanIni + nominalInput) > limitMaksimal) {
+                    alert(`Sedekah ditolak!\n\nBatas maksimal sedekah anggota adalah Rp ${limitMaksimal.toLocaleString('id-ID')} per bulan.\nTotal donasi Anda bulan ini sudah: Rp ${totalSedekahBulanIni.toLocaleString('id-ID')}`);
+                    btn.innerHTML = 'Kirim <i class="fa-solid fa-paper-plane"></i>'; btn.disabled = false;
+                    return; // Hentikan proses simpan
+                }
+
+                // D. Lanjut Proses Simpan Bukti & Data ke Firestore
                 let base64Image = await getBase64(document.getElementById('inputBukti').files[0]);
                 await addDoc(trxRef, {
-                    jenis: "Pemasukan", metode: "QRIS Manual", status: "pending", 
-                    nama_keterangan: document.getElementById('inputPesan').value || "Sedekah QRIS KGR",
-                    nominal: Number(document.getElementById('inputNominal').value),
-                    bukti_image: base64Image, tanggal: serverTimestamp()
+                    jenis: "Pemasukan", 
+                    metode: "QRIS Manual", 
+                    status: "pending", 
+                    pengirim: currentUserEmail, // Wajib simpan email agar bisa dilacak
+                    nama_keterangan: document.getElementById('inputPesan').value || "Sedekah Kas",
+                    nominal: nominalInput,
+                    bukti_image: base64Image, 
+                    tanggal: serverTimestamp()
                 });
-                alert("Alhamdulillah! Menunggu konfirmasi dari Bendahara/Superadmin.");
+                
+                alert("Alhamdulillah! Sedekah berhasil dikirim dan menunggu konfirmasi Bendahara.");
                 window.closeQrisModal();
-            } catch (err) { alert("Gagal mengirim bukti transfer."); } 
-            finally { btn.innerHTML = 'Kirim <i class="fa-solid fa-paper-plane"></i>'; btn.disabled = false; }
+
+            } catch (err) { 
+                console.error(err);
+                alert("Gagal mengirim bukti transfer. Periksa koneksi Anda."); 
+            } finally { 
+                btn.innerHTML = 'Kirim <i class="fa-solid fa-paper-plane"></i>'; btn.disabled = false; 
+            }
         }
 
+        // ========================================================
+        // 3. TARIK DATA TOTAL KAS (REAL-TIME)
+        // ========================================================
         onSnapshot(trxRef, (snapshot) => {
             let totalSaldo = 0, saldoBulanIni = 0;
             const now = new Date();
+            
             snapshot.forEach((doc) => {
                 const data = doc.data();
+                // Hanya hitung yang statusnya udah bukan pending
                 if (data.status !== "pending") {
                     const nominal = Number(data.nominal) || 0;
                     const tgl = data.tanggal ? data.tanggal.toDate() : new Date(); 
-                    if (data.jenis === "Pemasukan") totalSaldo += nominal; else totalSaldo -= nominal;
+                    
+                    if (data.jenis === "Pemasukan") totalSaldo += nominal; 
+                    else totalSaldo -= nominal;
+                    
                     if (tgl.getMonth() === now.getMonth() && tgl.getFullYear() === now.getFullYear()) {
-                        if (data.jenis === "Pemasukan") saldoBulanIni += nominal; else saldoBulanIni -= nominal;
+                        if (data.jenis === "Pemasukan") saldoBulanIni += nominal; 
+                        else saldoBulanIni -= nominal;
                     }
                 }
             });
@@ -448,9 +510,13 @@
             document.getElementById('uiTotalMonth').innerText = "Rp " + saldoBulanIni.toLocaleString('id-ID');
         });
 
+        // ========================================================
+        // 4. TARIK 3 AKTIVITAS TRANSAKSI TERBARU
+        // ========================================================
         onSnapshot(query(trxRef, orderBy("tanggal", "desc"), limit(5)), (snapshot) => {
             const list = document.getElementById('trxListContainer'); list.innerHTML = ""; 
             let count = 0;
+            
             snapshot.forEach((doc) => {
                 const d = doc.data();
                 if (d.status !== "pending" && count < 3) {

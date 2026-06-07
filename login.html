@@ -127,6 +127,11 @@
                         <i class="fa-solid fa-id-card input-icon"></i>
                         <input type="tel" id="regNik" class="form-input" placeholder="16 Digit NIK" required maxlength="16" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
                     </div>
+                    <!-- INPUT NOMOR WA DITAMBAHKAN DI SINI -->
+                    <div class="form-group">
+                        <i class="fa-solid fa-phone input-icon"></i>
+                        <input type="tel" id="regWa" class="form-input" placeholder="Nomor WhatsApp Aktif" required oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                    </div>
                     <div class="form-group">
                         <i class="fa-solid fa-envelope input-icon"></i>
                         <input type="email" id="regEmail" class="form-input" placeholder="Email Aktif (Gmail/Yahoo)" required>
@@ -211,7 +216,10 @@
 
             tempData = {
                 name: document.getElementById('regName').value,
-                nik: nik, email: email, pass: document.getElementById('regPass').value
+                nik: nik,
+                wa: document.getElementById('regWa').value, // AMBIL NOMOR WA
+                email: email, 
+                pass: document.getElementById('regPass').value
             };
             
             switchView('stepSelfie');
@@ -255,9 +263,6 @@
             if(videoStream) { videoStream.getTracks().forEach(track => track.stop()); }
         }
 
-        // ==========================================
-        // 6. SUBMIT AKHIR (VERSI ANTI-NYANGKUT)
-        // ==========================================
         document.getElementById('btnCaptureFace').addEventListener('click', async () => {
             const btn = document.getElementById('btnCaptureFace');
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
@@ -268,16 +273,11 @@
                 let userRecord;
 
                 try {
-                    // Tahap 1: Coba bikin akun Auth baru
                     const uc = await createUserWithEmailAndPassword(auth, currentUserEmail, tempData.pass);
                     userRecord = uc.user;
-                    // Kirim verifikasi cuma kalau ini beneran pendaftaran pertama
                     await sendEmailVerification(userRecord);
-                    
                 } catch (authErr) {
-                    // JIKA NYANGKUT: Auth udah ada tapi user ngetes daftar lagi
                     if (authErr.code === 'auth/email-already-in-use') {
-                        // Paksa login di latar belakang biar bisa nerusin simpan data!
                         const uc = await signInWithEmailAndPassword(auth, currentUserEmail, tempData.pass);
                         userRecord = uc.user;
                     } else {
@@ -285,32 +285,29 @@
                     }
                 }
 
-                // Tahap 2: Tembak data Profil ke Firestore Database (pake email sebagai ID Dokumen)
+                // SIMPAN NOMOR WA KE FIRESTORE BERSAMA DATA LAINNYA
                 await setDoc(doc(db, "users", userRecord.email), {
                     nama_lengkap: tempData.name,
                     nik: tempData.nik,
+                    no_wa: tempData.wa, 
                     email: currentUserEmail,
-                    role: "Member",
+                    role: "member",
                     status: "Pending Admin",
-                    device_id: getDeviceID(), // Gembok HP
+                    device_id: getDeviceID(),
                     created_at: serverTimestamp()
                 });
 
                 stopCamera();
-                showAlert('success', 'Pendaftaran Selesai', 'Wajah terekam dan akun terkunci di perangkat ini. Silakan masuk.');
+                showAlert('success', 'Pendaftaran Selesai', 'Silahkan verifikasi email anda.');
                 setTimeout(() => { switchView('stepLogin'); }, 3000);
                 
             } catch (error) {
-                // Tampilkan error aslinya ke layar biar ketahuan penyakitnya apa
                 showAlert('error', 'Gagal Sistem', error.message.replace('Firebase: ', ''));
                 btn.innerHTML = 'Rekam & Selesaikan <i class="fa-solid fa-check-double"></i>';
                 btn.disabled = false;
             }
         });
 
-        // ==========================================
-        // 7. LOGIN & CEK DEVICE BINDING
-        // ==========================================
         document.getElementById('formLogin').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btnLoginSubmit');
@@ -320,12 +317,10 @@
             try {
                 const uc = await signInWithEmailAndPassword(auth, document.getElementById('logEmail').value, document.getElementById('logPass').value);
                 
-                // Mencegah login jika email belum diklik link verifikasinya
                 if (!uc.user.emailVerified) {
                     throw new Error("Email belum diverifikasi. Cek kotak masuk Anda.");
                 }
 
-                // Cek Device Binding dari Firestore (pakai ID email)
                 const userDoc = await getDoc(doc(db, "users", uc.user.email));
                 if (userDoc.exists()) {
                     const dbDeviceId = userDoc.data().device_id;
@@ -337,7 +332,6 @@
                     }
                 }
                 
-                // MEMAINKAN ANIMASI SEBELUM PINDAH KE HALAMAN DEPAN
                 window.playTypewriterAndRedirect();
             } catch (error) {
                 showAlert('error', 'Gagal Masuk', error.message.replace('Firebase: ', ''));
@@ -346,7 +340,6 @@
             }
         });
 
-        // FUNGSI ANIMASI TYPEWRITER
         window.playTypewriterAndRedirect = async function() {
             document.getElementById('introAnimation').classList.add('active');
             
