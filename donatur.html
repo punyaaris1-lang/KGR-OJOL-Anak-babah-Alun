@@ -3,146 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#F5F5F7">
+    <meta name="theme-color" content="#064E3B">
     <title>Daftar Donatur - KGR</title>
     
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
-        :root {
-            --bg-base: #F5F5F7; 
-            --text-dark: #000000;
-            --text-black: #111111; 
-            --text-gray: #8E8E93;
-            
-            --gold-primary: #D4AF37;
-            --gold-deep: linear-gradient(135deg, #A67C00, #D4AF37, #8B6914, #B38728);
-            
-            --silver: #C0C0C0;
-            --bronze: #CD7F32;
-            
-            --glass-bg: rgba(255, 255, 255, 0.75);
-            --glass-border: rgba(255, 255, 255, 0.9);
-            --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.04);
-        }
-
+        :root { --bg-base: #F4F6F5; --text-dark: #111827; --text-gray: #4B5563; --emerald-card: linear-gradient(135deg, #065F46 0%, #022C22 100%); --gold-accent: #FBBF24; --silver: #9CA3AF; --bronze: #B45309; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
-        
-        body { 
-            background-color: #E5E5E5; 
-            background-image: radial-gradient(circle at 15% 50%, rgba(212, 175, 55, 0.08), transparent 25%), 
-                              radial-gradient(circle at 85% 30%, rgba(10, 132, 255, 0.05), transparent 25%);
-            display: flex; justify-content: center; align-items: center; min-height: 100vh;
-        }
+        body { background-color: #E2E8E4; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .app-container { width: 100%; max-width: 414px; height: 100vh; background-color: var(--bg-base); background-image: radial-gradient(circle at 50% 35%, rgba(5, 150, 105, 0.12) 0%, rgba(5, 150, 105, 0.03) 35%, var(--bg-base) 70%); position: relative; overflow-x: hidden; overflow-y: auto; display: flex; flex-direction: column; color: var(--text-dark); }
+        @media (min-width: 600px) { .app-container { max-width: 480px; height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15); border: 8px solid #FFFFFF; margin: auto; } }
 
-        .app-container {
-            width: 100%; max-width: 414px; height: 100vh;
-            background-color: var(--bg-base); position: relative; overflow: hidden;
-            display: flex; flex-direction: column; color: var(--text-dark);
-        }
+        .header-page { padding: 40px 24px 20px; display: flex; align-items: center; gap: 15px; z-index: 10; background: #FFF; box-shadow: 0 4px 15px rgba(0,0,0,0.02); border-bottom: 1px solid rgba(0,0,0,0.05);}
+        .btn-back { width: 42px; height: 42px; border-radius: 14px; background: #F5F5F7; color: var(--text-dark); display: flex; justify-content: center; align-items: center; font-size: 18px; cursor: pointer; transition: 0.2s; border: 1px solid rgba(0,0,0,0.05);}
+        .btn-back:active { transform: scale(0.85); background: #059669; color: #FFF; }
+        .header-page h2 { font-size: 18px; font-weight: 900; letter-spacing: -0.5px; }
 
-        @media (min-width: 600px) {
-            .app-container {
-                max-width: 480px; height: 90vh; max-height: 900px;
-                border-radius: 40px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15), inset 0 0 0 8px #FFFFFF;
-                border: 1px solid rgba(0,0,0,0.05); margin: auto;
-            }
-        }
-
-        .orb { position: absolute; border-radius: 50%; filter: blur(60px); z-index: 0; animation: floatOrb 8s infinite alternate ease-in-out; }
-        .orb-1 { width: 300px; height: 300px; background: rgba(212, 175, 55, 0.25); top: -50px; right: -50px; }
-        .orb-2 { width: 250px; height: 250px; background: rgba(10, 132, 255, 0.15); bottom: 100px; left: -50px; animation-delay: -3s; }
-        @keyframes floatOrb { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-30px, 40px) scale(1.1); } }
-
-        .glass-panel {
-            background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--glass-border); box-shadow: var(--shadow-soft), inset 0 0 20px rgba(255,255,255,0.5);
-            z-index: 2; position: relative;
-        }
-
-        /* --- HEADER PAGE --- */
-        .header-page { 
-            padding: 40px 24px 20px; display: flex; align-items: center; gap: 15px; z-index: 10; position: relative; 
-            border-bottom: 1px solid rgba(0,0,0,0.05); background: rgba(245,245,247,0.8); backdrop-filter: blur(20px);
-        }
-        .btn-back {
-            width: 40px; height: 40px; border-radius: 14px; background: #FFF; color: var(--text-dark);
-            display: flex; justify-content: center; align-items: center; font-size: 18px; cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.2s; border: 1px solid rgba(0,0,0,0.1);
-        }
-        .btn-back:active { transform: scale(0.9); background: var(--text-dark); color: #FFF; }
-        .header-page h2 { font-size: 18px; font-weight: 900; letter-spacing: -0.5px; color: var(--text-dark); }
-
-        .content-area { flex-grow: 1; overflow-y: auto; padding: 20px 24px 110px; scrollbar-width: none; z-index: 2; position: relative; }
+        .content-area { flex-grow: 1; overflow-y: auto; padding: 25px 24px 110px; scrollbar-width: none; }
         .content-area::-webkit-scrollbar { display: none; }
 
-        /* --- INFO KARTU ATAS --- */
-        .info-card {
-            border-radius: 20px; padding: 20px; margin-bottom: 25px; text-align: center;
-            display: flex; justify-content: space-around; align-items: center;
-        }
-        .info-block { display: flex; flex-direction: column; align-items: center; }
-        .info-block h3 { font-size: 24px; font-weight: 900; color: var(--text-dark); margin-bottom: 4px; }
-        .info-block p { font-size: 10px; font-weight: 800; color: var(--text-gray); text-transform: uppercase; }
-        .info-divider { width: 1px; height: 40px; background: rgba(0,0,0,0.1); }
+        .info-card { background: var(--emerald-card); border-radius: 24px; padding: 25px; margin-bottom: 25px; text-align: center; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 20px 40px rgba(5, 150, 105, 0.25); position: relative; overflow: hidden; }
+        .info-card::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(to bottom right, rgba(255,255,255,0.15) 0%, transparent 40%, transparent 100%); transform: rotate(30deg); pointer-events: none; }
+        .info-block { display: flex; flex-direction: column; align-items: center; position: relative; z-index: 2;}
+        .info-block h3 { font-size: 26px; font-weight: 900; color: #FFFFFF; margin-bottom: 4px; text-shadow: 0 4px 10px rgba(0,0,0,0.3);}
+        .info-block p { font-size: 11px; font-weight: 800; color: rgba(255,255,255,0.8); text-transform: uppercase; }
+        .info-divider { width: 1px; height: 40px; background: rgba(255,255,255,0.2); z-index: 2;}
 
-        .section-title { font-size: 14px; font-weight: 900; margin: 0 0 15px; color: var(--text-dark); text-transform: uppercase; letter-spacing: 1px;}
+        .section-title { font-size: 15px; font-weight: 900; margin: 0 0 15px; color: var(--text-dark); text-transform: uppercase; letter-spacing: 1px;}
         
-        /* --- LIST DONATUR --- */
-        .list-item { 
-            display: flex; align-items: center; padding: 14px 15px; border-radius: 18px; margin-bottom: 12px; 
-            background: #FFF; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 10px rgba(0,0,0,0.02);
-            transition: 0.2s;
-        }
-        .list-item:active { transform: scale(0.98); background: var(--bg-base); }
+        .list-item { display: flex; align-items: center; padding: 16px 15px; border-radius: 20px; margin-bottom: 12px; background: #FFF; border: 1px solid rgba(0,0,0,0.02); box-shadow: 0 5px 15px rgba(0,0,0,0.03); transition: 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .list-item:active { transform: scale(0.96); background: #F9F9F9; }
 
-        /* Peringkat */
-        .rank { width: 30px; font-size: 16px; font-weight: 900; color: var(--text-dark); text-align: center; flex-shrink: 0;}
-        
-        /* Warna Khusus Top 3 */
-        .rank.top-1 { font-size: 22px; color: var(--gold-primary); filter: drop-shadow(0 2px 2px rgba(212,175,55,0.4)); }
-        .rank.top-2 { font-size: 22px; color: var(--silver); filter: drop-shadow(0 2px 2px rgba(192,192,192,0.4)); }
-        .rank.top-3 { font-size: 22px; color: var(--bronze); filter: drop-shadow(0 2px 2px rgba(205,127,50,0.4)); }
+        .rank { width: 35px; font-size: 16px; font-weight: 900; color: var(--text-dark); text-align: center; flex-shrink: 0;}
+        .rank.top-1 { font-size: 24px; color: var(--gold-accent); filter: drop-shadow(0 2px 5px rgba(251, 191, 36, 0.5)); }
+        .rank.top-2 { font-size: 24px; color: var(--silver); filter: drop-shadow(0 2px 5px rgba(156, 163, 175, 0.5)); }
+        .rank.top-3 { font-size: 24px; color: var(--bronze); filter: drop-shadow(0 2px 5px rgba(180, 83, 9, 0.5)); }
 
-        .avatar { 
-            width: 45px; height: 45px; border-radius: 50%; margin: 0 12px; 
-            background-color: #F5F5F7; background-size: cover; background-position: center;
-            border: 2px solid #FFF; box-shadow: 0 2px 8px rgba(0,0,0,0.1); flex-shrink: 0;
-            display: flex; justify-content: center; align-items: center; font-size: 18px; font-weight: 800; color: var(--text-dark);
-        }
-        
+        .avatar { width: 50px; height: 50px; border-radius: 50%; margin: 0 12px; background-color: #F5F5F7; border: 2px solid #FFF; box-shadow: 0 4px 10px rgba(0,0,0,0.1); flex-shrink: 0; display: flex; justify-content: center; align-items: center; font-size: 20px; font-weight: 900; color: var(--text-dark); }
         .info { flex-grow: 1; overflow: hidden; }
-        .info h4 { font-size: 14px; font-weight: 900; color: var(--text-dark); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
-        .info p { font-size: 10px; color: var(--text-gray); font-weight: 700;}
-        
-        .amount { font-size: 15px; font-weight: 900; color: var(--text-dark); text-align: right; flex-shrink: 0;}
-        .amount span { font-size: 9px; display: block; font-weight: 800; text-transform: uppercase; margin-top: 2px; color: var(--text-gray);}
+        .info h4 { font-size: 14px; font-weight: 900; color: var(--text-dark); margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+        .info p { font-size: 11px; color: var(--text-gray); font-weight: 700;}
+        .amount { font-size: 16px; font-weight: 900; color: var(--text-dark); text-align: right; flex-shrink: 0;}
+        .amount span { font-size: 10px; display: block; font-weight: 800; text-transform: uppercase; margin-top: 2px; color: var(--text-gray);}
+        .list-item.gold-border { border: 2px solid var(--gold-accent); background: linear-gradient(to right, #FFF, rgba(251, 191, 36, 0.05)); }
 
-        /* Styling Khusus Kartu Top 1 agar lebih stand out */
-        .list-item.gold-border { border: 2px solid var(--gold-primary); background: linear-gradient(to right, #FFF, rgba(212, 175, 55, 0.08)); }
-
-        .empty-state { text-align: center; padding: 40px 20px; color: var(--text-gray); }
-        .empty-state i { font-size: 30px; margin-bottom: 10px; opacity: 0.5; }
-        .empty-state p { font-size: 12px; font-weight: 700; }
+        .empty-state { text-align: center; padding: 40px 20px; color: var(--text-gray); border: 2px dashed rgba(0,0,0,0.1); border-radius: 20px; }
+        .empty-state i { font-size: 35px; margin-bottom: 10px; opacity: 0.5; }
+        .empty-state p { font-size: 13px; font-weight: 700; }
     </style>
 </head>
 <body>
-
     <div class="app-container">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-
         <div class="header-page">
-            <div class="btn-back" onclick="window.location.href='index.html'">
-                <i class="fa-solid fa-arrow-left"></i>
-            </div>
+            <div class="btn-back" onclick="window.location.href='index.html'"><i class="fa-solid fa-arrow-left"></i></div>
             <h2>Daftar Donatur</h2>
         </div>
 
         <div class="content-area">
-            
-            <div class="info-card glass-panel">
+            <div class="info-card">
                 <div class="info-block">
                     <h3 id="uiTotalDonatur">0</h3>
                     <p>Orang Berdonasi</p>
@@ -154,7 +75,7 @@
                 </div>
             </div>
 
-            <div class="section-title">Klasemen Kebaikan (Keseluruhan)</div>
+            <div class="section-title">Klasemen Kebaikan</div>
 
             <div id="donaturList">
                 <div class="empty-state">
@@ -162,7 +83,6 @@
                     <p>Mengambil data klasemen kebaikan...</p>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -171,113 +91,63 @@
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
         import { collection, query, where, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-        // Cek Auth (Hanya memastikan user masuk aplikasi)
-        onAuthStateChanged(auth, (user) => {
-            if (!user) window.location.href = 'login.html';
-        });
+        onAuthStateChanged(auth, (user) => { if (!user) window.location.href = 'login.html'; });
 
         async function loadKlasemenDonatur() {
             try {
-                // 1. Ambil Data Semua User (Untuk nge-map nama berdasarkan Email)
                 const usersSnap = await getDocs(collection(db, "users"));
                 let userMap = {};
-                usersSnap.forEach(doc => {
-                    const data = doc.data();
-                    userMap[data.email] = data.nama_lengkap || "Hamba Allah";
-                });
+                usersSnap.forEach(doc => { userMap[doc.data().email] = doc.data().nama_lengkap || "Hamba Allah"; });
 
-                // 2. Ambil Semua Transaksi Pemasukan (Sedekah)
                 const trxRef = collection(db, "transactions");
                 const q = query(trxRef, where("jenis", "==", "Pemasukan"));
 
                 onSnapshot(q, (snapshot) => {
-                    let donorMap = {};
-                    let grandTotal = 0;
-                    let validDonorsCount = 0;
+                    let donorMap = {}; let grandTotal = 0; let validDonorsCount = 0;
 
-                    // Menggabungkan donasi per-email pengirim
                     snapshot.forEach((docSnap) => {
                         const data = docSnap.data();
-                        
-                        // Hanya hitung donasi yang sudah disetujui/cair (bukan pending/rejected)
-                        // Jika sistem index.html kalian memakai "status !== pending", kita samakan.
                         if (data.status !== "pending" && data.status !== "rejected" && data.pengirim) {
-                            const emailPengirim = data.pengirim;
-                            const nominal = Number(data.nominal) || 0;
-
-                            if (!donorMap[emailPengirim]) {
-                                donorMap[emailPengirim] = { total_donasi: 0, count: 0 };
-                                validDonorsCount++;
-                            }
-                            
-                            donorMap[emailPengirim].total_donasi += nominal;
-                            donorMap[emailPengirim].count += 1;
-                            grandTotal += nominal;
+                            const email = data.pengirim; const nominal = Number(data.nominal) || 0;
+                            if (!donorMap[email]) { donorMap[email] = { total: 0, count: 0 }; validDonorsCount++; }
+                            donorMap[email].total += nominal; donorMap[email].count += 1; grandTotal += nominal;
                         }
                     });
 
-                    // Update UI Rekap
                     document.getElementById('uiTotalDonatur').innerText = validDonorsCount;
                     document.getElementById('uiTotalDana').innerText = "Rp " + (grandTotal >= 1000000 ? (grandTotal/1000000).toFixed(1) + 'Jt' : grandTotal.toLocaleString('id-ID'));
 
-                    // Ubah Object Map menjadi Array agar bisa di-Sorting (Diurutkan dari terbesar)
-                    let sortedDonors = Object.keys(donorMap).map(email => {
-                        return {
-                            email: email,
-                            nama: userMap[email] || "Anggota KGR",
-                            total: donorMap[email].total_donasi,
-                            frekuensi: donorMap[email].count
-                        }
-                    }).sort((a, b) => b.total - a.total); // Urut Terbesar ke Terkecil
+                    let sortedDonors = Object.keys(donorMap).map(email => ({
+                        nama: userMap[email] || "Anggota KGR", total: donorMap[email].total, frekuensi: donorMap[email].count
+                    })).sort((a, b) => b.total - a.total);
 
-                    // Render ke HTML
-                    const listContainer = document.getElementById('donaturList');
-                    listContainer.innerHTML = "";
+                    const listContainer = document.getElementById('donaturList'); listContainer.innerHTML = "";
 
                     if (sortedDonors.length === 0) {
-                        listContainer.innerHTML = `<div class="empty-state"><i class="fa-solid fa-box-open"></i><p>Belum ada catatan donatur yang disetujui Bendahara.</p></div>`;
-                        return;
+                        listContainer.innerHTML = `<div class="empty-state"><i class="fa-solid fa-box-open"></i><p>Belum ada donatur yang disetujui.</p></div>`; return;
                     }
 
                     sortedDonors.forEach((donor, index) => {
                         const rankPos = index + 1;
-                        let rankIcon = rankPos;
-                        let rankClass = "";
-                        let borderClass = "";
+                        let rankIcon = rankPos, rankClass = "", borderClass = "";
 
-                        // Styling Top 3
                         if (rankPos === 1) { rankIcon = '<i class="fa-solid fa-crown"></i>'; rankClass = "top-1"; borderClass = "gold-border"; }
                         else if (rankPos === 2) { rankIcon = '<i class="fa-solid fa-medal"></i>'; rankClass = "top-2"; }
                         else if (rankPos === 3) { rankIcon = '<i class="fa-solid fa-award"></i>'; rankClass = "top-3"; }
 
-                        const inisial = donor.nama.charAt(0).toUpperCase();
-
-                        const htmlItem = `
+                        listContainer.innerHTML += `
                             <div class="list-item ${borderClass}">
                                 <div class="rank ${rankClass}">${rankIcon}</div>
-                                <div class="avatar">${inisial}</div>
-                                <div class="info">
-                                    <h4>${donor.nama}</h4>
-                                    <p>${donor.frekuensi}x Transaksi Sedekah</p>
-                                </div>
-                                <div class="amount">
-                                    Rp ${donor.total.toLocaleString('id-ID')}
-                                    <span>Total Sedekah</span>
-                                </div>
+                                <div class="avatar">${donor.nama.charAt(0).toUpperCase()}</div>
+                                <div class="info"><h4>${donor.nama}</h4><p>${donor.frekuensi}x Transaksi Sedekah</p></div>
+                                <div class="amount">Rp ${donor.total.toLocaleString('id-ID')}<span>Total Sedekah</span></div>
                             </div>
                         `;
-                        listContainer.innerHTML += htmlItem;
                     });
                 });
-            } catch (error) {
-                console.error("Gagal memuat klasemen", error);
-                document.getElementById('donaturList').innerHTML = `<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><p>Gagal terhubung ke database server.</p></div>`;
-            }
+            } catch (error) { document.getElementById('donaturList').innerHTML = `<div class="empty-state"><p>Gagal terhubung ke server.</p></div>`; }
         }
-
-        // Panggil fungsi saat web di-load
         loadKlasemenDonatur();
     </script>
-
 </body>
 </html>

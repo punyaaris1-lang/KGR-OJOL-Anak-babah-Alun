@@ -3,82 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#F5F5F7">
+    <meta name="theme-color" content="#064E3B">
     <title>Pengajuan Dana - KGR</title>
     
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
-        :root {
-            --bg-base: #F5F5F7; --text-dark: #1C1C1E; --text-gray: #8E8E93;
-            --gold-primary: #D4AF37; --gold-deep: linear-gradient(135deg, #A67C00, #D4AF37, #8B6914, #B38728);
-            --color-pending: #FD7E14; --color-approved: #28A745; --color-rejected: #DC3545;
+        :root { 
+            --bg-base: #F4F6F5; --text-dark: #111827; --text-gray: #4B5563; 
+            --emerald-main: #059669; --gold-accent: #FBBF24;
+            --color-pending: #F59E0B; --color-approved: #059669; --color-rejected: #DC2626; 
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: #E5E5E5; display: flex; justify-content: center; min-height: 100vh; }
+        body { background-color: #E2E8E4; display: flex; justify-content: center; min-height: 100vh; }
         
-        .app-container { width: 100%; max-width: 480px; background: var(--bg-base); display: flex; flex-direction: column; height: 100vh; position: relative; overflow: hidden;}
-        
-        @media (min-width: 600px) { .app-container { height: 90vh; max-height: 900px; border-radius: 40px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15); border: 1px solid rgba(0,0,0,0.05); margin: auto; } }
+        .app-container { width: 100%; max-width: 480px; background: var(--bg-base); background-image: radial-gradient(circle at 50% 35%, rgba(5, 150, 105, 0.12) 0%, rgba(5, 150, 105, 0.03) 35%, var(--bg-base) 70%); display: flex; flex-direction: column; height: 100vh; position: relative; overflow: hidden;}
+        @media (min-width: 600px) { .app-container { height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15); border: 8px solid #FFFFFF; margin: auto; } }
 
-        .header-page { padding: 40px 24px 20px; display: flex; align-items: center; gap: 15px; background: #FFF; border-bottom: 1px solid rgba(0,0,0,0.05); z-index: 10; }
-        .btn-back { width: 40px; height: 40px; border-radius: 12px; background: #F5F5F7; display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text-dark); transition: 0.2s; }
-        .btn-back:active { transform: scale(0.9); }
-        .header-page h2 { font-size: 18px; font-weight: 900; }
+        .header-page { padding: 40px 24px 20px; display: flex; align-items: center; gap: 15px; background: #FFF; border-bottom: 1px solid rgba(0,0,0,0.05); z-index: 10; box-shadow: 0 4px 15px rgba(0,0,0,0.02);}
+        .btn-back { width: 42px; height: 42px; border-radius: 14px; background: #F5F5F7; display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text-dark); transition: 0.2s; border: 1px solid rgba(0,0,0,0.05);}
+        .btn-back:active { transform: scale(0.85); background: var(--emerald-main); color: #FFF; }
+        .header-page h2 { font-size: 18px; font-weight: 900; letter-spacing: -0.5px;}
         
-        .content-area { flex-grow: 1; overflow-y: auto; padding: 20px 24px; scrollbar-width: none; }
+        .content-area { flex-grow: 1; overflow-y: auto; padding: 25px 24px 100px; scrollbar-width: none; }
         .content-area::-webkit-scrollbar { display: none; }
         
-        /* Tabs */
-        .tabs-container { display: flex; gap: 8px; margin-bottom: 20px; }
-        .tab-btn { flex: 1; padding: 12px; border-radius: 12px; font-size: 12px; font-weight: 800; background: #FFF; border: 1px solid rgba(0,0,0,0.08); text-align: center; cursor: pointer; transition: 0.2s; }
-        .tab-btn.active { background: var(--gold-deep); color: #FFF; border-color: transparent; }
+        /* TABS MEMBAL */
+        .tabs-container { display: flex; gap: 10px; margin-bottom: 25px; }
+        .tab-btn { flex: 1; padding: 14px; border-radius: 14px; font-size: 13px; font-weight: 800; background: #FFF; border: 1px solid rgba(0,0,0,0.05); text-align: center; cursor: pointer; transition: 0.2s; color: var(--text-gray);}
+        .tab-btn.active { background: var(--emerald-main); color: #FFF; border-color: var(--emerald-main); box-shadow: 0 5px 15px rgba(5,150,105,0.3);}
 
-        /* Card Pengajuan */
-        .request-card { background: #FFF; border-radius: 18px; padding: 18px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.05); }
-        .req-header { display: flex; justify-content: space-between; margin-bottom: 10px; }
-        .req-title { font-size: 14px; font-weight: 900; }
-        .req-date { font-size: 10px; color: var(--text-gray); font-weight: 700; margin-top: 3px;}
-        .req-amount { font-size: 15px; font-weight: 900; color: var(--color-rejected); }
-        .req-body { font-size: 11px; color: var(--text-gray); font-weight: 600; margin-bottom: 15px; line-height: 1.4;}
+        /* KARTU PENGAJUAN (HIGH CONTRAST) */
+        .request-card { background: #FFF; border-radius: 24px; padding: 20px; margin-bottom: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.02); transition: 0.2s;}
+        .request-card:active { transform: scale(0.98); }
+        .req-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+        .req-title { font-size: 15px; font-weight: 900; color: var(--text-dark); line-height: 1.3;}
+        .req-date { font-size: 11px; color: var(--text-gray); font-weight: 700; margin-top: 4px; display: flex; align-items: center; gap: 5px;}
+        .req-amount { font-size: 16px; font-weight: 900; color: var(--text-dark); background: #F9F9F9; padding: 6px 12px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.04);}
+        .req-body { font-size: 12px; color: var(--text-gray); font-weight: 600; margin-bottom: 15px; line-height: 1.5; background: #F9F9F9; padding: 12px; border-radius: 12px;}
         
-        .status-tracker { background: #F5F5F7; padding: 12px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; }
-        .status-badge { font-size: 10px; font-weight: 800; text-transform: uppercase; display: flex; align-items: center; gap: 5px; }
-        .status-badge.pending { color: var(--color-pending); }
-        .status-badge.approved { color: var(--color-approved); }
-        .status-badge.rejected { color: var(--color-rejected); }
+        .status-tracker { background: #FFF; border: 1px solid rgba(0,0,0,0.05); padding: 12px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .status-badge { font-size: 11px; font-weight: 800; text-transform: uppercase; display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 8px;}
+        .status-badge.pending { background: rgba(245, 158, 11, 0.1); color: var(--color-pending); }
+        .status-badge.approved { background: rgba(5, 150, 105, 0.1); color: var(--color-approved); }
+        .status-badge.rejected { background: rgba(220, 38, 38, 0.1); color: var(--color-rejected); }
         
-        .approval-info { font-size: 10px; font-weight: 800; background: #FFF; padding: 5px 10px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.05); display: flex; gap: 10px; }
-        .approval-info span.yes { color: var(--color-approved); }
-        .approval-info span.no { color: var(--text-gray); }
+        .approval-info { font-size: 10px; font-weight: 800; background: #F9F9F9; padding: 6px 12px; border-radius: 10px; display: flex; gap: 10px; }
+        .approval-info span.yes { color: var(--emerald-main); }
+        .approval-info span.no { color: var(--text-gray); opacity: 0.6;}
 
+        /* TOMBOL AKSI ADMIN */
         .action-buttons { display: flex; gap: 10px; margin-top: 15px; border-top: 1px dashed rgba(0,0,0,0.1); padding-top: 15px; }
-        .btn-act { flex: 1; padding: 12px; border-radius: 10px; font-size: 12px; font-weight: 800; cursor: pointer; border: none; transition: 0.2s;}
-        .btn-act.approve { background: rgba(40,167,69,0.1); color: var(--color-approved); }
-        .btn-act.approve:active { background: var(--color-approved); color: #FFF; }
-        .btn-act.reject { background: rgba(220,53,69,0.1); color: var(--color-rejected); }
-        .btn-act.reject:active { background: var(--color-rejected); color: #FFF; }
+        .btn-act { flex: 1; padding: 14px; border-radius: 12px; font-size: 13px; font-weight: 800; cursor: pointer; border: none; transition: 0.2s;}
+        .btn-act.approve { background: rgba(5, 150, 105, 0.1); color: var(--emerald-main); }
+        .btn-act.approve:active { background: var(--emerald-main); color: #FFF; transform: scale(0.95);}
+        .btn-act.reject { background: rgba(220, 38, 38, 0.1); color: var(--color-rejected); }
+        .btn-act.reject:active { background: var(--color-rejected); color: #FFF; transform: scale(0.95);}
 
-        .btn-create { width: 100%; padding: 16px; border-radius: 16px; font-size: 13px; font-weight: 900; background: var(--text-dark); color: #FFF; border: none; margin-bottom: 20px; cursor: pointer; transition: 0.2s; box-shadow: 0 10px 25px rgba(0,0,0,0.15);}
-        .btn-create:active { transform: scale(0.97); }
+        .btn-create { width: 100%; padding: 18px; border-radius: 18px; font-size: 14px; font-weight: 900; background: var(--text-dark); color: #FFF; border: none; margin-bottom: 25px; cursor: pointer; transition: 0.2s; box-shadow: 0 10px 20px rgba(0,0,0,0.1);}
+        .btn-create:active { transform: scale(0.96); }
         
-        .empty-state { text-align: center; padding: 40px 20px; color: var(--text-gray); font-size: 12px; font-weight: 700; border: 2px dashed rgba(0,0,0,0.08); border-radius: 20px;}
+        .empty-state { text-align: center; padding: 40px 20px; color: var(--text-gray); border: 2px dashed rgba(0,0,0,0.1); border-radius: 24px;}
+        .empty-state i { font-size: 35px; margin-bottom: 10px; opacity: 0.5;}
+        .empty-state p { font-size: 13px; font-weight: 700; }
         
-        /* Modal */
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: flex-end; z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s; }
+        /* MODAL BOUNCY */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: flex-end; z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s ease; }
         .modal-overlay.show { opacity: 1; visibility: visible; }
-        .modal-content { background: #FFF; border-radius: 28px 28px 0 0; padding: 25px 24px 35px; width: 100%; max-width: 480px; transform: translateY(100%); transition: 0.35s cubic-bezier(0.15, 1, 0.3, 1); overflow-y: auto; max-height: 85vh; }
+        .modal-content { background: #FFF; border-radius: 32px 32px 0 0; padding: 30px 24px 40px; width: 100%; max-width: 480px; transform: translateY(100%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1); overflow-y: auto; max-height: 85vh; box-shadow: 0 -10px 40px rgba(0,0,0,0.15);}
         .modal-overlay.show .modal-content { transform: translateY(0); }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .modal-header h3 { font-size: 16px; font-weight: 900; color: var(--text-dark); }
-        .btn-close-modal { width: 32px; height: 32px; border-radius: 50%; border: none; background: #F5F5F7; display: flex; justify-content: center; align-items: center; font-size: 14px; cursor: pointer; color: var(--text-dark); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .modal-header h3 { font-size: 18px; font-weight: 900; color: var(--text-dark); }
+        .btn-close-modal { width: 32px; height: 32px; border-radius: 50%; border: none; background: #F5F5F7; display: flex; justify-content: center; align-items: center; font-size: 14px; cursor: pointer; color: var(--text-dark); transition: 0.2s;}
+        .btn-close-modal:active { transform: scale(0.9); }
+        
         .form-group { margin-bottom: 15px; }
-        .form-label { display: block; font-size: 10px; font-weight: 800; text-transform: uppercase; margin-bottom: 6px; color: var(--text-gray); }
-        .form-input { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1.5px solid rgba(0,0,0,0.08); font-size: 13px; font-weight: 700; outline: none; background: #F9F9F9; color: var(--text-dark); }
-        .form-input:focus { border-color: var(--gold-primary); background: #FFF; }
-        .btn-submit { width: 100%; padding: 15px; border-radius: 14px; font-size: 13px; font-weight: 900; background: var(--text-dark); color: #FFF; border: none; margin-top: 10px; cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .form-label { display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; color: var(--text-gray); }
+        .form-input { width: 100%; padding: 16px; border-radius: 14px; border: 2px solid rgba(0,0,0,0.06); font-size: 14px; font-weight: 700; outline: none; background: #F9F9F9; color: var(--text-dark); transition: 0.2s;}
+        .form-input:focus { border-color: var(--emerald-main); background: #FFF; }
+        .btn-submit { width: 100%; padding: 18px; border-radius: 16px; font-size: 14px; font-weight: 900; background: var(--text-dark); color: #FFF; border: none; margin-top: 10px; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.15); transition: 0.2s;}
+        .btn-submit:active { transform: scale(0.96); }
     </style>
 </head>
 <body>
@@ -97,19 +104,18 @@
             <div id="viewPengajuanSaya">
                 <button class="btn-create" onclick="openModal()"><i class="fa-solid fa-file-circle-plus"></i> Buat Pengajuan Baru</button>
                 <div id="listSaya">
-                    <div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i> Memuat data...</div>
+                    <div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i><p>Memuat data...</p></div>
                 </div>
             </div>
 
             <div id="viewPersetujuan" style="display: none;">
                 <div id="listPersetujuan">
-                    <div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i> Memuat antrean...</div>
+                    <div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i><p>Memuat antrean...</p></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL FORM PENGAJUAN -->
     <div id="reqModal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -122,11 +128,11 @@
                     <input type="text" id="reqJudul" class="form-input" placeholder="Contoh: Dana Kopi Darat" required autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Nominal Kas (Rupiah)</label>
+                    <label class="form-label">Nominal Kas (Rp)</label>
                     <input type="number" id="reqNominal" class="form-input" placeholder="Contoh: 300000" required autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Rincian & Penjelasan Penggunaan</label>
+                    <label class="form-label">Rincian Penggunaan</label>
                     <textarea id="reqDeskripsi" class="form-input" rows="3" placeholder="Jelaskan rincian penggunaan dana secara singkat..." required style="resize: none;"></textarea>
                 </div>
                 <button type="submit" id="btnKirimPengajuan" class="btn-submit"><i class="fa-solid fa-paper-plane"></i> Kirim Pengajuan</button>
@@ -134,50 +140,29 @@
         </div>
     </div>
 
-    <!-- FIREBASE MODULE & LOGIKA -->
     <script type="module">
         import { auth, db } from './db-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
         import { collection, onSnapshot, doc, updateDoc, getDoc, addDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-        let userRole = "member";
-        let userEmail = "";
-        let isApprover = false;
+        let userRole = "member"; let userEmail = ""; let isApprover = false;
 
-        // ==========================================
-        // 1. AUTENTIKASI & CEK JABATAN PENGURUS
-        // ==========================================
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 userEmail = user.email;
                 const docSnap = await getDoc(doc(db, "users", userEmail));
-                
                 if (docSnap.exists()) {
                     const dataUser = docSnap.data();
-                    userRole = (dataUser.role || "member").toLowerCase();
+                    userRole = (dataUser.role || "member").toLowerCase(); isApprover = (dataUser.can_approve === true);
                     
-                    // Cek izin khusus untuk Admin biasa
-                    isApprover = (dataUser.can_approve === true);
-                    
-                    // Semua Pengurus punya tab persetujuan (meski mungkin isinya kosong buat admin biasa)
-                    if (["superadmin", "admin", "bendahara"].includes(userRole)) {
-                        document.getElementById('tabApproval').style.display = 'block';
-                    }
-                    
+                    if (["superadmin", "admin", "bendahara"].includes(userRole)) document.getElementById('tabApproval').style.display = 'block';
                     loadDataPengajuan(); 
                 }
-            } else {
-                window.location.href = 'login.html';
-            }
+            } else { window.location.href = 'login.html'; }
         });
 
-        // ==========================================
-        // 2. FUNGSI UI (TABS & MODAL)
-        // ==========================================
         window.switchTab = function(viewId) {
-            document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
-            
+            document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active')); event.target.classList.add('active');
             document.getElementById('viewPengajuanSaya').style.display = viewId === 'pengajuan-saya' ? 'block' : 'none';
             document.getElementById('viewPersetujuan').style.display = viewId === 'persetujuan' ? 'block' : 'none';
         }
@@ -185,172 +170,75 @@
         window.openModal = function() { document.getElementById('reqModal').classList.add('show'); }
         window.closeModal = function() { document.getElementById('reqModal').classList.remove('show'); document.getElementById('formReq').reset(); }
 
-        // ==========================================
-        // 3. SUBMIT PENGAJUAN BARU
-        // ==========================================
         window.submitPengajuan = async function(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btnKirimPengajuan');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim...';
-            btn.disabled = true;
-
+            e.preventDefault(); const btn = document.getElementById('btnKirimPengajuan'); btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim...'; btn.disabled = true;
             try {
-                await addDoc(collection(db, "pengajuan_dana"), {
-                    pengaju_email: userEmail,
-                    judul: document.getElementById('reqJudul').value,
-                    nominal: Number(document.getElementById('reqNominal').value),
-                    deskripsi: document.getElementById('reqDeskripsi').value,
-                    status: "pending",
-                    admin_approvals: [],
-                    bendahara_approvals: [],
-                    tanggal: serverTimestamp()
-                });
-                
-                alert('Pengajuan berhasil dikirim! Menunggu persetujuan pengurus.');
-                closeModal();
-            } catch (error) {
-                alert('Gagal mengirim pengajuan. Periksa koneksi Anda.');
-            } finally {
-                btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Pengajuan';
-                btn.disabled = false;
-            }
+                await addDoc(collection(db, "pengajuan_dana"), { pengaju_email: userEmail, judul: document.getElementById('reqJudul').value, nominal: Number(document.getElementById('reqNominal').value), deskripsi: document.getElementById('reqDeskripsi').value, status: "pending", admin_approvals: [], bendahara_approvals: [], tanggal: serverTimestamp() });
+                alert('Pengajuan berhasil dikirim! Menunggu persetujuan pengurus.'); closeModal();
+            } catch (error) { alert('Gagal mengirim pengajuan.'); } finally { btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Pengajuan'; btn.disabled = false; }
         }
 
-        // ==========================================
-        // 4. TARIK DATA PENGAJUAN
-        // ==========================================
         function loadDataPengajuan() {
-            const reqRef = collection(db, "pengajuan_dana");
-            const q = query(reqRef, orderBy("tanggal", "desc"));
-            
-            onSnapshot(q, (snapshot) => {
-                const listSaya = document.getElementById('listSaya');
-                const listPersetujuan = document.getElementById('listPersetujuan');
-                listSaya.innerHTML = ""; listPersetujuan.innerHTML = "";
-                
-                let countSaya = 0, countPersetujuan = 0;
+            onSnapshot(query(collection(db, "pengajuan_dana"), orderBy("tanggal", "desc")), (snapshot) => {
+                const listSaya = document.getElementById('listSaya'); const listPersetujuan = document.getElementById('listPersetujuan');
+                listSaya.innerHTML = ""; listPersetujuan.innerHTML = ""; let countSaya = 0, countPersetujuan = 0;
 
                 snapshot.forEach((docSnap) => {
-                    const data = docSnap.data();
-                    const id = docSnap.id;
+                    const data = docSnap.data(); const id = docSnap.id;
+                    let tglText = "Baru saja"; if(data.tanggal) tglText = data.tanggal.toDate().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
                     
-                    let tglText = "Baru saja";
-                    if(data.tanggal) { tglText = data.tanggal.toDate().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }); }
-                    
-                    const adminArray = data.admin_approvals || [];
-                    const bdhArray = data.bendahara_approvals || [];
-                    
+                    const adminArray = data.admin_approvals || []; const bdhArray = data.bendahara_approvals || [];
                     const sudahApprove = adminArray.includes(userEmail) || bdhArray.includes(userEmail);
                     const isApproved = adminArray.length >= 2 && bdhArray.length >= 1;
                     
                     let statusText = data.status === 'rejected' ? 'Ditolak' : (isApproved || data.status === 'approved' ? 'Cair / Disetujui' : 'Diproses');
                     let statusClass = data.status === 'rejected' ? 'rejected' : (isApproved || data.status === 'approved' ? 'approved' : 'pending');
 
-                    // --- LOGIKA RBAC: SIAPA YANG BOLEH LIHAT TOMBOL SETUJUI? ---
                     let bolehMelihatTombol = false;
-                    
-                    // Syarat 1: Pengajuan ini bukan punya dia sendiri, belum dia setujui, dan statusnya masih nunggu
                     if (data.pengaju_email !== userEmail && !isApproved && !sudahApprove && data.status === 'pending') {
-                        // Syarat 2: Kasta Jabatannya Sesuai
-                        if (userRole === "superadmin") {
-                            bolehMelihatTombol = true; // God Mode
-                        } else if (userRole === "bendahara") {
-                            bolehMelihatTombol = true; // Bendahara berhak approve
-                        } else if (userRole === "admin" && isApprover === true) {
-                            bolehMelihatTombol = true; // Hanya admin yg dicentang can_approve
-                        }
+                        if (userRole === "superadmin" || userRole === "bendahara" || (userRole === "admin" && isApprover === true)) bolehMelihatTombol = true; 
                     }
 
                     const htmlCard = `
                         <div class="request-card">
                             <div class="req-header">
-                                <div>
-                                    <div class="req-title">${data.judul}</div>
-                                    <div class="req-date">${tglText} | Oleh: ${data.pengaju_email}</div>
-                                </div>
+                                <div><div class="req-title">${data.judul}</div><div class="req-date"><i class="fa-solid fa-calendar-day"></i> ${tglText} <br> <i class="fa-solid fa-user"></i> ${data.pengaju_email}</div></div>
                                 <div class="req-amount">Rp ${Number(data.nominal).toLocaleString('id-ID')}</div>
                             </div>
                             <div class="req-body">${data.deskripsi}</div>
                             <div class="status-tracker">
                                 <div class="status-badge ${statusClass}"><i class="fa-solid ${statusClass === 'approved' ? 'fa-circle-check' : (statusClass === 'rejected' ? 'fa-circle-xmark' : 'fa-clock')}"></i> ${statusText}</div>
-                                <div class="approval-info">
-                                    <span class="${bdhArray.length >= 1 ? 'yes' : 'no'}" title="Butuh 1 Bendahara">Bdh: ${bdhArray.length}/1</span>
-                                    <span class="${adminArray.length >= 2 ? 'yes' : 'no'}" title="Butuh 2 Admin">Adm: ${adminArray.length}/2</span>
-                                </div>
+                                <div class="approval-info"><span class="${bdhArray.length >= 1 ? 'yes' : 'no'}">Bdh: ${bdhArray.length}/1</span><span class="${adminArray.length >= 2 ? 'yes' : 'no'}">Adm: ${adminArray.length}/2</span></div>
                             </div>
-                            
                             <div class="action-buttons" style="display: ${bolehMelihatTombol ? 'flex' : 'none'};">
                                 <button class="btn-act reject" onclick="tolakDana('${id}')"><i class="fa-solid fa-xmark"></i> Tolak</button>
-                                <button class="btn-act approve" onclick="setujuiDana('${id}')"><i class="fa-solid fa-check"></i> Berikan Persetujuan</button>
+                                <button class="btn-act approve" onclick="setujuiDana('${id}')"><i class="fa-solid fa-check"></i> Setujui</button>
                             </div>
-                        </div>
-                    `;
+                        </div>`;
 
-                    if (data.pengaju_email === userEmail) {
-                        listSaya.innerHTML += htmlCard;
-                        countSaya++;
-                    } else {
-                        listPersetujuan.innerHTML += htmlCard;
-                        countPersetujuan++;
-                    }
+                    if (data.pengaju_email === userEmail) { listSaya.innerHTML += htmlCard; countSaya++; } 
+                    else { listPersetujuan.innerHTML += htmlCard; countPersetujuan++; }
                 });
 
-                if(countSaya === 0) listSaya.innerHTML = '<div class="empty-state">Anda belum memiliki riwayat pengajuan dana kas.</div>';
-                if(countPersetujuan === 0) listPersetujuan.innerHTML = '<div class="empty-state">Tidak ada antrean pengajuan yang menunggu persetujuan Anda.</div>';
+                if(countSaya === 0) listSaya.innerHTML = '<div class="empty-state"><i class="fa-solid fa-folder-open"></i><p>Anda belum memiliki riwayat pengajuan dana kas.</p></div>';
+                if(countPersetujuan === 0) listPersetujuan.innerHTML = '<div class="empty-state"><i class="fa-solid fa-check-double"></i><p>Tidak ada antrean yang menunggu persetujuan Anda.</p></div>';
             });
         }
 
-        // ==========================================
-        // 5. FUNGSI PERSETUJUAN (1 Bendahara + 2 Admin)
-        // ==========================================
         window.setujuiDana = async function(docId) {
             try {
-                const reqRef = doc(db, "pengajuan_dana", docId);
-                const docSnap = await getDoc(reqRef);
-                const data = docSnap.data();
-                
-                let adminArray = data.admin_approvals || [];
-                let bdhArray = data.bendahara_approvals || [];
+                const reqRef = doc(db, "pengajuan_dana", docId); const docSnap = await getDoc(reqRef); const data = docSnap.data();
+                let adminArray = data.admin_approvals || []; let bdhArray = data.bendahara_approvals || [];
 
-                if (userRole === "bendahara") {
-                    bdhArray.push(userEmail);
-                } else if (userRole === "admin" || userRole === "superadmin") {
-                    adminArray.push(userEmail);
-                }
+                if (userRole === "bendahara") bdhArray.push(userEmail); else if (userRole === "admin" || userRole === "superadmin") adminArray.push(userEmail);
 
-                // Cek Korum
-                let statusBaru = "pending";
-                if (bdhArray.length >= 1 && adminArray.length >= 2) {
-                    statusBaru = "approved";
-                }
-
-                await updateDoc(reqRef, {
-                    admin_approvals: adminArray,
-                    bendahara_approvals: bdhArray,
-                    status: statusBaru
-                });
-
-                if(statusBaru === "approved") {
-                    alert("Korum Terpenuhi! Pengajuan resmi DISETUJUI.");
-                }
-
-            } catch(e) { 
-                alert("Gagal memproses persetujuan. Periksa koneksi internet Anda."); 
-            }
+                let statusBaru = "pending"; if (bdhArray.length >= 1 && adminArray.length >= 2) statusBaru = "approved";
+                await updateDoc(reqRef, { admin_approvals: adminArray, bendahara_approvals: bdhArray, status: statusBaru });
+                if(statusBaru === "approved") alert("Korum Terpenuhi! Pengajuan resmi DISETUJUI.");
+            } catch(e) { alert("Gagal memproses persetujuan."); }
         }
 
-        // ==========================================
-        // 6. FUNGSI TOLAK DANA
-        // ==========================================
-        window.tolakDana = async function(docId) {
-            if(confirm("Yakin ingin MENOLAK pengajuan ini secara permanen?")) {
-                try {
-                    await updateDoc(doc(db, "pengajuan_dana", docId), { status: "rejected" });
-                } catch(e) {
-                    alert("Gagal menolak pengajuan.");
-                }
-            }
-        }
+        window.tolakDana = async function(docId) { if(confirm("Yakin ingin MENOLAK pengajuan ini secara permanen?")) { await updateDoc(doc(db, "pengajuan_dana", docId), { status: "rejected" }); } }
     </script>
 </body>
 </html>

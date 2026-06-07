@@ -3,52 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#F5F5F7">
+    <meta name="theme-color" content="#064E3B">
     <title>Panel Admin - KGR</title>
+    
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
+    
     <style>
-        :root { --bg-base: #F5F5F7; --text-dark: #000000; --text-black: #111111; --gold-primary: #D4AF37; --gold-deep: linear-gradient(135deg, #A67C00, #D4AF37, #8B6914, #B38728); --danger-color: #DC3545; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: #E5E5E5; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .app-container { width: 100%; max-width: 414px; height: 100vh; background-color: var(--bg-base); position: relative; overflow: hidden; display: flex; flex-direction: column; color: var(--text-dark); }
-        .header-page { padding: 40px 24px 20px; display: flex; align-items: center; gap: 15px; background: rgba(245,245,247,0.8); border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .btn-back { width: 40px; height: 40px; border-radius: 14px; background: #FFF; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.1); }
-        .header-title h2 { font-size: 18px; font-weight: 900; }
-        .header-title p { font-size: 10px; color: #28A745; font-weight: 800; text-transform: uppercase; }
-        .content-area { flex-grow: 1; overflow-y: auto; padding: 20px 24px 110px; scrollbar-width: none; }
-        .btn-add-member { width: 100%; padding: 18px; border-radius: 18px; font-size: 14px; font-weight: 900; background: var(--text-dark); color: var(--gold-primary); border: none; margin-bottom: 25px; display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .section-title { font-size: 14px; font-weight: 900; margin: 0 0 15px; text-transform: uppercase;}
-        .member-item { display: flex; align-items: center; padding: 16px 15px; border-radius: 18px; margin-bottom: 12px; background: #FFF; border: 1px solid rgba(0,0,0,0.05); }
-        .avatar { width: 50px; height: 50px; border-radius: 50%; margin-right: 15px; background-size: cover; background-position: center; border: 2px solid #FFF; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .info { flex-grow: 1; display: flex; flex-direction: column; gap: 3px; }
-        .info h4 { font-size: 14px; font-weight: 900; }
-        .info .role-badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 9px; font-weight: 800; background: var(--text-dark); color: var(--gold-primary); text-transform: uppercase; width: fit-content; margin-bottom: 3px; }
-        .info p { font-size: 11px; font-weight: 700; color: #8E8E93; }
-        .btn-manage { width: 35px; height: 35px; border-radius: 12px; background: var(--bg-base); display: flex; justify-content: center; align-items: center; font-size: 18px; cursor: pointer; border: none; }
+        :root { 
+            --bg-base: #F4F6F5; --text-dark: #111827; --text-gray: #4B5563; 
+            --emerald-main: #059669; --gold-accent: #FBBF24; --danger-red: #DC2626; 
+        }
         
-        /* Modal & Action Sheet CSS */
-        .modal-overlay, .action-sheet-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: flex-end; z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        body { background-color: #E2E8E4; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        
+        .app-container { width: 100%; max-width: 414px; height: 100vh; background-color: var(--bg-base); background-image: radial-gradient(circle at 50% 35%, rgba(5, 150, 105, 0.12) 0%, rgba(5, 150, 105, 0.03) 35%, var(--bg-base) 70%); position: relative; overflow: hidden; display: flex; flex-direction: column; color: var(--text-dark); }
+        @media (min-width: 600px) { .app-container { max-width: 480px; height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15); border: 8px solid #FFFFFF; } }
+
+        .header-page { padding: 40px 24px 20px; display: flex; align-items: center; gap: 15px; background: #FFF; border-bottom: 1px solid rgba(0,0,0,0.05); z-index: 10; box-shadow: 0 4px 15px rgba(0,0,0,0.02);}
+        .btn-back { width: 42px; height: 42px; border-radius: 14px; background: #F5F5F7; display: flex; justify-content: center; align-items: center; font-size: 18px; cursor: pointer; color: var(--text-dark); transition: 0.2s;}
+        .btn-back:active { transform: scale(0.9); background: var(--text-dark); color: #FFF;}
+        .header-title h2 { font-size: 18px; font-weight: 900; letter-spacing: -0.5px;}
+        .header-title p { font-size: 10px; color: var(--emerald-main); font-weight: 800; text-transform: uppercase; letter-spacing: 1px;}
+        
+        .content-area { flex-grow: 1; overflow-y: auto; padding: 25px 24px 110px; scrollbar-width: none; }
+        .content-area::-webkit-scrollbar { display: none; }
+        
+        .btn-add-member { width: 100%; padding: 18px; border-radius: 18px; font-size: 14px; font-weight: 900; background: var(--text-dark); color: #FFF; border: none; margin-bottom: 25px; display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.1); transition: 0.2s; }
+        .btn-add-member:active { transform: scale(0.96); }
+        .btn-add-member i { color: var(--gold-accent); }
+        
+        .section-title { font-size: 15px; font-weight: 900; margin: 0 0 15px; color: var(--text-dark); }
+        
+        .member-item { display: flex; align-items: center; padding: 16px 15px; border-radius: 20px; margin-bottom: 12px; background: #FFF; border: 1px solid rgba(0,0,0,0.02); box-shadow: 0 5px 15px rgba(0,0,0,0.03); transition: 0.2s;}
+        .member-item:active { transform: scale(0.98); background: #F9F9F9;}
+        .avatar { width: 48px; height: 48px; border-radius: 50%; margin-right: 15px; background-size: cover; background-position: center; border: 2px solid #FFF; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .info { flex-grow: 1; display: flex; flex-direction: column; gap: 3px; }
+        .info h4 { font-size: 14px; font-weight: 900; color: var(--text-dark);}
+        .role-badge { display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 9px; font-weight: 800; background: rgba(5,150,105,0.1); color: var(--emerald-main); text-transform: uppercase; width: fit-content; margin-bottom: 2px; }
+        .info p { font-size: 11px; font-weight: 700; color: var(--text-gray); }
+        .btn-manage { width: 38px; height: 38px; border-radius: 12px; background: #F5F5F7; display: flex; justify-content: center; align-items: center; font-size: 18px; cursor: pointer; border: none; color: var(--text-dark); transition: 0.2s;}
+        .btn-manage:active { transform: scale(0.85); background: var(--emerald-main); color: #FFF;}
+        
+        /* BOTTOM SHEET ACTION MENU & MODAL */
+        .modal-overlay, .action-sheet-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); display: flex; justify-content: center; z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s ease; }
+        .modal-overlay { align-items: center; padding: 24px; }
+        .action-sheet-overlay { align-items: flex-end; }
         .modal-overlay.show, .action-sheet-overlay.show { opacity: 1; visibility: visible; }
-        .modal-content, .action-sheet { background: #FFF; border-radius: 30px 30px 0 0; padding: 25px 24px 40px; width: 100%; max-width: 480px; transform: translateY(100%); transition: 0.4s; }
-        .modal-overlay.show .modal-content, .action-sheet-overlay.show .action-sheet { transform: translateY(0); }
-        .sheet-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .action-list { display: flex; flex-direction: column; gap: 10px; }
-        .action-btn { width: 100%; padding: 16px 20px; border-radius: 16px; font-size: 13px; font-weight: 800; background: var(--bg-base); border: none; cursor: pointer; display: flex; align-items: center; gap: 15px; }
-        .action-btn.danger { color: var(--danger-color); }
+        
+        .modal-content { background: #FFF; border-radius: 30px; padding: 30px 24px; width: 100%; max-width: 400px; transform: scale(0.9); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1); box-shadow: 0 25px 50px rgba(0,0,0,0.2); }
+        .action-sheet { background: #FFF; border-radius: 32px 32px 0 0; padding: 30px 24px 40px; width: 100%; max-width: 480px; transform: translateY(100%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1); box-shadow: 0 -10px 40px rgba(0,0,0,0.15); }
+        
+        .modal-overlay.show .modal-content { transform: scale(1); }
+        .action-sheet-overlay.show .action-sheet { transform: translateY(0); }
+        
+        .sheet-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .sheet-header h3 { font-size: 18px; font-weight: 900; }
+        .btn-close-sheet { width: 32px; height: 32px; border-radius: 50%; background: #F5F5F7; border: none; font-size: 14px; cursor: pointer; color: var(--text-dark); transition: 0.2s;}
+        .btn-close-sheet:active { transform: scale(0.9); }
+
+        .action-list { display: flex; flex-direction: column; gap: 12px; }
+        .action-btn { width: 100%; padding: 18px 20px; border-radius: 18px; font-size: 14px; font-weight: 800; background: #F9F9F9; border: 1px solid rgba(0,0,0,0.02); cursor: pointer; display: flex; align-items: center; gap: 15px; color: var(--text-dark); transition: 0.2s;}
+        .action-btn i { font-size: 18px; color: var(--text-gray); }
+        .action-btn:active { transform: scale(0.96); background: #FFF; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .action-btn.danger { color: var(--danger-red); background: rgba(220,38,38,0.05); border-color: rgba(220,38,38,0.1); }
+        .action-btn.danger i { color: var(--danger-red); }
+        .action-btn.danger:active { background: var(--danger-red); color: #FFF; }
+        .action-btn.danger:active i { color: #FFF; }
+
         .form-group { margin-bottom: 15px; }
-        .form-label { display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; }
-        .form-input { width: 100%; padding: 15px; border-radius: 14px; border: 2px solid rgba(0,0,0,0.1); font-size: 14px; font-weight: 700; outline: none; background: #F9F9F9; }
-        .btn-submit { width: 100%; padding: 18px; border-radius: 16px; font-size: 14px; font-weight: 900; background: var(--text-dark); color: #FFF; border: none; cursor: pointer; }
+        .form-label { display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; color: var(--text-gray); }
+        .form-input { width: 100%; padding: 16px; border-radius: 14px; border: 2px solid rgba(0,0,0,0.06); font-size: 14px; font-weight: 700; outline: none; background: #F9F9F9; transition: 0.2s;}
+        .form-input:focus { border-color: var(--emerald-main); background: #FFF; }
+        .btn-submit { width: 100%; padding: 18px; border-radius: 16px; font-size: 14px; font-weight: 900; background: var(--text-dark); color: #FFF; border: none; cursor: pointer; margin-top: 10px; transition: 0.2s;}
+        .btn-submit:active { transform: scale(0.96); }
     </style>
 </head>
 <body>
     <div class="app-container">
         <div class="header-page">
-            <div class="btn-back" onclick="window.location.href='profil.html'"><i class="fa-solid fa-arrow-left"></i></div>
+            <div class="btn-back" onclick="window.location.href='index.html'"><i class="fa-solid fa-arrow-left"></i></div>
             <div class="header-title">
                 <h2>Panel Pengelola</h2>
-                <p>Status: Server Terhubung</p>
+                <p>Server Terhubung</p>
             </div>
         </div>
 
@@ -62,21 +102,21 @@
     <div id="addModal" class="modal-overlay">
         <div class="modal-content">
             <div class="sheet-header">
-                <h3 style="font-weight:900;">Input Member Baru</h3>
-                <button onclick="document.getElementById('addModal').classList.remove('show')" style="width:30px;height:30px;border-radius:50%;border:none;"><i class="fa-solid fa-xmark"></i></button>
+                <h3>Input Member Baru</h3>
+                <button onclick="document.getElementById('addModal').classList.remove('show')" class="btn-close-sheet"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <form id="formAddMember">
                 <div class="form-group"><label class="form-label">Nama Lengkap</label><input type="text" id="inputName" class="form-input" required></div>
                 <div class="form-group"><label class="form-label">Nomor WhatsApp</label><input type="tel" id="inputPhone" class="form-input" required></div>
                 <div class="form-group">
                     <label class="form-label">Jabatan (Role)</label>
-                    <select id="inputRole" class="form-input" required>
+                    <select id="inputRole" class="form-input" required style="appearance: none;">
                         <option value="Member">Anggota Biasa (Member)</option>
                         <option value="Bendahara">Bendahara</option>
                         <option value="Admin">Admin</option>
                     </select>
                 </div>
-                <button type="submit" id="btnSubmit" class="btn-submit">Simpan ke Database</button>
+                <button type="submit" id="btnSubmit" class="btn-submit">Simpan Database</button>
             </form>
         </div>
     </div>
@@ -84,15 +124,13 @@
     <div id="actionSheet" class="action-sheet-overlay">
         <div class="action-sheet">
             <div class="sheet-header">
-                <div><p style="font-size: 10px; font-weight: 800; color: #8E8E93;">KELOLA MEMBER</p><h3 id="sheetMemberName">Nama</h3></div>
-                <button onclick="document.getElementById('actionSheet').classList.remove('show')" style="width:30px;height:30px;border-radius:50%;border:none;"><i class="fa-solid fa-xmark"></i></button>
+                <div><p style="font-size: 10px; font-weight: 800; color: var(--text-gray); margin-bottom: 3px;">KELOLA MEMBER</p><h3 id="sheetMemberName">Nama</h3></div>
+                <button onclick="document.getElementById('actionSheet').classList.remove('show')" class="btn-close-sheet"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="action-list">
                 <button class="action-btn" onclick="alert('Fitur Edit Profil')"><i class="fa-solid fa-pen-to-square"></i> Edit Data & Profil</button>
-                
-                <button class="action-btn" id="btnUbahJabatan" style="display: none;" onclick="alert('Fitur Ubah Jabatan')"><i class="fa-solid fa-user-tie"></i> Ubah Jabatan Member</button>
-                
-                <button class="action-btn danger" style="margin-top: 10px;"><i class="fa-solid fa-ban"></i> Blokir (Suspend)</button>
+                <button class="action-btn" id="btnUbahJabatan" style="display: none;" onclick="alert('Fitur Ubah Jabatan')"><i class="fa-solid fa-user-tie"></i> Ubah Jabatan</button>
+                <button class="action-btn danger" style="margin-top: 15px;"><i class="fa-solid fa-ban"></i> Blokir (Suspend)</button>
                 <button class="action-btn danger"><i class="fa-solid fa-trash-can"></i> Hapus Member</button>
             </div>
         </div>
@@ -102,19 +140,12 @@
         import { db } from './db-config.js';
         import { collection, addDoc, serverTimestamp, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-        // ======= SIMULASI JABATAN (Ganti teks di bawah untuk ngetes) =======
-        const roleSaatIni = "Super Admin"; // Coba ganti jadi "Admin"
+        const roleSaatIni = "Super Admin"; // Simulasi
 
-        // Fungsi Buka Kelola (Cek Hak Akses Super Admin)
         window.openActionSheet = (name) => {
             document.getElementById('sheetMemberName').innerText = name;
-            
-            // Logika Pembatasan Tombol Ubah Jabatan
-            if(roleSaatIni === "Super Admin") {
-                document.getElementById('btnUbahJabatan').style.display = 'flex'; // Munculkan Tombol
-            } else {
-                document.getElementById('btnUbahJabatan').style.display = 'none'; // Sembunyikan untuk Admin biasa
-            }
+            if(roleSaatIni === "Super Admin") document.getElementById('btnUbahJabatan').style.display = 'flex'; 
+            else document.getElementById('btnUbahJabatan').style.display = 'none'; 
             
             document.getElementById('actionSheet').classList.add('show');
         };
@@ -126,7 +157,7 @@
             let htmlContent = "";
             snapshot.forEach((doc) => {
                 const user = doc.data();
-                const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.nama_lengkap || "A")}&background=F5F5F7&color=000&size=150`;
+                const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.nama_lengkap || "A")}&background=E2E8E4&color=059669&size=150`;
                 let badgeHTML = user.jabatan !== "Member" ? `<span class="role-badge">${user.jabatan}</span>` : "";
 
                 htmlContent += `
@@ -136,18 +167,18 @@
                         <button class="btn-manage" onclick="openActionSheet('${user.nama_lengkap}')"><i class="fa-solid fa-ellipsis-vertical"></i></button>
                     </div>`;
             });
-            listContainer.innerHTML = htmlContent || `<div style="text-align:center; padding:20px;">Belum ada member</div>`;
+            listContainer.innerHTML = htmlContent || `<div style="text-align:center; padding:30px;"><p style="font-size:12px; font-weight:700; color:#4B5563;">Belum ada member</p></div>`;
         });
 
         document.getElementById('formAddMember').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const btn = document.getElementById('btnSubmit'); btn.innerText = 'Menyimpan...'; btn.disabled = true;
+            const btn = document.getElementById('btnSubmit'); btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...'; btn.disabled = true;
             try {
                 await addDoc(collection(db, "users"), {
                     nama_lengkap: document.getElementById('inputName').value, no_wa: document.getElementById('inputPhone').value, jabatan: document.getElementById('inputRole').value, tanggal_daftar: serverTimestamp()
                 });
                 document.getElementById('formAddMember').reset(); document.getElementById('addModal').classList.remove('show');
-            } catch (err) { alert("Gagal menyimpan!"); } finally { btn.innerText = 'Simpan ke Database'; btn.disabled = false; }
+            } catch (err) { alert("Gagal menyimpan!"); } finally { btn.innerText = 'Simpan Database'; btn.disabled = false; }
         });
     </script>
 </body>
