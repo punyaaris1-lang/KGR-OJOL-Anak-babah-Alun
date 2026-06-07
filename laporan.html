@@ -18,7 +18,7 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: #E2E8E4; display: flex; justify-content: center; min-height: 100vh; }
-        .app-container { width: 100%; max-width: 480px; background: var(--bg-base); display: flex; flex-direction: column; height: 100vh; }
+        .app-container { width: 100%; max-width: 480px; background: var(--bg-base); display: flex; flex-direction: column; min-height: 100vh; }
         .header-page { padding: 30px 24px 20px; display: flex; align-items: center; gap: 15px; background: #FFF; border-bottom: 1px solid rgba(0,0,0,0.05); }
         .btn-back { width: 40px; height: 40px; border-radius: 12px; background: #F4F6F5; display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text-dark); transition: 0.2s;}
         .btn-back:active { transform: scale(0.9); }
@@ -30,6 +30,10 @@
         .btn-add { width: 100%; padding: 15px; border-radius: 14px; background: var(--emerald-main); color: #FFF; font-weight: 900; border: none; cursor: pointer; margin-bottom: 20px; transition: 0.2s; box-shadow: 0 5px 15px rgba(5, 150, 105, 0.2);}
         .btn-add:active { transform: scale(0.97); }
         
+        .filter-date-group { display: flex; gap: 10px; margin-bottom: 15px; align-items: center;}
+        .filter-date-group input { flex: 1; padding: 12px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); font-size: 11px; font-weight: 700; color: var(--text-dark); }
+        .btn-filter-search { padding: 12px 18px; border-radius: 12px; background: var(--text-dark); color: #FFF; border: none; cursor: pointer; }
+
         .tabs-container { display: flex; gap: 8px; margin-bottom: 15px; }
         .tab-btn { flex: 1; padding: 10px; border-radius: 10px; font-size: 11px; font-weight: 800; background: #FFF; border: 1px solid rgba(0,0,0,0.1); cursor: pointer; text-align: center; color: var(--text-dark); transition: 0.2s;}
         .tab-btn.active { background: var(--emerald-main); color: #FFF; border-color: transparent;}
@@ -38,9 +42,10 @@
         
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: flex-end; z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s; }
         .modal-overlay.show { opacity: 1; visibility: visible; }
-        .modal-content { background: #FFF; border-radius: 28px 28px 0 0; padding: 25px; width: 100%; max-width: 480px; transform: translateY(100%); transition: 0.4s;}
+        .modal-content { background: #FFF; border-radius: 28px 28px 0 0; padding: 25px; width: 100%; max-width: 480px; transform: translateY(100%); transition: 0.4s; max-height: 85vh; overflow-y: auto;}
         .modal-overlay.show .modal-content { transform: translateY(0); }
         
+        .form-label { display: block; font-size: 11px; font-weight: 800; color: var(--text-gray); margin-bottom: 5px; text-transform: uppercase;}
         .form-input { width: 100%; padding: 14px; border-radius: 12px; border: 1.5px solid rgba(0,0,0,0.08); margin-bottom: 15px; font-weight: 700; color: var(--text-dark); outline: none;}
         .form-input:focus { border-color: var(--emerald-main); }
         
@@ -57,19 +62,31 @@
     <div class="app-container">
         <div class="header-page">
             <div class="btn-back" onclick="window.location.href='index.html'"><i class="fa-solid fa-arrow-left"></i></div>
-            <h2 style="font-weight: 900; color: var(--text-dark);">Laporan Keuangan</h2>
+            <h2 style="font-weight: 900; color: var(--text-dark);">Laporan Kas & Audit</h2>
         </div>
         <div class="content-area">
-            <button id="btnTambahTrx" class="btn-add" style="display: none;" onclick="document.getElementById('trxModal').classList.add('show')"><i class="fa-solid fa-plus"></i> Catat Transaksi</button>
+            <button id="btnTambahTrx" class="btn-add" style="display: none;" onclick="document.getElementById('trxModal').classList.add('show')"><i class="fa-solid fa-plus"></i> Catat Transaksi Manual</button>
             
             <div class="balance-card">
                 <div style="font-size: 10px; text-transform: uppercase; font-weight: 800; opacity: 0.8;">Total Kas Tersedia</div>
                 <div class="total-balance" id="uiTotalSaldo">Rp 0</div>
             </div>
 
+            <div class="filter-date-group">
+                <div style="flex:1;">
+                    <label style="font-size:9px; font-weight:800; color:var(--text-gray);">Dari Tanggal:</label>
+                    <input type="date" id="filterStart">
+                </div>
+                <div style="flex:1;">
+                    <label style="font-size:9px; font-weight:800; color:var(--text-gray);">Sampai:</label>
+                    <input type="date" id="filterEnd">
+                </div>
+                <button class="btn-filter-search" onclick="applyDateFilter()" style="margin-top:14px;"><i class="fa-solid fa-filter"></i></button>
+            </div>
+
             <div class="export-group">
-                <button class="btn-export excel" onclick="exportToExcel()"><i class="fa-solid fa-file-excel"></i> Export Excel</button>
-                <button class="btn-export pdf" onclick="exportToPDF()"><i class="fa-solid fa-file-pdf"></i> Export PDF</button>
+                <button class="btn-export excel" onclick="exportToExcel()"><i class="fa-solid fa-file-excel"></i> Download Excel</button>
+                <button class="btn-export pdf" onclick="exportToPDF()"><i class="fa-solid fa-file-pdf"></i> Cetak Laporan PDF</button>
             </div>
 
             <div class="tabs-container">
@@ -84,33 +101,56 @@
         </div>
     </div>
 
-    <!-- MODAL CATAT TRANSAKSI -->
     <div id="trxModal" class="modal-overlay">
         <div class="modal-content">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h3 style="font-weight: 900;">Catat Transaksi</h3>
+                <h3 style="font-weight: 900;">Catat Pembukuan</h3>
                 <button type="button" onclick="document.getElementById('trxModal').classList.remove('show')" style="width:30px; height:30px; border-radius:50%; border:none; background:#F4F6F5; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <form id="formTrx">
+                <label class="form-label">Tanggal Transaksi</label>
+                <input type="date" id="trxDate" class="form-input" required>
+
+                <label class="form-label">Jenis Transaksi</label>
                 <select id="trxType" class="form-input">
                     <option value="Pemasukan">Pemasukan (Uang Masuk)</option>
                     <option value="Pengeluaran">Pengeluaran (Uang Keluar)</option>
                 </select>
-                <input type="text" id="trxName" class="form-input" placeholder="Keterangan Transaksi" required autocomplete="off">
-                <input type="number" id="trxAmount" class="form-input" placeholder="Nominal Rupiah" required autocomplete="off">
-                <button type="submit" class="btn-add">Simpan ke Laporan</button>
+                
+                <label class="form-label">Keterangan / Rincian</label>
+                <input type="text" id="trxName" class="form-input" placeholder="Misal: Beli Kopi Darat" required autocomplete="off">
+                
+                <label class="form-label">Nominal Rupiah</label>
+                <input type="number" id="trxAmount" class="form-input" placeholder="Cth: 150000" required autocomplete="off">
+                
+                <label class="form-label">Foto Bukti / Nota (Opsional)</label>
+                <input type="file" id="trxBukti" class="form-input" accept="image/*" style="padding: 10px;">
+
+                <button type="submit" class="btn-add">Simpan ke Pembukuan</button>
             </form>
+        </div>
+    </div>
+
+    <div id="modalBuktiView" class="modal-overlay" style="z-index: 1000; align-items:center; padding: 20px;">
+        <div style="background:#FFF; padding:15px; border-radius:20px; width:100%; max-width:400px; text-align:center;">
+            <div style="display:flex; justify-content:flex-end; margin-bottom:10px;">
+                <button onclick="document.getElementById('modalBuktiView').classList.remove('show')" style="border:none; background:none; font-size:20px; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <img id="imgBukti" src="" style="width:100%; max-height:400px; object-fit:contain; border-radius:10px;">
         </div>
     </div>
 
     <script type="module">
         import { auth, db } from './db-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
-        import { collection, query, orderBy, onSnapshot, addDoc, serverTimestamp, getDoc, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+        import { collection, query, orderBy, onSnapshot, addDoc, getDoc, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
         let currentFilter = 'Semua';
         window.rawTransactions = [];
         let userRole = "member";
+        
+        let startDateFilter = null;
+        let endDateFilter = null;
 
         onAuthStateChanged(auth, async (user) => {
             if (!user) window.location.href = 'login.html';
@@ -120,9 +160,11 @@
             if (userRole === 'superadmin' || userRole === 'bendahara') {
                 document.getElementById('btnTambahTrx').style.display = 'block';
             }
-            // Panggil ulang render biar tombol hapus muncul jika role udah dapet
             render(); 
         });
+
+        // Default input tanggal transaksi ke hari ini
+        document.getElementById('trxDate').valueAsDate = new Date();
 
         const trxRef = collection(db, "transactions");
         onSnapshot(query(trxRef, orderBy("tanggal", "desc")), (snap) => {
@@ -130,12 +172,10 @@
             let total = 0;
             snap.forEach(d => {
                 const data = d.data();
-                
                 if(data.status !== "pending" && data.status !== "rejected") {
                     let recDate = new Date();
-                    if(data.tanggal) recDate = data.tanggal.toDate();
+                    if(data.tanggal) recDate = data.tanggal.toDate(); // Firebase Timestamp to Date
                     
-                    // Simpan doc.id agar bisa dihapus
                     window.rawTransactions.push({ ...data, parsedDate: recDate, docId: d.id });
                     if(data.jenis === 'Pemasukan') total += Number(data.nominal); 
                     else total -= Number(data.nominal);
@@ -144,6 +184,18 @@
             document.getElementById('uiTotalSaldo').innerText = "Rp " + total.toLocaleString('id-ID');
             render();
         });
+
+        window.applyDateFilter = () => {
+            const start = document.getElementById('filterStart').value;
+            const end = document.getElementById('filterEnd').value;
+            startDateFilter = start ? new Date(start) : null;
+            if(startDateFilter) startDateFilter.setHours(0,0,0,0);
+            
+            endDateFilter = end ? new Date(end) : null;
+            if(endDateFilter) endDateFilter.setHours(23,59,59,999);
+            
+            render();
+        }
 
         window.filterTrx = (f, el) => {
             currentFilter = f;
@@ -154,21 +206,28 @@
 
         function render() {
             const list = document.getElementById('trxList');
-            const filtered = window.rawTransactions.filter(t => currentFilter === 'Semua' || t.jenis === currentFilter);
+            const filtered = window.rawTransactions.filter(t => {
+                const matchType = currentFilter === 'Semua' || t.jenis === currentFilter;
+                let matchDate = true;
+                if(startDateFilter) matchDate = matchDate && t.parsedDate >= startDateFilter;
+                if(endDateFilter) matchDate = matchDate && t.parsedDate <= endDateFilter;
+                return matchType && matchDate;
+            });
             
             if(filtered.length === 0) {
-                list.innerHTML = '<div class="empty-state">Tidak ada transaksi.</div>';
+                list.innerHTML = '<div class="empty-state">Data tidak ditemukan pada rentang tanggal/filter ini.</div>';
                 return;
             }
 
             list.innerHTML = filtered.map(t => {
                 const isMasuk = t.jenis === 'Pemasukan';
-                const fDate = t.parsedDate.toLocaleDateString('id-ID', {day:'numeric', month:'short'});
+                const fDate = t.parsedDate.toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric'});
                 
-                // Tombol hapus hanya untuk Superadmin / Bendahara
                 const btnDelete = (userRole === 'superadmin' || userRole === 'bendahara') 
-                    ? `<button onclick="hapusLaporan('${t.docId}')" style="background:none; border:none; color:var(--color-out); cursor:pointer; padding:8px; font-size:16px; transition:0.2s;"><i class="fa-solid fa-trash-can"></i></button>` 
-                    : '';
+                    ? `<button onclick="hapusLaporan('${t.docId}')" style="background:none; border:none; color:var(--color-out); cursor:pointer; font-size:16px; margin-left:8px;"><i class="fa-solid fa-trash-can"></i></button>` : '';
+                
+                const btnImage = (t.bukti_image) 
+                    ? `<button onclick="lihatBukti('${t.bukti_image}')" style="background:none; border:none; color:var(--emerald-main); cursor:pointer; font-size:16px; margin-left:8px;"><i class="fa-solid fa-image"></i></button>` : '';
 
                 return `
                 <div class="trx-item">
@@ -179,45 +238,71 @@
                             <small style="font-size:10px; color:var(--text-gray);">${fDate} • ${t.jenis}</small>
                         </div>
                     </div>
-                    <div style="display:flex; align-items:center; gap:10px;">
+                    <div style="display:flex; align-items:center;">
                         <div style="font-weight:900; font-size:14px; color: ${isMasuk ? '#059669' : '#DC2626'}">${isMasuk?'+':'-'} Rp ${Number(t.nominal).toLocaleString('id-ID')}</div>
+                        ${btnImage}
                         ${btnDelete}
                     </div>
                 </div>
             `}).join('');
         }
 
-        // FUNGSI HAPUS LAPORAN
+        window.lihatBukti = function(imgSrc) {
+            document.getElementById('imgBukti').src = imgSrc;
+            document.getElementById('modalBuktiView').classList.add('show');
+        }
+
         window.hapusLaporan = async function(id) {
-            if(confirm("PERINGATAN!\n\nYakin ingin MENGHAPUS riwayat transaksi ini? Saldo Kas akan otomatis disesuaikan kembali.")) {
-                try {
-                    await deleteDoc(doc(db, "transactions", id));
-                } catch(e) { alert("Gagal menghapus data."); }
+            if(confirm("Yakin ingin MENGHAPUS riwayat transaksi ini dari Laporan? Saldo Kas akan otomatis disesuaikan kembali.")) {
+                try { await deleteDoc(doc(db, "transactions", id)); } catch(e) { alert("Gagal menghapus data."); }
             }
         }
+
+        const getBase64 = (file) => new Promise((res, rej) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => res(reader.result); reader.onerror = error => rej(error); });
 
         document.getElementById('formTrx').onsubmit = async (e) => {
             e.preventDefault();
             const btn = e.target.querySelector('button[type="submit"]');
             btn.innerHTML = 'Menyimpan...'; btn.disabled = true;
+            
             try {
+                // Proses Gambar
+                let base64Image = null;
+                const fileInput = document.getElementById('trxBukti').files[0];
+                if(fileInput) base64Image = await getBase64(fileInput);
+
+                // Proses Tanggal Pilihan
+                const dateVal = document.getElementById('trxDate').value;
+                const finalDate = dateVal ? new Date(dateVal) : new Date();
+
                 await addDoc(trxRef, {
                     jenis: document.getElementById('trxType').value,
                     nama_keterangan: document.getElementById('trxName').value,
                     nominal: Number(document.getElementById('trxAmount').value),
                     status: "approved",
-                    tanggal: serverTimestamp()
+                    bukti_image: base64Image,
+                    tanggal: finalDate // Simpan sebagai tanggal yang dipilih
                 });
+                
                 document.getElementById('trxModal').classList.remove('show');
                 e.target.reset();
+                document.getElementById('trxDate').valueAsDate = new Date(); // Reset ke hari ini
             } catch(err) { alert("Gagal menyimpan."); }
-            finally { btn.innerHTML = 'Simpan ke Laporan'; btn.disabled = false; }
+            finally { btn.innerHTML = 'Simpan ke Pembukuan'; btn.disabled = false; }
         }
 
-        // FUNGSI EXPORT (EXCEL & PDF)
+        // FUNGSI EXPORT (Hanya Print/Export yang ada di layar sesuai Filter Tanggal)
         window.exportToExcel = () => {
             let csv = "data:text/csv;charset=utf-8,Tanggal,Keterangan,Jenis,Nominal\n";
-            window.rawTransactions.forEach(t => {
+            const currentList = window.rawTransactions.filter(t => {
+                let mType = currentFilter === 'Semua' || t.jenis === currentFilter;
+                let mDate = true;
+                if(startDateFilter) mDate = mDate && t.parsedDate >= startDateFilter;
+                if(endDateFilter) mDate = mDate && t.parsedDate <= endDateFilter;
+                return mType && mDate;
+            });
+
+            currentList.forEach(t => {
                 csv += `${t.parsedDate.toISOString().split('T')[0]},${(t.nama_keterangan||"").replace(/,/g,' ')},${t.jenis},${t.nominal}\n`;
             });
             const link = document.createElement("a");
@@ -226,10 +311,21 @@
         };
 
         window.exportToPDF = () => {
+            const currentList = window.rawTransactions.filter(t => {
+                let mType = currentFilter === 'Semua' || t.jenis === currentFilter;
+                let mDate = true;
+                if(startDateFilter) mDate = mDate && t.parsedDate >= startDateFilter;
+                if(endDateFilter) mDate = mDate && t.parsedDate <= endDateFilter;
+                return mType && mDate;
+            });
+
             const el = document.createElement('div');
             el.style.padding = '20px'; el.style.fontFamily = 'Montserrat, sans-serif';
             let rows = "";
-            window.rawTransactions.forEach(t => {
+            let totalHitung = 0;
+
+            currentList.forEach(t => {
+                if(t.jenis === 'Pemasukan') totalHitung += Number(t.nominal); else totalHitung -= Number(t.nominal);
                 rows += `<tr style="border-bottom: 1px solid #CCC;">
                     <td style="padding:8px; font-size:12px;">${t.parsedDate.toLocaleDateString('id-ID')}</td>
                     <td style="padding:8px; font-size:12px; font-weight:700;">${t.nama_keterangan}</td>
@@ -238,12 +334,19 @@
                 </tr>`;
             });
             el.innerHTML = `
-                <h2 style="text-align:center; color:#064E3B; margin-bottom:20px;">Laporan Kas KGR</h2>
+                <h2 style="text-align:center; color:#064E3B; margin-bottom:5px;">Laporan Kas KGR</h2>
+                <p style="text-align:center; font-size:12px; color:#666; margin-bottom:20px;">
+                    Periode: ${startDateFilter ? startDateFilter.toLocaleDateString('id-ID') : 'Awal'} s/d ${endDateFilter ? endDateFilter.toLocaleDateString('id-ID') : 'Sekarang'}
+                </p>
                 <table style="width:100%; border-collapse:collapse;">
                     <tr style="background:#064E3B; color:#FFF; text-align:left;">
                         <th style="padding:10px;">Tanggal</th><th style="padding:10px;">Keterangan</th><th style="padding:10px;">Jenis</th><th style="padding:10px; text-align:right;">Nominal</th>
                     </tr>
                     ${rows}
+                    <tr style="background:#E2E8E4; font-weight:900;">
+                        <td colspan="3" style="padding:10px; text-align:right;">Total Saldo Periode Ini:</td>
+                        <td style="padding:10px; text-align:right; color:#064E3B;">Rp ${totalHitung.toLocaleString('id-ID')}</td>
+                    </tr>
                 </table>`;
             html2pdf().set({margin:10, filename:'Laporan_Kas_KGR.pdf'}).from(el).save();
         };

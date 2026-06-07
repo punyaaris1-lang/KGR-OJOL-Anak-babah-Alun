@@ -7,7 +7,6 @@
     <meta name="description" content="Kotak Gotong Royong - Ojol Anak Babah Alun">
     <title>Dashboard - KGR</title>
     
-    <!-- PWA Setup -->
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon.png">
     
@@ -18,35 +17,37 @@
         :root {
             --bg-base: #F4F6F5; --text-dark: #111827; --text-gray: #4B5563; 
             --emerald-dark: #064E3B; --emerald-main: #059669; --emerald-card: linear-gradient(135deg, #065F46 0%, #022C22 100%);
-            --gold-accent: #FBBF24; --gold-text: #FDE68A;
+            --gold-accent: #FBBF24;
             --shadow-card: 0 12px 24px rgba(0, 0, 0, 0.08); --shadow-float: 0 20px 40px rgba(5, 150, 105, 0.25);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
         
-        body { background-color: #E2E8E4; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        body { background-color: #E2E8E4; display: flex; justify-content: center; min-height: 100vh; margin: 0; padding: 0; }
 
+        /* PERBAIKAN SCROLL: height diubah jadi min-height biar bisa scroll ke bawah */
         .app-container {
-            width: 100%; height: 100vh; background-color: var(--bg-base); 
+            width: 100%; min-height: 100vh; background-color: var(--bg-base); 
             background-image: radial-gradient(circle at 50% 35%, rgba(5, 150, 105, 0.12) 0%, rgba(5, 150, 105, 0.03) 35%, var(--bg-base) 70%);
-            position: relative; overflow-x: hidden; overflow-y: auto; display: flex; flex-direction: column; color: var(--text-dark); padding-bottom: 110px; 
+            position: relative; display: flex; flex-direction: column; color: var(--text-dark); padding-bottom: 120px; 
         }
 
         @media (min-width: 600px) {
-            .app-container { max-width: 480px; height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15); border: 8px solid #FFFFFF; margin: auto; }
+            .app-container { max-width: 480px; height: 90vh; min-height: auto; max-height: 850px; overflow-y: auto; border-radius: 40px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15); border: 8px solid #FFFFFF; margin: auto; margin-top: 5vh; }
         }
 
-        /* HEADER FOTO LEBIH TERANG */
         .header-cover { position: relative; width: 100%; height: 260px; min-height: 260px; flex-shrink: 0; background-image: url('1000417166.jpg'); background-size: cover; background-position: center; border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; z-index: 1; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
-        .header-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(17, 24, 39, 0.3) 0%, transparent 40%, rgba(17, 24, 39, 0.8) 100%); border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; }
+        .header-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(17, 24, 39, 0.3) 0%, transparent 40%, rgba(17, 24, 39, 0.85) 100%); border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; }
 
+        /* PERBAIKAN TULISAN HILANG */
         .brand-container { position: absolute; top: 50px; left: 0; width: 100%; text-align: center; z-index: 10; padding: 0 20px; }
-        .main-title { font-size: clamp(20px, 5.5vw, 24px); font-weight: 900; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2; color: rgba(255, 255, 255, 0.2); background-image: linear-gradient(90deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.2) 40%, #FFFFFF 50%, rgba(255,255,255,0.2) 60%, rgba(255,255,255,0.2) 100%); background-size: 200% auto; background-clip: text; -webkit-background-clip: text; animation: textShimmer 3.5s infinite linear; text-shadow: 0 2px 10px rgba(0,0,0,0.5); margin-bottom: 2px; }
-        @keyframes textShimmer { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
+        .main-title { font-size: clamp(20px, 5.5vw, 24px); font-weight: 900; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2; color: #FFFFFF; text-shadow: 0 4px 10px rgba(0,0,0,0.8); margin-bottom: 2px; }
+        .sub-title { font-size: clamp(11px, 3vw, 13px); font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-accent); text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
 
         .profile-area { display: flex; justify-content: space-between; align-items: flex-end; padding: 0 24px; margin-top: -50px; position: relative; z-index: 10; }
-        .profile-pic { width: 90px; height: 90px; border-radius: 50%; background: #111827; border: 5px solid #FFFFFF; display: flex; justify-content: center; align-items: center; font-size: 40px; font-weight: 900; color: var(--gold-accent); box-shadow: 0 10px 20px rgba(0,0,0,0.15); overflow: hidden;}
-        .btn-settings { width: 42px; height: 42px; border-radius: 50%; background: #111827; color: var(--gold-accent); display: flex; justify-content: center; align-items: center; font-size: 18px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); cursor: pointer; border: 3px solid var(--bg-base); }
+        .profile-pic { width: 90px; height: 90px; border-radius: 50%; background: #111827; border: 5px solid #FFFFFF; display: flex; justify-content: center; align-items: center; font-size: 40px; font-weight: 900; color: var(--gold-accent); box-shadow: 0 10px 20px rgba(0,0,0,0.15); overflow: hidden; background-size: cover; background-position: center;}
+        .btn-settings { width: 42px; height: 42px; border-radius: 50%; background: #111827; color: var(--gold-accent); display: flex; justify-content: center; align-items: center; font-size: 18px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); cursor: pointer; border: 3px solid var(--bg-base); transition: 0.2s;}
+        .btn-settings:active { transform: scale(0.9); }
 
         .user-intro { padding: 15px 24px 20px; z-index: 5; position: relative; }
         .user-intro h2 { font-size: 24px; font-weight: 900; color: var(--text-dark); }
@@ -61,18 +62,16 @@
         
         .pengurus-panel { border: 2px dashed rgba(5, 150, 105, 0.4); padding: 15px; border-radius: 24px; background: rgba(255,255,255,0.5); margin-bottom: 25px; }
         .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-        .menu-item { background: #FFFFFF; border-radius: 20px; padding: 15px 10px; display: flex; flex-direction: column; align-items: center; gap: 12px; box-shadow: var(--shadow-card); cursor: pointer; border: 1px solid rgba(0,0,0,0.02);}
+        .menu-item { background: #FFFFFF; border-radius: 20px; padding: 15px 10px; display: flex; flex-direction: column; align-items: center; gap: 12px; box-shadow: var(--shadow-card); cursor: pointer; border: 1px solid rgba(0,0,0,0.02); transition: 0.2s;}
+        .menu-item:active { transform: scale(0.95); }
         .menu-icon { width: 55px; height: 55px; border-radius: 16px; background: rgba(5, 150, 105, 0.1); color: var(--emerald-main); display: flex; justify-content: center; align-items: center; font-size: 22px; }
         .menu-item span { font-size: 11px; font-weight: 800; color: var(--text-dark); text-align: center; }
 
         .bottom-nav-container { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 440px; z-index: 20; }
         .floating-nav { display: flex; justify-content: space-between; align-items: center; padding: 10px 30px; border-radius: 35px; background: #FFFFFF; box-shadow: 0 25px 50px rgba(0,0,0,0.15); }
-        
-        /* ANIMASI BOUNCY HOME */
         .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; color: #9CA3AF; cursor: pointer; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.2s; }
         .nav-item:active { transform: scale(0.75); color: var(--emerald-main); }
         .nav-item.active { color: var(--emerald-main); }
-        
         .center-fab { width: 70px; height: 70px; border-radius: 24px; background: var(--emerald-main); box-shadow: var(--shadow-float); display: flex; justify-content: center; align-items: center; color: #FFFFFF; font-size: 24px; border: 4px solid var(--bg-base); }
 
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px;}
@@ -85,7 +84,13 @@
 <body>
 
     <main class="app-container">
-        <div class="header-cover"><div class="header-overlay"></div></div>
+        <div class="header-cover">
+            <div class="header-overlay"></div>
+            <div class="brand-container">
+                <div class="main-title">KOTAK GOTONG ROYONG</div>
+                <div class="sub-title">OJOL ANAK BABAH ALUN</div>
+            </div>
+        </div>
 
         <div class="profile-area">
             <div class="profile-pic" id="uiProfilePic"></div>
@@ -104,8 +109,7 @@
             </div>
 
             <div id="panelPengurus" style="display: none;">
-                <!-- PERBAIKAN ICON TAMENG -->
-                <div class="section-title" style="color: var(--emerald-main); justify-content: flex-start; gap: 8px;">
+                <div class="section-title" style="color: var(--emerald-main); justify-content: flex-start;">
                     Panel Pengurus <i class="fa-solid fa-shield-halved"></i>
                 </div>
                 <div class="pengurus-panel">
@@ -116,7 +120,7 @@
                         </div>
                         <div class="menu-item" id="menuBendahara" style="display: none;" onclick="window.location.href='keuangan.html'">
                             <div class="menu-icon" style="background:var(--emerald-main); color:#FFF;"><i class="fa-solid fa-vault"></i></div>
-                            <span>Kelola<br>Keuangan</span>
+                            <span>Verifikasi<br>Sedekah</span>
                         </div>
                         <div class="menu-item" id="menuAdmin" style="display: none;" onclick="window.location.href='kelola_anggota.html'">
                             <div class="menu-icon" style="background:var(--emerald-main); color:#FFF;"><i class="fa-solid fa-user-gear"></i></div>
@@ -131,13 +135,16 @@
                 <div class="menu-item" onclick="window.location.href='anggota.html'"><div class="menu-icon"><i class="fa-solid fa-users"></i></div><span>Data<br>Anggota</span></div>
                 <div class="menu-item" onclick="window.location.href='laporan.html'"><div class="menu-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div><span>Laporan<br>Kas</span></div>
                 <div class="menu-item" onclick="window.location.href='kegiatan.html'"><div class="menu-icon"><i class="fa-solid fa-hand-holding-heart"></i></div><span>Kegiatan</span></div>
+                <div class="menu-item" onclick="window.location.href='info.html'"><div class="menu-icon"><i class="fa-solid fa-circle-info"></i></div><span>Info</span></div>
+                <div class="menu-item" onclick="window.location.href='donatur.html'"><div class="menu-icon"><i class="fa-solid fa-ranking-star"></i></div><span>Donatur</span></div>
+                <div class="menu-item" onclick="window.location.href='pengajuan.html'"><div class="menu-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div><span>Pengajuan</span></div>
             </div>
         </div>
 
         <div class="bottom-nav-container">
             <div class="floating-nav">
                 <div class="nav-item active" onclick="window.location.href='index.html'"><i class="fa-solid fa-house"></i></div>
-                <div class="nav-item" onclick="openQrisModal()"><div class="center-fab"><i class="fa-solid fa-qrcode"></i></div></div>
+                <div class="nav-item" onclick="openQrisModal()" style="position: relative; top: -25px;"><div class="center-fab"><i class="fa-solid fa-qrcode"></i></div></div>
                 <div class="nav-item" onclick="window.location.href='laporan.html'"><i class="fa-solid fa-chart-pie"></i></div>
             </div>
         </div>
@@ -146,12 +153,7 @@
             <div class="qris-card">
                 <h3>Scan QRIS Kas</h3>
                 <div class="qris-img"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" alt="QRIS"></div>
-                <form id="formSedekah" onsubmit="submitSedekah(event)">
-                    <input type="number" id="inputNominal" class="form-input" placeholder="Nominal" required>
-                    <input type="text" id="inputPesan" class="form-input" placeholder="Pesan">
-                    <input type="file" id="inputBukti" class="form-input" accept="image/*" required>
-                    <button type="submit" class="btn-auth" id="btnSubmitSedekah">Kirim</button>
-                </form>
+                <button type="button" class="btn-auth" onclick="document.getElementById('modalQrisManual').classList.remove('show')" style="background:#FEE2E2; color:#DC2626; margin-top:10px;">Tutup</button>
             </div>
         </div>
     </main>
@@ -169,13 +171,10 @@
                 
                 document.getElementById('uiUserName').innerText = d.nama_lengkap;
                 
-                // PERBAIKAN LOGIKA FOTO PROFIL
                 const picEl = document.getElementById('uiProfilePic');
                 if (d.profile_image) {
-                    picEl.innerHTML = "";
                     picEl.style.backgroundImage = `url('${d.profile_image}')`;
-                    picEl.style.backgroundSize = "cover";
-                    picEl.style.backgroundPosition = "center";
+                    picEl.innerText = "";
                 } else {
                     picEl.style.backgroundImage = "none";
                     picEl.innerText = d.nama_lengkap.charAt(0).toUpperCase();
@@ -199,10 +198,27 @@
                     roleTextEl.innerHTML = '<i class="fa-solid fa-circle-check"></i> ANGGOTA AKTIF'; roleTextEl.style.color = "var(--emerald-main)";
                 }
             });
+
+            // Tarik Saldo Kas Total
+            onSnapshot(collection(db, "transactions"), (snap) => {
+                let total = 0;
+                snap.forEach(doc => {
+                    const data = doc.data();
+                    if(data.status !== "pending" && data.status !== "rejected") {
+                        if(data.jenis === "Pemasukan") total += Number(data.nominal);
+                        else total -= Number(data.nominal);
+                    }
+                });
+                document.getElementById('uiTotalAll').innerText = "Rp " + total.toLocaleString('id-ID');
+            });
         });
 
-        window.openQrisModal = function() { document.getElementById('modalQrisManual').classList.add('show'); }
-        window.submitSedekah = function(e) { e.preventDefault(); alert("Fitur diproses"); }
+        import { getDoc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+        window.openQrisModal = async function() { 
+            document.getElementById('modalQrisManual').classList.add('show'); 
+            const config = await getDoc(doc(db, "settings", "app_config"));
+            if(config.exists() && config.data().qris_url) document.querySelector('.qris-img img').src = config.data().qris_url;
+        }
     </script>
 </body>
 </html>
