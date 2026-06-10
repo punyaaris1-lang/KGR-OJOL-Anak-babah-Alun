@@ -10,8 +10,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
     
-    <script defer src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.12/dist/face-api.min.js"></script>
-
     <style>
         :root {
             --bg-base: #F4F6F5; --text-dark: #111827; --text-gray: #4B5563;
@@ -55,10 +53,6 @@
         .toggle-view { display: none; }
         .toggle-view.active { display: block; animation: fadeIn 0.4s ease forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .video-container { position: relative; width: 100%; aspect-ratio: 1/1; border-radius: 20px; overflow: hidden; margin-bottom: 15px; border: 4px solid var(--emerald-main); box-shadow: 0 10px 20px rgba(5,150,105,0.2); background: #000; }
-        #webcam { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
-        #overlayCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
         /* ALERT MODAL PREMIUM */
         .custom-alert-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 99999; opacity: 0; visibility: hidden; transition: 0.3s ease; padding: 24px; }
@@ -111,6 +105,7 @@
                 <p>Akses Member Terverifikasi</p>
             </div>
 
+            <!-- STEP LOGIN -->
             <div id="stepLogin" class="toggle-view active">
                 <form id="formLogin">
                     <div class="form-group">
@@ -126,6 +121,7 @@
                 <span class="link-text" onclick="switchView('stepRegister')">Belum punya akun? <span>Daftar disini</span></span>
             </div>
 
+            <!-- STEP REGISTER (Face ID Dihapus Langsung Submit) -->
             <div id="stepRegister" class="toggle-view">
                 <form id="formRegister">
                     <div class="form-group"><i class="fa-solid fa-user input-icon"></i><input type="text" id="regName" class="form-input" placeholder="Nama Sesuai KTP" required></div>
@@ -133,17 +129,9 @@
                     <div class="form-group"><i class="fa-brands fa-whatsapp input-icon"></i><input type="tel" id="regWa" class="form-input" placeholder="Nomor WhatsApp" required oninput="this.value = this.value.replace(/[^0-9]/g, '');"></div>
                     <div class="form-group"><i class="fa-solid fa-envelope input-icon"></i><input type="email" id="regEmail" class="form-input" placeholder="Email Aktif (Gmail/Yahoo)" required></div>
                     <div class="form-group" style="margin-bottom: 10px;"><i class="fa-solid fa-lock input-icon"></i><input type="password" id="regPass" class="form-input" placeholder="Password (Min. 6 huruf)" required minlength="6"></div>
-                    <button type="submit" class="btn-auth" id="btnNextStep">Lanjut Pindai Wajah <i class="fa-solid fa-camera"></i></button>
+                    <button type="submit" class="btn-auth" id="btnRegisterSubmit">Daftar Akun Baru <i class="fa-solid fa-user-plus"></i></button>
                 </form>
                 <span class="link-text" onclick="switchView('stepLogin')">Sudah punya akun? <span>Masuk</span></span>
-            </div>
-
-            <div id="stepSelfie" class="toggle-view">
-                <h3 style="font-size: 15px; font-weight: 900; margin-bottom: 5px;">Pindai Wajah (Liveness)</h3>
-                <p style="font-size: 11px; color: var(--text-gray); font-weight: 600; margin-bottom: 15px;">Pastikan wajah Anda berada di tengah dan terang.</p>
-                <div class="video-container"><video id="webcam" autoplay muted playsinline></video><canvas id="overlayCanvas"></canvas></div>
-                <button class="btn-auth" id="btnCaptureFace" disabled>Tunggu AI Memindai... <i class="fa-solid fa-spinner fa-spin"></i></button>
-                <span class="link-text" onclick="stopCamera(); switchView('stepRegister')">Batal dan Kembali</span>
             </div>
         </div>
     </div>
@@ -151,11 +139,41 @@
     <script type="module">
         import { auth, db } from './db-config.js'; 
         import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
-        import { doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+        import { doc, getDoc, setDoc, serverTimestamp, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-        let tempData = {}; let videoStream = null;
+        // ===================================================
+        // ADVANCED BROWSER FINGERPRINTING (POINT 4)
+        // ===================================================
+        function getDeviceID() {
+            const nav = window.navigator;
+            const screen = window.screen;
+            let ghostPrint = [
+                nav.userAgent,
+                nav.language,
+                screen.colorDepth,
+                screen.width + "x" + screen.height,
+                new Date().getTimezoneOffset(),
+                nav.hardwareConcurrency || 2
+            ].join("||");
 
-        function getDeviceID() { let d = localStorage.getItem('kgr_device_id'); if(!d){ d = crypto.randomUUID(); localStorage.setItem('kgr_device_id', d); } return d; }
+            // Hash String Generator untuk membuat token sidik jari
+            let hash = 0;
+            for (let i = 0; i < ghostPrint.length; i++) {
+                const char = ghostPrint.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash |= 0;
+            }
+            return "KGR-FINGER-" + Math.abs(hash);
+        }
+
+        // ENKRIPSI NIK (SINKRON DENGAN PROFIL.HTML)
+        const CRYPTO_OFFSET = 7;
+        function encryptData(plainText) {
+            if (!plainText) return "";
+            let shifted = plainText.split("").map(char => String.fromCharCode(char.charCodeAt(0) + CRYPTO_OFFSET)).join("");
+            return btoa(unescape(encodeURIComponent(shifted)));
+        }
+
         function isValidNIK(nik) {
             if (!/^\d{16}$/.test(nik)) return false;
             let hari = parseInt(nik.substring(6, 8)); let bulan = parseInt(nik.substring(8, 10));
@@ -169,65 +187,86 @@
         }
         window.switchView = function(viewId) { document.querySelectorAll('.toggle-view').forEach(el => el.classList.remove('active')); document.getElementById(viewId).classList.add('active'); }
 
-        document.getElementById('formRegister').addEventListener('submit', (e) => {
+        // PROSES SUBMIT PENDAFTARAN BARU DENGAN FILTER DUPLIKASI (POINT 1)
+        document.getElementById('formRegister').addEventListener('submit', async (e) => {
             e.preventDefault();
+            const btn = document.getElementById('btnRegisterSubmit');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memvalidasi Data...'; btn.disabled = true;
+
+            const name = document.getElementById('regName').value;
+            const nikInput = document.getElementById('regNik').value;
+            const waInput = document.getElementById('regWa').value;
             const email = document.getElementById('regEmail').value.toLowerCase();
-            const nik = document.getElementById('regNik').value;
+            const pass = document.getElementById('regPass').value;
+
             const allowedDomains = ["gmail.com", "yahoo.com"];
-            if (!allowedDomains.includes(email.split('@')[1])) { showAlert('error', 'Domain Ditolak', 'Gunakan alamat email @gmail.com atau @yahoo.com.'); return; }
-            if (!isValidNIK(nik)) { showAlert('error', 'NIK Palsu', 'Sistem mendeteksi format NIK tidak valid.'); return; }
+            
+            // Validasi dasar di frontend
+            if (!allowedDomains.includes(email.split('@')[1])) { showAlert('error', 'Domain Ditolak', 'Gunakan alamat email @gmail.com atau @yahoo.com.'); btn.innerHTML = 'Daftar Akun Baru <i class="fa-solid fa-user-plus"></i>'; btn.disabled = false; return; }
+            if (!isValidNIK(nikInput)) { showAlert('error', 'NIK Palsu', 'Sistem mendeteksi format NIK tidak valid.'); btn.innerHTML = 'Daftar Akun Baru <i class="fa-solid fa-user-plus"></i>'; btn.disabled = false; return; }
 
-            tempData = { name: document.getElementById('regName').value, nik: nik, wa: document.getElementById('regWa').value, email: email, pass: document.getElementById('regPass').value };
-            switchView('stepSelfie'); startFaceAPI();
-        });
-
-        async function startFaceAPI() {
-            const btnCapture = document.getElementById('btnCaptureFace'); const video = document.getElementById('webcam');
             try {
-                await faceapi.nets.tinyFaceDetector.loadFromUri('https://vladmandic.github.io/face-api/model/');
-                videoStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
-                video.srcObject = videoStream;
+                // 1. CEK APAKAH NIK SUDAH TERDAFTAR (POINT 1)
+                const encryptedInputNik = encryptData(nikInput);
+                const qNik = query(collection(db, "users"), where("nik", "==", encryptedInputNik));
+                const snapNik = await getDocs(qNik);
+                if (!snapNik.empty) { throw new Error("NIK ini sudah terdaftar dengan akun lain! Hubungi pengurus."); }
 
-                video.addEventListener('play', () => {
-                    const canvas = document.getElementById('overlayCanvas'); faceapi.matchDimensions(canvas, { width: video.videoWidth, height: video.videoHeight });
-                    const interval = setInterval(async () => {
-                        if(video.paused || video.ended) return clearInterval(interval);
-                        const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions());
-                        if (detections.length === 1) {
-                            btnCapture.disabled = false; btnCapture.innerHTML = 'Rekam & Selesaikan <i class="fa-solid fa-check-double"></i>'; btnCapture.style.background = 'var(--emerald-main)';
-                        } else {
-                            btnCapture.disabled = true; btnCapture.innerHTML = detections.length === 0 ? 'Wajah tidak terdeteksi...' : 'Terdeteksi > 1 Orang!'; btnCapture.style.background = 'var(--text-dark)';
-                        }
-                    }, 500);
-                });
-            } catch (err) { showAlert('error', 'Kamera Gagal', 'Berikan izin akses kamera untuk memverifikasi wajah.'); }
-        }
+                // 2. CEK APAKAH NOMOR WA SUDAH TERDAFTAR (POINT 1)
+                const qWa = query(collection(db, "users"), where("no_wa", "==", waInput));
+                const snapWa = await getDocs(qWa);
+                if (!snapWa.empty) { throw new Error("Nomor WhatsApp ini sudah digunakan oleh akun lain!"); }
 
-        window.stopCamera = function() { if(videoStream) { videoStream.getTracks().forEach(t => t.stop()); } }
-
-        document.getElementById('btnCaptureFace').addEventListener('click', async () => {
-            const btn = document.getElementById('btnCaptureFace'); btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...'; btn.disabled = true;
-            try {
+                // 3. JIKA LOLOS FILTER, DAFTARKAN AUTH DAN SIMPAN DATA KE FIRESTORE
                 let userRecord;
                 try {
-                    const uc = await createUserWithEmailAndPassword(auth, tempData.email, tempData.pass); userRecord = uc.user; await sendEmailVerification(userRecord);
+                    const uc = await createUserWithEmailAndPassword(auth, email, pass); 
+                    userRecord = uc.user; 
+                    await sendEmailVerification(userRecord);
                 } catch (authErr) {
-                    if (authErr.code === 'auth/email-already-in-use') { const uc = await signInWithEmailAndPassword(auth, tempData.email, tempData.pass); userRecord = uc.user; } else { throw authErr; }
+                    if (authErr.code === 'auth/email-already-in-use') { 
+                        const uc = await signInWithEmailAndPassword(auth, email, pass); 
+                        userRecord = uc.user; 
+                    } else { throw authErr; }
                 }
-                await setDoc(doc(db, "users", userRecord.email), { nama_lengkap: tempData.name, nik: tempData.nik, no_wa: tempData.wa, email: tempData.email, role: "member", status: "Pending Admin", device_id: getDeviceID(), created_at: serverTimestamp() });
-                stopCamera(); showAlert('success', 'Pendaftaran Selesai', 'Silahkan verifikasi email anda.'); setTimeout(() => { switchView('stepLogin'); }, 3000);
-            } catch (error) { showAlert('error', 'Gagal Sistem', error.message.replace('Firebase: ', '')); btn.innerHTML = 'Rekam & Selesaikan <i class="fa-solid fa-check-double"></i>'; btn.disabled = false; }
+
+                // Simpan sidik jari HP (Fingerprint Perangkat) & NIK terenkripsi
+                await setDoc(doc(db, "users", userRecord.email), { 
+                    nama_lengkap: name, 
+                    nik: encryptedInputNik, 
+                    no_wa: waInput, 
+                    email: email, 
+                    role: "member", 
+                    status: "Pending Admin", 
+                    device_id: getDeviceID(), 
+                    created_at: serverTimestamp() 
+                });
+
+                showAlert('success', 'Registrasi Berhasil', 'Silahkan cek kotak masuk email Anda untuk verifikasi.'); 
+                setTimeout(() => { switchView('stepLogin'); document.getElementById('formRegister').reset(); }, 3000);
+
+            } catch (error) { 
+                showAlert('error', 'Pendaftaran Ditolak', error.message.replace('Firebase: ', '')); 
+            } finally {
+                btn.innerHTML = 'Daftar Akun Baru <i class="fa-solid fa-user-plus"></i>'; btn.disabled = false;
+            }
         });
 
+        // FORM LOGIN & PENCOCOKAN DEVICE FINGERPRINT (POINT 4)
         document.getElementById('formLogin').addEventListener('submit', async (e) => {
             e.preventDefault(); const btn = document.getElementById('btnLoginSubmit'); btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memverifikasi...'; btn.disabled = true;
             try {
                 const uc = await signInWithEmailAndPassword(auth, document.getElementById('logEmail').value, document.getElementById('logPass').value);
                 if (!uc.user.emailVerified) throw new Error("Email belum diverifikasi. Cek kotak masuk Anda.");
+                
                 const userDoc = await getDoc(doc(db, "users", uc.user.email));
                 if (userDoc.exists()) {
                     const dbDeviceId = userDoc.data().device_id;
-                    if (dbDeviceId && dbDeviceId !== getDeviceID()) { auth.signOut(); throw new Error("AKSES DITOLAK: Akun ini terkunci untuk perangkat (HP) lain."); }
+                    // Cek kecocokan sidik jari hardware HP
+                    if (dbDeviceId && dbDeviceId !== getDeviceID()) { 
+                        auth.signOut(); 
+                        throw new Error("AKSES ILEGAL DITOLAK:\n\nAkun ini sudah dikunci permanen untuk perangkat (HP) lain."); 
+                    }
                 }
                 window.playTypewriterAndRedirect();
             } catch (error) { showAlert('error', 'Gagal Masuk', error.message.replace('Firebase: ', '')); btn.innerHTML = 'Masuk Aplikasi <i class="fa-solid fa-right-to-bracket"></i>'; btn.disabled = false; }
