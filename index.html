@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- LIBRARY SCANNER QR CODE -->
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
     <style>
@@ -49,7 +48,6 @@
 
         .content-area { padding: 0 24px; z-index: 5; position: relative; }
         
-        /* PREMIUM CARD & SALDO KEMBALI */
         .premium-card { background: var(--emerald-card); border-radius: 24px; padding: 25px; box-shadow: var(--shadow-float); position: relative; overflow: hidden; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.1); }
         .card-label { font-size: clamp(13px, 3.5vw, 15px); color: rgba(255,255,255,0.85); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; display: flex; justify-content: space-between; }
         .card-balance { font-size: clamp(28px, 8vw, 38px); font-weight: 900; color: #FFFFFF; letter-spacing: -1px; margin-bottom: 20px; }
@@ -124,7 +122,6 @@
 
         <div class="content-area">
             
-            <!-- TOTAL SALDO KESELURUHAN & BULAN INI KEMBALI -->
             <div class="premium-card">
                 <div class="card-label"><span>Total Kas (Keseluruhan)</span><i class="fa-brands fa-nfc-symbol" style="font-size: 20px;"></i></div>
                 <div class="card-balance" id="uiTotalAll">Rp 0</div>
@@ -164,6 +161,9 @@
 
                 <div class="menu-item" onclick="window.location.href='anggota.html'"><div class="menu-icon"><i class="fa-solid fa-users"></i></div><span>Data<br>Anggota</span></div>
                 <div class="menu-item" onclick="window.location.href='laporan.html'"><div class="menu-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div><span>Laporan<br>Kas</span></div>
+                <div class="menu-item" onclick="window.location.href='kegiatan.html'"><div class="menu-icon"><i class="fa-solid fa-hand-holding-heart"></i></div><span>Kegiatan<br>Sosial</span></div>
+                <div class="menu-item" onclick="window.location.href='info.html'"><div class="menu-icon"><i class="fa-solid fa-circle-info"></i></div><span>Pusat<br>Info</span></div>
+                <div class="menu-item" onclick="window.location.href='donatur.html'"><div class="menu-icon"><i class="fa-solid fa-ranking-star"></i></div><span>Daftar<br>Donatur</span></div>
                 <div class="menu-item" onclick="window.location.href='pengajuan.html'"><div class="menu-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div><span>Pengajuan<br>Dana</span></div>
             </div>
         </div>
@@ -213,7 +213,6 @@
             </div>
         </div>
 
-        <!-- FORM QRIS & UPLOAD BUKTI SEDEKAH KEMBALI -->
         <div id="modalQrisManual" class="modal-overlay">
             <div class="modal-card">
                 <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 5px; color: var(--text-dark);">Scan QRIS Kas</h3>
@@ -285,7 +284,6 @@
                     } else { auth.signOut(); window.location.href = 'login.html'; }
                 });
 
-                // PERHITUNGAN TRANSAKSI & SALDO BULAN INI KEMBALI AKTIF
                 onSnapshot(collection(db, "transactions"), (snapshot) => {
                     let totalSaldo = 0, saldoBulanIni = 0;
                     const now = new Date();
@@ -294,7 +292,6 @@
                         if (dataTrx.status !== "pending" && dataTrx.status !== "rejected") {
                             const nominal = Number(dataTrx.nominal) || 0;
                             const tgl = dataTrx.tanggal ? dataTrx.tanggal.toDate() : new Date(); 
-                            
                             if (dataTrx.jenis === "Pemasukan") totalSaldo += nominal; else totalSaldo -= nominal;
                             if (tgl.getMonth() === now.getMonth() && tgl.getFullYear() === now.getFullYear()) {
                                 if (dataTrx.jenis === "Pemasukan") saldoBulanIni += nominal; else saldoBulanIni -= nominal;
@@ -308,9 +305,7 @@
             } else { window.location.href = 'login.html'; }
         });
 
-        // ==========================
-        // FITUR QRIS UPLOAD BUKTI
-        // ==========================
+        // QRIS FITUR
         window.openQrisModal = async function() { 
             document.getElementById('modalQrisManual').classList.add('show'); 
             const configDoc = await getDoc(doc(db, "settings", "app_config"));
@@ -374,9 +369,7 @@
             }
         }
 
-        // ==========================
-        // FITUR ABSENSI
-        // ==========================
+        // ABSENSI FITUR
         onSnapshot(doc(db, "settings", "event_config"), (docSnap) => {
             if (docSnap.exists()) {
                 currentEvent = docSnap.data();

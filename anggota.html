@@ -35,9 +35,9 @@
 
         .list-container { padding: 0 20px 30px; display: flex; flex-direction: column; gap: 12px; flex-grow: 1;}
         
-        .member-card { background: #FFF; border-radius: 20px; padding: 15px; display: flex; align-items: center; gap: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.02); transition: 0.3s; animation: slideUp 0.4s ease-out backwards; }
+        .member-card { background: #FFF; border-radius: 20px; padding: 15px; display: flex; align-items: center; gap: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.02); transition: 0.3s; animation: slideUp 0.4s ease-out backwards; position: relative;}
         .member-card.is-pengurus { background: linear-gradient(135deg, #FFFFFF 0%, #ECFDF5 100%); border-color: rgba(5, 150, 105, 0.2); }
-        .member-card.is-pending { opacity: 0.7; filter: grayscale(0.5); }
+        .member-card.is-pending { background: #FFF1F2; border-color: rgba(239, 68, 68, 0.2); }
         @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
         .m-photo { width: 65px; height: 65px; border-radius: 16px; object-fit: cover; background: #F4F6F5; border: 2px solid #FFF; flex-shrink: 0; cursor: zoom-in; box-shadow: 0 8px 15px rgba(0,0,0,0.08); display: flex; justify-content: center; align-items: center; font-weight: 900; font-size: 24px; color: var(--emerald-main);}
@@ -54,14 +54,19 @@
         .bg-status { background: #DCFCE7; color: #16A34A; }
         .bg-pending { background: #FEE2E2; color: #DC2626; }
 
-        .m-actions { display: flex; flex-direction: column; gap: 6px; }
+        .m-actions { display: flex; flex-direction: column; gap: 6px; z-index: 5;}
         .btn-act { width: 38px; height: 38px; border-radius: 12px; border: none; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; background: #F4F6F5; color: var(--text-main);}
         .btn-call { background: #E0F2FE; color: #0284C7; }
         .btn-call:active { background: #0284C7; color: white; }
         .btn-edit { background: rgba(251, 191, 36, 0.15); color: #D97706; display: none; }
         .btn-del { background: rgba(239, 68, 68, 0.1); color: var(--danger); display: none; }
+        
+        /* TOMBOL APPROVE INSTAN KHUSUS PENDING */
+        .btn-approve { background: var(--emerald-main); color: #FFF; display: none; box-shadow: 0 4px 10px rgba(5,150,105,0.3); animation: pulseApprove 1.5s infinite;}
+        .btn-approve:active { transform: scale(0.9); }
+        @keyframes pulseApprove { 0% { box-shadow: 0 0 0 0 rgba(5,150,105,0.4); } 70% { box-shadow: 0 0 0 6px rgba(5,150,105,0); } 100% { box-shadow: 0 0 0 0 rgba(5,150,105,0); } }
 
-        /* FAB TAMBAH MANUAL - DI-PATCH BIAR MUTLAK MUNCUL DI ATAS NAV HP */
+        /* FAB TAMBAH MANUAL */
         .fab-add { position: fixed; bottom: 40px; right: 25px; width: 60px; height: 60px; background: var(--emerald-main); color: white; border-radius: 20px; display: none; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 10px 30px rgba(5,150,105,0.4); border: 3px solid white; cursor: pointer; z-index: 999999; transition: 0.2s;}
         .fab-add:active { transform: scale(0.9); }
 
@@ -179,10 +184,9 @@
     <script type="module">
         import { auth, db } from './db-config.js';
         
-        // IMPORT APP BUILDER UNTUK SECONDARY AUTH (AGAR ADMIN GAK KELUAR)
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
         import { onAuthStateChanged, getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
-        import { collection, query, orderBy, onSnapshot, doc, updateDoc, deleteDoc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+        import { collection, onSnapshot, doc, updateDoc, deleteDoc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
         let currentRole = "member";
         let membersData = [];
@@ -193,10 +197,10 @@
                 if (docSnap.exists()) {
                     currentRole = (docSnap.data().role || "member").toLowerCase();
                     if(currentRole === 'superadmin' || currentRole === 'admin' || currentRole === 'bendahara') {
-                        // PATCH FORCET SHOW TOMBOL (+)
                         const style = document.createElement('style'); 
                         style.innerHTML = `
                             .btn-edit { display: flex !important; }
+                            .btn-approve { display: flex !important; }
                             #btnAddMember { display: flex !important; }
                         `; 
                         if(currentRole === 'superadmin') {
@@ -216,8 +220,9 @@
             return btoa(unescape(encodeURIComponent(shifted)));
         }
 
+        // FUNGSI LOAD DATA BEBAS LOADING LAMA (Tanpa orderBy Server)
         function loadMembersData() {
-            const q = query(collection(db, "users"), orderBy("created_at", "desc"));
+            const q = collection(db, "users");
             onSnapshot(q, (snap) => {
                 membersData = [];
                 snap.forEach(document => { membersData.push({ id: document.id, ...document.data() }); });
@@ -228,13 +233,14 @@
         function renderList(data) {
             const list = document.getElementById('memberList'); list.innerHTML = '';
             
-            // Sort: Pengurus di atas, lalu Member Aktif, lalu Pending
+            // PRIORITAS SORTING LOKAL (PENDING DI ATAS BIAR CEPET DI-APPROVE)
             data.sort((a, b) => {
+                const aStatus = a.status === 'Pending Admin'; const bStatus = b.status === 'Pending Admin';
+                if (aStatus && !bStatus) return -1; if (!aStatus && bStatus) return 1;
+                
                 const aRole = (a.role||"").toLowerCase(); const bRole = (b.role||"").toLowerCase();
                 const aIsP = (aRole !== 'member' && aRole !== ''); const bIsP = (bRole !== 'member' && bRole !== '');
                 if (aIsP && !bIsP) return -1; if (!aIsP && bIsP) return 1;
-                const aStatus = a.status === 'Pending Admin'; const bStatus = b.status === 'Pending Admin';
-                if (!aStatus && bStatus) return -1; if (aStatus && !bStatus) return 1;
                 return 0;
             });
 
@@ -260,7 +266,7 @@
                 let waLink = wa !== "Tidak ada nomor" ? `https://wa.me/62${wa.replace(/^0+/, '')}` : '#';
                 
                 let roleHtml = `<span class="badge bg-role">${role === 'superadmin' ? '<i class="fas fa-crown"></i> SUPERADMIN' : role === 'bendahara' ? '<i class="fas fa-vault"></i> BENDAHARA' : role === 'admin' ? '<i class="fas fa-shield"></i> ADMIN' : 'MEMBER'}</span>`;
-                let statusHtml = isPending ? `<span class="badge bg-pending"><i class="fas fa-lock"></i> PENDING ADMIN</span>` : `<span class="badge bg-status"><i class="fas fa-check-circle"></i> AKTIF</span>`;
+                let statusHtml = isPending ? `<span class="badge bg-pending"><i class="fas fa-lock"></i> PENDING</span>` : `<span class="badge bg-status"><i class="fas fa-check-circle"></i> AKTIF</span>`;
 
                 const delay = index * 0.05; 
 
@@ -274,9 +280,10 @@
                             <div style="font-size: 9px; font-weight: 700; color: #9CA3AF; margin-top: 5px;">EMAIL: ${m.id}</div>
                         </div>
                         <div class="m-actions">
-                            <a href="${waLink}" class="btn-act btn-call" target="_blank"><i class="fas fa-comment-dots"></i></a>
-                            <button class="btn-act btn-edit" onclick="openEditModal('${m.id}')"><i class="fas fa-pen"></i></button>
-                            <button class="btn-act btn-del" onclick="deleteData('${m.id}')"><i class="fas fa-trash"></i></button>
+                            <button class="btn-act btn-approve" onclick="approveMember('${m.id}')" title="Verifikasi Member"><i class="fas fa-check"></i></button>
+                            <a href="${waLink}" class="btn-act btn-call" target="_blank" title="Chat WA"><i class="fas fa-comment-dots"></i></a>
+                            <button class="btn-act btn-edit" onclick="openEditModal('${m.id}')" title="Edit"><i class="fas fa-pen"></i></button>
+                            <button class="btn-act btn-del" onclick="deleteData('${m.id}')" title="Hapus"><i class="fas fa-trash"></i></button>
                         </div>
                     </div>
                 `;
@@ -295,6 +302,14 @@
 
         window.viewPhoto = (src) => { document.getElementById('pvImage').src = src; document.getElementById('photoViewer').style.display = 'flex'; };
         window.closePhoto = () => { document.getElementById('photoViewer').style.display = 'none'; };
+
+        // FUNGSI APPROVAL INSTAN 1-KLIK
+        window.approveMember = async (email) => {
+            if(confirm("Verifikasi dan aktifkan akun anggota ini?")) {
+                try { await updateDoc(doc(db, "users", email), { status: "Aktif" }); } 
+                catch(e) { alert("Gagal verifikasi: " + e.message); }
+            }
+        }
 
         const modal = document.getElementById('formModal');
         

@@ -33,7 +33,7 @@
         
         .profile-card { border-radius: 24px; padding: 30px 20px; margin-bottom: 25px; display: flex; flex-direction: column; align-items: center; text-align: center; }
         
-        /* Avatar & Icon Kamera Fix Menempel Precision */
+        /* Avatar & Icon Kamera */
         .profile-avatar { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 10px; background-size: cover; background-position: center; background-color: #111827; color: var(--emerald-main); display: flex; justify-content: center; align-items: center; font-size: 40px; font-weight: 900; border: 4px solid #FFF; box-shadow: 0 10px 25px rgba(0,0,0,0.1); position: relative; }
         .btn-edit-foto { position: absolute; bottom: -2px; right: -2px; width: 34px; height: 34px; background: var(--text-dark); color: var(--emerald-main); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 14px; border: 2.5px solid #FFF; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); z-index: 10; }
         
@@ -69,7 +69,6 @@
             <div class="profile-card glass-panel">
                 <div class="profile-avatar" id="avatarPreview">
                     <span id="avatarInitials">...</span>
-                    <!-- FIX: Di-pindahkan ke dalam kontainer avatar agar menempel sempurna -->
                     <div class="btn-edit-foto" onclick="document.getElementById('uploadFoto').click()"><i class="fa-solid fa-camera"></i></div>
                 </div>
                 <input type="file" id="uploadFoto" accept="image/*" hidden onchange="previewImage(event)">
@@ -86,9 +85,8 @@
                     <input type="tel" id="inputWa" class="form-input" value="Memuat..." oninput="this.value = this.value.replace(/[^0-9]/g, ''); checkChanges();">
                 </div>
 
-                <!-- ADDED: Form Input NIK Terkunci (Hanya Baca) -->
                 <div class="form-group">
-                    <label class="form-label">Nomor Induk Kependudukan (NIK) </label>
+                    <label class="form-label">Nomor Induk Kependudukan (NIK - Kunci)</label>
                     <input type="text" id="inputNik" class="form-input" value="Memuat..." disabled>
                 </div>
 
@@ -100,8 +98,8 @@
                 <button class="btn-save" id="btnSave" onclick="saveProfile()" disabled><i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan</button>
             </div>
 
-            <button id="btnPanelAdmin" class="btn-superadmin" style="display: none;" onclick="window.location.href='index.html'">
-                <i class="fa-solid fa-user-shield"></i> Akses Menu Pengurus (Di Beranda)
+            <button id="btnPanelAdmin" class="btn-superadmin" style="display: none;" onclick="window.location.href='superadmin.html'">
+                <i class="fa-solid fa-user-shield"></i> Akses Panel Superadmin
             </button>
 
             <button class="btn-logout" onclick="confirmLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar Akun (Sign Out)</button>
@@ -119,18 +117,14 @@
         let newImageUploaded = false;
         let currentBase64Image = null;
 
-        // ===================================================
-        // SECURITY MODULE: OBFUSCATION / LIGHTWEIGHT ENCRYPTION
-        // ===================================================
+        // BACA NIK ENKRIPSI
         const CRYPTO_OFFSET = 7; 
         function decryptData(cipherText) {
             if (!cipherText) return "Tidak ada data NIK";
             try {
-                // Dekripsi base64 + karakter shifting cipher
                 let decoded = decodeURIComponent(escape(atob(cipherText)));
                 return decoded.split("").map(char => String.fromCharCode(char.charCodeAt(0) - CRYPTO_OFFSET)).join("");
             } catch (e) {
-                // Fallback otomatis: jika data di DB masih berupa string NIK mentah (plain text)
                 return cipherText;
             }
         }
@@ -148,13 +142,12 @@
                         const namaLengkap = data.nama_lengkap || "Tanpa Nama";
                         const nomorWa = data.no_wa || "";
                         
-                        // Proses dekripsi data NIK pengaman
                         const nikAman = decryptData(data.nik);
 
                         document.getElementById('uiRoleBadge').innerHTML = `<i class="fa-solid fa-star" style="margin-right: 4px;"></i> ${role.toUpperCase()}`;
                         document.getElementById('inputNama').value = namaLengkap;
                         document.getElementById('inputWa').value = nomorWa;
-                        document.getElementById('inputNik').value = nikAman; // Tampilkan NIK terenkripsi
+                        document.getElementById('inputNik').value = nikAman;
                         document.getElementById('inputEmail').value = currentUserEmail;
                         
                         originalName = namaLengkap; 
@@ -186,18 +179,46 @@
             document.getElementById('btnSave').disabled = !(currentName !== originalName || currentWa !== originalWa || newImageUploaded);
         }
 
+        // ==========================================
+        // FITUR KOMPRESOR FOTO OTOMATIS (AUTO-RESIZE)
+        // ==========================================
         window.previewImage = function(event) {
             const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    currentBase64Image = e.target.result;
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    // Batasi maksimal resolusi 500px biar enteng di Firestore
+                    let MAX_SIZE = 500;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_SIZE) { height *= MAX_SIZE / width; width = MAX_SIZE; }
+                    } else {
+                        if (height > MAX_SIZE) { width *= MAX_SIZE / height; height = MAX_SIZE; }
+                    }
+                    
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    // Konversi ke Base64 dengan format JPEG (Kualitas 70%)
+                    currentBase64Image = canvas.toDataURL('image/jpeg', 0.7);
+                    
                     document.getElementById('avatarInitials').style.display = 'none';
                     document.getElementById('avatarPreview').style.backgroundImage = `url('${currentBase64Image}')`;
-                    newImageUploaded = true; checkChanges();
+                    newImageUploaded = true; 
+                    checkChanges();
                 }
-                reader.readAsDataURL(file);
+                img.src = e.target.result;
             }
+            reader.readAsDataURL(file);
         }
 
         window.saveProfile = async function() {
@@ -223,7 +244,10 @@
                 btnSave.innerHTML = '<i class="fa-solid fa-check" style="color: #059669;"></i> Berhasil Disimpan';
                 setTimeout(() => { btnSave.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan'; btnSave.disabled = true; }, 2000);
             } catch (error) {
-                alert("Gagal menyimpan!"); btnSave.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Coba Lagi'; btnSave.disabled = false;
+                alert("Gagal menyimpan data. Pastikan koneksi internet Anda stabil."); 
+                btnSave.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Coba Lagi'; 
+                btnSave.disabled = false;
+                console.error(error);
             }
         }
     </script>
