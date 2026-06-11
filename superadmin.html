@@ -14,16 +14,14 @@
             --bg-dark: #000000; --panel-dark: #111111; --border-dark: #222222;
             --gold-primary: #D4AF37; --gold-glow: rgba(212, 175, 55, 0.3);
             --danger-red: #E04B4B; --danger-glow: rgba(224, 75, 75, 0.3);
-            --success-green: #28A745;
+            --success-green: #28A745; --neon-cyan: #00F3FF;
             --text-light: #F5F5F7; --text-muted: #8E8E93;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
-        
         body { background-color: var(--bg-dark); color: var(--text-light); display: flex; justify-content: center; min-height: 100vh; }
         
         .app-container { width: 100%; max-width: 480px; background-image: radial-gradient(circle at 50% 0%, var(--panel-dark), var(--bg-dark) 80%); display: flex; flex-direction: column; height: 100vh; position: relative; overflow: hidden;}
-
         @media (min-width: 600px) { .app-container { height: 90vh; max-height: 900px; border-radius: 40px; border: 1px solid var(--border-dark); margin: auto; box-shadow: 0 0 50px rgba(212, 175, 55, 0.1); } }
 
         /* HEADER */
@@ -50,6 +48,20 @@
         .btn-god { width: 100%; padding: 16px; border-radius: 12px; font-size: 13px; font-weight: 900; background: var(--gold-primary); color: #000; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.2s; box-shadow: 0 0 20px var(--gold-glow); display: flex; justify-content: center; align-items: center; gap: 8px;}
         .btn-god:active { transform: scale(0.97); }
 
+        .btn-outline { width: 100%; padding: 14px; border-radius: 12px; font-size: 12px; font-weight: 800; background: transparent; color: var(--neon-cyan); border: 1px solid var(--neon-cyan); cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 15px; box-shadow: 0 0 10px rgba(0, 243, 255, 0.1) inset;}
+        .btn-outline:active { background: rgba(0, 243, 255, 0.1); }
+
+        /* SAKLAR HIGH-TECH */
+        .switch-container { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: rgba(255,255,255,0.02); border: 1px solid var(--border-dark); border-radius: 12px; margin-bottom: 20px; }
+        .switch-label { font-size: 13px; font-weight: 900; color: var(--text-light); }
+        .switch-desc { font-size: 9px; color: var(--text-muted); font-weight: 700; margin-top: 4px; text-transform: uppercase; letter-spacing: 1px;}
+        .switch { position: relative; display: inline-block; width: 60px; height: 32px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.1); transition: .4s; border-radius: 34px; border: 1px solid var(--border-dark); }
+        .slider:before { position: absolute; content: ""; height: 24px; width: 24px; left: 3px; bottom: 3px; background-color: var(--text-muted); transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: rgba(40,167,69,0.2); border-color: var(--success-green); box-shadow: 0 0 15px rgba(40,167,69,0.4); }
+        input:checked + .slider:before { transform: translateX(28px); background-color: var(--success-green); box-shadow: 0 0 10px var(--success-green); }
+
         /* USER LIST CARD */
         .user-card { border: 1px solid var(--border-dark); background: rgba(255,255,255,0.02); border-radius: 16px; padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
         .user-info { display: flex; align-items: center; gap: 12px; }
@@ -59,16 +71,9 @@
         .role-tag { font-size: 9px; font-weight: 800; padding: 3px 6px; border-radius: 4px; margin-top: 5px; display: inline-flex; align-items: center; gap: 3px; text-transform: uppercase; background: rgba(255,255,255,0.1); color: var(--text-light); }
         .role-tag.super { background: rgba(212,175,55,0.2); color: var(--gold-primary); }
         .role-tag.admin { background: rgba(10,132,255,0.2); color: #0A84FF; }
-        .role-tag.approve { background: rgba(40,167,69,0.2); color: var(--success-green); }
         .btn-edit-user { width: 35px; height: 35px; border-radius: 10px; background: rgba(212,175,55,0.1); color: var(--gold-primary); border: none; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s;}
-        .btn-edit-user:active { background: var(--gold-primary); color: #000; }
-
-        /* DANGER ZONE */
-        .danger-panel { border: 1px solid var(--danger-red); background: rgba(224, 75, 75, 0.05); }
-        .danger-title { color: var(--danger-red); font-size: 13px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;}
-        .danger-desc { font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5; }
-        .btn-nuke { width: 100%; padding: 16px; border-radius: 12px; font-size: 13px; font-weight: 900; background: var(--danger-red); color: #FFF; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 0 20px var(--danger-glow); transition: 0.2s; }
-        .btn-nuke:active { transform: scale(0.95); }
+        
+        .empty-state { text-align: center; padding: 30px 20px; color: var(--text-muted); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
 
         /* MODAL KONTROL USER */
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: flex-end; z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s; }
@@ -80,18 +85,11 @@
         .modal-header h3 { font-size: 18px; font-weight: 900; color: var(--gold-primary); }
         .modal-header p { font-size: 11px; color: var(--text-muted); font-weight: 600; margin-top: 4px;}
         .btn-close { width: 32px; height: 32px; border-radius: 50%; background: var(--border-dark); border: none; color: var(--text-light); display: flex; justify-content: center; align-items: center; cursor: pointer; }
+        .form-select { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid var(--border-dark); font-size: 14px; font-weight: 800; background: rgba(255,255,255,0.05); color: var(--gold-primary); margin-bottom: 25px; outline: none; appearance: none;}
         
-        .form-select { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid var(--border-dark); font-size: 14px; font-weight: 800; background: rgba(255,255,255,0.05); color: var(--gold-primary); margin-bottom: 15px; outline: none; appearance: none;}
-        
-        .checkbox-container { display: flex; align-items: center; gap: 12px; padding: 15px; background: rgba(40,167,69,0.05); border: 1px solid rgba(40,167,69,0.3); border-radius: 12px; margin-bottom: 20px; }
-        .checkbox-container input { width: 22px; height: 22px; accent-color: var(--success-green); cursor: pointer; }
-        .checkbox-container label { font-size: 12px; font-weight: 800; color: var(--success-green); cursor: pointer; }
-        
+        .btn-nuke { background: var(--danger-red); color: #FFF; box-shadow: 0 0 15px var(--danger-glow); }
         .btn-action-group { display: flex; gap: 10px; }
-        .btn-action-group .btn-god { flex: 2; }
-        .btn-action-group .btn-nuke { flex: 1; box-shadow: none; padding: 16px 10px;}
-
-        .empty-state { text-align: center; padding: 30px 20px; color: var(--text-muted); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-action-group button { flex: 1; }
     </style>
 </head>
 <body>
@@ -107,6 +105,58 @@
 
         <div class="content-area">
             
+            <!-- PANEL ABSENSI & GEOFENCING -->
+            <div class="section-title" style="color: var(--neon-cyan);"><i class="fa-solid fa-satellite-dish" style="color: var(--neon-cyan);"></i> RADAR ACARA (GEOFENCING)</div>
+            <div class="god-panel" style="border-color: rgba(0, 243, 255, 0.3); box-shadow: 0 10px 30px rgba(0, 243, 255, 0.05);">
+                
+                <div class="switch-container">
+                    <div>
+                        <div class="switch-label">STATUS SAKLAR ACARA</div>
+                        <div class="switch-desc" id="txtStatusAcara">Saat ini OFF (Tersembunyi)</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="toggleAcara">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Nama / Judul Acara</label>
+                    <input type="text" id="evtName" class="form-input" placeholder="Cth: Kopdar Gabungan KGR">
+                </div>
+                
+                <!-- TAMBAHAN: TANGGAL ACARA MANUAL -->
+                <div class="form-group">
+                    <label class="form-label">Tanggal Pelaksanaan Acara</label>
+                    <input type="date" id="evtDate" class="form-input" style="color-scheme: dark;">
+                </div>
+                
+                <button class="btn-outline" onclick="lockGPS()"><i class="fa-solid fa-location-crosshairs"></i> Kunci Koordinat di Posisi Saya</button>
+                <div style="font-size: 10px; color: var(--text-muted); text-align: center; margin-bottom: 15px; margin-top: -5px;">*Atau ketik/copy-paste kordinat manual dari Google Maps</div>
+                
+                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <div style="flex: 1;">
+                        <label class="form-label">Latitude</label>
+                        <!-- FIX: Input Manual Dibuka Kunciannya (Tanpa disabled) -->
+                        <input type="text" id="evtLat" class="form-input" placeholder="Cth: -6.123456">
+                    </div>
+                    <div style="flex: 1;">
+                        <label class="form-label">Longitude</label>
+                        <!-- FIX: Input Manual Dibuka Kunciannya (Tanpa disabled) -->
+                        <input type="text" id="evtLng" class="form-input" placeholder="Cth: 106.123456">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Radius Toleransi Absen (Meter)</label>
+                    <input type="number" id="evtRadius" class="form-input" value="50" placeholder="Cth: 50">
+                </div>
+
+                <button class="btn-god" id="btnSaveEvent" onclick="saveEventConfig()" style="background: var(--neon-cyan); box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);"><i class="fa-solid fa-satellite"></i> Broadcast Setting Acara</button>
+                
+                <button class="btn-god" onclick="exportAbsensi()" style="margin-top: 10px; background: var(--panel-dark); color: var(--success-green); border: 1px solid var(--success-green); box-shadow: none;"><i class="fa-solid fa-file-excel"></i> Download Data Absensi (Excel)</button>
+            </div>
+
             <!-- MANAJEMEN KASTA & ADMIN -->
             <div class="section-title"><i class="fa-solid fa-users-gear"></i> Kontrol Kasta & Member</div>
             <div class="god-panel" style="padding: 10px;">
@@ -115,28 +165,19 @@
                 </div>
             </div>
 
-            <!-- KONTROL SISTEM (QRIS & LIMIT) -->
+            <!-- KONFIGURASI SISTEM -->
             <div class="section-title"><i class="fa-solid fa-sliders"></i> Konfigurasi Sistem Utama</div>
             <div class="god-panel">
                 <div class="form-group">
-                    <label class="form-label">Limit Maksimal Sedekah per Bulan (Rp)</label>
-                    <input type="number" id="cfgLimit" class="form-input" placeholder="Contoh: 10000" autocomplete="off">
+                    <label class="form-label">Limit Maksimal Sedekah (Rp)</label>
+                    <input type="number" id="cfgLimit" class="form-input" autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Link Gambar QRIS Baru (URL)</label>
-                    <input type="text" id="cfgQris" class="form-input" placeholder="https://link-gambar-qris-anda.com/img.jpg" autocomplete="off">
+                    <label class="form-label">URL Gambar QRIS</label>
+                    <input type="text" id="cfgQris" class="form-input" autocomplete="off">
                 </div>
                 <button class="btn-god" id="btnSaveConfig" onclick="saveAppConfig()"><i class="fa-solid fa-microchip"></i> Terapkan ke Sistem</button>
             </div>
-
-            <!-- DANGER ZONE -->
-            <div class="section-title" style="color: var(--danger-red); margin-top: 40px;"><i class="fa-solid fa-skull"></i> Zona Berbahaya</div>
-            <div class="god-panel danger-panel">
-                <div class="danger-title"><i class="fa-solid fa-triangle-exclamation"></i> Reset Pembukuan Kas</div>
-                <div class="danger-desc">Tindakan ini akan menghapus <strong>SELURUH</strong> riwayat transaksi, saldo kas akan kembali menjadi Rp 0. Gunakan hanya jika pembukuan mengalami kerusakan fatal.</div>
-                <button class="btn-nuke" id="btnNuke" onclick="nukeTransactions()"><i class="fa-solid fa-bomb"></i> Hapus Seluruh Transaksi</button>
-            </div>
-
         </div>
     </div>
 
@@ -152,29 +193,20 @@
             </div>
 
             <label class="form-label">Tetapkan Kasta (Jabatan)</label>
-            <select id="selectRole" class="form-select" onchange="toggleApprovalBox()">
+            <select id="selectRole" class="form-select">
                 <option value="member">Anggota Biasa (Member)</option>
-                <option value="admin">Admin Khusus</option>
+                <option value="admin">Admin / Pemindai Absen</option>
                 <option value="bendahara">Bendahara (Keuangan)</option>
                 <option value="superadmin">Super Admin (Dewa)</option>
             </select>
 
-            <div class="checkbox-container" id="approvalBox" style="display: none;">
-                <input type="checkbox" id="checkApprove">
-                <div>
-                    <label for="checkApprove">Hak Persetujuan Dana</label>
-                    <p style="font-size: 9px; color: var(--text-muted); margin-top: 2px;">Berikan izin admin ini untuk nge-klik "Setujui" di pengajuan dana.</p>
-                </div>
-            </div>
-
             <div class="btn-action-group">
                 <button class="btn-god" id="btnSaveUser" onclick="saveUserRole()"><i class="fa-solid fa-fingerprint"></i> Terapkan</button>
-                <button class="btn-nuke" onclick="deleteUser()"><i class="fa-solid fa-user-slash"></i> Cabut Akses</button>
+                <button class="btn-god btn-nuke" onclick="deleteUser()"><i class="fa-solid fa-user-slash"></i> Hapus</button>
             </div>
         </div>
     </div>
 
-    <!-- FIREBASE & GOD LOGIC -->
     <script type="module">
         import { auth, db } from './db-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
@@ -182,36 +214,112 @@
 
         let targetEditEmail = "";
 
-        // ==========================================
-        // 1. OTORISASI KETAT SUPERADMIN
-        // ==========================================
+        // OTORISASI
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 const docSnap = await getDoc(doc(db, "users", user.email));
-                if (docSnap.exists()) {
-                    const role = (docSnap.data().role || "").toLowerCase();
-                    if (role !== "superadmin") {
-                        alert("SECURITY BREACH: Akses ditolak! Halaman ini hanya untuk Dewa.");
-                        window.location.href = "index.html";
-                    } else {
-                        // Jalankan modul dewa
-                        loadAllUsers();
-                        loadConfig();
-                    }
+                if (docSnap.exists() && (docSnap.data().role || "").toLowerCase() === "superadmin") {
+                    loadAllUsers(); loadConfig(); loadEventConfig();
+                } else {
+                    alert("Akses ditolak! Hanya untuk Dewa."); window.location.href = "index.html";
                 }
-            } else {
-                window.location.href = 'login.html';
-            }
+            } else { window.location.href = 'login.html'; }
         });
 
         // ==========================================
-        // 2. KONTROL KASTA & ADMIN
+        // FITUR SAKLAR AJAIB & GEOFENCING
+        // ==========================================
+        async function loadEventConfig() {
+            try {
+                const cfg = await getDoc(doc(db, "settings", "event_config"));
+                if (cfg.exists()) {
+                    const d = cfg.data();
+                    document.getElementById('evtName').value = d.nama_acara || "";
+                    document.getElementById('evtDate').value = d.tanggal_acara || "";
+                    document.getElementById('evtLat').value = d.lat || "";
+                    document.getElementById('evtLng').value = d.lng || "";
+                    document.getElementById('evtRadius').value = d.radius || 50;
+                    document.getElementById('toggleAcara').checked = d.is_active || false;
+                    updateToggleText(d.is_active);
+                }
+            } catch(e) { console.log("Event config belum ada."); }
+        }
+
+        document.getElementById('toggleAcara').addEventListener('change', function() { updateToggleText(this.checked); });
+        function updateToggleText(isActive) {
+            const txt = document.getElementById('txtStatusAcara');
+            if(isActive) { txt.innerText = "ON (Tampil di semua HP)"; txt.style.color = "var(--success-green)"; } 
+            else { txt.innerText = "OFF (Sembunyi)"; txt.style.color = "var(--text-muted)"; }
+        }
+
+        window.lockGPS = function() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        document.getElementById('evtLat').value = position.coords.latitude;
+                        document.getElementById('evtLng').value = position.coords.longitude;
+                        alert("Berhasil! Koordinat Pusat Acara telah dikunci di lokasi Anda berdiri saat ini.");
+                    },
+                    (error) => { alert("Gagal mengambil GPS. Pastikan izin lokasi (GPS) di HP Anda menyala."); },
+                    { enableHighAccuracy: true }
+                );
+            } else { alert("Browser Anda tidak mendukung GPS."); }
+        }
+
+        window.saveEventConfig = async function() {
+            const btn = document.getElementById('btnSaveEvent');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Broadcasting...'; btn.disabled = true;
+            try {
+                await setDoc(doc(db, "settings", "event_config"), {
+                    nama_acara: document.getElementById('evtName').value,
+                    tanggal_acara: document.getElementById('evtDate').value,
+                    lat: document.getElementById('evtLat').value,
+                    lng: document.getElementById('evtLng').value,
+                    radius: Number(document.getElementById('evtRadius').value),
+                    is_active: document.getElementById('toggleAcara').checked,
+                    updated_at: new Date()
+                }, { merge: true });
+                alert("Setting Acara berhasil di-Broadcast ke semua pengguna!");
+            } catch(e) { alert("Gagal menyimpan setting acara."); } 
+            finally { btn.innerHTML = '<i class="fa-solid fa-satellite"></i> Broadcast Setting Acara'; btn.disabled = false; }
+        }
+
+        window.exportAbsensi = async function() {
+            const evtName = document.getElementById('evtName').value;
+            if(!evtName) return alert("Nama acara kosong! Tentukan nama acara terlebih dahulu.");
+            
+            try {
+                const q = query(collection(db, "absensi_acara"));
+                const snap = await getDocs(q);
+                let csv = "data:text/csv;charset=utf-8,Tanggal,Jam,Nama Acara,Nama Member,Email,Metode\n";
+                let count = 0;
+
+                snap.forEach(d => {
+                    const data = d.data();
+                    if(data.event_name === evtName) {
+                        const dateObj = data.scan_time ? data.scan_time.toDate() : new Date();
+                        const tgl = dateObj.toLocaleDateString('id-ID');
+                        const jam = dateObj.toLocaleTimeString('id-ID');
+                        const metode = data.is_manual ? "Manual Bypass" : "Scan QR";
+                        csv += `${tgl},${jam},${data.event_name},${(data.member_name||"").replace(/,/g,' ')},${data.member_email},${metode}\n`;
+                        count++;
+                    }
+                });
+
+                if(count === 0) return alert("Belum ada data absensi untuk acara: " + evtName);
+
+                const link = document.createElement("a");
+                link.href = encodeURI(csv); link.download = `Absensi_${evtName.replace(/\s+/g, '_')}.csv`;
+                document.body.appendChild(link); link.click(); document.body.removeChild(link);
+            } catch(e) { alert("Gagal menarik data absensi."); }
+        }
+
+        // ==========================================
+        // KONTROL USER & CONFIG LAINNYA
         // ==========================================
         function loadAllUsers() {
             const list = document.getElementById('godUserList');
-            const q = query(collection(db, "users"), orderBy("created_at", "desc"));
-            
-            onSnapshot(q, (snapshot) => {
+            onSnapshot(query(collection(db, "users"), orderBy("created_at", "desc")), (snapshot) => {
                 list.innerHTML = "";
                 if(snapshot.empty) { list.innerHTML = '<div class="empty-state">Data kosong.</div>'; return; }
 
@@ -219,78 +327,47 @@
                     const data = docSnap.data();
                     const email = docSnap.id;
                     const role = (data.role || "member").toLowerCase();
-                    const canApprove = data.can_approve || false;
                     const inisial = (data.nama_lengkap || "X").charAt(0).toUpperCase();
 
                     let badges = `<span class="role-tag">${role}</span>`;
                     if(role === 'superadmin') badges = `<span class="role-tag super"><i class="fa-solid fa-crown"></i> Super Admin</span>`;
                     else if(role === 'admin') badges = `<span class="role-tag admin"><i class="fa-solid fa-shield"></i> Admin</span>`;
                     
-                    if(canApprove && role === 'admin') badges += `<span class="role-tag approve"><i class="fa-solid fa-check-double"></i> Approver</span>`;
-
                     list.innerHTML += `
                         <div class="user-card">
                             <div class="user-info">
                                 <div class="user-avatar">${inisial}</div>
-                                <div class="user-details">
-                                    <h4>${data.nama_lengkap || 'Tanpa Nama'}</h4>
-                                    <p>${data.no_wa || email}</p>
-                                    <div>${badges}</div>
-                                </div>
+                                <div class="user-details"><h4>${data.nama_lengkap || 'Tanpa Nama'}</h4><p>${data.no_wa || email}</p><div>${badges}</div></div>
                             </div>
-                            <button class="btn-edit-user" onclick="openUserModal('${email}', '${data.nama_lengkap}', '${role}', ${canApprove})">
-                                <i class="fa-solid fa-sliders"></i>
-                            </button>
+                            <button class="btn-edit-user" onclick="openUserModal('${email}', '${data.nama_lengkap}', '${role}')"><i class="fa-solid fa-sliders"></i></button>
                         </div>
                     `;
                 });
             });
         }
 
-        window.openUserModal = function(email, nama, role, canApprove) {
+        window.openUserModal = function(email, nama, role) {
             targetEditEmail = email;
             document.getElementById('modalUserName').innerText = nama || "Tanpa Nama";
             document.getElementById('modalUserEmail').innerText = email;
             document.getElementById('selectRole').value = role;
-            document.getElementById('checkApprove').checked = canApprove;
-            toggleApprovalBox();
             document.getElementById('modalEditUser').classList.add('show');
         }
 
         window.closeUserModal = function() { document.getElementById('modalEditUser').classList.remove('show'); }
 
-        window.toggleApprovalBox = function() {
-            const role = document.getElementById('selectRole').value;
-            const box = document.getElementById('approvalBox');
-            if(role === 'admin') { box.style.display = 'flex'; } 
-            else { box.style.display = 'none'; document.getElementById('checkApprove').checked = false; }
-        }
-
         window.saveUserRole = async function() {
             const btn = document.getElementById('btnSaveUser');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...'; btn.disabled = true;
-            try {
-                await updateDoc(doc(db, "users", targetEditEmail), {
-                    role: document.getElementById('selectRole').value,
-                    can_approve: document.getElementById('checkApprove').checked
-                });
-                closeUserModal();
-            } catch(e) { alert("Gagal merubah kasta user."); }
-            finally { btn.innerHTML = '<i class="fa-solid fa-fingerprint"></i> Terapkan'; btn.disabled = false; }
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>...'; btn.disabled = true;
+            try { await updateDoc(doc(db, "users", targetEditEmail), { role: document.getElementById('selectRole').value }); closeUserModal(); } 
+            catch(e) { alert("Gagal merubah kasta user."); } finally { btn.innerHTML = '<i class="fa-solid fa-fingerprint"></i> Terapkan'; btn.disabled = false; }
         }
 
         window.deleteUser = async function() {
-            const role = document.getElementById('selectRole').value;
-            if(role === 'superadmin') return alert("ERROR: Tidak dapat mencabut akses sesama dewa.");
-            if(confirm("MENGHAPUS MEMBER: Anggota ini akan dicabut akses loginnya secara permanen. Lanjutkan?")) {
-                await deleteDoc(doc(db, "users", targetEditEmail));
-                closeUserModal();
-            }
+            if(document.getElementById('selectRole').value === 'superadmin') return alert("ERROR: Tidak dapat menghapus sesama dewa.");
+            if(confirm("MENGHAPUS MEMBER PERMANEN?")) { await deleteDoc(doc(db, "users", targetEditEmail)); closeUserModal(); }
         }
 
-        // ==========================================
-        // 3. KELOLA SETTINGS (LIMIT & QRIS)
-        // ==========================================
         async function loadConfig() {
             try {
                 const configDoc = await getDoc(doc(db, "settings", "app_config"));
@@ -298,39 +375,16 @@
                     document.getElementById('cfgLimit').value = configDoc.data().limit_sedekah || 10000;
                     document.getElementById('cfgQris').value = configDoc.data().qris_url || "";
                 }
-            } catch(e) { console.log("Config belum ada, siap dibuat baru."); }
+            } catch(e) { console.log("Config belum ada."); }
         }
 
         window.saveAppConfig = async function() {
             const btn = document.getElementById('btnSaveConfig');
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>...'; btn.disabled = true;
             try {
-                await setDoc(doc(db, "settings", "app_config"), {
-                    limit_sedekah: Number(document.getElementById('cfgLimit').value),
-                    qris_url: document.getElementById('cfgQris').value
-                }, { merge: true });
+                await setDoc(doc(db, "settings", "app_config"), { limit_sedekah: Number(document.getElementById('cfgLimit').value), qris_url: document.getElementById('cfgQris').value }, { merge: true });
                 alert("Sistem Utama berhasil di-update!");
-            } catch(e) { alert("Gagal update sistem."); } 
-            finally { btn.innerHTML = '<i class="fa-solid fa-microchip"></i> Terapkan ke Sistem'; btn.disabled = false; }
-        }
-
-        // ==========================================
-        // 4. NUKLIR (HAPUS SEMUA TRANSAKSI)
-        // ==========================================
-        window.nukeTransactions = async function() {
-            const pass = prompt("PERINGATAN NUKLIR! \n\nSemua riwayat transaksi akan hangus dan saldo menjadi Rp 0. \n\nKetik 'HANCURKAN' untuk eksekusi:");
-            if (pass === "HANCURKAN") {
-                const btn = document.getElementById('btnNuke');
-                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menghapus...'; btn.disabled = true;
-                try {
-                    const snapshot = await getDocs(collection(db, "transactions"));
-                    const deletePromises = [];
-                    snapshot.forEach(docSnap => deletePromises.push(deleteDoc(doc(db, "transactions", docSnap.id))));
-                    await Promise.all(deletePromises);
-                    alert(`DELETED! ${snapshot.size} Riwayat transaksi dihanguskan.`);
-                } catch(e) { alert("Terjadi kesalahan."); } 
-                finally { btn.innerHTML = '<i class="fa-solid fa-bomb"></i> Hapus Seluruh Transaksi'; btn.disabled = false; }
-            } else if (pass !== null) { alert("Kode eksekusi salah."); }
+            } catch(e) { alert("Gagal update sistem."); } finally { btn.innerHTML = '<i class="fa-solid fa-microchip"></i> Terapkan ke Sistem'; btn.disabled = false; }
         }
     </script>
 </body>

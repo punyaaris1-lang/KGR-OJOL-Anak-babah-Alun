@@ -13,132 +13,87 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
     
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
     <style>
         :root {
             --bg-base: #F4F6F5; --text-dark: #111827; --text-gray: #4B5563; 
             --emerald-dark: #064E3B; --emerald-main: #059669; --emerald-card: linear-gradient(135deg, #065F46 0%, #022C22 100%);
-            --gold-accent: #FBBF24; --gold-text: #FDE68A;
+            --gold-accent: #FBBF24; --gold-text: #FDE68A; --neon-cyan: #00F3FF;
             --shadow-card: 0 12px 24px rgba(0, 0, 0, 0.08); --shadow-float: 0 20px 40px rgba(5, 150, 105, 0.25);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
-        
         body { background-color: #E2E8E4; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
 
-        /* SCROLL AMAN */
-        .app-container {
-            width: 100%; height: 100dvh; background-color: var(--bg-base); 
-            background-image: radial-gradient(circle at 50% 35%, rgba(5, 150, 105, 0.12) 0%, rgba(5, 150, 105, 0.03) 35%, var(--bg-base) 70%);
-            position: relative; overflow-x: hidden; overflow-y: auto; display: flex; flex-direction: column; color: var(--text-dark); padding-bottom: 130px; 
-        }
+        .app-container { width: 100%; height: 100dvh; background-color: var(--bg-base); background-image: radial-gradient(circle at 50% 35%, rgba(5, 150, 105, 0.12) 0%, rgba(5, 150, 105, 0.03) 35%, var(--bg-base) 70%); position: relative; overflow-x: hidden; overflow-y: auto; display: flex; flex-direction: column; color: var(--text-dark); padding-bottom: 130px; }
+        @media (min-width: 600px) { .app-container { max-width: 480px; height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15); border: 8px solid #FFFFFF; margin: auto; } }
 
-        @media (min-width: 600px) {
-            .app-container { max-width: 480px; height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15); border: 8px solid #FFFFFF; margin: auto; }
-        }
+        .header-cover { position: relative; width: 100%; height: 260px; min-height: 260px; flex-shrink: 0; background-image: url('1000417166.jpg'); background-size: cover; background-position: center; border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; z-index: 1; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+        .header-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, transparent 40%, rgba(0, 0, 0, 0.3) 100%); border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; }
 
-        /* HEADER FOTO (Gradient Diterangkan Maksimal) */
-        .header-cover {
-            position: relative; width: 100%; height: 260px; min-height: 260px; flex-shrink: 0;    
-            background-image: url('1000417166.jpg'); 
-            background-size: cover; background-position: center; border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; z-index: 1; box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        }
-        .header-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, transparent 40%, rgba(0, 0, 0, 0.3) 100%);
-            border-bottom-left-radius: 35px; border-bottom-right-radius: 35px;
-        }
-
-        /* SHIMMER TEXT KEMBALI (Shadow ditebalkan agar kontras dengan foto terang) */
         .brand-container { position: absolute; top: 50px; left: 0; width: 100%; text-align: center; z-index: 10; padding: 0 20px; }
-        .main-title {
-            font-size: clamp(20px, 5.5vw, 24px); font-weight: 900; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2;
-            color: rgba(255, 255, 255, 0.35); 
-            background-image: linear-gradient(90deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.35) 40%, #FFFFFF 50%, rgba(255,255,255,0.35) 60%, rgba(255,255,255,0.35) 100%);
-            background-size: 200% auto; background-clip: text; -webkit-background-clip: text;
-            animation: textShimmer 3.5s infinite linear; text-shadow: 0 4px 15px rgba(0,0,0,0.9); margin-bottom: 2px;
-        }
+        .main-title { font-size: clamp(20px, 5.5vw, 24px); font-weight: 900; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2; color: rgba(255, 255, 255, 0.35); background-image: linear-gradient(90deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.35) 40%, #FFFFFF 50%, rgba(255,255,255,0.35) 60%, rgba(255,255,255,0.35) 100%); background-size: 200% auto; background-clip: text; -webkit-background-clip: text; animation: textShimmer 3.5s infinite linear; text-shadow: 0 4px 15px rgba(0,0,0,0.9); margin-bottom: 2px; }
         .sub-title { font-size: clamp(11px, 3vw, 13px); font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--gold-text); text-shadow: 0 3px 8px rgba(0,0,0,0.9); }
         @keyframes textShimmer { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
 
-        /* PROFIL */
         .profile-area { display: flex; justify-content: space-between; align-items: flex-end; padding: 0 24px; margin-top: -50px; position: relative; z-index: 10; }
-        .profile-pic {
-            width: clamp(80px, 22vw, 90px); height: clamp(80px, 22vw, 90px); border-radius: 50%; background: #111827; border: 5px solid #FFFFFF;
-            display: flex; justify-content: center; align-items: center; font-size: clamp(32px, 8vw, 40px); font-weight: 900; color: var(--gold-accent); box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-            background-size: cover; background-position: center;
-        }
-        .btn-settings {
-            width: 42px; height: 42px; border-radius: 50%; background: #111827; color: var(--gold-accent); display: flex; justify-content: center; align-items: center; font-size: 18px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2); cursor: pointer; transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1); margin-bottom: 10px; border: 3px solid var(--bg-base);
-        }
-        .btn-settings:active { transform: scale(0.8) translateY(2px); box-shadow: 0 0 15px rgba(251, 191, 36, 0.5); }
+        .profile-pic { width: clamp(80px, 22vw, 90px); height: clamp(80px, 22vw, 90px); border-radius: 50%; background: #111827; border: 5px solid #FFFFFF; display: flex; justify-content: center; align-items: center; font-size: clamp(32px, 8vw, 40px); font-weight: 900; color: var(--gold-accent); box-shadow: 0 10px 20px rgba(0,0,0,0.15); background-size: cover; background-position: center; }
+        .btn-settings { width: 42px; height: 42px; border-radius: 50%; background: #111827; color: var(--gold-accent); display: flex; justify-content: center; align-items: center; font-size: 18px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); cursor: pointer; transition: 0.25s; margin-bottom: 10px; border: 3px solid var(--bg-base); }
+        .btn-settings:active { transform: scale(0.8); }
 
         .user-intro { padding: 15px 24px 20px; z-index: 5; position: relative; }
         .user-intro h2 { font-size: clamp(22px, 6vw, 26px); font-weight: 900; color: var(--text-dark); letter-spacing: -0.5px; }
         .user-intro p { font-size: 13px; font-weight: 800; color: var(--emerald-main); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 4px; }
 
-        /* CONTENT */
         .content-area { padding: 0 24px; z-index: 5; position: relative; }
-        .premium-card {
-            background: var(--emerald-card); border-radius: 24px; padding: 25px; box-shadow: var(--shadow-float); position: relative; overflow: hidden; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.1);
-        }
-        .premium-card::after {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(to bottom right, rgba(255,255,255,0.2) 0%, transparent 40%, transparent 100%); transform: rotate(30deg); pointer-events: none;
-        }
-        .card-label { font-size: clamp(13px, 3.5vw, 15px); color: rgba(255,255,255,0.85); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; display: flex; justify-content: space-between; align-items: center;}
-        .card-balance { font-size: clamp(28px, 8vw, 38px); font-weight: 900; color: #FFFFFF; letter-spacing: -1px; margin-bottom: 20px; text-shadow: 0 4px 10px rgba(0,0,0,0.3);}
-        .card-bottom { display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 15px;}
-        .card-bottom-label { font-size: clamp(12px, 3.5vw, 14px); color: rgba(255,255,255,0.7); font-weight: 600; }
-        .card-bottom-val { font-size: clamp(16px, 4.5vw, 20px); font-weight: 800; color: var(--gold-accent); }
+        .premium-card { background: var(--emerald-card); border-radius: 24px; padding: 25px; box-shadow: var(--shadow-float); position: relative; overflow: hidden; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.1); }
+        .card-label { font-size: clamp(13px, 3.5vw, 15px); color: rgba(255,255,255,0.85); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; display: flex; justify-content: space-between; }
+        .card-balance { font-size: clamp(28px, 8vw, 38px); font-weight: 900; color: #FFFFFF; letter-spacing: -1px; margin-bottom: 20px; }
 
-        .section-title { font-size: clamp(16px, 4.5vw, 18px); font-weight: 800; margin: 20px 0 15px; color: var(--text-dark); display: flex; justify-content: flex-start; align-items: center; gap: 8px;}
-        
-        /* PENGURUS PANEL BEBAS KOTAK PUTUS-PUTUS */
+        .section-title { font-size: clamp(16px, 4.5vw, 18px); font-weight: 800; margin: 20px 0 15px; color: var(--text-dark); display: flex; align-items: center; gap: 8px;}
         .pengurus-panel { border: none; padding: 0; background: transparent; margin-bottom: 25px; }
         
-        /* MENU GRID & ICON */
         .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .menu-item { background: #FFFFFF; border-radius: 20px; padding: 12px 5px; display: flex; flex-direction: column; align-items: center; gap: 10px; box-shadow: var(--shadow-card); cursor: pointer; transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); border: 1px solid rgba(0,0,0,0.02);}
-        .menu-icon { width: clamp(45px, 13vw, 55px); height: clamp(45px, 13vw, 55px); border-radius: 16px; background: rgba(5, 150, 105, 0.1); color: var(--emerald-main); display: flex; justify-content: center; align-items: center; font-size: clamp(20px, 5.5vw, 24px); transition: all 0.2s ease; }
-        
-        .menu-item:active { transform: scale(0.9); background: #ECFDF5; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-color: rgba(5, 150, 105, 0.2); }
-        .menu-item:active .menu-icon { transform: scale(0.85); background: rgba(5, 150, 105, 0.25); }
+        .menu-item { background: #FFFFFF; border-radius: 20px; padding: 12px 5px; display: flex; flex-direction: column; align-items: center; gap: 10px; box-shadow: var(--shadow-card); cursor: pointer; transition: 0.2s; border: 1px solid rgba(0,0,0,0.02);}
+        .menu-icon { width: clamp(45px, 13vw, 55px); height: clamp(45px, 13vw, 55px); border-radius: 16px; background: rgba(5, 150, 105, 0.1); color: var(--emerald-main); display: flex; justify-content: center; align-items: center; font-size: clamp(20px, 5.5vw, 24px); transition: 0.2s; }
+        .menu-item:active { transform: scale(0.9); }
         .menu-item span { font-size: clamp(10px, 3vw, 12px); font-weight: 800; color: var(--text-dark); text-align: center; line-height: 1.3;}
 
-        /* BOTTOM NAV FLOATING */
+        /* HIGHLIGHT MENU ABSENSI */
+        .menu-absen { border: 2px solid var(--neon-cyan); background: #E0FCFF; box-shadow: 0 0 15px rgba(0, 243, 255, 0.3); animation: pulseNeon 2s infinite; }
+        .menu-absen .menu-icon { background: var(--text-dark); color: var(--neon-cyan); }
+        @keyframes pulseNeon { 0% { box-shadow: 0 0 10px rgba(0,243,255,0.2); } 50% { box-shadow: 0 0 20px rgba(0,243,255,0.6); } 100% { box-shadow: 0 0 10px rgba(0,243,255,0.2); } }
+
         .bottom-nav-container { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 440px; z-index: 20; }
-        .floating-nav { display: flex; justify-content: space-between; align-items: center; padding: 10px 30px; border-radius: 35px; background: #FFFFFF; box-shadow: 0 25px 50px rgba(0,0,0,0.15); border: 1px solid rgba(0,0,0,0.02); }
-        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; color: #9CA3AF; cursor: pointer; padding: 8px 0; transition: 0.2s;}
-        .nav-item i { font-size: clamp(20px, 6vw, 24px); transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .floating-nav { display: flex; justify-content: space-between; align-items: center; padding: 10px 30px; border-radius: 35px; background: #FFFFFF; box-shadow: 0 25px 50px rgba(0,0,0,0.15); }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; color: #9CA3AF; cursor: pointer; padding: 8px 0; }
+        .nav-item i { font-size: clamp(20px, 6vw, 24px); transition: 0.2s; }
         .nav-item span { font-size: clamp(11px, 3vw, 12px); font-weight: 700; }
-        .nav-item:active i { transform: scale(0.65) translateY(-3px); color: var(--emerald-main); }
         .nav-item.active { color: var(--emerald-main); }
         .center-btn { position: relative; top: -25px; }
-        .center-fab { width: clamp(65px, 16vw, 75px); height: clamp(65px, 16vw, 75px); border-radius: 24px; background: var(--emerald-main); box-shadow: var(--shadow-float); display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; color: #FFFFFF; font-size: clamp(22px, 6vw, 26px); border: 4px solid var(--bg-base); transition: 0.2s;}
+        .center-fab { width: clamp(65px, 16vw, 75px); height: clamp(65px, 16vw, 75px); border-radius: 24px; background: var(--emerald-main); box-shadow: var(--shadow-float); display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; color: #FFFFFF; font-size: clamp(22px, 6vw, 26px); border: 4px solid var(--bg-base); }
         .center-fab span { font-size: clamp(10px, 2.5vw, 12px); font-weight: 800; }
-        .center-btn:active .center-fab { transform: scale(0.85); box-shadow: 0 8px 15px rgba(5, 150, 105, 0.5); background: var(--emerald-dark); }
 
-        /* MODAL PREMIUM QRIS FULL */
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s ease; padding: 20px;}
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px;}
         .modal-overlay.show { opacity: 1; visibility: visible; }
-        .qris-card { background: #FFF; border-radius: 32px; padding: 30px 24px; width: 100%; max-width: 380px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.2); transform: scale(0.9); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1); opacity: 0; }
-        .modal-overlay.show .qris-card { transform: scale(1); opacity: 1; }
-        .qris-img { width: 180px; height: 180px; margin: 0 auto 20px; border-radius: 20px; border: 4px solid var(--emerald-main); padding: 5px; }
-        .qris-img img { width: 100%; height: 100%; object-fit: contain; border-radius: 12px; }
-        .form-input { width: 100%; padding: 16px; border-radius: 14px; border: 2px solid rgba(0,0,0,0.06); font-size: 14px; font-weight: 700; outline: none; background: #F9F9F9; margin-bottom: 12px; transition: 0.2s; color: var(--text-dark);}
-        .form-input:focus { border-color: var(--emerald-main); background: #FFF; }
-        .file-upload-wrapper { position: relative; width: 100%; margin-bottom: 15px; }
-        .file-upload-input { position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0; z-index: 2; cursor: pointer; }
-        .file-upload-btn { width: 100%; padding: 15px; border-radius: 14px; background: #F5F5F7; border: 2px dashed var(--emerald-main); font-size: 13px; font-weight: 800; display: flex; justify-content: center; align-items: center; gap: 8px; color: var(--text-dark); transition: 0.2s;}
-        .btn-auth { width: 100%; padding: 16px; border-radius: 16px; font-size: 14px; font-weight: 800; background: var(--text-dark); color: #FFF; border: none; display: flex; justify-content: center; align-items: center; gap: 8px; cursor: pointer; transition: 0.2s;}
-        .btn-auth:active { transform: scale(0.95); }
-        .btn-outline { background: #F4F6F5; color: var(--text-dark); border: none; }
+        .modal-card { background: #FFF; border-radius: 32px; padding: 30px 24px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.3); transform: scale(0.9); transition: 0.3s; }
+        .modal-overlay.show .modal-card { transform: scale(1); }
+        
+        .qr-display { width: 220px; height: 220px; margin: 0 auto 20px; border: 5px solid var(--text-dark); border-radius: 20px; padding: 10px; background: #FFF; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .qr-display img { width: 100%; height: 100%; object-fit: contain; }
+
+        #reader { width: 100%; border-radius: 20px; overflow: hidden; border: 4px solid var(--neon-cyan); margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,243,255,0.2);}
+
+        .form-input { width: 100%; padding: 16px; border-radius: 14px; border: 2px solid rgba(0,0,0,0.06); font-size: 14px; font-weight: 700; outline: none; margin-bottom: 12px; }
+        .form-input:focus { border-color: var(--emerald-main); }
+        .btn-action { width: 100%; padding: 16px; border-radius: 16px; font-size: 14px; font-weight: 800; background: var(--text-dark); color: #FFF; border: none; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px;}
+        .btn-outline { background: #F4F6F5; color: var(--text-dark); }
     </style>
 </head>
 <body>
 
     <main class="app-container">
-        
         <div class="header-cover">
             <div class="header-overlay"></div>
             <div class="brand-container">
@@ -149,9 +104,7 @@
 
         <div class="profile-area">
             <div class="profile-pic" id="uiProfilePic"></div>
-            <div class="btn-settings" onclick="window.location.href='profil.html'">
-                <i class="fa-solid fa-gear"></i>
-            </div>
+            <div class="btn-settings" onclick="window.location.href='profil.html'"><i class="fa-solid fa-gear"></i></div>
         </div>
 
         <div class="user-intro">
@@ -161,39 +114,22 @@
 
         <div class="content-area">
             <div class="premium-card">
-                <div class="card-label">
-                    <span>Total Kas (Keseluruhan)</span>
-                    <i class="fa-brands fa-nfc-symbol" style="font-size: 20px; opacity: 0.8;"></i>
-                </div>
+                <div class="card-label"><span>Total Kas (Keseluruhan)</span><i class="fa-brands fa-nfc-symbol" style="font-size: 20px;"></i></div>
                 <div class="card-balance" id="uiTotalAll">Rp 0</div>
-                
-                <div class="card-bottom">
-                    <div>
-                        <div class="card-bottom-label">Saldo Kas Bulan Ini</div>
-                        <div class="card-bottom-val" id="uiTotalMonth">Rp 0</div>
-                    </div>
-                    <i class="fa-solid fa-building-columns" style="font-size: 24px; opacity: 0.3; color: #FFF;"></i>
-                </div>
             </div>
 
-            <!-- PANEL PENGURUS BERSIH TANPA KOTAK PUTUS -->
             <div id="panelPengurus" style="display: none;">
-                <div class="section-title" style="color: var(--emerald-main); justify-content: flex-start; gap: 8px;">
-                    Panel Pengurus <i class="fa-solid fa-shield-halved"></i>
-                </div>
+                <div class="section-title">Panel Pengurus <i class="fa-solid fa-shield-halved" style="color:var(--emerald-main)"></i></div>
                 <div class="pengurus-panel">
                     <div class="menu-grid" id="gridPengurus">
                         <div class="menu-item" id="menuSuperadmin" style="display: none;" onclick="window.location.href='superadmin.html'">
-                            <div class="menu-icon" style="background:var(--text-dark); color:var(--gold-accent);"><i class="fa-solid fa-crown"></i></div>
-                            <span style="font-size: 11px;">Sistem<br>Superadmin</span>
+                            <div class="menu-icon" style="background:var(--text-dark); color:var(--gold-accent);"><i class="fa-solid fa-crown"></i></div><span>Sistem<br>Superadmin</span>
                         </div>
                         <div class="menu-item" id="menuBendahara" style="display: none;" onclick="window.location.href='keuangan.html'">
-                            <div class="menu-icon" style="background:var(--emerald-main); color:#FFF;"><i class="fa-solid fa-vault"></i></div>
-                            <span style="font-size: 11px;">Verifikasi<br>Sedekah</span>
+                            <div class="menu-icon" style="background:var(--emerald-main); color:#FFF;"><i class="fa-solid fa-vault"></i></div><span>Verifikasi<br>Sedekah</span>
                         </div>
                         <div class="menu-item" id="menuAdmin" style="display: none;" onclick="window.location.href='kelola_anggota.html'">
-                            <div class="menu-icon" style="background:var(--emerald-main); color:#FFF;"><i class="fa-solid fa-user-gear"></i></div>
-                            <span style="font-size: 11px;">Kelola<br>Anggota</span>
+                            <div class="menu-icon" style="background:var(--emerald-main); color:#FFF;"><i class="fa-solid fa-user-gear"></i></div><span>Kelola<br>Anggota</span>
                         </div>
                     </div>
                 </div>
@@ -201,68 +137,59 @@
 
             <h3 class="section-title">Menu Anggota</h3>
             <div class="menu-grid">
-                <div class="menu-item" onclick="window.location.href='anggota.html'">
-                    <div class="menu-icon"><i class="fa-solid fa-users"></i></div><span>Data<br>Anggota</span>
+                
+                <div class="menu-item menu-absen" id="menuAbsensi" style="display: none;" onclick="handleAbsensiClick()">
+                    <div class="menu-icon"><i class="fa-solid fa-satellite-dish"></i></div><span style="color: var(--text-dark);">Absensi<br>Acara</span>
                 </div>
-                <div class="menu-item" onclick="window.location.href='laporan.html'">
-                    <div class="menu-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div><span>Laporan<br>Kas</span>
-                </div>
-                <div class="menu-item" onclick="window.location.href='kegiatan.html'">
-                    <div class="menu-icon"><i class="fa-solid fa-hand-holding-heart"></i></div><span>Kegiatan<br>Sosial</span>
-                </div>
-                <div class="menu-item" onclick="window.location.href='info.html'">
-                    <div class="menu-icon"><i class="fa-solid fa-circle-info"></i></div><span>Pusat<br>Info</span>
-                </div>
-                <div class="menu-item" onclick="window.location.href='donatur.html'">
-                    <div class="menu-icon"><i class="fa-solid fa-ranking-star"></i></div><span>Daftar<br>Donatur</span>
-                </div>
-                <div class="menu-item" onclick="window.location.href='pengajuan.html'">
-                    <div class="menu-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div><span>Pengajuan<br>Dana</span>
-                </div>
+
+                <div class="menu-item" onclick="window.location.href='anggota.html'"><div class="menu-icon"><i class="fa-solid fa-users"></i></div><span>Data<br>Anggota</span></div>
+                <div class="menu-item" onclick="window.location.href='laporan.html'"><div class="menu-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div><span>Laporan<br>Kas</span></div>
+                <div class="menu-item" onclick="window.location.href='pengajuan.html'"><div class="menu-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div><span>Pengajuan<br>Dana</span></div>
             </div>
         </div>
 
-        <!-- FLOATING NAV ORIGINAL -->
         <div class="bottom-nav-container">
             <div class="floating-nav">
-                <div class="nav-item active" onclick="window.location.href='index.html'">
-                    <i class="fa-solid fa-house"></i><span>Beranda</span>
-                </div>
-                <div class="nav-item center-btn" onclick="openQrisModal()">
-                    <div class="center-fab"><i class="fa-solid fa-qrcode"></i><span>Sedekah</span></div>
-                </div>
-                <div class="nav-item" onclick="window.location.href='laporan.html'">
-                    <i class="fa-solid fa-chart-pie"></i><span>Laporan</span>
-                </div>
+                <div class="nav-item active"><i class="fa-solid fa-house"></i><span>Beranda</span></div>
+                <div class="nav-item center-btn" onclick="openQrisModal()"><div class="center-fab"><i class="fa-solid fa-qrcode"></i><span>Sedekah</span></div></div>
+                <div class="nav-item" onclick="window.location.href='laporan.html'"><i class="fa-solid fa-chart-pie"></i><span>Laporan</span></div>
             </div>
         </div>
 
-        <!-- MODAL ORIGINAL -->
-        <div id="modalQrisManual" class="modal-overlay">
-            <div class="qris-card">
-                <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 5px; color: var(--text-dark);">Scan QRIS Kas</h3>
-                <p style="font-size: 11px; font-weight: 700; color: var(--text-gray); margin-bottom: 20px;">KGR Ojol Anak Babah Alun</p>
+        <div id="modalMemberQR" class="modal-overlay">
+            <div class="modal-card">
+                <h3 style="font-weight: 900; color: var(--text-dark);">Kartu Kehadiran</h3>
+                <p style="font-size: 11px; font-weight: 700; color: var(--text-gray); margin-bottom: 20px;">Tunjukkan QR Code ini kepada Admin Acara.</p>
+                <div class="qr-display"><img id="imgMemberQR" src="" alt="Loading QR..."></div>
+                <h4 id="qrNameText" style="margin-bottom: 20px;">...</h4>
+                <button type="button" class="btn-action btn-outline" onclick="document.getElementById('modalMemberQR').classList.remove('show')">Tutup</button>
+            </div>
+        </div>
+
+        <div id="modalAdminScanner" class="modal-overlay">
+            <div class="modal-card" style="padding: 20px;">
+                <h3 style="font-weight: 900; font-size: 16px; margin-bottom: 15px;"><i class="fa-solid fa-satellite-dish" style="color:var(--neon-cyan)"></i> Radar Acara Aktif</h3>
                 
-                <div class="qris-img">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" alt="QRIS">
+                <div id="scannerBox">
+                    <div id="reader"></div>
+                    <button class="btn-action" style="background: var(--text-gray); margin-bottom: 10px;" onclick="toggleManualBypass(true)"><i class="fa-solid fa-keyboard"></i> Absen Manual (Bypass)</button>
                 </div>
 
-                <form id="formSedekah" onsubmit="submitSedekah(event)">
-                    <input type="number" id="inputNominal" class="form-input" placeholder="Nominal (Cth: 50000)" required style="text-align: center; font-size: 18px; font-weight: 900;">
-                    <input type="text" id="inputPesan" class="form-input" placeholder="Pesan / Doa (Opsional)">
+                <div id="manualBox" style="display: none; text-align: left;">
+                    <label style="font-size: 11px; font-weight: 800; color: var(--text-gray);">Input Manual (Bypass Scanner)</label>
+                    <input type="text" id="inputManualName" class="form-input" placeholder="Ketik Nama Lengkap / NIK Member">
+                    <button class="btn-action" style="background: var(--emerald-main); margin-bottom: 10px;" onclick="submitManualAbsen()"><i class="fa-solid fa-check"></i> Hadirkan Member</button>
+                    <button class="btn-action btn-outline" style="margin-bottom: 10px;" onclick="toggleManualBypass(false)"><i class="fa-solid fa-camera"></i> Kembali ke Kamera</button>
+                </div>
 
-                    <div class="file-upload-wrapper">
-                        <input type="file" id="inputBukti" class="file-upload-input" accept="image/*" required onchange="tampilkanNamaFile(this)">
-                        <div class="file-upload-btn" id="btnUploadText">
-                            <i class="fa-solid fa-cloud-arrow-up"></i> Upload Bukti Transfer
-                        </div>
-                    </div>
+                <button class="btn-action btn-outline" onclick="closeScannerModal()" style="border: 2px solid var(--danger-red); color: var(--danger-red);">Tutup Radar</button>
+            </div>
+        </div>
 
-                    <div style="display: flex; gap: 10px;">
-                        <button type="button" class="btn-auth btn-outline" style="flex: 1;" onclick="closeQrisModal()">Batal</button>
-                        <button type="submit" class="btn-auth" id="btnSubmitSedekah" style="flex: 1.5; background: var(--emerald-main);">Kirim <i class="fa-solid fa-paper-plane"></i></button>
-                    </div>
-                </form>
+        <div id="modalQrisManual" class="modal-overlay">
+            <div class="modal-card">
+                <h3 style="font-weight: 900; margin-bottom: 20px;">Scan QRIS Kas</h3>
+                <button class="btn-action btn-outline" onclick="document.getElementById('modalQrisManual').classList.remove('show')">Tutup</button>
             </div>
         </div>
 
@@ -271,162 +198,170 @@
     <script type="module">
         import { auth, db } from './db-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
-        import { collection, query, onSnapshot, addDoc, serverTimestamp, doc, getDoc, getDocs, where } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+        import { doc, getDoc, onSnapshot, collection, addDoc, serverTimestamp, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+        let currentRole = "member";
+        let currentUserEmail = "";
+        let currentUserName = "";
+        let currentEvent = null;
+        let html5QrcodeScanner = null;
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                const userRef = doc(db, "users", user.email);
-                onSnapshot(userRef, (docSnap) => {
+                currentUserEmail = user.email;
+                onSnapshot(doc(db, "users", user.email), (docSnap) => {
                     if (docSnap.exists()) {
-                        const dataUser = docSnap.data();
-                        const role = (dataUser.role || "member").toLowerCase(); 
-                        const status = dataUser.status || "Pending Admin";
-                        const namaLengkap = dataUser.nama_lengkap || "Tanpa Nama";
+                        const d = docSnap.data();
+                        currentRole = (d.role || "member").toLowerCase(); 
+                        currentUserName = d.nama_lengkap || "Tanpa Nama";
                         
-                        document.getElementById('uiUserName').innerText = namaLengkap;
-                        
-                        // FOTO PROFIL FIX
+                        document.getElementById('uiUserName').innerText = currentUserName;
                         const picEl = document.getElementById('uiProfilePic');
-                        if (dataUser.profile_image) {
-                            picEl.style.backgroundImage = `url('${dataUser.profile_image}')`;
-                            picEl.innerText = "";
-                        } else {
-                            picEl.style.backgroundImage = "none";
-                            picEl.innerText = namaLengkap.charAt(0).toUpperCase();
-                        }
+                        if (d.profile_image) { picEl.style.backgroundImage = `url('${d.profile_image}')`; picEl.innerText = ""; } 
+                        else { picEl.style.backgroundImage = "none"; picEl.innerText = currentUserName.charAt(0).toUpperCase(); }
 
-                        const roleTextEl = document.getElementById('uiRoleText');
-                        const panelPengurus = document.getElementById('panelPengurus');
-                        const menuSuperadmin = document.getElementById('menuSuperadmin');
-                        const menuBendahara = document.getElementById('menuBendahara');
-                        const menuAdmin = document.getElementById('menuAdmin');
+                        const rText = document.getElementById('uiRoleText');
+                        const panel = document.getElementById('panelPengurus');
 
-                        panelPengurus.style.display = "none"; menuSuperadmin.style.display = "none";
-                        menuBendahara.style.display = "none"; menuAdmin.style.display = "none";
+                        if (d.status === "Pending Admin" && currentRole !== "superadmin") {
+                            document.getElementById('uiUserName').innerText = "Menunggu Verifikasi"; rText.innerHTML = '<i class="fa-solid fa-lock"></i> STATUS PENDING'; rText.style.color = "#DC3545"; 
+                            document.querySelector('.content-area').style.opacity = '0.3'; document.querySelector('.content-area').style.pointerEvents = 'none'; return; 
+                        } else { document.querySelector('.content-area').style.opacity = '1'; document.querySelector('.content-area').style.pointerEvents = 'auto'; }
 
-                        if (status === "Pending Admin" && role !== "superadmin" && role !== "admin" && role !== "bendahara") {
-                            document.getElementById('uiUserName').innerText = "Menunggu Verifikasi";
-                            roleTextEl.innerHTML = '<i class="fa-solid fa-lock"></i> STATUS PENDING';
-                            roleTextEl.style.color = "#DC3545"; 
-                            document.querySelector('.content-area').style.opacity = '0.3'; 
-                            document.querySelector('.content-area').style.pointerEvents = 'none';
-                            return; 
-                        } else {
-                            document.querySelector('.content-area').style.opacity = '1'; 
-                            document.querySelector('.content-area').style.pointerEvents = 'auto';
-                        }
-
-                        if (role === "superadmin") {
-                            panelPengurus.style.display = "block"; menuSuperadmin.style.display = "flex"; 
-                            menuBendahara.style.display = "flex"; menuAdmin.style.display = "flex";
-                            roleTextEl.innerHTML = '<i class="fa-solid fa-crown"></i> SUPERADMIN';
-                            roleTextEl.style.color = "var(--gold-accent)"; 
-                        } 
-                        else if (role === "bendahara") {
-                            panelPengurus.style.display = "block"; menuBendahara.style.display = "flex";
-                            roleTextEl.innerHTML = '<i class="fa-solid fa-vault"></i> BENDAHARA';
-                            roleTextEl.style.color = "var(--emerald-main)"; 
-                        } 
-                        else if (role === "admin") {
-                            panelPengurus.style.display = "block"; menuAdmin.style.display = "flex";
-                            roleTextEl.innerHTML = '<i class="fa-solid fa-shield"></i> ADMIN';
-                            roleTextEl.style.color = "#0A84FF"; 
-                        }
-                        else {
-                            roleTextEl.innerHTML = '<i class="fa-solid fa-circle-check"></i> ANGGOTA AKTIF';
-                            roleTextEl.style.color = "var(--emerald-main)"; 
-                        }
-                    } else {
-                        auth.signOut(); window.location.href = 'login.html';
-                    }
+                        if (currentRole === "superadmin") { panel.style.display = "block"; document.getElementById('menuSuperadmin').style.display = "flex"; document.getElementById('menuBendahara').style.display = "flex"; document.getElementById('menuAdmin').style.display = "flex"; rText.innerHTML = '<i class="fa-solid fa-crown"></i> SUPERADMIN'; rText.style.color = "var(--gold-accent)"; } 
+                        else if (currentRole === "bendahara") { panel.style.display = "block"; document.getElementById('menuBendahara').style.display = "flex"; rText.innerHTML = '<i class="fa-solid fa-vault"></i> BENDAHARA'; rText.style.color = "var(--emerald-main)"; } 
+                        else if (currentRole === "admin") { panel.style.display = "block"; document.getElementById('menuAdmin').style.display = "flex"; rText.innerHTML = '<i class="fa-solid fa-shield"></i> ADMIN'; rText.style.color = "#0A84FF"; }
+                        else { rText.innerHTML = '<i class="fa-solid fa-circle-check"></i> ANGGOTA AKTIF'; rText.style.color = "var(--emerald-main)"; }
+                    } else { auth.signOut(); window.location.href = 'login.html'; }
                 });
+            } else { window.location.href = 'login.html'; }
+        });
+
+        // SAKLAR AJAIB ACARA REAL-TIME
+        onSnapshot(doc(db, "settings", "event_config"), (docSnap) => {
+            if (docSnap.exists()) {
+                currentEvent = docSnap.data();
+                if (currentEvent.is_active) { document.getElementById('menuAbsensi').style.display = 'flex'; } 
+                else { document.getElementById('menuAbsensi').style.display = 'none'; }
+            }
+        });
+
+        // FUNGSI KLIK MENU ABSENSI (BEDA KASTA BEDA HASIL)
+        window.handleAbsensiClick = function() {
+            if (!currentEvent || !currentEvent.is_active) return alert("Acara sudah ditutup oleh Superadmin.");
+            
+            if (currentRole === "member") {
+                // TAMPILAN MEMBER: Buka Modal QR Code
+                const qrData = currentUserEmail; 
+                document.getElementById('imgMemberQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(qrData)}`;
+                document.getElementById('qrNameText').innerText = currentUserName;
+                document.getElementById('modalMemberQR').classList.add('show');
             } else {
-                window.location.href = 'login.html';
-            }
-        });
-
-        const trxRef = collection(db, "transactions");
-
-        window.openQrisModal = async function() { 
-            document.getElementById('modalQrisManual').classList.add('show'); 
-            const configDoc = await getDoc(doc(db, "settings", "app_config"));
-            if (configDoc.exists() && configDoc.data().qris_url) {
-                document.querySelector('.qris-img img').src = configDoc.data().qris_url;
-            }
-        }
-        window.closeQrisModal = function() { 
-            document.getElementById('modalQrisManual').classList.remove('show');
-            document.getElementById('formSedekah').reset();
-            document.getElementById('btnUploadText').innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Upload Bukti Transfer';
-        }
-        window.tampilkanNamaFile = function(input) {
-            if (input.files && input.files[0]) {
-                document.getElementById('btnUploadText').innerHTML = `<i class="fa-solid fa-check-circle" style="color:var(--emerald-main);"></i> Bukti Siap Dikirim`;
+                // TAMPILAN ADMIN/DEWA: Cek GPS lalu buka Scanner
+                checkGPSAndOpenScanner();
             }
         }
 
-        const getBase64 = (file) => new Promise((res, rej) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => res(reader.result); reader.onerror = error => rej(error); });
-
-        window.submitSedekah = async function(e) {
-            e.preventDefault();
-            const nominalInput = Number(document.getElementById('inputNominal').value);
-            const currentUserEmail = auth.currentUser.email;
-            const btn = document.getElementById('btnSubmitSedekah');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Proses...'; btn.disabled = true;
-
-            try {
-                let limitMaksimal = 10000; 
-                const configDoc = await getDoc(doc(db, "settings", "app_config"));
-                if (configDoc.exists() && configDoc.data().limit_sedekah) limitMaksimal = configDoc.data().limit_sedekah;
-
-                const now = new Date();
-                const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-                const qTrx = query(trxRef, where("pengirim", "==", currentUserEmail), where("jenis", "==", "Pemasukan"), where("tanggal", ">=", startOfMonth));
-                
-                const snapshotTrx = await getDocs(qTrx);
-                let totalSedekahBulanIni = 0;
-                snapshotTrx.forEach(doc => { totalSedekahBulanIni += Number(doc.data().nominal); });
-
-                if ((totalSedekahBulanIni + nominalInput) > limitMaksimal) {
-                    alert(`Sedekah ditolak!\n\nBatas maksimal sedekah anggota adalah Rp ${limitMaksimal.toLocaleString('id-ID')} per bulan.\nTotal donasi Anda bulan ini sudah: Rp ${totalSedekahBulanIni.toLocaleString('id-ID')}`);
-                    btn.innerHTML = 'Kirim <i class="fa-solid fa-paper-plane"></i>'; btn.disabled = false;
-                    return; 
-                }
-
-                let base64Image = await getBase64(document.getElementById('inputBukti').files[0]);
-                await addDoc(trxRef, {
-                    jenis: "Pemasukan", metode: "QRIS Manual", status: "pending", pengirim: currentUserEmail, 
-                    nama_keterangan: document.getElementById('inputPesan').value || "Sedekah Kas",
-                    nominal: nominalInput, bukti_image: base64Image, tanggal: serverTimestamp()
-                });
-                
-                alert("Alhamdulillah! Sedekah berhasil dikirim dan menunggu konfirmasi Bendahara.");
-                window.closeQrisModal();
-            } catch (err) { 
-                console.error(err); alert("Gagal mengirim bukti transfer. Periksa koneksi Anda."); 
-            } finally { 
-                btn.innerHTML = 'Kirim <i class="fa-solid fa-paper-plane"></i>'; btn.disabled = false; 
-            }
+        // LOGIKA GEOFENCING JARAK (Haversine Formula)
+        function getDistanceFromLatLonInM(lat1, lon1, lat2, lon2) {
+            const R = 6371000; const dLat = (lat2-lat1) * (Math.PI/180); const dLon = (lon2-lon1) * (Math.PI/180);
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * (Math.PI/180)) * Math.cos(lat2 * (Math.PI/180)) * Math.sin(dLon/2) * Math.sin(dLon/2);
+            return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))); 
         }
 
-        onSnapshot(trxRef, (snapshot) => {
-            let totalSaldo = 0, saldoBulanIni = 0;
-            const now = new Date();
-            snapshot.forEach((doc) => {
-                const data = doc.data();
-                if (data.status !== "pending" && data.status !== "rejected") {
-                    const nominal = Number(data.nominal) || 0;
-                    const tgl = data.tanggal ? data.tanggal.toDate() : new Date(); 
+        function checkGPSAndOpenScanner() {
+            if (!navigator.geolocation) return alert("HP Anda tidak mendukung GPS.");
+            
+            alert("Mencari Sinyal Satelit GPS... Harap tunggu.");
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    const lat = pos.coords.latitude; const lon = pos.coords.longitude;
+                    const evtLat = parseFloat(currentEvent.lat); const evtLng = parseFloat(currentEvent.lng);
+                    const dist = getDistanceFromLatLonInM(lat, lon, evtLat, evtLng);
                     
-                    if (data.jenis === "Pemasukan") totalSaldo += nominal; else totalSaldo -= nominal;
-                    if (tgl.getMonth() === now.getMonth() && tgl.getFullYear() === now.getFullYear()) {
-                        if (data.jenis === "Pemasukan") saldoBulanIni += nominal; else saldoBulanIni -= nominal;
+                    if (dist <= currentEvent.radius) {
+                        openScanner();
+                    } else {
+                        // JIKA DILUAR RADIUS
+                        if (currentRole === 'superadmin') {
+                            if(confirm(`GPS Peringatan: Anda berada ${Math.round(dist)} meter dari lokasi acara.\n\nKarena Anda SUPERADMIN, apakah ingin memaksa (Bypass) membuka Radar?`)) { openScanner(); }
+                        } else {
+                            alert(`AKSES DITOLAK!\n\nAnda berada ${Math.round(dist)} meter dari lokasi acara. Harap mendekat ke titik kordinat (Toleransi: ${currentEvent.radius}m) untuk membuka Scanner.`);
+                        }
                     }
-                }
+                },
+                (err) => { 
+                    if(currentRole === 'superadmin' && confirm("Sinyal GPS Gagal/Nyangkut!\nBypass buka Radar karena Anda Superadmin?")) { openScanner(); }
+                    else { alert("Gagal mengambil GPS. Pastikan izin lokasi di browser menyala."); }
+                },
+                { enableHighAccuracy: true, timeout: 10000 }
+            );
+        }
+
+        // KONTROL SCANNER & MANUAL BYPASS
+        function openScanner() {
+            document.getElementById('modalAdminScanner').classList.add('show');
+            if (!html5QrcodeScanner) {
+                html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: {width: 250, height: 250} }, false);
+                html5QrcodeScanner.render(onScanSuccess, () => {}); // Abaikan error frame kosong
+            }
+        }
+
+        window.closeScannerModal = function() {
+            document.getElementById('modalAdminScanner').classList.remove('show');
+            if(html5QrcodeScanner) { html5QrcodeScanner.clear(); html5QrcodeScanner = null; }
+            toggleManualBypass(false);
+        }
+
+        window.toggleManualBypass = function(isManual) {
+            document.getElementById('scannerBox').style.display = isManual ? 'none' : 'block';
+            document.getElementById('manualBox').style.display = isManual ? 'block' : 'none';
+        }
+
+        async function onScanSuccess(decodedText) {
+            if(html5QrcodeScanner) html5QrcodeScanner.pause();
+            try {
+                await processAbsen(decodedText, false, "");
+                alert("Absen Berhasil: " + decodedText);
+            } catch(e) { alert(e.message); }
+            setTimeout(() => { if(html5QrcodeScanner) html5QrcodeScanner.resume(); }, 2000);
+        }
+
+        window.submitManualAbsen = async function() {
+            const manualName = document.getElementById('inputManualName').value;
+            if(!manualName) return alert("Ketik nama atau NIK member!");
+            try {
+                await processAbsen("Manual Bypass", true, manualName);
+                alert("Absen Manual Berhasil untuk: " + manualName);
+                document.getElementById('inputManualName').value = "";
+            } catch(e) { alert(e.message); }
+        }
+
+        async function processAbsen(scannedEmail, isManual, manualName) {
+            // Cek Double Absen
+            const qCheck = query(collection(db, "absensi_acara"), where("event_name", "==", currentEvent.nama_acara), where("member_email", "==", scannedEmail));
+            if(!isManual) {
+                const snapCheck = await getDocs(qCheck);
+                if(!snapCheck.empty) throw new Error("Gagal: Member ini SUDAH ABSEN sebelumnya!");
+            }
+
+            let memberName = manualName;
+            if (!isManual) {
+                const userDoc = await getDoc(doc(db, "users", scannedEmail));
+                if (userDoc.exists()) memberName = userDoc.data().nama_lengkap; else memberName = "Email Tidak Dikenali";
+            }
+
+            await addDoc(collection(db, "absensi_acara"), {
+                event_name: currentEvent.nama_acara,
+                member_email: isManual ? "MANUAL" : scannedEmail,
+                member_name: memberName,
+                is_manual: isManual,
+                scan_time: serverTimestamp(),
+                scanner_admin: currentUserName
             });
-            document.getElementById('uiTotalAll').innerText = "Rp " + totalSaldo.toLocaleString('id-ID');
-            document.getElementById('uiTotalMonth').innerText = "Rp " + saldoBulanIni.toLocaleString('id-ID');
-        });
+        }
+        
+        window.openQrisModal = function() { document.getElementById('modalQrisManual').classList.add('show'); }
     </script>
 </body>
 </html>
