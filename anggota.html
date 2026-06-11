@@ -42,6 +42,7 @@
         /* CARD MEMBER MEWAH */
         .member-card { background: #FFF; border-radius: 24px; padding: 15px; display: flex; align-items: center; gap: 15px; box-shadow: var(--shadow-card); border: 1px solid rgba(0,0,0,0.02); transition: 0.3s; }
         .member-card.is-pengurus { background: linear-gradient(135deg, #FFFFFF 0%, #ECFDF5 100%); border-color: rgba(5, 150, 105, 0.2); }
+        .member-card.is-pending { opacity: 0.7; } /* Efek pudar untuk yang belum di-approve */
 
         .m-photo { width: 60px; height: 60px; border-radius: 18px; object-fit: cover; background: var(--text-main); border: 3px solid #FFF; flex-shrink: 0; cursor: zoom-in; box-shadow: 0 8px 15px rgba(0,0,0,0.1); display: flex; justify-content: center; align-items: center; font-weight: 900; font-size: 24px; color: var(--gold-accent);}
         .is-pengurus .m-photo { border-color: var(--gold-accent); }
@@ -57,6 +58,7 @@
         .bg-admin { background: rgba(10, 132, 255, 0.1); color: #0A84FF; }
         .bg-bendahara { background: rgba(5, 150, 105, 0.1); color: var(--emerald-main); }
         .bg-status { background: #DCFCE7; color: #16A34A; }
+        .bg-pending { background: #FFF3CD; color: #856404; } /* Badge Kuning Pending */
 
         .btn-call { width: 40px; height: 40px; border-radius: 14px; background: #E0F2FE; color: #0284C7; border: none; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.15);}
         .btn-call:active { transform: scale(0.9); background: #0284C7; color: #FFF; }
@@ -81,13 +83,13 @@
         <div class="search-container">
             <div class="search-box">
                 <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Cari nama atau WA .." onkeyup="filterList()">
+                <input type="text" id="searchInput" placeholder="Cari nama atau WA.." onkeyup="filterList()">
             </div>
         </div>
 
         <main class="list-container" id="memberList">
             <div style="text-align:center; padding:50px; color:var(--text-muted); font-size: 12px; font-weight: 700;">
-                <i class="fas fa-spinner fa-spin"></i> Memuat Kontak...
+                <i class="fas fa-spinner fa-spin"></i> Menarik Data Server...
             </div>
         </main>
 
@@ -120,8 +122,8 @@
                 membersData = [];
                 snap.forEach(document => { 
                     const d = document.data();
-                    // Sembunyikan yang Banned atau masih Pending dari buku kontak publik
-                    if(d.status === "Aktif") {
+                    // FILTER DIPERBAIKI: Tampilkan SEMUA asal jangan yang udah lu "Banned"
+                    if(d.status !== "Banned") {
                         membersData.push({ id: document.id, ...d }); 
                     }
                 });
@@ -144,8 +146,12 @@
 
             data.forEach((m) => {
                 const role = (m.role || "member").toLowerCase();
+                const status = m.status || "Pending Admin"; // Ambil statusnya
                 const isPengurus = (role !== 'member');
-                const cardClass = isPengurus ? 'member-card is-pengurus' : 'member-card';
+                
+                // Kasih efek beda kalau dia masih Pending
+                let cardClass = isPengurus ? 'member-card is-pengurus' : 'member-card';
+                if (status === 'Pending Admin') cardClass += ' is-pending';
 
                 const name = m.nama_lengkap || "Tanpa Nama";
                 const wa = m.no_wa || "Tidak ada nomor";
@@ -161,13 +167,18 @@
                 else if(role === 'admin') roleHtml = `<span class="badge bg-admin"><i class="fas fa-shield"></i> ADMIN</span>`;
                 else if(role === 'bendahara') roleHtml = `<span class="badge bg-bendahara"><i class="fas fa-vault"></i> BENDAHARA</span>`;
 
+                // Badge Status Baru
+                let statusHtml = status === 'Pending Admin' ? 
+                    `<span class="badge bg-pending"><i class="fas fa-lock"></i> PENDING</span>` : 
+                    `<span class="badge bg-status"><i class="fas fa-check-circle"></i> AKTIF</span>`;
+
                 list.innerHTML += `
                     <div class="${cardClass}">
                         ${photoHtml}
                         <div class="m-info">
                             <div class="m-name">${name}</div>
                             <div class="m-wa-name"><i class="fab fa-whatsapp" style="color:#25D366; font-size: 14px;"></i> ${wa}</div>
-                            <div class="m-badges">${roleHtml} <span class="badge bg-status"><i class="fas fa-check-circle"></i> AKTIF</span></div>
+                            <div class="m-badges">${roleHtml} ${statusHtml}</div>
                         </div>
                         <a href="${waLink}" class="btn-call" target="_blank" title="Chat WhatsApp"><i class="fas fa-comment-dots"></i></a>
                     </div>
