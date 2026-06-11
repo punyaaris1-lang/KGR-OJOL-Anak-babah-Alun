@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#064E3B">
-    <title>Data Anggota - KGR</title>
+    <meta name="theme-color" content="#F4F6F5">
+    <title>Direktori Anggota - KGR</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -12,87 +12,61 @@
     <style>
         :root { 
             --emerald-main: #059669; --emerald-dark: #064E3B; --gold-accent: #FBBF24;
-            --bg-surface: #E2E8E4; --text-main: #111827; --text-muted: #6B7280; 
-            --danger: #EF4444; --glass-bg: rgba(255, 255, 255, 0.85);
+            --bg-surface: #F4F6F5; --text-main: #111827; --text-muted: #6B7280; 
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --shadow-card: 0 10px 25px rgba(0,0,0,0.04);
         }
         
-        body { margin: 0; background: var(--bg-surface); font-family: 'Montserrat', sans-serif; color: var(--text-main); display: flex; justify-content: center; min-height: 100vh; -webkit-tap-highlight-color: transparent;}
+        body { margin: 0; background: #E2E8E4; font-family: 'Montserrat', sans-serif; color: var(--text-main); display: flex; justify-content: center; min-height: 100vh; -webkit-tap-highlight-color: transparent;}
         * { box-sizing: border-box; outline: none; text-decoration: none; }
 
-        .app-container { width: 100%; max-width: 480px; background-color: #F4F6F5; min-height: 100vh; position: relative; display: flex; flex-direction: column; padding-bottom: 100px; box-shadow: 0 0 30px rgba(0,0,0,0.1); }
+        .app-container { width: 100%; max-width: 480px; background-color: var(--bg-surface); min-height: 100vh; position: relative; display: flex; flex-direction: column; padding-bottom: 50px;}
+        @media (min-width: 600px) { .app-container { height: 90vh; max-height: 900px; border-radius: 40px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15); border: 8px solid #FFFFFF; margin: auto; } }
 
-        .header-main { padding: 40px 20px 20px; position: relative; z-index: 10; text-align: center; background: #FFF; border-bottom: 1px solid rgba(0,0,0,0.05); border-radius: 0 0 30px 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.02);}
+        /* HEADER BERSIH */
+        .header-main { padding: 40px 20px 20px; position: relative; z-index: 10; text-align: center; background: #FFF; border-bottom: 1px solid rgba(0,0,0,0.03); border-radius: 0 0 30px 30px; box-shadow: var(--shadow-card);}
         .btn-back { position: absolute; left: 20px; top: 40px; width: 40px; height: 40px; border-radius: 14px; background: #F4F6F5; display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text-main); font-size: 18px; transition: 0.2s;}
         .btn-back:active { transform: scale(0.9); }
         .sub-tag { font-size: 10px; font-weight: 800; letter-spacing: 2px; color: var(--emerald-main); text-transform: uppercase; margin-bottom: 5px; display: block; }
         .main-title { font-size: 24px; font-weight: 900; color: var(--text-main); margin: 0; letter-spacing: -1px; }
 
+        /* SEARCH BOX KACA */
         .search-container { padding: 0 20px 15px; position: sticky; top: 0; z-index: 99; margin-top: 15px; }
-        .search-box { background: var(--glass-bg); backdrop-filter: blur(15px); border-radius: 20px; padding: 5px 20px; display: flex; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #FFF; transition: 0.3s; }
-        .search-box:focus-within { transform: scale(1.02); border-color: var(--emerald-main); box-shadow: 0 15px 40px rgba(5,150,105,0.15); }
+        .search-box { background: var(--glass-bg); backdrop-filter: blur(15px); border-radius: 20px; padding: 5px 20px; display: flex; align-items: center; box-shadow: var(--shadow-card); border: 1px solid #FFF; transition: 0.3s; }
+        .search-box:focus-within { transform: scale(1.02); border-color: var(--emerald-main); box-shadow: 0 15px 30px rgba(5,150,105,0.1); }
         .search-box i { color: var(--emerald-main); font-size: 18px; margin-right: 12px; }
         .search-box input { flex: 1; border: none; padding: 16px 0; font-family: 'Montserrat'; font-size: 13px; font-weight: 700; background: transparent; color: var(--text-main); }
 
         .list-container { padding: 0 20px 30px; display: flex; flex-direction: column; gap: 12px; flex-grow: 1;}
         
-        .member-card { background: #FFF; border-radius: 20px; padding: 15px; display: flex; align-items: center; gap: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.02); transition: 0.3s; animation: slideUp 0.4s ease-out backwards; position: relative;}
+        /* CARD MEMBER MEWAH */
+        .member-card { background: #FFF; border-radius: 24px; padding: 15px; display: flex; align-items: center; gap: 15px; box-shadow: var(--shadow-card); border: 1px solid rgba(0,0,0,0.02); transition: 0.3s; }
         .member-card.is-pengurus { background: linear-gradient(135deg, #FFFFFF 0%, #ECFDF5 100%); border-color: rgba(5, 150, 105, 0.2); }
-        .member-card.is-pending { background: #FFF1F2; border-color: rgba(239, 68, 68, 0.2); }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        .m-photo { width: 65px; height: 65px; border-radius: 16px; object-fit: cover; background: #F4F6F5; border: 2px solid #FFF; flex-shrink: 0; cursor: zoom-in; box-shadow: 0 8px 15px rgba(0,0,0,0.08); display: flex; justify-content: center; align-items: center; font-weight: 900; font-size: 24px; color: var(--emerald-main);}
-        .is-pengurus .m-photo { border-color: var(--gold-accent); box-shadow: 0 8px 15px rgba(251, 191, 36, 0.2); }
+        .m-photo { width: 60px; height: 60px; border-radius: 18px; object-fit: cover; background: var(--text-main); border: 3px solid #FFF; flex-shrink: 0; cursor: zoom-in; box-shadow: 0 8px 15px rgba(0,0,0,0.1); display: flex; justify-content: center; align-items: center; font-weight: 900; font-size: 24px; color: var(--gold-accent);}
+        .is-pengurus .m-photo { border-color: var(--gold-accent); }
 
         .m-info { flex: 1; min-width: 0; }
-        .m-name { font-size: 15px; font-weight: 900; color: var(--text-main); text-transform: uppercase; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
-        .m-wa-name { font-size: 10px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; letter-spacing: 0.5px;}
+        .m-name { font-size: 14px; font-weight: 900; color: var(--text-main); text-transform: uppercase; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+        .m-wa-name { font-size: 10px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; display: flex; align-items: center; gap: 5px;}
         
         .m-badges { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 4px; }
         .badge { font-size: 9px; font-weight: 800; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
         .bg-role { background: #F3F4F6; color: var(--text-muted); }
-        .is-pengurus .bg-role { background: rgba(5, 150, 105, 0.1); color: var(--emerald-main); }
+        .bg-super { background: rgba(251, 191, 36, 0.2); color: #D97706; }
+        .bg-admin { background: rgba(10, 132, 255, 0.1); color: #0A84FF; }
+        .bg-bendahara { background: rgba(5, 150, 105, 0.1); color: var(--emerald-main); }
         .bg-status { background: #DCFCE7; color: #16A34A; }
-        .bg-pending { background: #FEE2E2; color: #DC2626; }
 
-        .m-actions { display: flex; flex-direction: column; gap: 6px; z-index: 5;}
-        .btn-act { width: 38px; height: 38px; border-radius: 12px; border: none; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; background: #F4F6F5; color: var(--text-main);}
-        .btn-call { background: #E0F2FE; color: #0284C7; }
-        .btn-call:active { background: #0284C7; color: white; }
-        .btn-edit { background: rgba(251, 191, 36, 0.15); color: #D97706; display: none; }
-        .btn-del { background: rgba(239, 68, 68, 0.1); color: var(--danger); display: none; }
-        
-        /* TOMBOL APPROVE INSTAN KHUSUS PENDING */
-        .btn-approve { background: var(--emerald-main); color: #FFF; display: none; box-shadow: 0 4px 10px rgba(5,150,105,0.3); animation: pulseApprove 1.5s infinite;}
-        .btn-approve:active { transform: scale(0.9); }
-        @keyframes pulseApprove { 0% { box-shadow: 0 0 0 0 rgba(5,150,105,0.4); } 70% { box-shadow: 0 0 0 6px rgba(5,150,105,0); } 100% { box-shadow: 0 0 0 0 rgba(5,150,105,0); } }
-
-        /* FAB TAMBAH MANUAL */
-        .fab-add { position: fixed; bottom: 40px; right: 25px; width: 60px; height: 60px; background: var(--emerald-main); color: white; border-radius: 20px; display: none; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 10px 30px rgba(5,150,105,0.4); border: 3px solid white; cursor: pointer; z-index: 999999; transition: 0.2s;}
-        .fab-add:active { transform: scale(0.9); }
+        .btn-call { width: 40px; height: 40px; border-radius: 14px; background: #E0F2FE; color: #0284C7; border: none; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.15);}
+        .btn-call:active { transform: scale(0.9); background: #0284C7; color: #FFF; }
 
         /* LIGHTBOX FOTO */
-        .photo-viewer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 99999; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); padding: 20px;}
+        .photo-viewer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 99999; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); padding: 20px;}
         .pv-container { position: relative; max-width: 400px; width: 100%; text-align: center; }
-        .pv-container img { width: 100%; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); object-fit: cover; max-height: 70vh; border: 2px solid rgba(255,255,255,0.2); }
+        .pv-container img { width: 100%; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); object-fit: cover; max-height: 70vh; border: 3px solid rgba(255,255,255,0.2); }
         .pv-close { position: absolute; top: -15px; right: -15px; width: 40px; height: 40px; border-radius: 50%; background: #FFF; color: var(--text-main); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: 0.2s; border: none; }
-
-        /* MODAL KELOLA & TAMBAH ADMIN */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); display: none; align-items: flex-end; justify-content: center; z-index: 9999; opacity: 0; transition: 0.3s; }
-        .modal-overlay.show { opacity: 1; display: flex; }
-        .modal-box { background: #FFF; width: 100%; max-width: 480px; max-height: 85vh; overflow-y: auto; border-radius: 30px 30px 0 0; padding: 25px 25px 40px; transform: translateY(100%); transition: 0.4s; box-shadow: 0 -10px 40px rgba(0,0,0,0.1); }
-        .modal-overlay.show .modal-box { transform: translateY(0); }
-        
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .modal-title { font-size: 18px; font-weight: 900; color: var(--text-main); }
-        .btn-close { background: #F4F6F5; border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 14px; cursor: pointer; color: var(--text-muted); transition: 0.2s;}
-        
-        .form-group { margin-bottom: 15px; text-align: left; }
-        .form-group label { font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; display: block; letter-spacing: 0.5px;}
-        .form-input { width: 100%; padding: 15px; border-radius: 14px; border: 2px solid #F4F6F5; background: #F9F9F9; font-family: 'Montserrat'; font-weight: 700; font-size: 14px; outline: none; transition: 0.2s;}
-        .form-input:focus { border-color: var(--emerald-main); background: white; }
-
-        .btn-save { width: 100%; padding: 16px; border: none; border-radius: 16px; background: var(--text-main); color: white; font-family: 'Montserrat'; font-size: 14px; font-weight: 800; margin-top: 10px; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.1); transition: 0.2s;}
-        .btn-save:active { transform: scale(0.98); }
+        .pv-close:active { transform: scale(0.9); }
     </style>
 </head>
 <body>
@@ -100,22 +74,22 @@
     <div class="app-container">
         <header class="header-main">
             <div class="btn-back" onclick="window.location.href='index.html'"><i class="fas fa-arrow-left"></i></div>
-            <span class="sub-tag">Database Komunitas</span>
+            <span class="sub-tag">Buku Kontak</span>
             <h1 class="main-title">DATA ANGGOTA</h1>
         </header>
 
         <div class="search-container">
             <div class="search-box">
                 <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Cari nama, email, atau jabatan..." onkeyup="filterList()">
+                <input type="text" id="searchInput" placeholder="Cari nama atau WA .." onkeyup="filterList()">
             </div>
         </div>
 
         <main class="list-container" id="memberList">
-            <div style="text-align:center; padding:50px; color:var(--text-muted); font-size: 12px; font-weight: 700;"><i class="fas fa-spinner fa-spin"></i> Menarik Data Server...</div>
+            <div style="text-align:center; padding:50px; color:var(--text-muted); font-size: 12px; font-weight: 700;">
+                <i class="fas fa-spinner fa-spin"></i> Memuat Kontak...
+            </div>
         </main>
-
-        <button class="fab-add" id="btnAddMember" onclick="openAddModal()"><i class="fa-solid fa-user-plus"></i></button>
 
         <div class="photo-viewer-overlay" id="photoViewer" onclick="closePhoto()">
             <div class="pv-container" onclick="event.stopPropagation()">
@@ -123,109 +97,34 @@
                 <button class="pv-close" onclick="closePhoto()"><i class="fas fa-times"></i></button>
             </div>
         </div>
-
-        <div class="modal-overlay" id="formModal">
-            <div class="modal-box">
-                <div class="modal-header">
-                    <div class="modal-title" id="modalTitle">Kelola Anggota</div>
-                    <button class="btn-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
-                </div>
-                
-                <input type="hidden" id="formMode" value="edit">
-                
-                <div id="addFieldsOnly" style="display: none;">
-                    <div class="form-group">
-                        <label>Email Pendaftaran</label>
-                        <input type="email" id="formEmail" class="form-input" placeholder="Wajib @gmail.com / @yahoo.com">
-                    </div>
-                    <div class="form-group">
-                        <label>Nomor NIK KTP</label>
-                        <input type="tel" id="formNik" class="form-input" placeholder="16 Digit NIK" maxlength="16">
-                    </div>
-                    <div class="form-group">
-                        <label>Nomor WhatsApp</label>
-                        <input type="tel" id="formWa" class="form-input" placeholder="Mulai dengan 08...">
-                    </div>
-                    <div class="form-group" style="margin-bottom: 25px;">
-                        <label>Buat Password Default</label>
-                        <input type="text" id="formPass" class="form-input" placeholder="Minimal 6 karakter" value="kgr12345">
-                        <div style="font-size: 10px; color: var(--emerald-main); margin-top: 5px; font-weight: 700;">*Member dapat mereset sandi sendiri via 'Lupa Password' di menu Login.</div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Nama Anggota</label>
-                    <input type="text" id="formNama" class="form-input">
-                </div>
-
-                <div class="form-group">
-                    <label>Status Keanggotaan</label>
-                    <select id="formStatus" class="form-input">
-                        <option value="Aktif">Aktif (Telah Diverifikasi)</option>
-                        <option value="Pending Admin">Pending Admin (Kunci Akses)</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Kasta / Jabatan</label>
-                    <select id="formRole" class="form-input">
-                        <option value="member">Anggota Biasa (Member)</option>
-                        <option value="admin">Admin / Pemindai Absen</option>
-                        <option value="bendahara">Bendahara (Keuangan)</option>
-                        <option value="superadmin">Super Admin (Dewa)</option>
-                    </select>
-                </div>
-                
-                <button class="btn-save" id="btnSave" onclick="saveData()">SIMPAN DATA</button>
-            </div>
-        </div>
     </div>
 
     <script type="module">
         import { auth, db } from './db-config.js';
-        
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-        import { onAuthStateChanged, getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
-        import { collection, onSnapshot, doc, updateDoc, deleteDoc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+        import { collection, onSnapshot, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-        let currentRole = "member";
         let membersData = [];
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 const docSnap = await getDoc(doc(db, "users", user.email));
-                if (docSnap.exists()) {
-                    currentRole = (docSnap.data().role || "member").toLowerCase();
-                    if(currentRole === 'superadmin' || currentRole === 'admin' || currentRole === 'bendahara') {
-                        const style = document.createElement('style'); 
-                        style.innerHTML = `
-                            .btn-edit { display: flex !important; }
-                            .btn-approve { display: flex !important; }
-                            #btnAddMember { display: flex !important; }
-                        `; 
-                        if(currentRole === 'superadmin') {
-                            style.innerHTML += ' .btn-del { display: flex !important; }';
-                        }
-                        document.head.appendChild(style);
-                    }
+                if (docSnap.exists() && docSnap.data().status !== "Banned") {
                     loadMembersData();
-                } else { window.location.href = 'index.html'; }
+                } else { window.location.href = 'login.html'; }
             } else { window.location.href = 'login.html'; }
         });
 
-        const CRYPTO_OFFSET = 7;
-        function encryptData(plainText) {
-            if (!plainText) return "";
-            let shifted = plainText.split("").map(char => String.fromCharCode(char.charCodeAt(0) + CRYPTO_OFFSET)).join("");
-            return btoa(unescape(encodeURIComponent(shifted)));
-        }
-
-        // FUNGSI LOAD DATA BEBAS LOADING LAMA (Tanpa orderBy Server)
         function loadMembersData() {
-            const q = collection(db, "users");
-            onSnapshot(q, (snap) => {
+            onSnapshot(collection(db, "users"), (snap) => {
                 membersData = [];
-                snap.forEach(document => { membersData.push({ id: document.id, ...document.data() }); });
+                snap.forEach(document => { 
+                    const d = document.data();
+                    // Sembunyikan yang Banned atau masih Pending dari buku kontak publik
+                    if(d.status === "Aktif") {
+                        membersData.push({ id: document.id, ...d }); 
+                    }
+                });
                 renderList(membersData);
             });
         }
@@ -233,58 +132,44 @@
         function renderList(data) {
             const list = document.getElementById('memberList'); list.innerHTML = '';
             
-            // PRIORITAS SORTING LOKAL (PENDING DI ATAS BIAR CEPET DI-APPROVE)
+            // Urutkan: Superadmin -> Admin/Bendahara -> Member Biasa
             data.sort((a, b) => {
-                const aStatus = a.status === 'Pending Admin'; const bStatus = b.status === 'Pending Admin';
-                if (aStatus && !bStatus) return -1; if (!aStatus && bStatus) return 1;
-                
-                const aRole = (a.role||"").toLowerCase(); const bRole = (b.role||"").toLowerCase();
-                const aIsP = (aRole !== 'member' && aRole !== ''); const bIsP = (bRole !== 'member' && bRole !== '');
-                if (aIsP && !bIsP) return -1; if (!aIsP && bIsP) return 1;
-                return 0;
+                const rA = (a.role||"").toLowerCase(); const rB = (b.role||"").toLowerCase();
+                const score = { 'superadmin': 1, 'admin': 2, 'bendahara': 2, 'member': 3 };
+                const sA = score[rA] || 3; const sB = score[rB] || 3;
+                return sA - sB;
             });
 
-            if(data.length === 0) { list.innerHTML = '<div style="text-align:center; padding:30px; color:#999; font-size:12px; font-weight:700;">Data tidak ditemukan.</div>'; return; }
+            if(data.length === 0) { list.innerHTML = '<div style="text-align:center; padding:30px; color:#999; font-size:12px; font-weight:700;">Data anggota tidak ditemukan.</div>'; return; }
 
-            data.forEach((m, index) => {
+            data.forEach((m) => {
                 const role = (m.role || "member").toLowerCase();
-                const status = m.status || "Pending Admin";
                 const isPengurus = (role !== 'member');
-                const isPending = (status === 'Pending Admin');
-                
-                let cardClass = 'member-card';
-                if(isPengurus) cardClass += ' is-pengurus';
-                if(isPending) cardClass += ' is-pending';
+                const cardClass = isPengurus ? 'member-card is-pengurus' : 'member-card';
 
                 const name = m.nama_lengkap || "Tanpa Nama";
                 const wa = m.no_wa || "Tidak ada nomor";
-                let photoHtml = '';
                 
+                let photoHtml = '';
                 if (m.profile_image) { photoHtml = `<img src="${m.profile_image}" class="m-photo" onclick="viewPhoto('${m.profile_image}')">`; } 
-                else { photoHtml = `<div class="m-photo">${name.charAt(0).toUpperCase()}</div>`; }
+                else { photoHtml = `<div class="m-photo" ${role==='superadmin'?'style="background:var(--gold-accent);color:#000;"':''}>${name.charAt(0).toUpperCase()}</div>`; }
 
                 let waLink = wa !== "Tidak ada nomor" ? `https://wa.me/62${wa.replace(/^0+/, '')}` : '#';
                 
-                let roleHtml = `<span class="badge bg-role">${role === 'superadmin' ? '<i class="fas fa-crown"></i> SUPERADMIN' : role === 'bendahara' ? '<i class="fas fa-vault"></i> BENDAHARA' : role === 'admin' ? '<i class="fas fa-shield"></i> ADMIN' : 'MEMBER'}</span>`;
-                let statusHtml = isPending ? `<span class="badge bg-pending"><i class="fas fa-lock"></i> PENDING</span>` : `<span class="badge bg-status"><i class="fas fa-check-circle"></i> AKTIF</span>`;
-
-                const delay = index * 0.05; 
+                let roleHtml = `<span class="badge bg-role">MEMBER</span>`;
+                if(role === 'superadmin') roleHtml = `<span class="badge bg-super"><i class="fas fa-crown"></i> SUPERADMIN</span>`;
+                else if(role === 'admin') roleHtml = `<span class="badge bg-admin"><i class="fas fa-shield"></i> ADMIN</span>`;
+                else if(role === 'bendahara') roleHtml = `<span class="badge bg-bendahara"><i class="fas fa-vault"></i> BENDAHARA</span>`;
 
                 list.innerHTML += `
-                    <div class="${cardClass}" style="animation-delay:${delay}s">
+                    <div class="${cardClass}">
                         ${photoHtml}
                         <div class="m-info">
                             <div class="m-name">${name}</div>
-                            <div class="m-wa-name"><i class="fab fa-whatsapp" style="color:#10B981;"></i> ${wa}</div>
-                            <div class="m-badges">${roleHtml} ${statusHtml}</div>
-                            <div style="font-size: 9px; font-weight: 700; color: #9CA3AF; margin-top: 5px;">EMAIL: ${m.id}</div>
+                            <div class="m-wa-name"><i class="fab fa-whatsapp" style="color:#25D366; font-size: 14px;"></i> ${wa}</div>
+                            <div class="m-badges">${roleHtml} <span class="badge bg-status"><i class="fas fa-check-circle"></i> AKTIF</span></div>
                         </div>
-                        <div class="m-actions">
-                            <button class="btn-act btn-approve" onclick="approveMember('${m.id}')" title="Verifikasi Member"><i class="fas fa-check"></i></button>
-                            <a href="${waLink}" class="btn-act btn-call" target="_blank" title="Chat WA"><i class="fas fa-comment-dots"></i></a>
-                            <button class="btn-act btn-edit" onclick="openEditModal('${m.id}')" title="Edit"><i class="fas fa-pen"></i></button>
-                            <button class="btn-act btn-del" onclick="deleteData('${m.id}')" title="Hapus"><i class="fas fa-trash"></i></button>
-                        </div>
+                        <a href="${waLink}" class="btn-call" target="_blank" title="Chat WhatsApp"><i class="fas fa-comment-dots"></i></a>
                     </div>
                 `;
             });
@@ -294,7 +179,7 @@
             const txt = document.getElementById('searchInput').value.toLowerCase();
             const filtered = membersData.filter(m => 
                 (m.nama_lengkap && m.nama_lengkap.toLowerCase().includes(txt)) || 
-                (m.id && m.id.toLowerCase().includes(txt)) || 
+                (m.no_wa && m.no_wa.toLowerCase().includes(txt)) || 
                 (m.role && m.role.toLowerCase().includes(txt))
             );
             renderList(filtered);
@@ -302,103 +187,6 @@
 
         window.viewPhoto = (src) => { document.getElementById('pvImage').src = src; document.getElementById('photoViewer').style.display = 'flex'; };
         window.closePhoto = () => { document.getElementById('photoViewer').style.display = 'none'; };
-
-        // FUNGSI APPROVAL INSTAN 1-KLIK
-        window.approveMember = async (email) => {
-            if(confirm("Verifikasi dan aktifkan akun anggota ini?")) {
-                try { await updateDoc(doc(db, "users", email), { status: "Aktif" }); } 
-                catch(e) { alert("Gagal verifikasi: " + e.message); }
-            }
-        }
-
-        const modal = document.getElementById('formModal');
-        
-        window.openEditModal = (email) => {
-            const m = membersData.find(x => x.id === email); if(!m) return;
-            document.getElementById('formMode').value = 'edit';
-            document.getElementById('modalTitle').innerText = 'Edit Anggota';
-            document.getElementById('addFieldsOnly').style.display = 'none';
-            document.getElementById('formEmailTarget').value = email; 
-            document.getElementById('formNama').value = m.nama_lengkap || ''; 
-            document.getElementById('formNama').disabled = true; 
-            document.getElementById('formStatus').value = m.status || 'Pending Admin'; 
-            document.getElementById('formRole').value = (m.role || 'member').toLowerCase();
-            
-            modal.style.display = 'flex'; setTimeout(()=>modal.classList.add('show'),10);
-        }
-
-        window.openAddModal = () => {
-            document.getElementById('formMode').value = 'add';
-            document.getElementById('modalTitle').innerText = 'Tambah Anggota Baru';
-            document.getElementById('addFieldsOnly').style.display = 'block';
-            document.getElementById('formEmail').value = '';
-            document.getElementById('formNik').value = '';
-            document.getElementById('formWa').value = '';
-            document.getElementById('formNama').value = '';
-            document.getElementById('formNama').disabled = false; 
-            document.getElementById('formStatus').value = 'Aktif'; 
-            document.getElementById('formRole').value = 'member';
-            
-            modal.style.display = 'flex'; setTimeout(()=>modal.classList.add('show'),10);
-        }
-
-        window.closeModal = () => { modal.classList.remove('show'); setTimeout(()=>modal.style.display = 'none',300); };
-
-        window.saveData = async () => {
-            const mode = document.getElementById('formMode').value;
-            const btn = document.getElementById('btnSave'); 
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> MEMPROSES...'; btn.style.opacity = '0.7';
-
-            try {
-                if (mode === 'edit') {
-                    const email = document.getElementById('formEmailTarget').value;
-                    const status = document.getElementById('formStatus').value;
-                    const role = document.getElementById('formRole').value;
-                    await updateDoc(doc(db, "users", email), { status: status, role: role });
-                    alert("Data Anggota berhasil diperbarui!");
-                } else {
-                    const email = document.getElementById('formEmail').value.toLowerCase();
-                    const nik = document.getElementById('formNik').value;
-                    const wa = document.getElementById('formWa').value;
-                    const nama = document.getElementById('formNama').value;
-                    const pass = document.getElementById('formPass').value;
-                    const status = document.getElementById('formStatus').value;
-                    const role = document.getElementById('formRole').value;
-
-                    if(!email || !nik || !wa || !nama || !pass) throw new Error("Semua kolom harus diisi lengkap!");
-                    
-                    const secondaryApp = initializeApp(auth.app.options, "SecondaryRegistrationApp");
-                    const secondaryAuth = getAuth(secondaryApp);
-                    
-                    const uc = await createUserWithEmailAndPassword(secondaryAuth, email, pass);
-                    
-                    const encryptedNik = encryptData(nik);
-                    await setDoc(doc(db, "users", email), { 
-                        nama_lengkap: nama, nik: encryptedNik, no_wa: wa, email: email, 
-                        role: role, status: status, device_id: "", created_at: serverTimestamp() 
-                    });
-
-                    await secondaryAuth.signOut();
-
-                    alert(`Berhasil!\nAkun ${nama} telah dibuat.\n\nMereka bisa login menggunakan:\nEmail: ${email}\nPassword: ${pass}`);
-                }
-                closeModal();
-            } catch (e) { 
-                alert("Gagal memproses: " + e.message.replace('Firebase: ', '')); 
-            } finally { 
-                btn.innerText = "SIMPAN DATA"; btn.style.opacity = '1'; 
-            }
-        };
-
-        window.deleteData = async (email) => { 
-            const m = membersData.find(x => x.id === email);
-            if((m.role||"").toLowerCase() === 'superadmin') return alert("Peringatan: Tidak bisa menghapus akun Superadmin!");
-            
-            if(confirm(`PERINGATAN!\n\nAnda yakin ingin menghapus permanen anggota ini (${m.nama_lengkap}) dari database?`)) { 
-                try { await deleteDoc(doc(db, "users", email)); } 
-                catch (e) { alert("Gagal menghapus: " + e.message); }
-            } 
-        };
     </script>
 </body>
 </html>

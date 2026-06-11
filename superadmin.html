@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#059669">
-    <title>Panel Superadmin - KGR</title>
+    <title>Panel Pengurus - KGR</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -23,7 +23,7 @@
         .app-container { width: 100%; max-width: 480px; background-color: var(--bg-base); display: flex; flex-direction: column; height: 100vh; position: relative; overflow: hidden;}
         @media (min-width: 600px) { .app-container { height: 90vh; max-height: 900px; border-radius: 40px; border: 8px solid #FFF; margin: auto; box-shadow: 0 30px 60px rgba(0,0,0,0.15); } }
 
-        /* HEADER PUTIH BERSIH */
+        /* HEADER */
         .header-god { padding: 40px 24px 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid rgba(0,0,0,0.05); background: #FFFFFF; z-index: 10; position: relative; }
         .btn-back { width: 40px; height: 40px; border-radius: 12px; background: #FFF; display: flex; justify-content: center; align-items: center; cursor: pointer; border: 1px solid rgba(0,0,0,0.1); color: var(--text-dark); font-size: 16px; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.05);}
         .btn-back:active { transform: scale(0.9); }
@@ -36,7 +36,6 @@
         .section-title { font-size: 13px; font-weight: 900; color: var(--text-gray); text-transform: uppercase; letter-spacing: 1px; margin: 30px 0 15px; display: flex; align-items: center; gap: 8px;}
         .section-title i { color: var(--emerald-main); font-size: 16px; }
 
-        /* PANEL STYLE PUTIH */
         .god-panel { background: #FFFFFF; border: 1px solid rgba(0,0,0,0.03); border-radius: 20px; padding: 20px; margin-bottom: 15px; position: relative; overflow: hidden; box-shadow: var(--shadow-card); }
         
         .form-group { margin-bottom: 15px; }
@@ -51,7 +50,7 @@
         .btn-outline { width: 100%; padding: 14px; border-radius: 12px; font-size: 12px; font-weight: 800; background: #FFF; color: var(--emerald-main); border: 2px solid var(--emerald-main); cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 15px; }
         .btn-outline:active { background: var(--emerald-main); color: #FFF; }
 
-        /* SAKLAR HIGH-TECH (Putih) */
+        /* SAKLAR HIGH-TECH */
         .switch-container { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #F9F9F9; border: 1px solid rgba(0,0,0,0.05); border-radius: 12px; margin-bottom: 20px; }
         .switch-label { font-size: 13px; font-weight: 900; color: var(--text-dark); }
         .switch-desc { font-size: 9px; color: var(--text-gray); font-weight: 800; margin-top: 4px; text-transform: uppercase; letter-spacing: 1px;}
@@ -62,33 +61,42 @@
         input:checked + .slider { background-color: var(--emerald-main); }
         input:checked + .slider:before { transform: translateX(28px); }
 
-        /* USER LIST CARD (Putih) */
-        .user-card { border: 1px solid rgba(0,0,0,0.05); background: #FFF; border-radius: 16px; padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.02);}
+        /* MODERASI ANGGOTA */
+        .search-box { display: flex; align-items: center; background: #F4F6F5; border-radius: 12px; padding: 10px 15px; margin-bottom: 15px; border: 1px solid rgba(0,0,0,0.05);}
+        .search-box i { color: var(--text-gray); font-size: 14px; margin-right: 10px; }
+        .search-box input { border: none; background: transparent; flex: 1; outline: none; font-family: 'Montserrat'; font-size: 12px; font-weight: 700; color: var(--text-dark); }
+
+        .user-card { border: 1px solid rgba(0,0,0,0.05); background: #FFF; border-radius: 16px; padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.02); transition: 0.2s;}
         .user-info { display: flex; align-items: center; gap: 12px; }
-        .user-avatar { width: 40px; height: 40px; border-radius: 50%; background: #111827; display: flex; justify-content: center; align-items: center; font-size: 16px; font-weight: 900; color: var(--gold-accent); }
+        .user-avatar { width: 40px; height: 40px; border-radius: 50%; background: #111827; display: flex; justify-content: center; align-items: center; font-size: 16px; font-weight: 900; color: #FFF; }
         .user-details h4 { font-size: 13px; font-weight: 900; color: var(--text-dark); margin-bottom: 3px; }
         .user-details p { font-size: 10px; font-weight: 700; color: var(--text-gray); }
+        
         .role-tag { font-size: 9px; font-weight: 800; padding: 3px 6px; border-radius: 4px; margin-top: 5px; display: inline-flex; align-items: center; gap: 3px; text-transform: uppercase; background: #E5E5E5; color: var(--text-dark); }
         .role-tag.super { background: rgba(251, 191, 36, 0.2); color: #D97706; }
         .role-tag.admin { background: rgba(10, 132, 255, 0.1); color: #0A84FF; }
+        .role-tag.banned { background: rgba(239, 68, 68, 0.1); color: var(--danger-red); }
+        .role-tag.pending { background: #FFF3CD; color: #856404; }
+
         .btn-edit-user { width: 35px; height: 35px; border-radius: 10px; background: #F4F6F5; color: var(--text-dark); border: none; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s;}
+        .btn-edit-user:active { transform: scale(0.9); background: var(--emerald-main); color: #FFF; }
         
         .empty-state { text-align: center; padding: 30px 20px; color: var(--text-gray); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
 
         /* MODAL KONTROL USER */
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: flex-end; z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s; }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: flex-end; z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s; }
         .modal-overlay.show { opacity: 1; visibility: visible; }
-        .modal-content { background: #FFF; border-radius: 30px 30px 0 0; padding: 25px 24px 35px; width: 100%; max-width: 480px; transform: translateY(100%); transition: 0.4s; box-shadow: 0 -10px 40px rgba(0,0,0,0.1);}
+        .modal-content { background: #FFF; border-radius: 30px 30px 0 0; padding: 25px 24px 35px; width: 100%; max-width: 480px; transform: translateY(100%); transition: 0.4s; box-shadow: 0 -10px 40px rgba(0,0,0,0.1); max-height: 85vh; overflow-y: auto;}
         .modal-overlay.show .modal-content { transform: translateY(0); }
         
         .modal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
         .modal-header h3 { font-size: 18px; font-weight: 900; color: var(--text-dark); }
         .modal-header p { font-size: 11px; color: var(--text-gray); font-weight: 700; margin-top: 4px;}
         .btn-close { width: 32px; height: 32px; border-radius: 50%; background: #F4F6F5; border: none; color: var(--text-dark); display: flex; justify-content: center; align-items: center; cursor: pointer; }
-        .form-select { width: 100%; padding: 15px; border-radius: 12px; border: 2px solid rgba(0,0,0,0.05); font-size: 14px; font-weight: 800; background: #F9F9F9; color: var(--text-dark); margin-bottom: 25px; outline: none; appearance: none;}
+        .form-select { width: 100%; padding: 15px; border-radius: 12px; border: 2px solid rgba(0,0,0,0.05); font-size: 14px; font-weight: 800; background: #F9F9F9; color: var(--text-dark); outline: none; appearance: none;}
         
         .btn-nuke { background: var(--danger-red); color: #FFF; }
-        .btn-action-group { display: flex; gap: 10px; }
+        .btn-action-group { display: flex; gap: 10px; margin-top: 25px;}
         .btn-action-group button { flex: 1; }
     </style>
 </head>
@@ -98,130 +106,391 @@
         <div class="header-god">
             <div class="btn-back" onclick="window.location.href='index.html'"><i class="fa-solid fa-arrow-left"></i></div>
             <div class="header-title">
-                <h1>SUPER ADMIN</h1>
-                <p>Pusat Kendali Aplikasi</p>
+                <h1 id="panelTitle">PANEL PENGURUS</h1>
+                <p id="panelSubtitle">Pusat Kendali Moderasi</p>
             </div>
         </div>
 
         <div class="content-area">
             
-            <!-- PANEL ABSENSI & GEOFENCING -->
-            <div class="section-title"><i class="fa-solid fa-satellite-dish"></i> RADAR ACARA (GEOFENCING)</div>
-            <div class="god-panel" style="border: 2px solid var(--emerald-main);">
-                
-                <div class="switch-container">
-                    <div>
-                        <div class="switch-label">SAKLAR ACARA</div>
-                        <div class="switch-desc" id="txtStatusAcara">Saat ini OFF (Tersembunyi)</div>
+            <!-- PANEL ABSENSI (HANYA SUPERADMIN) -->
+            <div id="sectionRadar" style="display: none;">
+                <div class="section-title"><i class="fa-solid fa-satellite-dish"></i> RADAR ACARA (GEOFENCING)</div>
+                <div class="god-panel" style="border: 2px solid var(--emerald-main);">
+                    
+                    <div class="switch-container">
+                        <div>
+                            <div class="switch-label">SAKLAR ACARA</div>
+                            <div class="switch-desc" id="txtStatusAcara">Saat ini OFF (Tersembunyi)</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="toggleAcara">
+                            <span class="slider"></span>
+                        </label>
                     </div>
-                    <label class="switch">
-                        <input type="checkbox" id="toggleAcara">
-                        <span class="slider"></span>
-                    </label>
-                </div>
 
-                <div class="form-group">
-                    <label class="form-label">Nama / Judul Acara</label>
-                    <input type="text" id="evtName" class="form-input" placeholder="Cth: Kopdar Gabungan KGR">
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Tanggal Pelaksanaan Acara</label>
-                    <input type="date" id="evtDate" class="form-input">
-                </div>
-                
-                <button class="btn-outline" onclick="lockGPS()"><i class="fa-solid fa-location-crosshairs"></i> Kunci Koordinat di Posisi Saya</button>
-                <div style="font-size: 10px; color: var(--text-gray); text-align: center; margin-bottom: 15px; margin-top: -5px; font-weight: 700;">*Atau ketik/copy-paste kordinat manual dari Google Maps</div>
-                
-                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                    <div style="flex: 1;">
-                        <label class="form-label">Latitude</label>
-                        <input type="text" id="evtLat" class="form-input" placeholder="Cth: -6.123456">
+                    <div class="form-group">
+                        <label class="form-label">Nama / Judul Acara</label>
+                        <input type="text" id="evtName" class="form-input" placeholder="Cth: Kopdar Gabungan KGR">
                     </div>
-                    <div style="flex: 1;">
-                        <label class="form-label">Longitude</label>
-                        <input type="text" id="evtLng" class="form-input" placeholder="Cth: 106.123456">
+                    
+                    <div class="form-group">
+                        <label class="form-label">Tanggal Pelaksanaan Acara</label>
+                        <input type="date" id="evtDate" class="form-input">
                     </div>
-                </div>
+                    
+                    <button class="btn-outline" onclick="lockGPS()"><i class="fa-solid fa-location-crosshairs"></i> Kunci Koordinat di Posisi Saya</button>
+                    
+                    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                        <div style="flex: 1;">
+                            <label class="form-label">Latitude</label>
+                            <input type="text" id="evtLat" class="form-input" placeholder="Cth: -6.123456">
+                        </div>
+                        <div style="flex: 1;">
+                            <label class="form-label">Longitude</label>
+                            <input type="text" id="evtLng" class="form-input" placeholder="Cth: 106.123456">
+                        </div>
+                    </div>
 
-                <div class="form-group">
-                    <label class="form-label">Radius Toleransi Absen (Meter)</label>
-                    <input type="number" id="evtRadius" class="form-input" value="50" placeholder="Cth: 50">
-                </div>
+                    <div class="form-group">
+                        <label class="form-label">Radius Toleransi Absen (Meter)</label>
+                        <input type="number" id="evtRadius" class="form-input" value="50" placeholder="Cth: 50">
+                    </div>
 
-                <button class="btn-god" id="btnSaveEvent" onclick="saveEventConfig()" style="background: var(--emerald-main);"><i class="fa-solid fa-satellite"></i> Broadcast Setting Acara</button>
-                
-                <button class="btn-god" onclick="exportAbsensi()" style="margin-top: 10px; background: #FFF; color: var(--success-green); border: 2px solid var(--success-green);"><i class="fa-solid fa-file-excel"></i> Download Data Absensi</button>
-            </div>
-
-            <!-- MANAJEMEN KASTA & ADMIN -->
-            <div class="section-title"><i class="fa-solid fa-users-gear"></i> Kontrol Kasta & Member</div>
-            <div class="god-panel" style="padding: 10px;">
-                <div id="godUserList" style="max-height: 280px; overflow-y: auto; padding: 10px; scrollbar-width: none;">
-                    <div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i> Memuat entitas...</div>
+                    <button class="btn-god" id="btnSaveEvent" onclick="saveEventConfig()" style="background: var(--emerald-main);"><i class="fa-solid fa-satellite"></i> Terapkan Pengaturan</button>
+                    <button class="btn-god" onclick="exportAbsensi()" style="margin-top: 10px; background: #FFF; color: var(--success-green); border: 2px solid var(--success-green);"><i class="fa-solid fa-file-excel"></i> Download Excel Absensi</button>
                 </div>
             </div>
 
-            <!-- KONFIGURASI SISTEM -->
-            <div class="section-title"><i class="fa-solid fa-sliders"></i> Konfigurasi Sistem Utama</div>
-            <div class="god-panel">
-                <div class="form-group">
-                    <label class="form-label">Limit Maksimal Sedekah (Rp)</label>
-                    <input type="number" id="cfgLimit" class="form-input" autocomplete="off">
+            <!-- MANAJEMEN MODERASI ANGGOTA (SEMUA PENGURUS BISA AKSES) -->
+            <div class="section-title"><i class="fa-solid fa-users-gear"></i> Moderasi Anggota</div>
+            <div class="god-panel" style="padding: 15px;">
+                
+                <button class="btn-outline" onclick="openModalTambah()" style="margin-bottom: 15px; border-style: dashed;"><i class="fa-solid fa-user-plus"></i> Tambah Anggota Manual</button>
+                
+                <div class="search-box">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" id="searchUser" placeholder="Cari nama, WA, atau kasta..." onkeyup="filterUsers()">
                 </div>
-                <div class="form-group">
-                    <label class="form-label">URL Gambar QRIS</label>
-                    <input type="text" id="cfgQris" class="form-input" autocomplete="off">
+
+                <div id="godUserList" style="max-height: 400px; overflow-y: auto; scrollbar-width: none; padding-right: 5px;">
+                    <div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i> Menarik database...</div>
                 </div>
-                <button class="btn-god" id="btnSaveConfig" onclick="saveAppConfig()"><i class="fa-solid fa-microchip"></i> Terapkan ke Sistem</button>
+            </div>
+
+            <!-- KONFIGURASI SISTEM (HANYA SUPERADMIN) -->
+            <div id="sectionConfig" style="display: none;">
+                <div class="section-title"><i class="fa-solid fa-sliders"></i> Konfigurasi Sistem Utama</div>
+                <div class="god-panel">
+                    <div class="form-group">
+                        <label class="form-label">Limit Maksimal Sedekah (Rp)</label>
+                        <input type="number" id="cfgLimit" class="form-input" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">URL Gambar QRIS</label>
+                        <input type="text" id="cfgQris" class="form-input" autocomplete="off">
+                    </div>
+                    <button class="btn-god" id="btnSaveConfig" onclick="saveAppConfig()"><i class="fa-solid fa-microchip"></i> Terapkan ke Sistem</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL EDIT USER -->
-    <div class="modal-overlay" id="modalEditUser">
+    <!-- MODAL FORM MODERASI (TAMBAH & EDIT) -->
+    <div class="modal-overlay" id="modalModerasi">
         <div class="modal-content">
             <div class="modal-header">
                 <div>
-                    <h3 id="modalUserName">Nama Anggota</h3>
-                    <p id="modalUserEmail">email@domain.com</p>
+                    <h3 id="modalTitle">Form Anggota</h3>
+                    <p id="modalSubtitle">Lengkapi data di bawah ini</p>
                 </div>
-                <button class="btn-close" onclick="closeUserModal()"><i class="fa-solid fa-xmark"></i></button>
+                <button class="btn-close" onclick="closeModalModerasi()"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
-            <label class="form-label">Tetapkan Kasta (Jabatan)</label>
-            <select id="selectRole" class="form-select">
-                <option value="member">Anggota Biasa (Member)</option>
-                <option value="admin">Admin / Pemindai Absen</option>
-                <option value="bendahara">Bendahara (Keuangan)</option>
-                <option value="superadmin">Super Admin (Dewa)</option>
-            </select>
+            <input type="hidden" id="formMode" value="add">
+            
+            <div id="fieldEmailAdd">
+                <div class="form-group">
+                    <label class="form-label">Email Valid (@gmail / @yahoo)</label>
+                    <input type="email" id="formEmail" class="form-input" placeholder="user@gmail.com">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Nama Lengkap (KTP)</label>
+                <input type="text" id="formNama" class="form-input" placeholder="Masukkan nama">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Nomor Induk Kependudukan (NIK)</label>
+                <input type="text" id="formNik" class="form-input" placeholder="16 Digit Angka NIK" maxlength="16">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Nomor WhatsApp Aktif</label>
+                <input type="tel" id="formWa" class="form-input" placeholder="08123456789">
+            </div>
+
+            <div id="fieldPasswordAdd">
+                <div class="form-group" style="background: rgba(5, 150, 105, 0.05); padding: 15px; border-radius: 12px; border: 1px dashed var(--emerald-main);">
+                    <label class="form-label" style="color: var(--emerald-main);">Buat Password Default</label>
+                    <input type="text" id="formPass" class="form-input" value="kgr12345" style="margin-bottom: 5px;">
+                    <span style="font-size: 9px; font-weight: 700; color: var(--text-gray);">Peringatan: Password Firebase tidak bisa dilihat lagi setelah akun dibuat. Member dapat meresetnya sendiri via fitur 'Lupa Password'.</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Status Keanggotaan</label>
+                <select id="formStatus" class="form-select">
+                    <option value="Aktif">✅ Aktif</option>
+                    <option value="Pending Admin">⏳ Pending Admin</option>
+                    <option value="Banned">❌ BANNED (Blokir)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Kasta / Jabatan</label>
+                <select id="formRole" class="form-select">
+                    <option value="member">Anggota Biasa (Member)</option>
+                    <option value="admin">Admin Moderasi</option>
+                    <option value="bendahara">Bendahara (Keuangan)</option>
+                    <option value="superadmin">Super Admin (Dewa)</option>
+                </select>
+            </div>
 
             <div class="btn-action-group">
-                <button class="btn-god" id="btnSaveUser" onclick="saveUserRole()"><i class="fa-solid fa-fingerprint"></i> Terapkan</button>
-                <button class="btn-god btn-nuke" onclick="deleteUser()"><i class="fa-solid fa-user-slash"></i> Hapus</button>
+                <button class="btn-god" id="btnSaveModerasi" onclick="saveModerasi()"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>
+                <button class="btn-god btn-nuke" id="btnHapusModerasi" onclick="deleteModerasi()"><i class="fa-solid fa-trash-can"></i> Hapus</button>
             </div>
         </div>
     </div>
 
     <script type="module">
         import { auth, db } from './db-config.js';
-        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
-        import { doc, getDoc, setDoc, updateDoc, collection, query, orderBy, onSnapshot, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+        
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+        import { onAuthStateChanged, getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+        import { doc, getDoc, setDoc, updateDoc, collection, query, orderBy, onSnapshot, getDocs, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
+        let myRole = "member";
         let targetEditEmail = "";
+        let allUsersData = [];
+
+        // ENKRIPSI NIK
+        const CRYPTO_OFFSET = 7;
+        function encryptData(plainText) {
+            if (!plainText) return "";
+            let shifted = plainText.split("").map(char => String.fromCharCode(char.charCodeAt(0) + CRYPTO_OFFSET)).join("");
+            return btoa(unescape(encodeURIComponent(shifted)));
+        }
+        function decryptData(cipherText) {
+            if (!cipherText) return "";
+            try {
+                let decoded = decodeURIComponent(escape(atob(cipherText)));
+                return decoded.split("").map(char => String.fromCharCode(char.charCodeAt(0) - CRYPTO_OFFSET)).join("");
+            } catch (e) { return cipherText; }
+        }
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 const docSnap = await getDoc(doc(db, "users", user.email));
-                if (docSnap.exists() && (docSnap.data().role || "").toLowerCase() === "superadmin") {
-                    loadAllUsers(); loadConfig(); loadEventConfig();
-                } else { alert("Akses ditolak! Hanya untuk Superadmin."); window.location.href = "index.html"; }
+                if (docSnap.exists()) {
+                    myRole = (docSnap.data().role || "member").toLowerCase();
+                    
+                    if (myRole === "superadmin" || myRole === "admin") {
+                        if (myRole === "superadmin") {
+                            document.getElementById('sectionRadar').style.display = 'block';
+                            document.getElementById('sectionConfig').style.display = 'block';
+                            loadEventConfig(); loadConfig();
+                        } else {
+                            document.getElementById('panelSubtitle').innerText = "Divisi Moderasi Anggota";
+                        }
+                        loadAllUsers(); 
+                    } else { 
+                        alert("Akses ditolak! Menu ini khusus Pengurus."); 
+                        window.location.href = "index.html"; 
+                    }
+                }
             } else { window.location.href = 'login.html'; }
         });
 
         // ==========================================
-        // FITUR SAKLAR AJAIB (AUTO SAVE)
+        // 1. MODERASI ANGGOTA (Semua Masuk Sini)
+        // ==========================================
+        function loadAllUsers() {
+            const list = document.getElementById('godUserList');
+            onSnapshot(query(collection(db, "users"), orderBy("created_at", "desc")), (snapshot) => {
+                allUsersData = [];
+                snapshot.forEach(docSnap => { allUsersData.push({ id: docSnap.id, ...docSnap.data() }); });
+                renderUserList(allUsersData);
+            });
+        }
+
+        function renderUserList(dataArray) {
+            const list = document.getElementById('godUserList');
+            list.innerHTML = "";
+            if(dataArray.length === 0) { list.innerHTML = '<div class="empty-state">Data tidak ditemukan.</div>'; return; }
+
+            dataArray.forEach(data => {
+                const email = data.id;
+                const role = (data.role || "member").toLowerCase();
+                const status = data.status || "Pending Admin";
+                const inisial = (data.nama_lengkap || "X").charAt(0).toUpperCase();
+
+                let roleBadge = `<span class="role-tag">${role}</span>`;
+                if(role === 'superadmin') roleBadge = `<span class="role-tag super"><i class="fa-solid fa-crown"></i> Super Admin</span>`;
+                else if(role === 'admin') roleBadge = `<span class="role-tag admin"><i class="fa-solid fa-shield"></i> Admin</span>`;
+                
+                let statusBadge = '';
+                if(status === 'Pending Admin') statusBadge = `<span class="role-tag pending"><i class="fa-solid fa-lock"></i> Pending</span>`;
+                else if(status === 'Banned') statusBadge = `<span class="role-tag banned"><i class="fa-solid fa-ban"></i> Banned</span>`;
+
+                list.innerHTML += `
+                    <div class="user-card" ${status === 'Banned' ? 'style="opacity:0.6; filter:grayscale(1);"' : ''}>
+                        <div class="user-info">
+                            <div class="user-avatar" style="${role==='superadmin' ? 'background:var(--gold-accent); color:#000;' : ''}">${inisial}</div>
+                            <div class="user-details">
+                                <h4>${data.nama_lengkap || 'Tanpa Nama'}</h4>
+                                <p>${data.no_wa || email}</p>
+                                <div>${roleBadge} ${statusBadge}</div>
+                            </div>
+                        </div>
+                        <button class="btn-edit-user" onclick="openModalEdit('${email}')"><i class="fa-solid fa-pen-to-square"></i></button>
+                    </div>
+                `;
+            });
+        }
+
+        window.filterUsers = function() {
+            const txt = document.getElementById('searchUser').value.toLowerCase();
+            const filtered = allUsersData.filter(u => 
+                (u.nama_lengkap && u.nama_lengkap.toLowerCase().includes(txt)) || 
+                (u.id && u.id.toLowerCase().includes(txt)) || 
+                (u.no_wa && u.no_wa.toLowerCase().includes(txt)) || 
+                (u.role && u.role.toLowerCase().includes(txt))
+            );
+            renderUserList(filtered);
+        }
+
+        // BUKA MODAL TAMBAH (Bikin Akun Baru)
+        window.openModalTambah = function() {
+            document.getElementById('formMode').value = 'add';
+            document.getElementById('modalTitle').innerText = 'Tambah Anggota Baru';
+            document.getElementById('modalSubtitle').innerText = 'Buat akun KGR otomatis';
+            
+            document.getElementById('fieldEmailAdd').style.display = 'block';
+            document.getElementById('fieldPasswordAdd').style.display = 'block';
+            document.getElementById('btnHapusModerasi').style.display = 'none';
+
+            document.getElementById('formEmail').value = "";
+            document.getElementById('formNama').value = "";
+            document.getElementById('formNik').value = "";
+            document.getElementById('formWa').value = "";
+            document.getElementById('formPass').value = "kgr12345";
+            document.getElementById('formStatus').value = "Aktif";
+            document.getElementById('formRole').value = "member";
+
+            document.getElementById('modalModerasi').classList.add('show');
+        }
+
+        // BUKA MODAL EDIT (Ubah/Banned/Hapus)
+        window.openModalEdit = function(email) {
+            const m = allUsersData.find(x => x.id === email);
+            if (!m) return;
+
+            targetEditEmail = email;
+            document.getElementById('formMode').value = 'edit';
+            document.getElementById('modalTitle').innerText = 'Edit Anggota';
+            document.getElementById('modalSubtitle').innerText = email;
+            
+            document.getElementById('fieldEmailAdd').style.display = 'none';
+            document.getElementById('fieldPasswordAdd').style.display = 'none';
+            document.getElementById('btnHapusModerasi').style.display = 'block';
+
+            document.getElementById('formNama').value = m.nama_lengkap || "";
+            document.getElementById('formNik').value = decryptData(m.nik);
+            document.getElementById('formWa').value = m.no_wa || "";
+            document.getElementById('formStatus').value = m.status || "Pending Admin";
+            document.getElementById('formRole').value = (m.role || "member").toLowerCase();
+
+            // Batasi Admin Biasa gak bisa ngangkat orang jadi Superadmin
+            if(myRole === 'admin') {
+                const selectRole = document.getElementById('formRole');
+                for (let i = 0; i < selectRole.options.length; i++) {
+                    if (selectRole.options[i].value === "superadmin") selectRole.options[i].disabled = true;
+                }
+            }
+
+            document.getElementById('modalModerasi').classList.add('show');
+        }
+
+        window.closeModalModerasi = function() { document.getElementById('modalModerasi').classList.remove('show'); }
+
+        window.saveModerasi = async function() {
+            const mode = document.getElementById('formMode').value;
+            const btn = document.getElementById('btnSaveModerasi');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses...'; btn.disabled = true;
+
+            try {
+                const nama = document.getElementById('formNama').value;
+                const nik = document.getElementById('formNik').value;
+                const wa = document.getElementById('formWa').value;
+                const status = document.getElementById('formStatus').value;
+                const role = document.getElementById('formRole').value;
+                const encNik = encryptData(nik);
+
+                if (mode === 'add') {
+                    const email = document.getElementById('formEmail').value.toLowerCase();
+                    const pass = document.getElementById('formPass').value;
+                    if(!email || !nik || !nama || !pass) throw new Error("Kolom wajib diisi!");
+
+                    // Secondary Auth Trick biar Superadmin gak ke-logout
+                    const secondaryApp = initializeApp(auth.app.options, "ModerationApp");
+                    const secondaryAuth = getAuth(secondaryApp);
+                    await createUserWithEmailAndPassword(secondaryAuth, email, pass);
+                    await secondaryAuth.signOut();
+
+                    await setDoc(doc(db, "users", email), { 
+                        nama_lengkap: nama, nik: encNik, no_wa: wa, email: email, 
+                        role: role, status: status, device_id: "", created_at: serverTimestamp() 
+                    });
+                    alert(`Anggota berhasil ditambahkan!\nBisa langsung login pakai:\nEmail: ${email}\nPass: ${pass}`);
+
+                } else if (mode === 'edit') {
+                    // Cek jika Admin berani banned Superadmin
+                    const oldData = allUsersData.find(x => x.id === targetEditEmail);
+                    if((oldData.role||"").toLowerCase() === 'superadmin' && myRole !== 'superadmin') {
+                        throw new Error("Admin tidak berhak mengubah data Superadmin.");
+                    }
+
+                    await updateDoc(doc(db, "users", targetEditEmail), { 
+                        nama_lengkap: nama, nik: encNik, no_wa: wa, status: status, role: role 
+                    });
+                    alert("Data anggota berhasil diperbarui.");
+                }
+                closeModalModerasi();
+            } catch (error) {
+                alert("Gagal memproses: " + error.message.replace('Firebase: ', ''));
+            } finally {
+                btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Simpan'; btn.disabled = false;
+            }
+        }
+
+        window.deleteModerasi = async function() {
+            const m = allUsersData.find(x => x.id === targetEditEmail);
+            if((m.role||"").toLowerCase() === 'superadmin') return alert("ERROR: Sistem melarang penghapusan Super Admin.");
+            
+            if(confirm(`YAKIN INGIN MENGHAPUS PERMANEN AKUN INI?\n\nNama: ${m.nama_lengkap}\nStatus ini tidak bisa dibatalkan!`)) { 
+                try {
+                    await deleteDoc(doc(db, "users", targetEditEmail));
+                    closeModalModerasi();
+                    alert("Anggota berhasil dihapus dari database.");
+                } catch(e) { alert("Gagal menghapus anggota."); }
+            }
+        }
+
+        // ==========================================
+        // 2. FITUR SUPERADMIN GEOFENCE & CONFIG
         // ==========================================
         async function loadEventConfig() {
             try {
@@ -233,19 +502,16 @@
                     document.getElementById('evtLat').value = d.lat || "";
                     document.getElementById('evtLng').value = d.lng || "";
                     document.getElementById('evtRadius').value = d.radius || 50;
-                    document.getElementById('toggleAcara').checked = d.is_active || false;
-                    updateToggleText(d.is_active);
+                    document.getElementById('toggleAcara').checked = (d.is_active === true || d.is_active === "true");
+                    updateToggleText(document.getElementById('toggleAcara').checked);
                 }
             } catch(e) { console.log("Event config belum ada."); }
         }
 
-        // FUNGSI BARU: AUTO SAVE SAAT SAKLAR DIGESER KE OFF/ON
         document.getElementById('toggleAcara').addEventListener('change', async function() { 
             updateToggleText(this.checked); 
-            try {
-                // Langsung ngirim data On/Off ke database tanpa nunggu tombol Broadcast diklik
-                await setDoc(doc(db, "settings", "event_config"), { is_active: this.checked }, { merge: true });
-            } catch(e) { console.error("Gagal Auto-Save"); }
+            try { await setDoc(doc(db, "settings", "event_config"), { is_active: this.checked }, { merge: true }); } 
+            catch(e) { console.error("Gagal Auto-Save"); }
         });
 
         function updateToggleText(isActive) {
@@ -260,18 +526,17 @@
                     (position) => {
                         document.getElementById('evtLat').value = position.coords.latitude;
                         document.getElementById('evtLng').value = position.coords.longitude;
-                        alert("Berhasil! Koordinat Pusat Acara telah dikunci di lokasi Anda.");
+                        alert("Berhasil! Koordinat Pusat Acara dikunci.");
                     },
-                    (error) => { alert("Gagal mengambil GPS. Pastikan izin lokasi (GPS) menyala."); },
+                    (error) => { alert("Gagal mengambil GPS. Pastikan izin lokasi menyala."); },
                     { enableHighAccuracy: true }
                 );
-            } else { alert("Browser Anda tidak mendukung GPS."); }
+            } else { alert("Browser tidak mendukung GPS."); }
         }
 
-        // TOmbol broadcast ini tetep berguna buat nyimpen data form yg diketik (Nama Acara, Tanggal, Radius)
         window.saveEventConfig = async function() {
             const btn = document.getElementById('btnSaveEvent');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Broadcasting...'; btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...'; btn.disabled = true;
             try {
                 await setDoc(doc(db, "settings", "event_config"), {
                     nama_acara: document.getElementById('evtName').value,
@@ -282,21 +547,19 @@
                     is_active: document.getElementById('toggleAcara').checked,
                     updated_at: new Date()
                 }, { merge: true });
-                alert("Setting Acara & Titik Kordinat berhasil disimpan!");
-            } catch(e) { alert("Gagal menyimpan setting acara."); } 
-            finally { btn.innerHTML = '<i class="fa-solid fa-satellite"></i> Broadcast Setting Acara'; btn.disabled = false; }
+                alert("Setting Acara berhasil disimpan!");
+            } catch(e) { alert("Gagal menyimpan setting."); } 
+            finally { btn.innerHTML = '<i class="fa-solid fa-satellite"></i> Terapkan Pengaturan'; btn.disabled = false; }
         }
 
         window.exportAbsensi = async function() {
             const evtName = document.getElementById('evtName').value;
-            if(!evtName) return alert("Nama acara kosong! Tentukan nama acara terlebih dahulu.");
-            
+            if(!evtName) return alert("Nama acara kosong!");
             try {
                 const q = query(collection(db, "absensi_acara"));
                 const snap = await getDocs(q);
                 let csv = "data:text/csv;charset=utf-8,Tanggal,Jam,Nama Acara,Nama Member,Email,Metode\n";
                 let count = 0;
-
                 snap.forEach(d => {
                     const data = d.data();
                     if(data.event_name === evtName) {
@@ -308,65 +571,11 @@
                         count++;
                     }
                 });
-
-                if(count === 0) return alert("Belum ada data absensi untuk acara: " + evtName);
-
+                if(count === 0) return alert("Belum ada absen untuk acara: " + evtName);
                 const link = document.createElement("a");
-                link.href = encodeURI(csv); link.download = `Absensi_${evtName.replace(/\s+/g, '_')}.csv`;
+                link.href = encodeURI(csv); link.download = `Absen_${evtName.replace(/\s+/g, '_')}.csv`;
                 document.body.appendChild(link); link.click(); document.body.removeChild(link);
-            } catch(e) { alert("Gagal menarik data absensi."); }
-        }
-
-        // KONTROL USER & CONFIG LAINNYA
-        function loadAllUsers() {
-            const list = document.getElementById('godUserList');
-            onSnapshot(query(collection(db, "users"), orderBy("created_at", "desc")), (snapshot) => {
-                list.innerHTML = "";
-                if(snapshot.empty) { list.innerHTML = '<div class="empty-state">Data kosong.</div>'; return; }
-
-                snapshot.forEach(docSnap => {
-                    const data = docSnap.data();
-                    const email = docSnap.id;
-                    const role = (data.role || "member").toLowerCase();
-                    const inisial = (data.nama_lengkap || "X").charAt(0).toUpperCase();
-
-                    let badges = `<span class="role-tag">${role}</span>`;
-                    if(role === 'superadmin') badges = `<span class="role-tag super"><i class="fa-solid fa-crown"></i> Super Admin</span>`;
-                    else if(role === 'admin') badges = `<span class="role-tag admin"><i class="fa-solid fa-shield"></i> Admin</span>`;
-                    
-                    list.innerHTML += `
-                        <div class="user-card">
-                            <div class="user-info">
-                                <div class="user-avatar">${inisial}</div>
-                                <div class="user-details"><h4>${data.nama_lengkap || 'Tanpa Nama'}</h4><p>${data.no_wa || email}</p><div>${badges}</div></div>
-                            </div>
-                            <button class="btn-edit-user" onclick="openUserModal('${email}', '${data.nama_lengkap}', '${role}')"><i class="fa-solid fa-sliders"></i></button>
-                        </div>
-                    `;
-                });
-            });
-        }
-
-        window.openUserModal = function(email, nama, role) {
-            targetEditEmail = email;
-            document.getElementById('modalUserName').innerText = nama || "Tanpa Nama";
-            document.getElementById('modalUserEmail').innerText = email;
-            document.getElementById('selectRole').value = role;
-            document.getElementById('modalEditUser').classList.add('show');
-        }
-
-        window.closeUserModal = function() { document.getElementById('modalEditUser').classList.remove('show'); }
-
-        window.saveUserRole = async function() {
-            const btn = document.getElementById('btnSaveUser');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>...'; btn.disabled = true;
-            try { await updateDoc(doc(db, "users", targetEditEmail), { role: document.getElementById('selectRole').value }); closeUserModal(); } 
-            catch(e) { alert("Gagal merubah kasta user."); } finally { btn.innerHTML = '<i class="fa-solid fa-fingerprint"></i> Terapkan'; btn.disabled = false; }
-        }
-
-        window.deleteUser = async function() {
-            if(document.getElementById('selectRole').value === 'superadmin') return alert("ERROR: Tidak dapat menghapus sesama dewa.");
-            if(confirm("MENGHAPUS MEMBER PERMANEN?")) { await deleteDoc(doc(db, "users", targetEditEmail)); closeUserModal(); }
+            } catch(e) { alert("Gagal export absen."); }
         }
 
         async function loadConfig() {
@@ -383,9 +592,13 @@
             const btn = document.getElementById('btnSaveConfig');
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>...'; btn.disabled = true;
             try {
-                await setDoc(doc(db, "settings", "app_config"), { limit_sedekah: Number(document.getElementById('cfgLimit').value), qris_url: document.getElementById('cfgQris').value }, { merge: true });
-                alert("Sistem Utama berhasil di-update!");
-            } catch(e) { alert("Gagal update sistem."); } finally { btn.innerHTML = '<i class="fa-solid fa-microchip"></i> Terapkan ke Sistem'; btn.disabled = false; }
+                await setDoc(doc(db, "settings", "app_config"), { 
+                    limit_sedekah: Number(document.getElementById('cfgLimit').value), 
+                    qris_url: document.getElementById('cfgQris').value 
+                }, { merge: true });
+                alert("Sistem berhasil di-update!");
+            } catch(e) { alert("Gagal update sistem."); } 
+            finally { btn.innerHTML = '<i class="fa-solid fa-microchip"></i> Terapkan ke Sistem'; btn.disabled = false; }
         }
     </script>
 </body>
