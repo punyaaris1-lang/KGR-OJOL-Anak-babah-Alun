@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
     
+    <!-- LIBRARY SCANNER QR CODE -->
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
     <style>
@@ -61,9 +62,9 @@
         .menu-item span { font-size: clamp(10px, 3vw, 12px); font-weight: 800; color: var(--text-dark); text-align: center; line-height: 1.3;}
 
         /* HIGHLIGHT MENU ABSENSI */
-        .menu-absen { border: 2px solid var(--neon-cyan); background: #E0FCFF; box-shadow: 0 0 15px rgba(0, 243, 255, 0.3); animation: pulseNeon 2s infinite; }
-        .menu-absen .menu-icon { background: var(--text-dark); color: var(--neon-cyan); }
-        @keyframes pulseNeon { 0% { box-shadow: 0 0 10px rgba(0,243,255,0.2); } 50% { box-shadow: 0 0 20px rgba(0,243,255,0.6); } 100% { box-shadow: 0 0 10px rgba(0,243,255,0.2); } }
+        .menu-absen { border: 2px solid var(--emerald-main); background: #ECFDF5; box-shadow: 0 0 15px rgba(5, 150, 105, 0.3); animation: pulseEmerald 2s infinite; }
+        .menu-absen .menu-icon { background: var(--text-dark); color: var(--emerald-main); }
+        @keyframes pulseEmerald { 0% { box-shadow: 0 0 10px rgba(5, 150, 105, 0.2); } 50% { box-shadow: 0 0 20px rgba(5, 150, 105, 0.6); } 100% { box-shadow: 0 0 10px rgba(5, 150, 105, 0.2); } }
 
         .bottom-nav-container { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 440px; z-index: 20; }
         .floating-nav { display: flex; justify-content: space-between; align-items: center; padding: 10px 30px; border-radius: 35px; background: #FFFFFF; box-shadow: 0 25px 50px rgba(0,0,0,0.15); }
@@ -83,12 +84,17 @@
         .qr-display { width: 220px; height: 220px; margin: 0 auto 20px; border: 5px solid var(--text-dark); border-radius: 20px; padding: 10px; background: #FFF; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
         .qr-display img { width: 100%; height: 100%; object-fit: contain; }
 
-        #reader { width: 100%; border-radius: 20px; overflow: hidden; border: 4px solid var(--neon-cyan); margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,243,255,0.2);}
+        #reader { width: 100%; border-radius: 20px; overflow: hidden; border: 4px solid var(--emerald-main); margin-bottom: 20px; box-shadow: 0 10px 20px rgba(5,150,105,0.2);}
 
         .form-input { width: 100%; padding: 16px; border-radius: 14px; border: 2px solid rgba(0,0,0,0.06); font-size: 14px; font-weight: 700; outline: none; margin-bottom: 12px; }
         .form-input:focus { border-color: var(--emerald-main); }
         .btn-action { width: 100%; padding: 16px; border-radius: 16px; font-size: 14px; font-weight: 800; background: var(--text-dark); color: #FFF; border: none; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px;}
         .btn-outline { background: #F4F6F5; color: var(--text-dark); }
+
+        /* LIST LIVE HADIR STYLE */
+        .live-item { font-size: 11px; font-weight: 700; padding: 10px; border-bottom: 2px solid #F4F6F5; display: flex; justify-content: space-between; background: #FFF; border-radius: 8px; margin-bottom: 5px;}
+        .live-item span:first-child { color: var(--text-dark); }
+        .live-item span:last-child { color: var(--emerald-main); }
     </style>
 </head>
 <body>
@@ -138,6 +144,7 @@
             <h3 class="section-title">Menu Anggota</h3>
             <div class="menu-grid">
                 
+                <!-- SAKLAR AJAIB: MENU ABSENSI -->
                 <div class="menu-item menu-absen" id="menuAbsensi" style="display: none;" onclick="handleAbsensiClick()">
                     <div class="menu-icon"><i class="fa-solid fa-satellite-dish"></i></div><span style="color: var(--text-dark);">Absensi<br>Acara</span>
                 </div>
@@ -156,6 +163,7 @@
             </div>
         </div>
 
+        <!-- MODAL 1: QR CODE MEMBER -->
         <div id="modalMemberQR" class="modal-overlay">
             <div class="modal-card">
                 <h3 style="font-weight: 900; color: var(--text-dark);">Kartu Kehadiran</h3>
@@ -166,9 +174,10 @@
             </div>
         </div>
 
+        <!-- MODAL 2: SCANNER ADMIN + LIVE LIST HADIR -->
         <div id="modalAdminScanner" class="modal-overlay">
             <div class="modal-card" style="padding: 20px;">
-                <h3 style="font-weight: 900; font-size: 16px; margin-bottom: 15px;"><i class="fa-solid fa-satellite-dish" style="color:var(--neon-cyan)"></i> Radar Acara Aktif</h3>
+                <h3 style="font-weight: 900; font-size: 16px; margin-bottom: 15px;"><i class="fa-solid fa-satellite-dish" style="color:var(--emerald-main)"></i> Radar Acara Aktif</h3>
                 
                 <div id="scannerBox">
                     <div id="reader"></div>
@@ -182,10 +191,19 @@
                     <button class="btn-action btn-outline" style="margin-bottom: 10px;" onclick="toggleManualBypass(false)"><i class="fa-solid fa-camera"></i> Kembali ke Kamera</button>
                 </div>
 
-                <button class="btn-action btn-outline" onclick="closeScannerModal()" style="border: 2px solid var(--danger-red); color: var(--danger-red);">Tutup Radar</button>
+                <!-- DAFTAR HADIR LIVE DITAMBAHKAN DI SINI -->
+                <div style="margin-top: 15px; border-top: 2px dashed #E2E8E4; padding-top: 15px;">
+                    <h4 style="font-size: 12px; font-weight: 800; text-align: left; margin-bottom: 10px; color: var(--text-dark);">Live Hadir: <span id="liveCount" style="color: var(--emerald-main);">0</span> Orang</h4>
+                    <div id="liveListContainer" style="max-height: 120px; overflow-y: auto; text-align: left; background: #F9F9F9; padding: 10px; border-radius: 12px;">
+                        <div style='text-align:center; font-size:11px; color:#999; font-weight: 700;'>Belum ada yang hadir</div>
+                    </div>
+                </div>
+
+                <button class="btn-action btn-outline" onclick="closeScannerModal()" style="border: 2px solid var(--danger-red); color: var(--danger-red); margin-top: 15px;">Tutup Radar</button>
             </div>
         </div>
 
+        <!-- MODAL QRIS -->
         <div id="modalQrisManual" class="modal-overlay">
             <div class="modal-card">
                 <h3 style="font-weight: 900; margin-bottom: 20px;">Scan QRIS Kas</h3>
@@ -205,6 +223,7 @@
         let currentUserName = "";
         let currentEvent = null;
         let html5QrcodeScanner = null;
+        let liveUnsubscribe = null; // Listener Live Hadir
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -246,23 +265,19 @@
             }
         });
 
-        // FUNGSI KLIK MENU ABSENSI (BEDA KASTA BEDA HASIL)
         window.handleAbsensiClick = function() {
             if (!currentEvent || !currentEvent.is_active) return alert("Acara sudah ditutup oleh Superadmin.");
             
             if (currentRole === "member") {
-                // TAMPILAN MEMBER: Buka Modal QR Code
                 const qrData = currentUserEmail; 
                 document.getElementById('imgMemberQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(qrData)}`;
                 document.getElementById('qrNameText').innerText = currentUserName;
                 document.getElementById('modalMemberQR').classList.add('show');
             } else {
-                // TAMPILAN ADMIN/DEWA: Cek GPS lalu buka Scanner
                 checkGPSAndOpenScanner();
             }
         }
 
-        // LOGIKA GEOFENCING JARAK (Haversine Formula)
         function getDistanceFromLatLonInM(lat1, lon1, lat2, lon2) {
             const R = 6371000; const dLat = (lat2-lat1) * (Math.PI/180); const dLon = (lon2-lon1) * (Math.PI/180);
             const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * (Math.PI/180)) * Math.cos(lat2 * (Math.PI/180)) * Math.sin(dLon/2) * Math.sin(dLon/2);
@@ -279,10 +294,8 @@
                     const evtLat = parseFloat(currentEvent.lat); const evtLng = parseFloat(currentEvent.lng);
                     const dist = getDistanceFromLatLonInM(lat, lon, evtLat, evtLng);
                     
-                    if (dist <= currentEvent.radius) {
-                        openScanner();
-                    } else {
-                        // JIKA DILUAR RADIUS
+                    if (dist <= currentEvent.radius) { openScanner(); } 
+                    else {
                         if (currentRole === 'superadmin') {
                             if(confirm(`GPS Peringatan: Anda berada ${Math.round(dist)} meter dari lokasi acara.\n\nKarena Anda SUPERADMIN, apakah ingin memaksa (Bypass) membuka Radar?`)) { openScanner(); }
                         } else {
@@ -298,18 +311,44 @@
             );
         }
 
-        // KONTROL SCANNER & MANUAL BYPASS
         function openScanner() {
             document.getElementById('modalAdminScanner').classList.add('show');
             if (!html5QrcodeScanner) {
                 html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: {width: 250, height: 250} }, false);
-                html5QrcodeScanner.render(onScanSuccess, () => {}); // Abaikan error frame kosong
+                html5QrcodeScanner.render(onScanSuccess, () => {}); 
             }
+            startLiveHadirListener(); // Jalankan Data Hadir Live
+        }
+
+        // MENDENGARKAN DATA HADIR SECARA REAL-TIME
+        function startLiveHadirListener() {
+            const qLive = query(collection(db, "absensi_acara"), where("event_name", "==", currentEvent.nama_acara));
+            liveUnsubscribe = onSnapshot(qLive, (snap) => {
+                let listData = [];
+                snap.forEach(d => listData.push(d.data()));
+                
+                // Urutkan yang terbaru di atas
+                listData.sort((a,b) => {
+                    let t1 = a.scan_time ? a.scan_time.toMillis() : 0;
+                    let t2 = b.scan_time ? b.scan_time.toMillis() : 0;
+                    return t2 - t1; 
+                });
+
+                let html = "";
+                listData.forEach(data => {
+                    const time = data.scan_time ? data.scan_time.toDate().toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'}) : '';
+                    html += `<div class="live-item"><span><i class="fa-solid fa-check-circle" style="color:var(--emerald-main);"></i> ${data.member_name}</span><span>${time}</span></div>`;
+                });
+
+                document.getElementById('liveListContainer').innerHTML = html || "<div style='text-align:center; font-size:11px; color:#999; font-weight:700;'>Belum ada yang hadir</div>";
+                document.getElementById('liveCount').innerText = listData.length;
+            });
         }
 
         window.closeScannerModal = function() {
             document.getElementById('modalAdminScanner').classList.remove('show');
             if(html5QrcodeScanner) { html5QrcodeScanner.clear(); html5QrcodeScanner = null; }
+            if(liveUnsubscribe) { liveUnsubscribe(); } // Matikan listener buat hemat kuota
             toggleManualBypass(false);
         }
 
@@ -338,7 +377,6 @@
         }
 
         async function processAbsen(scannedEmail, isManual, manualName) {
-            // Cek Double Absen
             const qCheck = query(collection(db, "absensi_acara"), where("event_name", "==", currentEvent.nama_acara), where("member_email", "==", scannedEmail));
             if(!isManual) {
                 const snapCheck = await getDocs(qCheck);
