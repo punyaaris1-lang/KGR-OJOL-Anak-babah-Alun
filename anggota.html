@@ -61,16 +61,20 @@
         .btn-edit { background: rgba(251, 191, 36, 0.15); color: #D97706; display: none; }
         .btn-del { background: rgba(239, 68, 68, 0.1); color: var(--danger); display: none; }
 
+        /* FAB TAMBAH MANUAL - DI-PATCH BIAR MUTLAK MUNCUL DI ATAS NAV HP */
+        .fab-add { position: fixed; bottom: 40px; right: 25px; width: 60px; height: 60px; background: var(--emerald-main); color: white; border-radius: 20px; display: none; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 10px 30px rgba(5,150,105,0.4); border: 3px solid white; cursor: pointer; z-index: 999999; transition: 0.2s;}
+        .fab-add:active { transform: scale(0.9); }
+
         /* LIGHTBOX FOTO */
         .photo-viewer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 99999; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); padding: 20px;}
         .pv-container { position: relative; max-width: 400px; width: 100%; text-align: center; }
         .pv-container img { width: 100%; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); object-fit: cover; max-height: 70vh; border: 2px solid rgba(255,255,255,0.2); }
         .pv-close { position: absolute; top: -15px; right: -15px; width: 40px; height: 40px; border-radius: 50%; background: #FFF; color: var(--text-main); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: 0.2s; border: none; }
 
-        /* MODAL EDIT ADMIN */
+        /* MODAL KELOLA & TAMBAH ADMIN */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); display: none; align-items: flex-end; justify-content: center; z-index: 9999; opacity: 0; transition: 0.3s; }
         .modal-overlay.show { opacity: 1; display: flex; }
-        .modal-box { background: #FFF; width: 100%; max-width: 480px; border-radius: 30px 30px 0 0; padding: 25px 25px 40px; transform: translateY(100%); transition: 0.4s; box-shadow: 0 -10px 40px rgba(0,0,0,0.1); }
+        .modal-box { background: #FFF; width: 100%; max-width: 480px; max-height: 85vh; overflow-y: auto; border-radius: 30px 30px 0 0; padding: 25px 25px 40px; transform: translateY(100%); transition: 0.4s; box-shadow: 0 -10px 40px rgba(0,0,0,0.1); }
         .modal-overlay.show .modal-box { transform: translateY(0); }
         
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
@@ -106,7 +110,8 @@
             <div style="text-align:center; padding:50px; color:var(--text-muted); font-size: 12px; font-weight: 700;"><i class="fas fa-spinner fa-spin"></i> Menarik Data Server...</div>
         </main>
 
-        <!-- LIGHTBOX FOTO -->
+        <button class="fab-add" id="btnAddMember" onclick="openAddModal()"><i class="fa-solid fa-user-plus"></i></button>
+
         <div class="photo-viewer-overlay" id="photoViewer" onclick="closePhoto()">
             <div class="pv-container" onclick="event.stopPropagation()">
                 <img id="pvImage" src="">
@@ -114,19 +119,38 @@
             </div>
         </div>
 
-        <!-- MODAL EDIT ADMIN -->
         <div class="modal-overlay" id="formModal">
             <div class="modal-box">
                 <div class="modal-header">
-                    <div class="modal-title">Kelola Anggota</div>
+                    <div class="modal-title" id="modalTitle">Kelola Anggota</div>
                     <button class="btn-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
                 </div>
                 
-                <input type="hidden" id="formEmailTarget">
+                <input type="hidden" id="formMode" value="edit">
                 
+                <div id="addFieldsOnly" style="display: none;">
+                    <div class="form-group">
+                        <label>Email Pendaftaran</label>
+                        <input type="email" id="formEmail" class="form-input" placeholder="Wajib @gmail.com / @yahoo.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Nomor NIK KTP</label>
+                        <input type="tel" id="formNik" class="form-input" placeholder="16 Digit NIK" maxlength="16">
+                    </div>
+                    <div class="form-group">
+                        <label>Nomor WhatsApp</label>
+                        <input type="tel" id="formWa" class="form-input" placeholder="Mulai dengan 08...">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 25px;">
+                        <label>Buat Password Default</label>
+                        <input type="text" id="formPass" class="form-input" placeholder="Minimal 6 karakter" value="kgr12345">
+                        <div style="font-size: 10px; color: var(--emerald-main); margin-top: 5px; font-weight: 700;">*Member dapat mereset sandi sendiri via 'Lupa Password' di menu Login.</div>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label>Nama Anggota</label>
-                    <input type="text" id="formNama" class="form-input" disabled>
+                    <input type="text" id="formNama" class="form-input">
                 </div>
 
                 <div class="form-group">
@@ -147,15 +171,18 @@
                     </select>
                 </div>
                 
-                <button class="btn-save" id="btnSave" onclick="saveData()">SIMPAN PERUBAHAN</button>
+                <button class="btn-save" id="btnSave" onclick="saveData()">SIMPAN DATA</button>
             </div>
         </div>
     </div>
 
     <script type="module">
         import { auth, db } from './db-config.js';
-        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
-        import { collection, query, orderBy, onSnapshot, doc, updateDoc, deleteDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+        
+        // IMPORT APP BUILDER UNTUK SECONDARY AUTH (AGAR ADMIN GAK KELUAR)
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+        import { onAuthStateChanged, getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+        import { collection, query, orderBy, onSnapshot, doc, updateDoc, deleteDoc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
         let currentRole = "member";
         let membersData = [];
@@ -166,15 +193,28 @@
                 if (docSnap.exists()) {
                     currentRole = (docSnap.data().role || "member").toLowerCase();
                     if(currentRole === 'superadmin' || currentRole === 'admin' || currentRole === 'bendahara') {
+                        // PATCH FORCET SHOW TOMBOL (+)
                         const style = document.createElement('style'); 
-                        style.innerHTML = '.btn-edit { display: flex !important; }'; 
-                        if(currentRole === 'superadmin') style.innerHTML += ' .btn-del { display: flex !important; }';
+                        style.innerHTML = `
+                            .btn-edit { display: flex !important; }
+                            #btnAddMember { display: flex !important; }
+                        `; 
+                        if(currentRole === 'superadmin') {
+                            style.innerHTML += ' .btn-del { display: flex !important; }';
+                        }
                         document.head.appendChild(style);
                     }
                     loadMembersData();
                 } else { window.location.href = 'index.html'; }
             } else { window.location.href = 'login.html'; }
         });
+
+        const CRYPTO_OFFSET = 7;
+        function encryptData(plainText) {
+            if (!plainText) return "";
+            let shifted = plainText.split("").map(char => String.fromCharCode(char.charCodeAt(0) + CRYPTO_OFFSET)).join("");
+            return btoa(unescape(encodeURIComponent(shifted)));
+        }
 
         function loadMembersData() {
             const q = query(collection(db, "users"), orderBy("created_at", "desc"));
@@ -188,7 +228,7 @@
         function renderList(data) {
             const list = document.getElementById('memberList'); list.innerHTML = '';
             
-            // Sort: Pengurus (Superadmin/Bendahara/Admin) di atas, lalu Member Aktif, lalu Pending
+            // Sort: Pengurus di atas, lalu Member Aktif, lalu Pending
             data.sort((a, b) => {
                 const aRole = (a.role||"").toLowerCase(); const bRole = (b.role||"").toLowerCase();
                 const aIsP = (aRole !== 'member' && aRole !== ''); const bIsP = (bRole !== 'member' && bRole !== '');
@@ -214,11 +254,8 @@
                 const wa = m.no_wa || "Tidak ada nomor";
                 let photoHtml = '';
                 
-                if (m.profile_image) {
-                    photoHtml = `<img src="${m.profile_image}" class="m-photo" onclick="viewPhoto('${m.profile_image}')">`;
-                } else {
-                    photoHtml = `<div class="m-photo">${name.charAt(0).toUpperCase()}</div>`;
-                }
+                if (m.profile_image) { photoHtml = `<img src="${m.profile_image}" class="m-photo" onclick="viewPhoto('${m.profile_image}')">`; } 
+                else { photoHtml = `<div class="m-photo">${name.charAt(0).toUpperCase()}</div>`; }
 
                 let waLink = wa !== "Tidak ada nomor" ? `https://wa.me/62${wa.replace(/^0+/, '')}` : '#';
                 
@@ -260,12 +297,32 @@
         window.closePhoto = () => { document.getElementById('photoViewer').style.display = 'none'; };
 
         const modal = document.getElementById('formModal');
+        
         window.openEditModal = (email) => {
             const m = membersData.find(x => x.id === email); if(!m) return;
+            document.getElementById('formMode').value = 'edit';
+            document.getElementById('modalTitle').innerText = 'Edit Anggota';
+            document.getElementById('addFieldsOnly').style.display = 'none';
             document.getElementById('formEmailTarget').value = email; 
             document.getElementById('formNama').value = m.nama_lengkap || ''; 
+            document.getElementById('formNama').disabled = true; 
             document.getElementById('formStatus').value = m.status || 'Pending Admin'; 
             document.getElementById('formRole').value = (m.role || 'member').toLowerCase();
+            
+            modal.style.display = 'flex'; setTimeout(()=>modal.classList.add('show'),10);
+        }
+
+        window.openAddModal = () => {
+            document.getElementById('formMode').value = 'add';
+            document.getElementById('modalTitle').innerText = 'Tambah Anggota Baru';
+            document.getElementById('addFieldsOnly').style.display = 'block';
+            document.getElementById('formEmail').value = '';
+            document.getElementById('formNik').value = '';
+            document.getElementById('formWa').value = '';
+            document.getElementById('formNama').value = '';
+            document.getElementById('formNama').disabled = false; 
+            document.getElementById('formStatus').value = 'Aktif'; 
+            document.getElementById('formRole').value = 'member';
             
             modal.style.display = 'flex'; setTimeout(()=>modal.classList.add('show'),10);
         }
@@ -273,17 +330,49 @@
         window.closeModal = () => { modal.classList.remove('show'); setTimeout(()=>modal.style.display = 'none',300); };
 
         window.saveData = async () => {
-            const email = document.getElementById('formEmailTarget').value;
-            const status = document.getElementById('formStatus').value;
-            const role = document.getElementById('formRole').value;
-
-            const btn = document.getElementById('btnSave'); btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> MEMPROSES...'; btn.style.opacity = '0.7';
+            const mode = document.getElementById('formMode').value;
+            const btn = document.getElementById('btnSave'); 
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> MEMPROSES...'; btn.style.opacity = '0.7';
 
             try {
-                await updateDoc(doc(db, "users", email), { status: status, role: role });
+                if (mode === 'edit') {
+                    const email = document.getElementById('formEmailTarget').value;
+                    const status = document.getElementById('formStatus').value;
+                    const role = document.getElementById('formRole').value;
+                    await updateDoc(doc(db, "users", email), { status: status, role: role });
+                    alert("Data Anggota berhasil diperbarui!");
+                } else {
+                    const email = document.getElementById('formEmail').value.toLowerCase();
+                    const nik = document.getElementById('formNik').value;
+                    const wa = document.getElementById('formWa').value;
+                    const nama = document.getElementById('formNama').value;
+                    const pass = document.getElementById('formPass').value;
+                    const status = document.getElementById('formStatus').value;
+                    const role = document.getElementById('formRole').value;
+
+                    if(!email || !nik || !wa || !nama || !pass) throw new Error("Semua kolom harus diisi lengkap!");
+                    
+                    const secondaryApp = initializeApp(auth.app.options, "SecondaryRegistrationApp");
+                    const secondaryAuth = getAuth(secondaryApp);
+                    
+                    const uc = await createUserWithEmailAndPassword(secondaryAuth, email, pass);
+                    
+                    const encryptedNik = encryptData(nik);
+                    await setDoc(doc(db, "users", email), { 
+                        nama_lengkap: nama, nik: encryptedNik, no_wa: wa, email: email, 
+                        role: role, status: status, device_id: "", created_at: serverTimestamp() 
+                    });
+
+                    await secondaryAuth.signOut();
+
+                    alert(`Berhasil!\nAkun ${nama} telah dibuat.\n\nMereka bisa login menggunakan:\nEmail: ${email}\nPassword: ${pass}`);
+                }
                 closeModal();
-            } catch (e) { alert("Gagal mengupdate: " + e.message); } 
-            finally { btn.innerText = "SIMPAN PERUBAHAN"; btn.style.opacity = '1'; }
+            } catch (e) { 
+                alert("Gagal memproses: " + e.message.replace('Firebase: ', '')); 
+            } finally { 
+                btn.innerText = "SIMPAN DATA"; btn.style.opacity = '1'; 
+            }
         };
 
         window.deleteData = async (email) => { 
