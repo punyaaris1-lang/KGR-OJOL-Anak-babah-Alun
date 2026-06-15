@@ -42,7 +42,7 @@
         .req-date { font-size: 11px; color: var(--text-gray); font-weight: 700; margin-top: 4px; display: flex; align-items: center; gap: 5px;}
         .req-amount { font-size: 16px; font-weight: 900; color: var(--text-dark); background: #F9F9F9; padding: 6px 12px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.04);}
         .req-body { font-size: 12px; color: var(--text-gray); font-weight: 600; margin-bottom: 15px; line-height: 1.5; background: #F9F9F9; padding: 12px; border-radius: 12px;}
-        .req-target { font-size: 11px; font-weight: 800; color: var(--emerald-dark); margin-bottom: 10px; display: flex; align-items: center; gap: 5px; }
+        .req-target { font-size: 11px; font-weight: 800; color: var(--emerald-dark); margin-bottom: 10px; display: flex; align-items: center; gap: 5px; justify-content: space-between; }
         
         .status-tracker { background: #FFF; border: 1px solid rgba(0,0,0,0.05); padding: 12px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; }
         .status-badge { font-size: 10px; font-weight: 800; text-transform: uppercase; display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 8px;}
@@ -110,6 +110,7 @@
     </style>
 </head>
 <body>
+    <!-- CUSTOM ALERTS & VIEWERS -->
     <div class="cp-overlay" id="customAlert">
         <div class="cp-box">
             <div class="cp-icon success" id="caIcon"><i class="fa-solid fa-check"></i></div>
@@ -135,7 +136,15 @@
             <h3 class="cp-title" id="clTitle" style="margin-bottom: 0;">Memproses...</h3>
         </div>
     </div>
+    <!-- VIEW IMAGE FULLSCREEN -->
+    <div class="cp-overlay" id="modalImage" onclick="closeImageView()">
+        <div class="cp-box" style="padding: 10px; background: transparent; box-shadow: none; max-width: 450px;" onclick="event.stopPropagation()">
+            <img id="imgViewerSrc" src="" style="width: 100%; border-radius: 24px; border: 4px solid #FFF; max-height: 70vh; object-fit: contain;">
+            <button class="btn-close-modal" style="margin: 15px auto 0; width: 40px; height: 40px;" onclick="closeImageView()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+    </div>
 
+    <!-- MAIN APP -->
     <div class="app-container">
         <div class="header-page">
             <div class="btn-back" onclick="window.location.href='index.html'"><i class="fa-solid fa-arrow-left"></i></div>
@@ -163,6 +172,7 @@
         </div>
     </div>
 
+    <!-- MODAL 1: BIKIN PENGAJUAN BARU -->
     <div id="reqModal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -175,16 +185,20 @@
                     <input type="text" id="reqJudul" class="form-input" placeholder="Contoh: Bantuan Sakit" required autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Nama Target (Yang Dibantu)</label>
+                    <label class="form-label">Nama Penerima Bantuan</label>
                     <input type="text" id="reqTargetNama" class="form-input" placeholder="Nama lengkap penerima" required autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">NIK Target (16 Digit)</label>
+                    <label class="form-label">NIK Penerima Bantuan</label>
                     <input type="tel" id="reqTargetNik" class="form-input" placeholder="Wajib 16 Digit NIK" required maxlength="16" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Nominal Kas (Rp)</label>
                     <input type="number" id="reqNominal" class="form-input" placeholder="Contoh: 300000" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Foto Pendukung (Wajib)</label>
+                    <input type="file" id="reqFoto" class="form-input" accept="image/*" required style="padding: 10px;">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Rincian Penggunaan</label>
@@ -195,6 +209,7 @@
         </div>
     </div>
 
+    <!-- MODAL 2: SUPERADMIN TUNJUK VERIFIKATOR -->
     <div id="modalTunjuk" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -204,12 +219,14 @@
             <div class="form-group">
                 <label class="form-label">Pilih Admin Pemeriksa Lapangan</label>
                 <select id="selectVerifikator" class="form-input">
-                    </select>
+                    <!-- Diisi lewat JS -->
+                </select>
             </div>
             <button class="btn-submit" onclick="prosesTunjuk()"><i class="fa-solid fa-user-check"></i> Tugaskan Admin</button>
         </div>
     </div>
 
+    <!-- MODAL 3: ADMIN VERIFIKATOR (KAMERA ON THE SPOT) -->
     <div id="modalVerifikasi" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -227,6 +244,7 @@
         </div>
     </div>
 
+    <!-- MODAL 4: FINAL APPROVAL SUPERADMIN (KOMPARASI 2 FOTO) -->
     <div id="modalFinal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -239,9 +257,16 @@
                 <p id="txtWarningNik">NIK ini tercatat sudah pernah dicairkan bantuannya pada tanggal X.</p>
             </div>
 
-            <div style="text-align: center; margin-bottom: 20px;">
-                <p style="font-size: 11px; font-weight: 700; color: var(--text-gray); margin-bottom: 10px;">Bukti Foto Verifikator:</p>
-                <img id="imgBuktiFinal" src="" style="width: 100%; max-height: 250px; object-fit: contain; border-radius: 12px; border: 2px dashed rgba(0,0,0,0.1);">
+            <!-- KOMPARASI 2 FOTO -->
+            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <div style="flex: 1; text-align: center;">
+                    <p style="font-size: 9px; font-weight: 800; color: var(--text-gray); margin-bottom: 5px;">Bukti Pengajuan Awal</p>
+                    <img id="imgBuktiAwal" src="" style="width: 100%; height: 120px; object-fit: cover; border-radius: 12px; border: 2px dashed rgba(0,0,0,0.1); cursor: pointer;" onclick="viewImage(this.src)" title="Klik untuk perbesar">
+                </div>
+                <div style="flex: 1; text-align: center;">
+                    <p style="font-size: 9px; font-weight: 800; color: var(--emerald-main); margin-bottom: 5px;">Bukti Verifikator (Valid)</p>
+                    <img id="imgBuktiFinal" src="" style="width: 100%; height: 120px; object-fit: cover; border-radius: 12px; border: 2px solid var(--emerald-main); cursor: pointer;" onclick="viewImage(this.src)" title="Klik untuk perbesar">
+                </div>
             </div>
 
             <div class="action-buttons" style="border: none; padding: 0; margin-top: 0;">
@@ -257,11 +282,10 @@
         import { collection, onSnapshot, doc, updateDoc, getDoc, getDocs, addDoc, serverTimestamp, query, orderBy, where } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
         // ==============================================
-        // FUNGSI KENDALI CUSTOM MODAL
+        // FUNGSI KENDALI CUSTOM MODAL & IMAGE VIEWER
         // ==============================================
         window.customAlert = function(title, desc, type = 'success') {
-            const el = document.getElementById('customAlert');
-            document.getElementById('caTitle').innerText = title; document.getElementById('caDesc').innerText = desc;
+            const el = document.getElementById('customAlert'); document.getElementById('caTitle').innerText = title; document.getElementById('caDesc').innerText = desc;
             const iconEl = document.getElementById('caIcon');
             if(type === 'success') { iconEl.className = 'cp-icon success'; iconEl.innerHTML = '<i class="fa-solid fa-check"></i>'; }
             else if(type === 'error') { iconEl.className = 'cp-icon error'; iconEl.innerHTML = '<i class="fa-solid fa-xmark"></i>'; }
@@ -271,21 +295,21 @@
         window.closeCustomAlert = function() { document.getElementById('customAlert').classList.remove('show'); }
 
         window.customConfirm = function(title, desc, onYes) {
-            const el = document.getElementById('customConfirm');
-            document.getElementById('ccTitle').innerText = title; document.getElementById('ccDesc').innerText = desc;
-            document.getElementById('ccBtnYes').onclick = function() { closeCustomConfirm(); onYes(); };
-            el.classList.add('show');
+            const el = document.getElementById('customConfirm'); document.getElementById('ccTitle').innerText = title; document.getElementById('ccDesc').innerText = desc;
+            document.getElementById('ccBtnYes').onclick = function() { closeCustomConfirm(); onYes(); }; el.classList.add('show');
         }
         window.closeCustomConfirm = function() { document.getElementById('customConfirm').classList.remove('show'); }
 
-        window.showLoading = function(title = "Memproses...") {
-            document.getElementById('clTitle').innerText = title; document.getElementById('customLoading').classList.add('show');
-        }
+        window.showLoading = function(title = "Memproses...") { document.getElementById('clTitle').innerText = title; document.getElementById('customLoading').classList.add('show'); }
         window.hideLoading = function() { document.getElementById('customLoading').classList.remove('show'); }
 
-        // ==============================================
+        window.viewImage = function(src) { document.getElementById('imgViewerSrc').src = src; document.getElementById('modalImage').classList.add('show'); }
+        window.closeImageView = function() { document.getElementById('modalImage').classList.remove('show'); }
+
+        // KONVERSI FILE KE BASE64
+        const getBase64 = (file) => new Promise((res, rej) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => res(reader.result); reader.onerror = error => rej(error); });
+
         // ENKRIPSI NIK
-        // ==============================================
         const CRYPTO_OFFSET = 7;
         function encryptData(plainText) {
             if (!plainText) return ""; let shifted = plainText.split("").map(char => String.fromCharCode(char.charCodeAt(0) + CRYPTO_OFFSET)).join(""); return btoa(unescape(encodeURIComponent(shifted)));
@@ -293,7 +317,7 @@
 
         let userRole = "member"; let userEmail = ""; let userName = "";
         let listAdmins = []; 
-        let activeDocId = ""; // Nyimpen ID yang lagi diproses
+        let activeDocId = ""; 
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -306,15 +330,14 @@
                     
                     if (["superadmin", "admin", "bendahara"].includes(userRole)) {
                         document.getElementById('tabTugas').style.display = 'block';
-                        document.getElementById('btnBuatBaru').style.display = 'block'; // Cuma pengurus yang bisa ngajuin
-                        if(userRole === 'superadmin') loadAdmins(); // Tarik nama admin buat dropdown
+                        document.getElementById('btnBuatBaru').style.display = 'block';
+                        if(userRole === 'superadmin') loadAdmins(); 
                     }
                     loadDataPengajuan(); 
                 }
             } else { window.location.href = 'login.html'; }
         });
 
-        // Tarik daftar Admin untuk opsi Tunjuk Verifikator
         async function loadAdmins() {
             const q = query(collection(db, "users"), where("role", "==", "admin"));
             const snaps = await getDocs(q);
@@ -332,22 +355,28 @@
         window.openModalReq = function() { document.getElementById('reqModal').classList.add('show'); }
         window.closeModalReq = function() { document.getElementById('reqModal').classList.remove('show'); document.getElementById('formReq').reset(); }
 
-        // TAHAP 1: ADMIN KIRIM PENGAJUAN
+        // TAHAP 1: ADMIN KIRIM PENGAJUAN (WITH PHOTO)
         window.submitPengajuan = async function(e) {
             e.preventDefault(); 
             const nik = document.getElementById('reqTargetNik').value;
             if (nik.length !== 16) return customAlert("NIK Salah", "NIK target harus berjumlah 16 digit angka.", "error");
 
+            const fileInput = document.getElementById('reqFoto').files[0];
+            if (!fileInput) return customAlert("Foto Kosong", "Harap lampirkan foto pendukung pengajuan.", "warning");
+
             showLoading("Mengirim Pengajuan...");
             try {
+                const base64Foto = await getBase64(fileInput);
+
                 await addDoc(collection(db, "pengajuan_dana"), { 
                     pengaju_email: userEmail, pengaju_nama: userName,
                     judul: document.getElementById('reqJudul').value, 
                     target_nama: document.getElementById('reqTargetNama').value,
-                    target_nik: encryptData(nik), // NIK disimpen dalam bentuk enkripsi
+                    target_nik: encryptData(nik), 
                     nominal: Number(document.getElementById('reqNominal').value), 
                     deskripsi: document.getElementById('reqDeskripsi').value, 
-                    status: "pending_tunjuk", // TAHAP 1
+                    foto_pengajuan: base64Foto, // Foto Awal Disimpan Disini
+                    status: "pending_tunjuk", 
                     tanggal: serverTimestamp() 
                 });
                 hideLoading();
@@ -381,13 +410,17 @@
                     } else if (data.status === 'pending_approval') {
                         statusText = "Menunggu Final Approval"; statusClass = "final";
                         if (userRole === 'superadmin') {
-                            actionBtn = `<button class="btn-act primary" style="background:var(--color-final);" onclick="bukaModalFinal('${id}', '${data.target_nik}', '${data.foto_verifikasi}')"><i class="fa-solid fa-gavel"></i> Eksekusi Final</button>`;
+                            // Passing 2 foto ke Modal Final
+                            actionBtn = `<button class="btn-act primary" style="background:var(--color-final);" onclick="bukaModalFinal('${id}', '${data.target_nik}', '${data.foto_verifikasi}', '${data.foto_pengajuan}')"><i class="fa-solid fa-gavel"></i> Eksekusi Final</button>`;
                         }
                     } else if (data.status === 'approved') {
                         statusText = "Cair / Disetujui"; statusClass = "approved";
                     } else if (data.status === 'rejected') {
                         statusText = "Ditolak"; statusClass = "rejected";
                     }
+
+                    // Tombol Lihat Foto di Kartu List
+                    const fotoPengajuanBtn = data.foto_pengajuan ? `<button class="btn-act primary" style="background:#E0F2FE; color:#0284C7; flex: none; width: auto; padding: 6px 12px;" onclick="viewImage('${data.foto_pengajuan}')" title="Lihat Foto Bukti"><i class="fa-solid fa-image"></i></button>` : '';
 
                     const htmlCard = `
                         <div class="request-card">
@@ -398,7 +431,10 @@
                                 </div>
                                 <div class="req-amount">Rp ${Number(data.nominal).toLocaleString('id-ID')}</div>
                             </div>
-                            <div class="req-target"><i class="fa-solid fa-hand-holding-heart"></i> Target: ${data.target_nama}</div>
+                            <div class="req-target">
+                                <span><i class="fa-solid fa-hand-holding-heart"></i> Target: ${data.target_nama}</span>
+                                ${fotoPengajuanBtn}
+                            </div>
                             <div class="req-body">${data.deskripsi}</div>
                             <div class="status-tracker">
                                 <div class="status-badge ${statusClass}"><i class="fa-solid fa-circle-info"></i> ${statusText}</div>
@@ -407,7 +443,6 @@
                         </div>`;
 
                     if (data.pengaju_email === userEmail) { listSaya.innerHTML += htmlCard; countSaya++; } 
-                    // Tampilkan di tab Tugas jika dia Superadmin (harus nunjuk/final), atau jika dia Admin Verifikator yg ditunjuk
                     else if (userRole === 'superadmin' || userEmail === data.verifikator_email) { 
                         listTugas.innerHTML += htmlCard; countTugas++; 
                     }
@@ -433,8 +468,6 @@
         }
 
         // TAHAP 3: ADMIN FOTO LAPANGAN
-        const getBase64 = (file) => new Promise((res, rej) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => res(reader.result); reader.onerror = error => rej(error); });
-        
         window.bukaModalVerifikasi = function(id) { activeDocId = id; document.getElementById('modalVerifikasi').classList.add('show'); }
         window.prosesVerifikasi = async function(e) {
             e.preventDefault();
@@ -450,20 +483,21 @@
             } catch(e) { hideLoading(); customAlert("Gagal", "Gagal upload gambar, ukurannya mungkin terlalu besar.", "error"); }
         }
 
-        // TAHAP 4: FINAL APPROVAL BANG DENY (ANTI-DOBEL NIK)
-        window.bukaModalFinal = async function(id, encNik, imgSrc) {
+        // TAHAP 4: FINAL APPROVAL BANG DENY (WITH 2 PHOTOS COMPARISON)
+        window.bukaModalFinal = async function(id, encNik, imgVerif, imgAwal) {
             activeDocId = id;
-            document.getElementById('imgBuktiFinal').src = imgSrc;
+            
+            // Set kedua gambar komparasi
+            document.getElementById('imgBuktiAwal').src = imgAwal || '';
+            document.getElementById('imgBuktiFinal').src = imgVerif || '';
             document.getElementById('boxWarningNik').style.display = 'none';
 
             showLoading("Mengecek Histori NIK...");
             try {
-                // CEK HISTORI NIK DI DATABASE
                 const qHistory = query(collection(db, "pengajuan_dana"), where("target_nik", "==", encNik), where("status", "==", "approved"));
                 const snap = await getDocs(qHistory);
                 
                 if (!snap.empty) {
-                    // Cari tanggal pencairan paling baru
                     let lastDate = null;
                     snap.forEach(d => { 
                         const tgl = d.data().tanggal_cair ? d.data().tanggal_cair.toDate() : null;
@@ -491,10 +525,8 @@
                         const snap = await getDoc(reqRef);
                         const d = snap.data();
                         
-                        // 1. Ubah Status Pengajuan
                         await updateDoc(reqRef, { status: "approved", tanggal_cair: serverTimestamp() });
                         
-                        // 2. Potong Uang Kas (Bikin Record Transaksi Otomatis)
                         await addDoc(collection(db, "transactions"), {
                             jenis: "Pengeluaran", metode: "Sistem Pengajuan", status: "approved", pengirim: "Sistem Kas", 
                             nama_keterangan: "Pencairan: " + d.judul + " (" + d.target_nama + ")",
@@ -512,6 +544,7 @@
         }
     </script>
 
+    <!-- PWA SW -->
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(err => console.log('PWA SW Failed', err)); });
