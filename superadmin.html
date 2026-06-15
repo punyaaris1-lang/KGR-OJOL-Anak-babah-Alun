@@ -3,602 +3,657 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#059669">
-    <title>Panel Pengurus - KGR</title>
+    <meta name="theme-color" content="#064E3B">
+    <title>Pusat Kendali - KGR</title>
     
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
-        :root {
-            --bg-base: #F4F6F5; --text-dark: #111827; --text-gray: #4B5563;
-            --emerald-dark: #064E3B; --emerald-main: #059669; 
-            --gold-accent: #FBBF24; --danger-red: #DC2626; --success-green: #059669;
-            --shadow-card: 0 10px 25px rgba(0,0,0,0.06);
+        :root { 
+            --bg-base: #F4F6F5; --text-dark: #111827; --text-gray: #4B5563; 
+            --emerald-main: #059669; --emerald-dark: #064E3B; --gold-accent: #FBBF24;
+            --color-danger: #DC2626; --color-warning: #F59E0B; --color-info: #0284C7;
+            --shadow-card: 0 10px 25px rgba(0,0,0,0.04); --shadow-float: 0 20px 40px rgba(5,150,105,0.15);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: #E2E8E4; color: var(--text-dark); display: flex; justify-content: center; min-height: 100vh; }
+        body { background-color: #E2E8E4; display: flex; justify-content: center; min-height: 100vh; }
         
-        .app-container { width: 100%; max-width: 480px; background-color: var(--bg-base); display: flex; flex-direction: column; height: 100vh; position: relative; overflow: hidden;}
-        @media (min-width: 600px) { .app-container { height: 90vh; max-height: 900px; border-radius: 40px; border: 8px solid #FFF; margin: auto; box-shadow: 0 30px 60px rgba(0,0,0,0.15); } }
+        .app-container { width: 100%; max-width: 480px; background: var(--bg-base); display: flex; flex-direction: column; height: 100vh; position: relative; overflow: hidden; }
+        @media (min-width: 600px) { .app-container { height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 30px 60px rgba(0,0,0,0.15); border: 8px solid #FFFFFF; margin: auto; } }
 
-        /* HEADER */
-        .header-god { padding: 40px 24px 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid rgba(0,0,0,0.05); background: #FFFFFF; z-index: 10; position: relative; }
-        .btn-back { width: 40px; height: 40px; border-radius: 12px; background: #FFF; display: flex; justify-content: center; align-items: center; cursor: pointer; border: 1px solid rgba(0,0,0,0.1); color: var(--text-dark); font-size: 16px; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.05);}
-        .btn-back:active { transform: scale(0.9); }
-        .header-title h1 { font-size: 18px; font-weight: 900; color: var(--text-dark); letter-spacing: 0.5px; text-transform: uppercase; }
-        .header-title p { font-size: 10px; font-weight: 800; color: var(--emerald-main); letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
+        /* EXECUTIVE HEADER */
+        .exec-header { background: linear-gradient(135deg, var(--emerald-dark) 0%, var(--emerald-main) 100%); padding: 40px 24px 20px; color: #FFF; position: relative; z-index: 10; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-bottom-left-radius: 30px; border-bottom-right-radius: 30px;}
+        .exec-header::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('https://www.transparenttextures.com/patterns/cubes.png'); opacity: 0.1; pointer-events: none;}
+        .header-top { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; position: relative; z-index: 2;}
+        .btn-back { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.2); display: flex; justify-content: center; align-items: center; cursor: pointer; color: #FFF; transition: 0.2s; backdrop-filter: blur(5px);}
+        .btn-back:active { transform: scale(0.9); background: #FFF; color: var(--emerald-dark); }
+        .header-top h1 { font-size: 18px; font-weight: 900; letter-spacing: 0.5px; text-transform: uppercase;}
+        
+        /* HORIZONTAL TABS (SCROLLABLE) */
+        .nav-tabs { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; position: relative; z-index: 2; scrollbar-width: none;}
+        .nav-tabs::-webkit-scrollbar { display: none; }
+        .tab-btn { flex-shrink: 0; padding: 10px 18px; border-radius: 12px; font-size: 11px; font-weight: 800; background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.8); cursor: pointer; border: 1px solid rgba(255,255,255,0.05); transition: 0.2s; text-transform: uppercase; letter-spacing: 0.5px;}
+        .tab-btn.active { background: #FFF; color: var(--emerald-dark); box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-color: #FFF;}
 
-        .content-area { flex-grow: 1; overflow-y: auto; padding: 20px 24px 100px; scrollbar-width: none; }
+        .content-area { flex-grow: 1; overflow-y: auto; padding: 25px 20px 100px; scrollbar-width: none; }
         .content-area::-webkit-scrollbar { display: none; }
 
-        .section-title { font-size: 13px; font-weight: 900; color: var(--text-gray); text-transform: uppercase; letter-spacing: 1px; margin: 30px 0 15px; display: flex; align-items: center; gap: 8px;}
-        .section-title i { color: var(--emerald-main); font-size: 16px; }
+        .view-section { display: none; animation: fadeIn 0.4s ease; }
+        .view-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .god-panel { background: #FFFFFF; border: 1px solid rgba(0,0,0,0.03); border-radius: 20px; padding: 20px; margin-bottom: 15px; position: relative; overflow: hidden; box-shadow: var(--shadow-card); }
+        /* HRD FILTER PILLS */
+        .hrd-filters { display: flex; gap: 8px; margin-bottom: 20px; background: #FFF; padding: 6px; border-radius: 16px; box-shadow: var(--shadow-card); border: 1px solid rgba(0,0,0,0.02);}
+        .hrd-pill { flex: 1; padding: 10px; border-radius: 12px; font-size: 11px; font-weight: 800; text-align: center; cursor: pointer; transition: 0.2s; color: var(--text-gray); border: none; background: transparent;}
+        .hrd-pill.active { background: var(--emerald-main); color: #FFF; box-shadow: 0 4px 10px rgba(5,150,105,0.2);}
+        .badge-count { background: var(--color-danger); color: #FFF; padding: 2px 6px; border-radius: 6px; font-size: 9px; margin-left: 5px; vertical-align: middle;}
+
+        /* CARDS & LISTS */
+        .data-card { background: #FFF; border-radius: 20px; padding: 18px; margin-bottom: 12px; box-shadow: var(--shadow-card); border: 1px solid rgba(0,0,0,0.03); display: flex; justify-content: space-between; align-items: center; transition: 0.2s;}
+        .data-card:active { transform: scale(0.98); }
+        .dc-info h4 { font-size: 14px; font-weight: 900; color: var(--text-dark); margin-bottom: 4px; text-transform: uppercase;}
+        .dc-info p { font-size: 11px; font-weight: 600; color: var(--text-gray); display: flex; align-items: center; gap: 5px; margin-bottom: 6px;}
+        .status-tag { font-size: 9px; font-weight: 800; padding: 4px 8px; border-radius: 6px; text-transform: uppercase;}
+        .st-pending { background: #FEF3C7; color: #D97706; }
+        .st-active { background: #D1FAE5; color: #059669; }
+        .st-banned { background: #FEE2E2; color: #DC2626; }
         
-        .form-group { margin-bottom: 15px; }
-        .form-label { display: block; font-size: 10px; font-weight: 800; text-transform: uppercase; color: var(--text-gray); margin-bottom: 8px; letter-spacing: 1px;}
-        .form-input { width: 100%; padding: 15px; border-radius: 12px; border: 2px solid rgba(0,0,0,0.05); background: #F9F9F9; color: var(--text-dark); font-size: 14px; font-weight: 700; outline: none; transition: 0.3s; }
-        .form-input:focus { border-color: var(--emerald-main); background: #FFF; }
-        .form-input:disabled { color: var(--text-gray); background: #E5E5E5; border-color: transparent; }
+        .btn-edit-round { width: 40px; height: 40px; border-radius: 50%; background: #F5F5F7; color: var(--emerald-main); border: none; font-size: 16px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.05);}
+        .btn-edit-round:active { transform: scale(0.9); background: var(--emerald-main); color: #FFF;}
+
+        /* MODERN FORMS (SAAS STYLE) */
+        .form-section { background: #FFF; border-radius: 24px; padding: 25px 20px; margin-bottom: 20px; box-shadow: var(--shadow-card); border: 1px solid rgba(0,0,0,0.03);}
+        .section-title { font-size: 14px; font-weight: 900; color: var(--text-dark); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px;}
+        .section-title i { color: var(--emerald-main); font-size: 18px;}
         
-        .btn-god { width: 100%; padding: 16px; border-radius: 12px; font-size: 13px; font-weight: 900; background: var(--text-dark); color: #FFF; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px;}
-        .btn-god:active { transform: scale(0.97); }
-
-        .btn-outline { width: 100%; padding: 14px; border-radius: 12px; font-size: 12px; font-weight: 800; background: #FFF; color: var(--emerald-main); border: 2px solid var(--emerald-main); cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 15px; }
-        .btn-outline:active { background: var(--emerald-main); color: #FFF; }
-
-        /* SAKLAR HIGH-TECH */
-        .switch-container { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #F9F9F9; border: 1px solid rgba(0,0,0,0.05); border-radius: 12px; margin-bottom: 20px; }
-        .switch-label { font-size: 13px; font-weight: 900; color: var(--text-dark); }
-        .switch-desc { font-size: 9px; color: var(--text-gray); font-weight: 800; margin-top: 4px; text-transform: uppercase; letter-spacing: 1px;}
-        .switch { position: relative; display: inline-block; width: 60px; height: 32px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #CCC; transition: .4s; border-radius: 34px; }
-        .slider:before { position: absolute; content: ""; height: 24px; width: 24px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2);}
-        input:checked + .slider { background-color: var(--emerald-main); }
-        input:checked + .slider:before { transform: translateX(28px); }
-
-        /* MODERASI ANGGOTA */
-        .search-box { display: flex; align-items: center; background: #F4F6F5; border-radius: 12px; padding: 10px 15px; margin-bottom: 15px; border: 1px solid rgba(0,0,0,0.05);}
-        .search-box i { color: var(--text-gray); font-size: 14px; margin-right: 10px; }
-        .search-box input { border: none; background: transparent; flex: 1; outline: none; font-family: 'Montserrat'; font-size: 12px; font-weight: 700; color: var(--text-dark); }
-
-        .user-card { border: 1px solid rgba(0,0,0,0.05); background: #FFF; border-radius: 16px; padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.02); transition: 0.2s;}
-        .user-info { display: flex; align-items: center; gap: 12px; }
-        .user-avatar { width: 40px; height: 40px; border-radius: 50%; background: #111827; display: flex; justify-content: center; align-items: center; font-size: 16px; font-weight: 900; color: #FFF; }
-        .user-details h4 { font-size: 13px; font-weight: 900; color: var(--text-dark); margin-bottom: 3px; }
-        .user-details p { font-size: 10px; font-weight: 700; color: var(--text-gray); }
+        .form-group { margin-bottom: 16px; }
+        .form-label { display: block; font-size: 11px; font-weight: 800; color: var(--text-gray); margin-bottom: 6px; text-transform: uppercase;}
+        .form-input, .form-select { width: 100%; padding: 15px; border-radius: 12px; border: 1.5px solid rgba(0,0,0,0.08); font-size: 13px; font-weight: 700; color: var(--text-dark); outline: none; background: #FAFAFA; transition: 0.2s;}
+        .form-input:focus, .form-select:focus { border-color: var(--emerald-main); background: #FFF; box-shadow: 0 0 0 4px rgba(5,150,105,0.1);}
         
-        .role-tag { font-size: 9px; font-weight: 800; padding: 3px 6px; border-radius: 4px; margin-top: 5px; display: inline-flex; align-items: center; gap: 3px; text-transform: uppercase; background: #E5E5E5; color: var(--text-dark); }
-        .role-tag.super { background: rgba(251, 191, 36, 0.2); color: #D97706; }
-        .role-tag.admin { background: rgba(10, 132, 255, 0.1); color: #0A84FF; }
-        .role-tag.banned { background: rgba(239, 68, 68, 0.1); color: var(--danger-red); }
-        .role-tag.pending { background: #FFF3CD; color: #856404; }
+        .btn-primary { width: 100%; padding: 16px; border-radius: 14px; font-size: 13px; font-weight: 900; background: var(--text-dark); color: #FFF; border: none; cursor: pointer; transition: 0.2s; box-shadow: 0 8px 20px rgba(0,0,0,0.15); display: flex; justify-content: center; align-items: center; gap: 8px;}
+        .btn-primary:active { transform: scale(0.96); }
 
-        .btn-edit-user { width: 35px; height: 35px; border-radius: 10px; background: #F4F6F5; color: var(--text-dark); border: none; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s;}
-        .btn-edit-user:active { transform: scale(0.9); background: var(--emerald-main); color: #FFF; }
-        
-        .empty-state { text-align: center; padding: 30px 20px; color: var(--text-gray); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-
-        /* MODAL KONTROL USER */
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: flex-end; z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s; }
+        /* MODAL BOUNCY */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: flex-end; z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s ease; }
         .modal-overlay.show { opacity: 1; visibility: visible; }
-        .modal-content { background: #FFF; border-radius: 30px 30px 0 0; padding: 25px 24px 35px; width: 100%; max-width: 480px; transform: translateY(100%); transition: 0.4s; box-shadow: 0 -10px 40px rgba(0,0,0,0.1); max-height: 85vh; overflow-y: auto;}
+        .modal-content { background: #FFF; border-radius: 32px 32px 0 0; padding: 30px 24px 40px; width: 100%; max-width: 480px; transform: translateY(100%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1); max-height: 85vh; overflow-y: auto; box-shadow: 0 -10px 40px rgba(0,0,0,0.2);}
         .modal-overlay.show .modal-content { transform: translateY(0); }
-        
-        .modal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
         .modal-header h3 { font-size: 18px; font-weight: 900; color: var(--text-dark); }
-        .modal-header p { font-size: 11px; color: var(--text-gray); font-weight: 700; margin-top: 4px;}
-        .btn-close { width: 32px; height: 32px; border-radius: 50%; background: #F4F6F5; border: none; color: var(--text-dark); display: flex; justify-content: center; align-items: center; cursor: pointer; }
-        .form-select { width: 100%; padding: 15px; border-radius: 12px; border: 2px solid rgba(0,0,0,0.05); font-size: 14px; font-weight: 800; background: #F9F9F9; color: var(--text-dark); outline: none; appearance: none;}
+        .btn-close-modal { width: 34px; height: 34px; border-radius: 50%; border: none; background: #F4F6F5; display: flex; justify-content: center; align-items: center; font-size: 16px; cursor: pointer; color: var(--text-dark); transition: 0.2s;}
+        .btn-close-modal:active { transform: scale(0.9); }
+
+        .empty-state { text-align: center; padding: 40px 20px; color: var(--text-gray); border: 2px dashed rgba(0,0,0,0.1); border-radius: 20px; }
+        .empty-state i { font-size: 35px; margin-bottom: 10px; opacity: 0.4; }
+        .empty-state p { font-size: 13px; font-weight: 700; }
+
+        /* CUSTOM POPUP (ALERT & CONFIRM) */
+        .cp-overlay { position: fixed; inset: 0; background: rgba(17, 24, 39, 0.8); backdrop-filter: blur(8px); z-index: 99999; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px; }
+        .cp-overlay.show { opacity: 1; visibility: visible; }
+        .cp-box { background: #FFF; border-radius: 28px; width: 100%; max-width: 320px; text-align: center; padding: 30px 24px; transform: scale(0.9); transition: 0.3s; box-shadow: 0 25px 50px rgba(0,0,0,0.2); }
+        .cp-overlay.show .cp-box { transform: scale(1); }
+        .cp-icon { width: 65px; height: 65px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; margin: 0 auto 15px; }
+        .cp-icon.success { background: #D1FAE5; color: var(--emerald-main); }
+        .cp-icon.error { background: #FEE2E2; color: var(--color-danger); }
+        .cp-icon.warning { background: #FEF3C7; color: var(--color-warning); }
+        .cp-title { font-size: 18px; font-weight: 900; color: var(--text-dark); margin-bottom: 8px; }
+        .cp-desc { font-size: 12px; font-weight: 600; color: var(--text-gray); margin-bottom: 25px; line-height: 1.5; }
+        .cp-btn-wrap { display: flex; gap: 10px; }
+        .cp-btn { flex: 1; padding: 15px; border-radius: 14px; font-size: 13px; font-weight: 800; border: none; cursor: pointer; transition: 0.2s; }
+        .cp-btn:active { transform: scale(0.95); }
+        .cp-btn-primary { background: var(--emerald-main); color: #FFF; width: 100%; box-shadow: 0 5px 15px rgba(5,150,105,0.2);}
+        .cp-btn-cancel { background: #F4F6F5; color: var(--text-dark); }
+        .cp-btn-danger { background: var(--color-danger); color: #FFF; box-shadow: 0 5px 15px rgba(220,38,38,0.2);}
         
-        .btn-nuke { background: var(--danger-red); color: #FFF; }
-        .btn-action-group { display: flex; gap: 10px; margin-top: 25px;}
-        .btn-action-group button { flex: 1; }
+        .spinner-custom { border: 4px solid rgba(0,0,0,0.1); width: 50px; height: 50px; border-radius: 50%; border-left-color: var(--emerald-main); animation: spin 1s linear infinite; margin: 0 auto 15px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
+    
+    <!-- CUSTOM ALERTS -->
+    <div class="cp-overlay" id="customAlert">
+        <div class="cp-box">
+            <div class="cp-icon success" id="caIcon"><i class="fa-solid fa-check"></i></div>
+            <h3 class="cp-title" id="caTitle">Pemberitahuan</h3>
+            <p class="cp-desc" id="caDesc">Pesan</p>
+            <button class="cp-btn cp-btn-primary" onclick="closeCustomAlert()">Mengerti</button>
+        </div>
+    </div>
+    <div class="cp-overlay" id="customConfirm">
+        <div class="cp-box">
+            <div class="cp-icon warning"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <h3 class="cp-title" id="ccTitle">Konfirmasi</h3>
+            <p class="cp-desc" id="ccDesc">Apakah Anda yakin?</p>
+            <div class="cp-btn-wrap">
+                <button class="cp-btn cp-btn-cancel" onclick="closeCustomConfirm()">Batal</button>
+                <button class="cp-btn cp-btn-danger" id="ccBtnYes">Ya, Eksekusi</button>
+            </div>
+        </div>
+    </div>
+    <div class="cp-overlay" id="customLoading">
+        <div class="cp-box" style="padding: 40px 20px;">
+            <div class="spinner-custom"></div>
+            <h3 class="cp-title" id="clTitle" style="margin-bottom: 0;">Memproses...</h3>
+        </div>
+    </div>
+
+    <!-- VIEW GAMBAR BUKTI KAS -->
+    <div class="cp-overlay" id="modalImage" onclick="closeImageView()">
+        <div class="cp-box" style="padding: 10px; background: transparent; box-shadow: none; max-width: 450px;" onclick="event.stopPropagation()">
+            <img id="imgViewerSrc" src="" style="width: 100%; border-radius: 24px; border: 4px solid #FFF; max-height: 70vh; object-fit: contain;">
+            <button class="btn-close-modal" style="margin: 15px auto 0;" onclick="closeImageView()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+    </div>
 
     <div class="app-container">
-        <div class="header-god">
-            <div class="btn-back" onclick="window.location.href='index.html'"><i class="fa-solid fa-arrow-left"></i></div>
-            <div class="header-title">
-                <h1 id="panelTitle">PANEL PENGURUS</h1>
-                <p id="panelSubtitle">Pusat Kendali Moderasi</p>
+        <div class="exec-header">
+            <div class="header-top">
+                <div class="btn-back" onclick="window.location.href='index.html'"><i class="fa-solid fa-arrow-left"></i></div>
+                <h1>Panel Pengurus</h1>
+            </div>
+            
+            <div class="nav-tabs" id="mainTabs">
+                <button class="tab-btn active" onclick="switchNavTab('viewAnggota', this)"><i class="fa-solid fa-users"></i> Anggota</button>
+                <button class="tab-btn" onclick="switchNavTab('viewKas', this)"><i class="fa-solid fa-vault"></i> Kas</button>
+                <button class="tab-btn superadmin-only" style="display:none;" onclick="switchNavTab('viewRadar', this)"><i class="fa-solid fa-satellite-dish"></i> Radar</button>
+                <button class="tab-btn superadmin-only" style="display:none;" onclick="switchNavTab('viewSistem', this)"><i class="fa-solid fa-gear"></i> Sistem</button>
             </div>
         </div>
 
         <div class="content-area">
             
-            <!-- PANEL ABSENSI (HANYA SUPERADMIN) -->
-            <div id="sectionRadar" style="display: none;">
-                <div class="section-title"><i class="fa-solid fa-satellite-dish"></i> RADAR ACARA (GEOFENCING)</div>
-                <div class="god-panel" style="border: 2px solid var(--emerald-main);">
-                    
-                    <div class="switch-container">
-                        <div>
-                            <div class="switch-label">SAKLAR ACARA</div>
-                            <div class="switch-desc" id="txtStatusAcara">Saat ini OFF (Tersembunyi)</div>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox" id="toggleAcara">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
+            <!-- TAB 1: KELOLA ANGGOTA & HRD -->
+            <div id="viewAnggota" class="view-section active">
+                <div class="hrd-filters">
+                    <button class="hrd-pill active" onclick="filterHrd('Semua', this)">Semua Aktif</button>
+                    <button class="hrd-pill" onclick="filterHrd('Pending', this)">Menunggu Aktivasi <span class="badge-count" id="badgePendingCount">0</span></button>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="searchUser" class="form-input" placeholder="🔍 Cari nama atau NIK member..." onkeyup="searchMember()" style="padding: 12px 16px; border-radius: 12px; background: #FFF;">
+                </div>
+                <div id="listAnggotaContainer"></div>
+            </div>
 
-                    <div class="form-group">
-                        <label class="form-label">Nama / Judul Acara</label>
-                        <input type="text" id="evtName" class="form-input" placeholder="Cth: Kopdar Gabungan KGR">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Tanggal Pelaksanaan Acara</label>
-                        <input type="date" id="evtDate" class="form-input">
-                    </div>
-                    
-                    <button class="btn-outline" onclick="lockGPS()"><i class="fa-solid fa-location-crosshairs"></i> Kunci Koordinat di Posisi Saya</button>
-                    
-                    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                        <div style="flex: 1;">
-                            <label class="form-label">Latitude</label>
-                            <input type="text" id="evtLat" class="form-input" placeholder="Cth: -6.123456">
-                        </div>
-                        <div style="flex: 1;">
-                            <label class="form-label">Longitude</label>
-                            <input type="text" id="evtLng" class="form-input" placeholder="Cth: 106.123456">
-                        </div>
-                    </div>
+            <!-- TAB 2: VERIFIKASI KAS (BENDAHARA/ADMIN) -->
+            <div id="viewKas" class="view-section">
+                <div class="section-title"><i class="fa-solid fa-file-invoice-dollar"></i> Antrean Verifikasi Kas</div>
+                <div id="listKasContainer"></div>
+            </div>
 
-                    <div class="form-group">
-                        <label class="form-label">Radius Toleransi Absen (Meter)</label>
-                        <input type="number" id="evtRadius" class="form-input" value="50" placeholder="Cth: 50">
-                    </div>
+            <!-- TAB 3: RADAR ACARA (KHUSUS SUPERADMIN) -->
+            <div id="viewRadar" class="view-section superadmin-only" style="display:none;">
+                <div class="form-section">
+                    <div class="section-title"><i class="fa-solid fa-satellite-dish"></i> Kontrol Acara KGR</div>
+                    <form id="formEvent" onsubmit="saveEventConfig(event)">
+                        <div class="form-group">
+                            <label class="form-label">Nama / Tema Acara</label>
+                            <input type="text" id="evName" class="form-input" required>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <div class="form-group" style="flex: 1;">
+                                <label class="form-label">Latitude (GPS)</label>
+                                <input type="text" id="evLat" class="form-input" required>
+                            </div>
+                            <div class="form-group" style="flex: 1;">
+                                <label class="form-label">Longitude (GPS)</label>
+                                <input type="text" id="evLng" class="form-input" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Radius Toleransi (Meter)</label>
+                            <input type="number" id="evRadius" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Status Saklar Radar</label>
+                            <select id="evActive" class="form-select">
+                                <option value="true">🟢 HIDUP (Menerima Absen)</option>
+                                <option value="false">🔴 MATI (Absen Ditutup)</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-primary"><i class="fa-solid fa-floppy-disk"></i> Simpan Konfigurasi</button>
+                    </form>
+                </div>
 
-                    <button class="btn-god" id="btnSaveEvent" onclick="saveEventConfig()" style="background: var(--emerald-main);"><i class="fa-solid fa-satellite"></i> Terapkan Pengaturan</button>
-                    <button class="btn-god" onclick="exportAbsensi()" style="margin-top: 10px; background: #FFF; color: var(--success-green); border: 2px solid var(--success-green);"><i class="fa-solid fa-file-excel"></i> Download Excel Absensi</button>
+                <div class="form-section">
+                    <div class="section-title"><i class="fa-solid fa-file-excel"></i> Rekap Absensi Terakhir</div>
+                    <button class="btn-primary" style="background: #1D6F42;" onclick="downloadAbsen()"><i class="fa-solid fa-download"></i> Download Excel (.csv)</button>
                 </div>
             </div>
 
-            <!-- MANAJEMEN MODERASI ANGGOTA (SEMUA PENGURUS BISA AKSES) -->
-            <div class="section-title"><i class="fa-solid fa-users-gear"></i> Moderasi Anggota</div>
-            <div class="god-panel" style="padding: 15px;">
-                
-                <button class="btn-outline" onclick="openModalTambah()" style="margin-bottom: 15px; border-style: dashed;"><i class="fa-solid fa-user-plus"></i> Tambah Anggota Manual</button>
-                
-                <div class="search-box">
-                    <i class="fa-solid fa-search"></i>
-                    <input type="text" id="searchUser" placeholder="Cari nama, WA, atau kasta..." onkeyup="filterUsers()">
-                </div>
-
-                <div id="godUserList" style="max-height: 400px; overflow-y: auto; scrollbar-width: none; padding-right: 5px;">
-                    <div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i> Menarik database...</div>
-                </div>
-            </div>
-
-            <!-- KONFIGURASI SISTEM (HANYA SUPERADMIN) -->
-            <div id="sectionConfig" style="display: none;">
-                <div class="section-title"><i class="fa-solid fa-sliders"></i> Konfigurasi Sistem Utama</div>
-                <div class="god-panel">
-                    <div class="form-group">
-                        <label class="form-label">Limit Maksimal Sedekah (Rp)</label>
-                        <input type="number" id="cfgLimit" class="form-input" autocomplete="off">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">URL Gambar QRIS</label>
-                        <input type="text" id="cfgQris" class="form-input" autocomplete="off">
-                    </div>
-                    <button class="btn-god" id="btnSaveConfig" onclick="saveAppConfig()"><i class="fa-solid fa-microchip"></i> Terapkan ke Sistem</button>
+            <!-- TAB 4: KONFIGURASI SISTEM (KHUSUS SUPERADMIN) -->
+            <div id="viewSistem" class="view-section superadmin-only" style="display:none;">
+                <div class="form-section">
+                    <div class="section-title"><i class="fa-solid fa-server"></i> Parameter Otomasi Kas</div>
+                    <form id="formSystem" onsubmit="saveAppConfig(event)">
+                        <div class="form-group">
+                            <label class="form-label">Limit Maksimal Sedekah (Bulan)</label>
+                            <input type="number" id="sysLimit" class="form-input" placeholder="Cth: 10000" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Syarat Sedekah Muncul Barcode (Rp)</label>
+                            <input type="number" id="sysSyarat" class="form-input" placeholder="Cth: 50000 (Akumulasi All-time)" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">URL Gambar QRIS (Format .jpg/.png/.svg)</label>
+                            <input type="url" id="sysQris" class="form-input" required>
+                        </div>
+                        <button type="submit" class="btn-primary"><i class="fa-solid fa-gears"></i> Update Sistem</button>
+                    </form>
                 </div>
             </div>
+
         </div>
     </div>
 
-    <!-- MODAL FORM MODERASI (TAMBAH & EDIT) -->
-    <div class="modal-overlay" id="modalModerasi">
+    <!-- MODAL EDIT MEMBER (PRIVASI NIK & HAK AKSES) -->
+    <div id="modalEditMember" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
-                <div>
-                    <h3 id="modalTitle">Form Anggota</h3>
-                    <p id="modalSubtitle">Lengkapi data di bawah ini</p>
-                </div>
-                <button class="btn-close" onclick="closeModalModerasi()"><i class="fa-solid fa-xmark"></i></button>
+                <h3>Moderasi Anggota</h3>
+                <button type="button" onclick="document.getElementById('modalEditMember').classList.remove('show')" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
             </div>
-
-            <input type="hidden" id="formMode" value="add">
-            
-            <div id="fieldEmailAdd">
+            <form id="formEditUser" onsubmit="saveEditUser(event)">
+                <input type="hidden" id="editEmail">
                 <div class="form-group">
-                    <label class="form-label">Email Valid (@gmail / @yahoo)</label>
-                    <input type="email" id="formEmail" class="form-input" placeholder="user@gmail.com">
+                    <label class="form-label">Nama Sesuai KTP</label>
+                    <input type="text" id="editName" class="form-input" required>
                 </div>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Nama Lengkap (KTP)</label>
-                <input type="text" id="formNama" class="form-input" placeholder="Masukkan nama">
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Nomor Induk Kependudukan (NIK)</label>
-                <input type="text" id="formNik" class="form-input" placeholder="16 Digit Angka NIK" maxlength="16">
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Nomor WhatsApp Aktif</label>
-                <input type="tel" id="formWa" class="form-input" placeholder="08123456789">
-            </div>
-
-            <div id="fieldPasswordAdd">
-                <div class="form-group" style="background: rgba(5, 150, 105, 0.05); padding: 15px; border-radius: 12px; border: 1px dashed var(--emerald-main);">
-                    <label class="form-label" style="color: var(--emerald-main);">Buat Password Default</label>
-                    <input type="text" id="formPass" class="form-input" value="kgr12345" style="margin-bottom: 5px;">
-                    <span style="font-size: 9px; font-weight: 700; color: var(--text-gray);">Peringatan: Password Firebase tidak bisa dilihat lagi setelah akun dibuat. Member dapat meresetnya sendiri via fitur 'Lupa Password'.</span>
+                <div class="form-group">
+                    <label class="form-label">NIK (Rahasia & Terdekripsi)</label>
+                    <input type="text" id="editNik" class="form-input" style="background: #FEF3C7; border-color: var(--gold-accent);" required maxlength="16" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
                 </div>
-            </div>
+                <div class="form-group">
+                    <label class="form-label">Nomor WhatsApp</label>
+                    <input type="tel" id="editWa" class="form-input" required oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                </div>
+                
+                <div style="display: flex; gap: 10px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label class="form-label">Jabatan (Kasta)</label>
+                        <select id="editRole" class="form-select">
+                            <!-- Opsi diisi dinamis via JS. Superadmin cuma muncul kalau yg login Superadmin -->
+                        </select>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label class="form-label">Status Akun</label>
+                        <select id="editStatus" class="form-select">
+                            <option value="Active">Aktif / Disetujui</option>
+                            <option value="Pending Admin">Pending (Kunci)</option>
+                            <option value="Banned">Banned (Blokir)</option>
+                        </select>
+                    </div>
+                </div>
 
+                <div class="form-group" style="border-top: 1px dashed rgba(0,0,0,0.1); padding-top: 15px;">
+                    <label class="form-label" style="color: var(--emerald-dark);"><i class="fa-solid fa-qrcode"></i> Bypass Akses Barcode Acara</label>
+                    <select id="editHakAbsen" class="form-select">
+                        <option value="otomatis">⚙️ Otomatis (Sesuai Limit Sistem)</option>
+                        <option value="buka_paksa">🟢 BUKA PAKSA (VIP / Selalu Muncul)</option>
+                        <option value="kunci_paksa">🔴 KUNCI PAKSA (Skorsing)</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-primary" style="margin-top: 10px;"><i class="fa-solid fa-user-shield"></i> Simpan Perubahan</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL CEK KAS (BENDAHARA) -->
+    <div id="modalApproveTrx" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Verifikasi Sedekah</h3>
+                <button type="button" onclick="document.getElementById('modalApproveTrx').classList.remove('show')" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <input type="hidden" id="apvTrxId">
             <div class="form-group">
-                <label class="form-label">Status Keanggotaan</label>
-                <select id="formStatus" class="form-select">
-                    <option value="Aktif">✅ Aktif</option>
-                    <option value="Pending Admin">⏳ Pending Admin</option>
-                    <option value="Banned">❌ BANNED (Blokir)</option>
-                </select>
+                <label class="form-label">Nama Keterangan (Bisa diedit)</label>
+                <input type="text" id="apvTrxName" class="form-input" required>
             </div>
-
             <div class="form-group">
-                <label class="form-label">Kasta / Jabatan</label>
-                <select id="formRole" class="form-select">
-                    <option value="member">Anggota Biasa (Member)</option>
-                    <option value="admin">Admin Moderasi</option>
-                    <option value="bendahara">Bendahara (Keuangan)</option>
-                    <option value="superadmin">Super Admin (Dewa)</option>
-                </select>
+                <label class="form-label">Nominal (Bisa diedit jika salah)</label>
+                <input type="number" id="apvTrxNominal" class="form-input" required>
             </div>
-
-            <div class="btn-action-group">
-                <button class="btn-god" id="btnSaveModerasi" onclick="saveModerasi()"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>
-                <button class="btn-god btn-nuke" id="btnHapusModerasi" onclick="deleteModerasi()"><i class="fa-solid fa-trash-can"></i> Hapus</button>
+            
+            <div style="display: flex; gap: 10px; margin-top: 25px;">
+                <button type="button" class="btn-primary" style="flex: 1; background: var(--color-danger); box-shadow: 0 5px 15px rgba(220,38,38,0.2);" onclick="actionTrx('reject')"><i class="fa-solid fa-xmark"></i> Tolak</button>
+                <button type="button" class="btn-primary" style="flex: 1; background: var(--emerald-main);" onclick="actionTrx('approve')"><i class="fa-solid fa-check"></i> Terima Uang</button>
             </div>
         </div>
     </div>
 
     <script type="module">
         import { auth, db } from './db-config.js';
-        
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-        import { onAuthStateChanged, getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
-        import { doc, getDoc, setDoc, updateDoc, collection, query, orderBy, onSnapshot, getDocs, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+        import { collection, onSnapshot, doc, getDoc, updateDoc, setDoc, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-        let myRole = "member";
-        let targetEditEmail = "";
-        let allUsersData = [];
+        // ==============================================
+        // CUSTOM MODALS
+        // ==============================================
+        window.customAlert = function(title, desc, type = 'success') {
+            const el = document.getElementById('customAlert'); document.getElementById('caTitle').innerText = title; document.getElementById('caDesc').innerText = desc;
+            const iconEl = document.getElementById('caIcon');
+            if(type === 'success') { iconEl.className = 'cp-icon success'; iconEl.innerHTML = '<i class="fa-solid fa-check"></i>'; }
+            else if(type === 'error') { iconEl.className = 'cp-icon error'; iconEl.innerHTML = '<i class="fa-solid fa-xmark"></i>'; }
+            else { iconEl.className = 'cp-icon warning'; iconEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>'; }
+            el.classList.add('show');
+        }
+        window.closeCustomAlert = function() { document.getElementById('customAlert').classList.remove('show'); }
+        window.customConfirm = function(title, desc, onYes) {
+            const el = document.getElementById('customConfirm'); document.getElementById('ccTitle').innerText = title; document.getElementById('ccDesc').innerText = desc;
+            document.getElementById('ccBtnYes').onclick = function() { closeCustomConfirm(); onYes(); }; el.classList.add('show');
+        }
+        window.closeCustomConfirm = function() { document.getElementById('customConfirm').classList.remove('show'); }
+        window.showLoading = function(title = "Memproses...") { document.getElementById('clTitle').innerText = title; document.getElementById('customLoading').classList.add('show'); }
+        window.hideLoading = function() { document.getElementById('customLoading').classList.remove('show'); }
 
-        // ENKRIPSI NIK
+        // ==============================================
+        // KRIPTOGRAFI NIK (Rahasia Pengurus)
+        // ==============================================
         const CRYPTO_OFFSET = 7;
         function encryptData(plainText) {
-            if (!plainText) return "";
-            let shifted = plainText.split("").map(char => String.fromCharCode(char.charCodeAt(0) + CRYPTO_OFFSET)).join("");
-            return btoa(unescape(encodeURIComponent(shifted)));
+            if (!plainText) return ""; let shifted = plainText.split("").map(char => String.fromCharCode(char.charCodeAt(0) + CRYPTO_OFFSET)).join(""); return btoa(unescape(encodeURIComponent(shifted)));
         }
-        function decryptData(cipherText) {
-            if (!cipherText) return "";
+        function decryptData(encoded) {
+            if (!encoded) return "";
             try {
-                let decoded = decodeURIComponent(escape(atob(cipherText)));
-                return decoded.split("").map(char => String.fromCharCode(char.charCodeAt(0) - CRYPTO_OFFSET)).join("");
-            } catch (e) { return cipherText; }
+                let decoded = decodeURIComponent(escape(atob(encoded))); return decoded.split("").map(char => String.fromCharCode(char.charCodeAt(0) - CRYPTO_OFFSET)).join("");
+            } catch(e) { return encoded; } 
         }
+
+        // ==============================================
+        // STATE MANAGEMENT
+        // ==============================================
+        let currentUserRole = "member";
+        let allUsers = [];
+        let filterHrdState = 'Semua';
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 const docSnap = await getDoc(doc(db, "users", user.email));
                 if (docSnap.exists()) {
-                    myRole = (docSnap.data().role || "member").toLowerCase();
-                    
-                    if (myRole === "superadmin" || myRole === "admin") {
-                        if (myRole === "superadmin") {
-                            document.getElementById('sectionRadar').style.display = 'block';
-                            document.getElementById('sectionConfig').style.display = 'block';
-                            loadEventConfig(); loadConfig();
-                        } else {
-                            document.getElementById('panelSubtitle').innerText = "Divisi Moderasi Anggota";
-                        }
-                        loadAllUsers(); 
-                    } else { 
-                        alert("Akses ditolak! Menu ini khusus Pengurus."); 
-                        window.location.href = "index.html"; 
-                    }
+                    currentUserRole = (docSnap.data().role || "member").toLowerCase();
+                    if (["superadmin", "admin", "bendahara"].includes(currentUserRole)) {
+                        initAdminPanel();
+                    } else { window.location.href = 'index.html'; } // Kick member biasa
                 }
             } else { window.location.href = 'login.html'; }
         });
 
-        // ==========================================
-        // 1. MODERASI ANGGOTA (Semua Masuk Sini)
-        // ==========================================
-        function loadAllUsers() {
-            const list = document.getElementById('godUserList');
-            onSnapshot(query(collection(db, "users"), orderBy("created_at", "desc")), (snapshot) => {
-                allUsersData = [];
-                snapshot.forEach(docSnap => { allUsersData.push({ id: docSnap.id, ...docSnap.data() }); });
-                renderUserList(allUsersData);
-            });
-        }
-
-        function renderUserList(dataArray) {
-            const list = document.getElementById('godUserList');
-            list.innerHTML = "";
-            if(dataArray.length === 0) { list.innerHTML = '<div class="empty-state">Data tidak ditemukan.</div>'; return; }
-
-            dataArray.forEach(data => {
-                const email = data.id;
-                const role = (data.role || "member").toLowerCase();
-                const status = data.status || "Pending Admin";
-                const inisial = (data.nama_lengkap || "X").charAt(0).toUpperCase();
-
-                let roleBadge = `<span class="role-tag">${role}</span>`;
-                if(role === 'superadmin') roleBadge = `<span class="role-tag super"><i class="fa-solid fa-crown"></i> Super Admin</span>`;
-                else if(role === 'admin') roleBadge = `<span class="role-tag admin"><i class="fa-solid fa-shield"></i> Admin</span>`;
-                
-                let statusBadge = '';
-                if(status === 'Pending Admin') statusBadge = `<span class="role-tag pending"><i class="fa-solid fa-lock"></i> Pending</span>`;
-                else if(status === 'Banned') statusBadge = `<span class="role-tag banned"><i class="fa-solid fa-ban"></i> Banned</span>`;
-
-                list.innerHTML += `
-                    <div class="user-card" ${status === 'Banned' ? 'style="opacity:0.6; filter:grayscale(1);"' : ''}>
-                        <div class="user-info">
-                            <div class="user-avatar" style="${role==='superadmin' ? 'background:var(--gold-accent); color:#000;' : ''}">${inisial}</div>
-                            <div class="user-details">
-                                <h4>${data.nama_lengkap || 'Tanpa Nama'}</h4>
-                                <p>${data.no_wa || email}</p>
-                                <div>${roleBadge} ${statusBadge}</div>
-                            </div>
-                        </div>
-                        <button class="btn-edit-user" onclick="openModalEdit('${email}')"><i class="fa-solid fa-pen-to-square"></i></button>
-                    </div>
-                `;
-            });
-        }
-
-        window.filterUsers = function() {
-            const txt = document.getElementById('searchUser').value.toLowerCase();
-            const filtered = allUsersData.filter(u => 
-                (u.nama_lengkap && u.nama_lengkap.toLowerCase().includes(txt)) || 
-                (u.id && u.id.toLowerCase().includes(txt)) || 
-                (u.no_wa && u.no_wa.toLowerCase().includes(txt)) || 
-                (u.role && u.role.toLowerCase().includes(txt))
-            );
-            renderUserList(filtered);
-        }
-
-        // BUKA MODAL TAMBAH (Bikin Akun Baru)
-        window.openModalTambah = function() {
-            document.getElementById('formMode').value = 'add';
-            document.getElementById('modalTitle').innerText = 'Tambah Anggota Baru';
-            document.getElementById('modalSubtitle').innerText = 'Buat akun KGR otomatis';
-            
-            document.getElementById('fieldEmailAdd').style.display = 'block';
-            document.getElementById('fieldPasswordAdd').style.display = 'block';
-            document.getElementById('btnHapusModerasi').style.display = 'none';
-
-            document.getElementById('formEmail').value = "";
-            document.getElementById('formNama').value = "";
-            document.getElementById('formNik').value = "";
-            document.getElementById('formWa').value = "";
-            document.getElementById('formPass').value = "kgr12345";
-            document.getElementById('formStatus').value = "Aktif";
-            document.getElementById('formRole').value = "member";
-
-            document.getElementById('modalModerasi').classList.add('show');
-        }
-
-        // BUKA MODAL EDIT (Ubah/Banned/Hapus)
-        window.openModalEdit = function(email) {
-            const m = allUsersData.find(x => x.id === email);
-            if (!m) return;
-
-            targetEditEmail = email;
-            document.getElementById('formMode').value = 'edit';
-            document.getElementById('modalTitle').innerText = 'Edit Anggota';
-            document.getElementById('modalSubtitle').innerText = email;
-            
-            document.getElementById('fieldEmailAdd').style.display = 'none';
-            document.getElementById('fieldPasswordAdd').style.display = 'none';
-            document.getElementById('btnHapusModerasi').style.display = 'block';
-
-            document.getElementById('formNama').value = m.nama_lengkap || "";
-            document.getElementById('formNik').value = decryptData(m.nik);
-            document.getElementById('formWa').value = m.no_wa || "";
-            document.getElementById('formStatus').value = m.status || "Pending Admin";
-            document.getElementById('formRole').value = (m.role || "member").toLowerCase();
-
-            // Batasi Admin Biasa gak bisa ngangkat orang jadi Superadmin
-            if(myRole === 'admin') {
-                const selectRole = document.getElementById('formRole');
-                for (let i = 0; i < selectRole.options.length; i++) {
-                    if (selectRole.options[i].value === "superadmin") selectRole.options[i].disabled = true;
-                }
+        function initAdminPanel() {
+            // Tampilkan menu khusus Superadmin (Dewa)
+            if (currentUserRole === 'superadmin') {
+                document.querySelectorAll('.superadmin-only').forEach(el => el.style.display = 'block');
+                loadConfigData();
             }
 
-            document.getElementById('modalModerasi').classList.add('show');
-        }
-
-        window.closeModalModerasi = function() { document.getElementById('modalModerasi').classList.remove('show'); }
-
-        window.saveModerasi = async function() {
-            const mode = document.getElementById('formMode').value;
-            const btn = document.getElementById('btnSaveModerasi');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses...'; btn.disabled = true;
-
-            try {
-                const nama = document.getElementById('formNama').value;
-                const nik = document.getElementById('formNik').value;
-                const wa = document.getElementById('formWa').value;
-                const status = document.getElementById('formStatus').value;
-                const role = document.getElementById('formRole').value;
-                const encNik = encryptData(nik);
-
-                if (mode === 'add') {
-                    const email = document.getElementById('formEmail').value.toLowerCase();
-                    const pass = document.getElementById('formPass').value;
-                    if(!email || !nik || !nama || !pass) throw new Error("Kolom wajib diisi!");
-
-                    // Secondary Auth Trick biar Superadmin gak ke-logout
-                    const secondaryApp = initializeApp(auth.app.options, "ModerationApp");
-                    const secondaryAuth = getAuth(secondaryApp);
-                    await createUserWithEmailAndPassword(secondaryAuth, email, pass);
-                    await secondaryAuth.signOut();
-
-                    await setDoc(doc(db, "users", email), { 
-                        nama_lengkap: nama, nik: encNik, no_wa: wa, email: email, 
-                        role: role, status: status, device_id: "", created_at: serverTimestamp() 
-                    });
-                    alert(`Anggota berhasil ditambahkan!\nBisa langsung login pakai:\nEmail: ${email}\nPass: ${pass}`);
-
-                } else if (mode === 'edit') {
-                    // Cek jika Admin berani banned Superadmin
-                    const oldData = allUsersData.find(x => x.id === targetEditEmail);
-                    if((oldData.role||"").toLowerCase() === 'superadmin' && myRole !== 'superadmin') {
-                        throw new Error("Admin tidak berhak mengubah data Superadmin.");
-                    }
-
-                    await updateDoc(doc(db, "users", targetEditEmail), { 
-                        nama_lengkap: nama, nik: encNik, no_wa: wa, status: status, role: role 
-                    });
-                    alert("Data anggota berhasil diperbarui.");
-                }
-                closeModalModerasi();
-            } catch (error) {
-                alert("Gagal memproses: " + error.message.replace('Firebase: ', ''));
-            } finally {
-                btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Simpan'; btn.disabled = false;
+            // Atur Dropdown Role di Edit Member sesuai kasta
+            const roleSelect = document.getElementById('editRole');
+            if (currentUserRole === 'superadmin') {
+                roleSelect.innerHTML = `<option value="member">Member</option><option value="admin">Admin</option><option value="bendahara">Bendahara</option><option value="superadmin">⭐ Superadmin (Dewa)</option>`;
+            } else {
+                roleSelect.innerHTML = `<option value="member">Member</option><option value="admin">Admin</option><option value="bendahara">Bendahara</option>`;
             }
+
+            loadAnggotaList();
+            loadKasPending();
         }
 
-        window.deleteModerasi = async function() {
-            const m = allUsersData.find(x => x.id === targetEditEmail);
-            if((m.role||"").toLowerCase() === 'superadmin') return alert("ERROR: Sistem melarang penghapusan Super Admin.");
-            
-            if(confirm(`YAKIN INGIN MENGHAPUS PERMANEN AKUN INI?\n\nNama: ${m.nama_lengkap}\nStatus ini tidak bisa dibatalkan!`)) { 
-                try {
-                    await deleteDoc(doc(db, "users", targetEditEmail));
-                    closeModalModerasi();
-                    alert("Anggota berhasil dihapus dari database.");
-                } catch(e) { alert("Gagal menghapus anggota."); }
-            }
+        window.switchNavTab = function(viewId, el) {
+            document.querySelectorAll('.nav-tabs .tab-btn').forEach(b => b.classList.remove('active')); el.classList.add('active');
+            document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active')); document.getElementById(viewId).classList.add('active');
         }
 
-        // ==========================================
-        // 2. FITUR SUPERADMIN GEOFENCE & CONFIG
-        // ==========================================
-        async function loadEventConfig() {
-            try {
-                const cfg = await getDoc(doc(db, "settings", "event_config"));
-                if (cfg.exists()) {
-                    const d = cfg.data();
-                    document.getElementById('evtName').value = d.nama_acara || "";
-                    document.getElementById('evtDate').value = d.tanggal_acara || "";
-                    document.getElementById('evtLat').value = d.lat || "";
-                    document.getElementById('evtLng').value = d.lng || "";
-                    document.getElementById('evtRadius').value = d.radius || 50;
-                    document.getElementById('toggleAcara').checked = (d.is_active === true || d.is_active === "true");
-                    updateToggleText(document.getElementById('toggleAcara').checked);
-                }
-            } catch(e) { console.log("Event config belum ada."); }
+        // ==============================================
+        // TAB 1: HRD & ANGGOTA
+        // ==============================================
+        window.filterHrd = function(state, el) {
+            document.querySelectorAll('.hrd-pill').forEach(p => p.classList.remove('active')); el.classList.add('active');
+            filterHrdState = state; renderAnggota();
         }
+        window.searchMember = function() { renderAnggota(); }
 
-        document.getElementById('toggleAcara').addEventListener('change', async function() { 
-            updateToggleText(this.checked); 
-            try { await setDoc(doc(db, "settings", "event_config"), { is_active: this.checked }, { merge: true }); } 
-            catch(e) { console.error("Gagal Auto-Save"); }
-        });
-
-        function updateToggleText(isActive) {
-            const txt = document.getElementById('txtStatusAcara');
-            if(isActive) { txt.innerText = "ON (Tampil di semua HP)"; txt.style.color = "var(--success-green)"; } 
-            else { txt.innerText = "OFF (Sembunyi)"; txt.style.color = "var(--danger-red)"; }
-        }
-
-        window.lockGPS = function() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        document.getElementById('evtLat').value = position.coords.latitude;
-                        document.getElementById('evtLng').value = position.coords.longitude;
-                        alert("Berhasil! Koordinat Pusat Acara dikunci.");
-                    },
-                    (error) => { alert("Gagal mengambil GPS. Pastikan izin lokasi menyala."); },
-                    { enableHighAccuracy: true }
-                );
-            } else { alert("Browser tidak mendukung GPS."); }
-        }
-
-        window.saveEventConfig = async function() {
-            const btn = document.getElementById('btnSaveEvent');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...'; btn.disabled = true;
-            try {
-                await setDoc(doc(db, "settings", "event_config"), {
-                    nama_acara: document.getElementById('evtName').value,
-                    tanggal_acara: document.getElementById('evtDate').value,
-                    lat: document.getElementById('evtLat').value,
-                    lng: document.getElementById('evtLng').value,
-                    radius: Number(document.getElementById('evtRadius').value),
-                    is_active: document.getElementById('toggleAcara').checked,
-                    updated_at: new Date()
-                }, { merge: true });
-                alert("Setting Acara berhasil disimpan!");
-            } catch(e) { alert("Gagal menyimpan setting."); } 
-            finally { btn.innerHTML = '<i class="fa-solid fa-satellite"></i> Terapkan Pengaturan'; btn.disabled = false; }
-        }
-
-        window.exportAbsensi = async function() {
-            const evtName = document.getElementById('evtName').value;
-            if(!evtName) return alert("Nama acara kosong!");
-            try {
-                const q = query(collection(db, "absensi_acara"));
-                const snap = await getDocs(q);
-                let csv = "data:text/csv;charset=utf-8,Tanggal,Jam,Nama Acara,Nama Member,Email,Metode\n";
-                let count = 0;
+        function loadAnggotaList() {
+            onSnapshot(collection(db, "users"), (snap) => {
+                allUsers = []; let pendingCount = 0;
                 snap.forEach(d => {
                     const data = d.data();
-                    if(data.event_name === evtName) {
-                        const dateObj = data.scan_time ? data.scan_time.toDate() : new Date();
-                        const tgl = dateObj.toLocaleDateString('id-ID');
-                        const jam = dateObj.toLocaleTimeString('id-ID');
-                        const metode = data.is_manual ? "Manual Bypass" : "Scan QR";
-                        csv += `${tgl},${jam},${data.event_name},${(data.member_name||"").replace(/,/g,' ')},${data.member_email},${metode}\n`;
-                        count++;
-                    }
+                    allUsers.push({ id: d.id, ...data });
+                    if(data.status === "Pending Admin") pendingCount++;
                 });
-                if(count === 0) return alert("Belum ada absen untuk acara: " + evtName);
+                document.getElementById('badgePendingCount').innerText = pendingCount;
+                renderAnggota();
+            });
+        }
+
+        function renderAnggota() {
+            const list = document.getElementById('listAnggotaContainer');
+            const searchTxt = document.getElementById('searchUser').value.toLowerCase();
+            
+            const filtered = allUsers.filter(u => {
+                const matchState = filterHrdState === 'Semua' ? (u.status !== 'Pending Admin') : (u.status === 'Pending Admin');
+                const cleanNik = decryptData(u.nik || "").toLowerCase();
+                const matchSearch = (u.nama_lengkap || "").toLowerCase().includes(searchTxt) || cleanNik.includes(searchTxt);
+                return matchState && matchSearch;
+            });
+
+            if (filtered.length === 0) { list.innerHTML = '<div class="empty-state"><i class="fa-solid fa-users-slash"></i><p>Tidak ada data anggota ditemukan.</p></div>'; return; }
+
+            list.innerHTML = filtered.map(u => {
+                let stClass = "st-active"; let stText = "Aktif";
+                if(u.status === "Pending Admin") { stClass = "st-pending"; stText = "Pending"; }
+                else if(u.status === "Banned") { stClass = "st-banned"; stText = "Blokir"; }
+
+                const hakAbsen = u.hak_absen || "otomatis";
+                let hakIcon = '';
+                if(hakAbsen === 'buka_paksa') hakIcon = '<i class="fa-solid fa-lock-open" style="color:var(--emerald-main); margin-left:5px;" title="Bypass Barcode"></i>';
+                else if(hakAbsen === 'kunci_paksa') hakIcon = '<i class="fa-solid fa-lock" style="color:var(--color-danger); margin-left:5px;" title="Barcode Dikunci"></i>';
+
+                return `
+                <div class="data-card">
+                    <div class="dc-info">
+                        <h4>${u.nama_lengkap || "Tanpa Nama"} ${hakIcon}</h4>
+                        <p><i class="fa-brands fa-whatsapp" style="color:#25D366;"></i> ${u.no_wa || "-"} | ${u.email}</p>
+                        <div>
+                            <span class="status-tag ${stClass}">${stText}</span>
+                            <span class="status-tag" style="background:#F3F4F6; color:#4B5563; margin-left:5px;">${u.role || "member"}</span>
+                        </div>
+                    </div>
+                    <button class="btn-edit-round" onclick="openEditMember('${u.email}')"><i class="fa-solid fa-pen-to-square"></i></button>
+                </div>
+            `}).join('');
+        }
+
+        window.openEditMember = function(email) {
+            const u = allUsers.find(x => x.email === email); if(!u) return;
+            document.getElementById('editEmail').value = u.email;
+            document.getElementById('editName').value = u.nama_lengkap || "";
+            document.getElementById('editWa').value = u.no_wa || "";
+            
+            // PROSES DEKRIPSI NIK SAAT DITAMPILKAN DI FORM
+            document.getElementById('editNik').value = decryptData(u.nik || "");
+            
+            document.getElementById('editRole').value = (u.role || "member").toLowerCase();
+            document.getElementById('editStatus').value = u.status || "Active";
+            document.getElementById('editHakAbsen').value = u.hak_absen || "otomatis";
+            
+            document.getElementById('modalEditMember').classList.add('show');
+        }
+
+        window.saveEditUser = async function(e) {
+            e.preventDefault(); showLoading("Menyimpan Data Anggota...");
+            const email = document.getElementById('editEmail').value;
+            const newNik = document.getElementById('editNik').value;
+            if(newNik.length !== 16) { hideLoading(); return customAlert("NIK Salah", "NIK harus berjumlah 16 digit.", "warning"); }
+
+            try {
+                // ENKRIPSI ULANG NIK SEBELUM MASUK DATABASE
+                const encNik = encryptData(newNik);
+                await updateDoc(doc(db, "users", email), {
+                    nama_lengkap: document.getElementById('editName').value,
+                    no_wa: document.getElementById('editWa').value,
+                    nik: encNik,
+                    role: document.getElementById('editRole').value,
+                    status: document.getElementById('editStatus').value,
+                    hak_absen: document.getElementById('editHakAbsen').value
+                });
+                hideLoading(); customAlert("Berhasil", "Data anggota berhasil dimoderasi.", "success");
+                document.getElementById('modalEditMember').classList.remove('show');
+            } catch(error) { hideLoading(); customAlert("Gagal", "Error menyimpan data.", "error"); }
+        }
+
+        // ==============================================
+        // TAB 2: VERIFIKASI KAS (Bendahara/Admin)
+        // ==============================================
+        let pendingKas = [];
+        function loadKasPending() {
+            onSnapshot(query(collection(db, "transactions"), orderBy("tanggal", "desc")), (snap) => {
+                pendingKas = [];
+                snap.forEach(d => {
+                    const data = d.data();
+                    if(data.status === "pending" && data.jenis === "Pemasukan") pendingKas.push({ id: d.id, ...data });
+                });
+                renderKas();
+            });
+        }
+
+        function renderKas() {
+            const list = document.getElementById('listKasContainer');
+            if (pendingKas.length === 0) { list.innerHTML = '<div class="empty-state"><i class="fa-solid fa-check-double"></i><p>Semua bukti transfer sudah diverifikasi.</p></div>'; return; }
+
+            list.innerHTML = pendingKas.map(k => {
+                const dateStr = k.tanggal ? k.tanggal.toDate().toLocaleDateString('id-ID') : '-';
+                return `
+                <div class="data-card" style="align-items: flex-start;">
+                    <div class="dc-info" style="flex:1;">
+                        <h4>${k.pengirim}</h4>
+                        <p><i class="fa-solid fa-calendar-day"></i> ${dateStr} | ${k.nama_keterangan || "Sedekah"}</p>
+                        <div style="font-size: 15px; font-weight: 900; color: var(--emerald-main); margin-top:8px;">Rp ${Number(k.nominal).toLocaleString('id-ID')}</div>
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:8px;">
+                        <button class="btn-edit-round" style="background:#E0F2FE; color:#0284C7;" onclick="viewImage('${k.bukti_image}')"><i class="fa-solid fa-image"></i></button>
+                        <button class="btn-edit-round" onclick="openApproveKas('${k.id}')"><i class="fa-solid fa-clipboard-check"></i></button>
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        window.viewImage = function(src) { document.getElementById('imgViewerSrc').src = src; document.getElementById('modalImage').classList.add('show'); }
+        window.closeImageView = function() { document.getElementById('modalImage').classList.remove('show'); }
+
+        window.openApproveKas = function(id) {
+            const k = pendingKas.find(x => x.id === id); if(!k) return;
+            document.getElementById('apvTrxId').value = k.id;
+            document.getElementById('apvTrxName').value = k.nama_keterangan || "Sedekah";
+            document.getElementById('apvTrxNominal').value = k.nominal;
+            document.getElementById('modalApproveTrx').classList.add('show');
+        }
+
+        window.actionTrx = async function(act) {
+            const id = document.getElementById('apvTrxId').value;
+            const msg = act === 'approve' ? 'Yakin terima dan masukkan dana ini ke Kas?' : 'Yakin TOLAK bukti transfer ini?';
+            
+            customConfirm("Konfirmasi Verifikasi", msg, async () => {
+                showLoading();
+                try {
+                    if (act === 'approve') {
+                        await updateDoc(doc(db, "transactions", id), {
+                            status: "approved",
+                            nama_keterangan: document.getElementById('apvTrxName').value,
+                            nominal: Number(document.getElementById('apvTrxNominal').value)
+                        });
+                        customAlert("Berhasil", "Dana masuk telah tercatat.", "success");
+                    } else {
+                        await updateDoc(doc(db, "transactions", id), { status: "rejected" });
+                        customAlert("Ditolak", "Bukti transfer telah ditolak.", "success");
+                    }
+                    document.getElementById('modalApproveTrx').classList.remove('show');
+                } catch(e) { customAlert("Gagal", "Error memproses data.", "error"); }
+                finally { hideLoading(); }
+            });
+        }
+
+        // ==============================================
+        // TAB 3 & 4: SISTEM & RADAR (SUPERADMIN ONLY)
+        // ==============================================
+        async function loadConfigData() {
+            const sys = await getDoc(doc(db, "settings", "app_config"));
+            if(sys.exists()) {
+                document.getElementById('sysLimit').value = sys.data().limit_sedekah || 10000;
+                document.getElementById('sysSyarat').value = sys.data().min_sedekah_absen || 0; // Config baru untuk syarat absen
+                document.getElementById('sysQris').value = sys.data().qris_url || "";
+            }
+            const evt = await getDoc(doc(db, "settings", "event_config"));
+            if(evt.exists()) {
+                document.getElementById('evName').value = evt.data().nama_acara || "";
+                document.getElementById('evLat').value = evt.data().lat || "";
+                document.getElementById('evLng').value = evt.data().lng || "";
+                document.getElementById('evRadius').value = evt.data().radius || 100;
+                document.getElementById('evActive').value = String(evt.data().is_active);
+            }
+        }
+
+        window.saveAppConfig = async function(e) {
+            e.preventDefault(); showLoading("Menyimpan Konfigurasi...");
+            try {
+                await setDoc(doc(db, "settings", "app_config"), {
+                    limit_sedekah: Number(document.getElementById('sysLimit').value),
+                    min_sedekah_absen: Number(document.getElementById('sysSyarat').value),
+                    qris_url: document.getElementById('sysQris').value
+                }, {merge: true});
+                hideLoading(); customAlert("Update Sistem", "Parameter aplikasi berhasil diubah.", "success");
+            } catch(err) { hideLoading(); customAlert("Gagal", "Sistem gagal menyimpan.", "error"); }
+        }
+
+        window.saveEventConfig = async function(e) {
+            e.preventDefault(); showLoading("Menyimpan Radar...");
+            try {
+                await setDoc(doc(db, "settings", "event_config"), {
+                    nama_acara: document.getElementById('evName').value,
+                    lat: parseFloat(document.getElementById('evLat').value),
+                    lng: parseFloat(document.getElementById('evLng').value),
+                    radius: Number(document.getElementById('evRadius').value),
+                    is_active: document.getElementById('evActive').value === 'true'
+                }, {merge: true});
+                hideLoading(); customAlert("Radar Update", "Konfigurasi acara berhasil disimpan.", "success");
+            } catch(err) { hideLoading(); customAlert("Gagal", "Gagal mengupdate Radar.", "error"); }
+        }
+
+        // DOWNLOAD EXCEL ABSENSI
+        window.downloadAbsen = async function() {
+            showLoading("Menyiapkan Data Excel...");
+            try {
+                const eventName = document.getElementById('evName').value;
+                if(!eventName) throw new Error("Nama acara belum diatur.");
+                
+                const q = query(collection(db, "absensi_acara"), where("event_name", "==", eventName));
+                const snap = await getDocs(q);
+                let csv = "data:text/csv;charset=utf-8,Waktu Scan,Nama Member,Email (ID),Sistem Absen,Admin Scanner\n";
+                
+                snap.forEach(d => {
+                    const dt = d.data();
+                    const time = dt.scan_time ? dt.scan_time.toDate().toLocaleString('id-ID') : "";
+                    const type = dt.is_manual ? "Bypass/Manual" : "Scan QR";
+                    csv += `${time},${dt.member_name},${dt.member_email},${type},${dt.scanner_admin}\n`;
+                });
+
                 const link = document.createElement("a");
-                link.href = encodeURI(csv); link.download = `Absen_${evtName.replace(/\s+/g, '_')}.csv`;
+                link.href = encodeURI(csv); link.download = `Absensi_${eventName.replace(/ /g,'_')}.csv`;
                 document.body.appendChild(link); link.click(); document.body.removeChild(link);
-            } catch(e) { alert("Gagal export absen."); }
+                hideLoading(); customAlert("Berhasil", "File Absensi telah diunduh.", "success");
+            } catch(e) { hideLoading(); customAlert("Gagal", e.message, "error"); }
         }
-
-        async function loadConfig() {
-            try {
-                const configDoc = await getDoc(doc(db, "settings", "app_config"));
-                if (configDoc.exists()) {
-                    document.getElementById('cfgLimit').value = configDoc.data().limit_sedekah || 10000;
-                    document.getElementById('cfgQris').value = configDoc.data().qris_url || "";
-                }
-            } catch(e) { console.log("Config belum ada."); }
-        }
-
-        window.saveAppConfig = async function() {
-            const btn = document.getElementById('btnSaveConfig');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>...'; btn.disabled = true;
-            try {
-                await setDoc(doc(db, "settings", "app_config"), { 
-                    limit_sedekah: Number(document.getElementById('cfgLimit').value), 
-                    qris_url: document.getElementById('cfgQris').value 
-                }, { merge: true });
-                alert("Sistem berhasil di-update!");
-            } catch(e) { alert("Gagal update sistem."); } 
-            finally { btn.innerHTML = '<i class="fa-solid fa-microchip"></i> Terapkan ke Sistem'; btn.disabled = false; }
+    </script>
+    
+    <!-- PWA REGISTRATION -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW Fail', err)); });
         }
     </script>
 </body>

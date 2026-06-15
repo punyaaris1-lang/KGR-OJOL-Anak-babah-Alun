@@ -3,106 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#064E3B">
-    <title>Setting Profil - KGR</title>
+    <meta name="theme-color" content="#F4F6F5">
+    <title>Profil Saya - KGR</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon.png">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    
     <style>
         :root { 
             --bg-base: #F4F6F5; --text-dark: #111827; --text-gray: #4B5563; 
-            --emerald-dark: #064E3B; --emerald-main: #059669; --emerald-card: linear-gradient(135deg, #065F46 0%, #022C22 100%);
-            --glass-bg: rgba(255, 255, 255, 0.75); --glass-border: rgba(255, 255, 255, 0.9); 
-            --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.04); --color-out: #DC2626; 
+            --emerald-main: #059669; --emerald-dark: #064E3B; --gold-accent: #FBBF24;
+            --color-danger: #DC2626; --warning-yellow: #F59E0B;
         }
+
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: #E2E8E4; display: flex; justify-content: center; min-height: 100vh; }
         
-        body { background-color: #E2E8E4; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        
-        .app-container { width: 100%; max-width: 414px; height: 100vh; background-color: var(--bg-base); position: relative; overflow: hidden; display: flex; flex-direction: column; color: var(--text-dark); }
-        @media (min-width: 600px) { .app-container { max-width: 480px; height: 90vh; max-height: 900px; border-radius: 40px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15); border: 8px solid #FFFFFF; margin: auto; } }
-        
-        .glass-panel { background: var(--glass-bg); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); box-shadow: var(--shadow-soft), inset 0 0 20px rgba(255,255,255,0.5); z-index: 2; position: relative; }
-        
-        .header-page { padding: 40px 24px 20px; display: flex; align-items: center; gap: 15px; z-index: 10; position: relative; border-bottom: 1px solid rgba(0,0,0,0.05); background: rgba(244,246,245,0.8); backdrop-filter: blur(20px); }
-        .btn-back { width: 40px; height: 40px; border-radius: 14px; background: #FFF; color: var(--text-dark); display: flex; justify-content: center; align-items: center; font-size: 18px; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.1); }
-        .btn-back:active { transform: scale(0.9); }
-        .header-page h2 { font-size: 18px; font-weight: 900; letter-spacing: -0.5px; }
-        
-        .content-area { flex-grow: 1; overflow-y: auto; padding: 20px 24px 110px; scrollbar-width: none; z-index: 2; position: relative; }
+        .app-container { width: 100%; max-width: 480px; background: var(--bg-base); display: flex; flex-direction: column; min-height: 100vh; position: relative; overflow-x: hidden;}
+        @media (min-width: 600px) { .app-container { height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 30px 60px rgba(0,0,0,0.15); border: 8px solid #FFFFFF; margin: auto; } }
+
+        .header-page { padding: 40px 24px 20px; display: flex; align-items: center; gap: 15px; background: #FFF; border-bottom: 1px solid rgba(0,0,0,0.05); z-index: 10;}
+        .btn-back { width: 42px; height: 42px; border-radius: 14px; background: #F5F5F7; display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text-dark); transition: 0.2s;}
+        .btn-back:active { transform: scale(0.9); background: var(--emerald-main); color: #FFF;}
+        .header-page h2 { font-size: 18px; font-weight: 900; letter-spacing: -0.5px;}
+
+        .content-area { flex-grow: 1; overflow-y: auto; padding: 25px 24px 100px; scrollbar-width: none;}
         .content-area::-webkit-scrollbar { display: none; }
+
+        /* PHOTO EDIT SECTION */
+        .photo-edit-section { text-align: center; margin-bottom: 30px; position: relative;}
+        .photo-circle { width: 110px; height: 110px; border-radius: 50%; background: var(--text-dark); border: 4px solid #FFF; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin: 0 auto 15px; display: flex; justify-content: center; align-items: center; font-size: 40px; font-weight: 900; color: var(--gold-accent); position: relative; background-size: cover; background-position: center;}
         
-        .profile-card { border-radius: 24px; padding: 30px 20px; margin-bottom: 25px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .btn-change-photo { position: absolute; bottom: 0; right: 0; width: 36px; height: 36px; border-radius: 50%; background: var(--emerald-main); color: #FFF; border: 3px solid #FFF; display: flex; justify-content: center; align-items: center; font-size: 14px; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(5,150,105,0.3);}
+        .btn-change-photo:active { transform: scale(0.9); }
+        .hidden-file-input { display: none; }
+
+        /* FORM SECTION */
+        .form-card { background: #FFF; border-radius: 24px; padding: 25px 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.02); margin-bottom: 20px;}
+        .form-group { margin-bottom: 18px; }
+        .form-label { display: block; font-size: 11px; font-weight: 800; color: var(--text-gray); margin-bottom: 8px; text-transform: uppercase;}
+        .form-input { width: 100%; padding: 16px; border-radius: 14px; border: 2px solid rgba(0,0,0,0.06); font-size: 14px; font-weight: 700; color: var(--text-dark); outline: none; background: #F9F9F9; transition: 0.2s;}
+        .form-input:focus { border-color: var(--emerald-main); background: #FFF;}
+        .form-input:disabled { background: #E2E8E4; color: var(--text-gray); cursor: not-allowed; border-color: transparent;}
+
+        .btn-save { width: 100%; padding: 18px; border-radius: 16px; font-size: 14px; font-weight: 900; background: var(--text-dark); color: #FFF; border: none; cursor: pointer; transition: 0.2s; box-shadow: 0 10px 20px rgba(0,0,0,0.15); display: flex; justify-content: center; align-items: center; gap: 8px;}
+        .btn-save:active { transform: scale(0.96); }
+
+        .btn-logout { width: 100%; padding: 18px; border-radius: 16px; font-size: 14px; font-weight: 900; background: #FEF2F2; color: var(--color-danger); border: 2px solid rgba(220,38,38,0.2); cursor: pointer; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px;}
+        .btn-logout:active { transform: scale(0.96); background: var(--color-danger); color: #FFF;}
+
+        /* CUSTOM POPUP (ALERT & CONFIRM) */
+        .cp-overlay { position: fixed; inset: 0; background: rgba(17, 24, 39, 0.8); backdrop-filter: blur(8px); z-index: 99999; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px; }
+        .cp-overlay.show { opacity: 1; visibility: visible; }
+        .cp-box { background: #FFF; border-radius: 28px; width: 100%; max-width: 320px; text-align: center; padding: 30px 24px; transform: scale(0.9); transition: 0.3s; box-shadow: 0 25px 50px rgba(0,0,0,0.2); }
+        .cp-overlay.show .cp-box { transform: scale(1); }
+        .cp-icon { width: 65px; height: 65px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; margin: 0 auto 15px; }
+        .cp-icon.success { background: #D1FAE5; color: var(--emerald-main); }
+        .cp-icon.error { background: #FEE2E2; color: var(--color-danger); }
+        .cp-icon.warning { background: #FEF3C7; color: var(--warning-yellow); }
+        .cp-title { font-size: 18px; font-weight: 900; color: var(--text-dark); margin-bottom: 8px; }
+        .cp-desc { font-size: 12px; font-weight: 600; color: var(--text-gray); margin-bottom: 25px; line-height: 1.5; }
+        .cp-btn-wrap { display: flex; gap: 10px; }
+        .cp-btn { flex: 1; padding: 15px; border-radius: 14px; font-size: 13px; font-weight: 800; border: none; cursor: pointer; transition: 0.2s; }
+        .cp-btn:active { transform: scale(0.95); }
+        .cp-btn-primary { background: var(--emerald-main); color: #FFF; width: 100%; box-shadow: 0 5px 15px rgba(5,150,105,0.2);}
+        .cp-btn-cancel { background: #F4F6F5; color: var(--text-dark); }
+        .cp-btn-danger { background: var(--color-danger); color: #FFF; box-shadow: 0 5px 15px rgba(220,38,38,0.2);}
         
-        /* Avatar & Icon Kamera */
-        .profile-avatar { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 10px; background-size: cover; background-position: center; background-color: #111827; color: var(--emerald-main); display: flex; justify-content: center; align-items: center; font-size: 40px; font-weight: 900; border: 4px solid #FFF; box-shadow: 0 10px 25px rgba(0,0,0,0.1); position: relative; }
-        .btn-edit-foto { position: absolute; bottom: -2px; right: -2px; width: 34px; height: 34px; background: var(--text-dark); color: var(--emerald-main); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 14px; border: 2.5px solid #FFF; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); z-index: 10; }
-        
-        .role-badge { display: inline-block; padding: 4px 12px; border-radius: 8px; font-size: 10px; font-weight: 800; background: var(--emerald-main); color: #FFF; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 25px; box-shadow: 0 4px 10px rgba(5, 150, 105, 0.3); }
-        
-        .form-group { width: 100%; margin-bottom: 15px; text-align: left; }
-        .form-label { display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; color: var(--text-gray); }
-        .form-input { width: 100%; padding: 14px 16px; border-radius: 14px; border: 1.5px solid rgba(0,0,0,0.06); font-size: 14px; font-weight: 700; color: var(--text-dark); outline: none; background: #FFF; transition: 0.2s; }
-        .form-input:focus { border-color: var(--emerald-main); box-shadow: 0 0 0 3px rgba(5,150,105,0.1); }
-        .form-input:disabled { background: #E5E5E5; color: var(--text-gray); cursor: not-allowed; border-color: transparent; }
-        
-        .btn-save { width: 100%; padding: 16px; border-radius: 16px; font-size: 13px; font-weight: 900; background: var(--text-dark); color: #FFF; border: none; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.1); transition: 0.2s;}
-        .btn-save i { color: var(--emerald-main); }
-        .btn-save:disabled { background: #CCC; cursor: not-allowed; box-shadow: none; }
-        .btn-save:active:not(:disabled) { transform: scale(0.97); }
-        
-        .btn-superadmin { width: 100%; padding: 16px; border-radius: 16px; font-size: 13px; font-weight: 800; background: var(--text-dark); color: var(--emerald-main); border: none; margin-bottom: 12px; display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer; transition: 0.2s;}
-        .btn-superadmin:active { transform: scale(0.97); }
-        
-        .btn-logout { width: 100%; padding: 16px; border-radius: 16px; font-size: 13px; font-weight: 800; background: #FFF; color: var(--color-out); border: 2px solid var(--color-out); display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer; transition: 0.2s;}
-        .btn-logout:active { background: var(--color-out); color: #FFF; }
+        .spinner-custom { border: 4px solid rgba(0,0,0,0.1); width: 50px; height: 50px; border-radius: 50%; border-left-color: var(--emerald-main); animation: spin 1s linear infinite; margin: 0 auto 15px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
+    <!-- CUSTOM ALERTS -->
+    <div class="cp-overlay" id="customAlert">
+        <div class="cp-box">
+            <div class="cp-icon success" id="caIcon"><i class="fa-solid fa-check"></i></div>
+            <h3 class="cp-title" id="caTitle">Pemberitahuan</h3>
+            <p class="cp-desc" id="caDesc">Pesan</p>
+            <button class="cp-btn cp-btn-primary" onclick="closeCustomAlert()">Mengerti</button>
+        </div>
+    </div>
+    <div class="cp-overlay" id="customConfirm">
+        <div class="cp-box">
+            <div class="cp-icon warning"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <h3 class="cp-title" id="ccTitle">Konfirmasi</h3>
+            <p class="cp-desc" id="ccDesc">Apakah Anda yakin?</p>
+            <div class="cp-btn-wrap">
+                <button class="cp-btn cp-btn-cancel" onclick="closeCustomConfirm()">Batal</button>
+                <button class="cp-btn cp-btn-danger" id="ccBtnYes">Ya, Keluar</button>
+            </div>
+        </div>
+    </div>
+    <div class="cp-overlay" id="customLoading">
+        <div class="cp-box" style="padding: 40px 20px;">
+            <div class="spinner-custom"></div>
+            <h3 class="cp-title" id="clTitle" style="margin-bottom: 0;">Memproses...</h3>
+        </div>
+    </div>
+
     <div class="app-container">
         <div class="header-page">
             <div class="btn-back" onclick="window.location.href='index.html'"><i class="fa-solid fa-arrow-left"></i></div>
-            <h2>Pengaturan Profil</h2>
+            <h2>Pengaturan Akun</h2>
         </div>
 
         <div class="content-area">
-            <div class="profile-card glass-panel">
-                <div class="profile-avatar" id="avatarPreview">
-                    <span id="avatarInitials">...</span>
-                    <div class="btn-edit-foto" onclick="document.getElementById('uploadFoto').click()"><i class="fa-solid fa-camera"></i></div>
-                </div>
-                <input type="file" id="uploadFoto" accept="image/*" hidden onchange="previewImage(event)">
-                
-                <div class="role-badge" id="uiRoleBadge"><i class="fa-solid fa-spinner fa-spin" style="margin-right: 4px;"></i> Memuat...</div>
-
-                <div class="form-group">
-                    <label class="form-label">Nama Lengkap</label>
-                    <input type="text" id="inputNama" class="form-input" value="Memuat..." oninput="checkChanges()">
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Nomor WhatsApp Aktif</label>
-                    <input type="tel" id="inputWa" class="form-input" value="Memuat..." oninput="this.value = this.value.replace(/[^0-9]/g, ''); checkChanges();">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Nomor Induk Kependudukan (NIK - Kunci)</label>
-                    <input type="text" id="inputNik" class="form-input" value="Memuat..." disabled>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Email Terdaftar (Login)</label>
-                    <input type="email" id="inputEmail" class="form-input" value="Memuat..." disabled>
-                </div>
-
-                <button class="btn-save" id="btnSave" onclick="saveProfile()" disabled><i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan</button>
+            
+            <div class="photo-edit-section">
+                <div class="photo-circle" id="uiProfilePic"></div>
+                <label for="inputPhoto" class="btn-change-photo" title="Ganti Foto">
+                    <i class="fa-solid fa-camera"></i>
+                </label>
+                <input type="file" id="inputPhoto" class="hidden-file-input" accept="image/*" onchange="previewPhoto(event)">
+                <p style="font-size: 11px; font-weight: 700; color: var(--text-gray); margin-top: 15px;">Ketuk ikon kamera untuk mengganti foto.</p>
             </div>
 
-            <button id="btnPanelAdmin" class="btn-superadmin" style="display: none;" onclick="window.location.href='superadmin.html'">
-                <i class="fa-solid fa-user-shield"></i> Akses Panel Superadmin
-            </button>
+            <div class="form-card">
+                <form id="formProfile" onsubmit="saveProfile(event)">
+                    <div class="form-group">
+                        <label class="form-label">Email Terdaftar (Permanen)</label>
+                        <input type="email" id="pfEmail" class="form-input" disabled>
+                    </div>
+                    <!-- TAMBAHAN FORM NIK (TERKUNCI) -->
+                    <div class="form-group">
+                        <label class="form-label">NIK Terdaftar (Permanen)</label>
+                        <input type="text" id="pfNik" class="form-input" disabled style="background: #FEF3C7; border-color: var(--gold-accent); opacity: 0.9; color: var(--text-dark);">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nama Sesuai KTP</label>
+                        <input type="text" id="pfName" class="form-input" required>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 25px;">
+                        <label class="form-label">Nomor WhatsApp Aktif</label>
+                        <input type="tel" id="pfWa" class="form-input" required oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                    </div>
+                    <button type="submit" class="btn-save"><i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan</button>
+                </form>
+            </div>
 
-            <button class="btn-logout" onclick="confirmLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar Akun (Sign Out)</button>
+            <button class="btn-logout" onclick="prosesLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar dari Aplikasi</button>
+
         </div>
     </div>
 
@@ -111,144 +156,128 @@
         import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
         import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-        let currentUserEmail = "";
-        let originalName = "";
-        let originalWa = "";
-        let newImageUploaded = false;
-        let currentBase64Image = null;
-
-        // BACA NIK ENKRIPSI
-        const CRYPTO_OFFSET = 7; 
-        function decryptData(cipherText) {
-            if (!cipherText) return "Tidak ada data NIK";
-            try {
-                let decoded = decodeURIComponent(escape(atob(cipherText)));
-                return decoded.split("").map(char => String.fromCharCode(char.charCodeAt(0) - CRYPTO_OFFSET)).join("");
-            } catch (e) {
-                return cipherText;
-            }
+        // KENDALI CUSTOM MODAL
+        window.customAlert = function(title, desc, type = 'success') {
+            const el = document.getElementById('customAlert'); document.getElementById('caTitle').innerText = title; document.getElementById('caDesc').innerText = desc;
+            const iconEl = document.getElementById('caIcon');
+            if(type === 'success') { iconEl.className = 'cp-icon success'; iconEl.innerHTML = '<i class="fa-solid fa-check"></i>'; }
+            else if(type === 'error') { iconEl.className = 'cp-icon error'; iconEl.innerHTML = '<i class="fa-solid fa-xmark"></i>'; }
+            else { iconEl.className = 'cp-icon warning'; iconEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>'; }
+            el.classList.add('show');
         }
+        window.closeCustomAlert = function() { document.getElementById('customAlert').classList.remove('show'); }
+        window.customConfirm = function(title, desc, onYes) {
+            const el = document.getElementById('customConfirm'); document.getElementById('ccTitle').innerText = title; document.getElementById('ccDesc').innerText = desc;
+            document.getElementById('ccBtnYes').onclick = function() { closeCustomConfirm(); onYes(); }; el.classList.add('show');
+        }
+        window.closeCustomConfirm = function() { document.getElementById('customConfirm').classList.remove('show'); }
+        window.showLoading = function(title = "Memproses...") { document.getElementById('clTitle').innerText = title; document.getElementById('customLoading').classList.add('show'); }
+        window.hideLoading = function() { document.getElementById('customLoading').classList.remove('show'); }
+
+        // MESIN DEKRIPSI NIK
+        const CRYPTO_OFFSET = 7;
+        function decryptData(encoded) {
+            if (!encoded) return "";
+            try {
+                let decoded = decodeURIComponent(escape(atob(encoded))); 
+                return decoded.split("").map(char => String.fromCharCode(char.charCodeAt(0) - CRYPTO_OFFSET)).join("");
+            } catch(e) { return encoded; } 
+        }
+
+        let userEmail = "";
+        let newBase64Photo = null;
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                currentUserEmail = user.email;
-                const userRef = doc(db, "users", currentUserEmail);
+                userEmail = user.email;
+                document.getElementById('pfEmail').value = userEmail;
                 
+                showLoading("Memuat Profil...");
                 try {
-                    const docSnap = await getDoc(userRef);
+                    const docSnap = await getDoc(doc(db, "users", userEmail));
                     if (docSnap.exists()) {
-                        const data = docSnap.data();
-                        const role = (data.role || "member").toLowerCase();
-                        const namaLengkap = data.nama_lengkap || "Tanpa Nama";
-                        const nomorWa = data.no_wa || "";
+                        const d = docSnap.data();
+                        document.getElementById('pfName').value = d.nama_lengkap || "";
+                        // Armor Tipe Data Nomor WA
+                        document.getElementById('pfWa').value = d.no_wa ? String(d.no_wa) : "";
                         
-                        const nikAman = decryptData(data.nik);
-
-                        document.getElementById('uiRoleBadge').innerHTML = `<i class="fa-solid fa-star" style="margin-right: 4px;"></i> ${role.toUpperCase()}`;
-                        document.getElementById('inputNama').value = namaLengkap;
-                        document.getElementById('inputWa').value = nomorWa;
-                        document.getElementById('inputNik').value = nikAman;
-                        document.getElementById('inputEmail').value = currentUserEmail;
+                        // MUNCULIN NIK YANG SUDAH DITERJEMAHKAN KE LAYAR
+                        document.getElementById('pfNik').value = decryptData(d.nik || "");
                         
-                        originalName = namaLengkap; 
-                        originalWa = nomorWa;
-
-                        if(data.profile_image) {
-                            document.getElementById('avatarInitials').style.display = 'none';
-                            document.getElementById('avatarPreview').style.backgroundImage = `url('${data.profile_image}')`;
+                        const picEl = document.getElementById('uiProfilePic');
+                        if (d.profile_image) {
+                            picEl.style.backgroundImage = `url('${d.profile_image}')`;
+                            picEl.style.border = "none";
+                            picEl.innerText = "";
                         } else {
-                            document.getElementById('avatarPreview').style.backgroundImage = "none";
-                            document.getElementById('avatarInitials').innerText = namaLengkap.charAt(0).toUpperCase();
+                            picEl.innerText = (d.nama_lengkap || "A").charAt(0).toUpperCase();
                         }
-
-                        if (role === "superadmin" || role === "admin" || role === "bendahara") {
-                            document.getElementById('btnPanelAdmin').style.display = 'flex';
-                        }
-                    } else { auth.signOut(); }
-                } catch (error) { console.error("Gagal memuat profil:", error); }
+                    }
+                    hideLoading();
+                } catch(e) { hideLoading(); customAlert("Gagal", "Gagal menarik data profil.", "error"); }
             } else { window.location.href = 'login.html'; }
         });
 
-        window.confirmLogout = function() { 
-            if(confirm("Yakin ingin keluar?")) { signOut(auth).then(() => { window.location.href = 'login.html'; }); }
-        }
-
-        window.checkChanges = function() {
-            const currentName = document.getElementById('inputNama').value;
-            const currentWa = document.getElementById('inputWa').value;
-            document.getElementById('btnSave').disabled = !(currentName !== originalName || currentWa !== originalWa || newImageUploaded);
-        }
-
-        // ==========================================
-        // FITUR KOMPRESOR FOTO OTOMATIS (AUTO-RESIZE)
-        // ==========================================
-        window.previewImage = function(event) {
+        // PREVIEW & CONVERT FOTO (KOMPRESI SEDERHANA)
+        window.previewPhoto = function(event) {
             const file = event.target.files[0];
             if (!file) return;
 
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    
-                    // Batasi maksimal resolusi 500px biar enteng di Firestore
-                    let MAX_SIZE = 500;
-                    let width = img.width;
-                    let height = img.height;
-
-                    if (width > height) {
-                        if (width > MAX_SIZE) { height *= MAX_SIZE / width; width = MAX_SIZE; }
-                    } else {
-                        if (height > MAX_SIZE) { width *= MAX_SIZE / height; height = MAX_SIZE; }
-                    }
-                    
-                    canvas.width = width;
-                    canvas.height = height;
-                    ctx.drawImage(img, 0, 0, width, height);
-
-                    // Konversi ke Base64 dengan format JPEG (Kualitas 70%)
-                    currentBase64Image = canvas.toDataURL('image/jpeg', 0.7);
-                    
-                    document.getElementById('avatarInitials').style.display = 'none';
-                    document.getElementById('avatarPreview').style.backgroundImage = `url('${currentBase64Image}')`;
-                    newImageUploaded = true; 
-                    checkChanges();
-                }
-                img.src = e.target.result;
+            // Batasi ukuran file max 3MB sebelum diolah
+            if (file.size > 3 * 1024 * 1024) {
+                return customAlert("Foto Terlalu Besar", "Ukuran foto maksimal 3MB. Silahkan pilih foto lain.", "warning");
             }
+
+            const reader = new FileReader();
             reader.readAsDataURL(file);
+            reader.onload = function(e) {
+                newBase64Photo = e.target.result;
+                const picEl = document.getElementById('uiProfilePic');
+                picEl.style.backgroundImage = `url('${newBase64Photo}')`;
+                picEl.style.border = "none";
+                picEl.innerText = "";
+            };
         }
 
-        window.saveProfile = async function() {
-            const btnSave = document.getElementById('btnSave');
-            btnSave.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...'; 
-            btnSave.disabled = true;
-
-            const newName = document.getElementById('inputNama').value;
-            const newWa = document.getElementById('inputWa').value;
-
-            try {
-                const userRef = doc(db, "users", currentUserEmail);
-                let dataUpdate = { nama_lengkap: newName, no_wa: newWa };
-                
-                if (newImageUploaded && currentBase64Image) {
-                    dataUpdate.profile_image = currentBase64Image;
-                }
-
-                await updateDoc(userRef, dataUpdate);
-                
-                originalName = newName; originalWa = newWa; newImageUploaded = false;
-                
-                btnSave.innerHTML = '<i class="fa-solid fa-check" style="color: #059669;"></i> Berhasil Disimpan';
-                setTimeout(() => { btnSave.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan'; btnSave.disabled = true; }, 2000);
-            } catch (error) {
-                alert("Gagal menyimpan data. Pastikan koneksi internet Anda stabil."); 
-                btnSave.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Coba Lagi'; 
-                btnSave.disabled = false;
-                console.error(error);
+        window.saveProfile = async function(e) {
+            e.preventDefault();
+            
+            // Validasi Nama KTP (Minimal 2 Kata)
+            const nameParts = document.getElementById('pfName').value.trim().split(/\s+/);
+            if (nameParts.length < 2) {
+                return customAlert('Nama Tidak Lengkap', 'Harap masukkan Nama Lengkap sesuai KTP (Minimal 2 kata).', 'warning');
             }
+
+            showLoading("Menyimpan Perubahan...");
+            try {
+                let updates = {
+                    nama_lengkap: document.getElementById('pfName').value,
+                    no_wa: document.getElementById('pfWa').value
+                };
+                if (newBase64Photo) updates.profile_image = newBase64Photo;
+
+                await updateDoc(doc(db, "users", userEmail), updates);
+                hideLoading();
+                customAlert("Berhasil", "Profil Anda telah diperbarui.", "success");
+            } catch(e) { hideLoading(); customAlert("Gagal", "Error menyimpan perubahan profil.", "error"); }
+        }
+
+        window.prosesLogout = function() {
+            customConfirm("Konfirmasi Keluar", "Anda yakin ingin keluar dari aplikasi KGR?", async () => {
+                showLoading("Keluar Aplikasi...");
+                try {
+                    await signOut(auth);
+                    hideLoading();
+                    window.location.href = 'login.html';
+                } catch(e) { hideLoading(); customAlert("Gagal Keluar", e.message, "error"); }
+            });
+        }
+    </script>
+    
+    <!-- PWA REGISTRATION -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW Fail', err)); });
         }
     </script>
 </body>

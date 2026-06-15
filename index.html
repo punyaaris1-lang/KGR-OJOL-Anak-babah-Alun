@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- LIBRARY SCANNER QR CODE -->
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
     <style>
@@ -21,7 +20,7 @@
             --bg-base: #F4F6F5; --text-dark: #111827; --text-gray: #4B5563; 
             --emerald-dark: #064E3B; --emerald-main: #059669; 
             --gold-accent: #FBBF24; --gold-text: #FDE68A; --neon-cyan: #00F3FF;
-            
+            --danger-red: #DC2626; --warning-yellow: #D97706;
             --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.05); 
             --shadow-float: 0 25px 50px rgba(5, 150, 105, 0.35);
         }
@@ -50,18 +49,7 @@
 
         .content-area { padding: 0 24px; z-index: 5; position: relative; }
         
-        .premium-card { 
-            background: linear-gradient(135deg, var(--emerald-main) 0%, var(--emerald-dark) 100%); 
-            border-radius: 24px; padding: 25px; 
-            box-shadow: var(--shadow-float); 
-            position: relative; overflow: hidden; margin-bottom: 25px; 
-            border: 1px solid rgba(255,255,255,0.15); 
-        }
-        .premium-card::after {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 100%;
-            background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 100%);
-            pointer-events: none;
-        }
+        .premium-card { background: linear-gradient(135deg, var(--emerald-main) 0%, var(--emerald-dark) 100%); border-radius: 24px; padding: 25px; box-shadow: var(--shadow-float); position: relative; overflow: hidden; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.15); }
         .card-label { font-size: clamp(13px, 3.5vw, 15px); color: rgba(255,255,255,0.9); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; display: flex; justify-content: space-between; position: relative; z-index: 2;}
         .card-balance { font-size: clamp(28px, 8vw, 38px); font-weight: 900; color: #FFFFFF; letter-spacing: -1px; margin-bottom: 20px; position: relative; z-index: 2; text-shadow: 0 4px 10px rgba(0,0,0,0.15);}
         .card-bottom { display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 15px; position: relative; z-index: 2;}
@@ -92,6 +80,7 @@
         .center-fab:active { transform: scale(0.95); }
         .center-fab span { font-size: 10px; font-weight: 800; }
 
+        /* MODAL STANDAR (Bawaan) */
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(17, 24, 39, 0.8); backdrop-filter: blur(4px); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px;}
         .modal-overlay.show { opacity: 1; visibility: visible; }
         .modal-card { background: #FFF; border-radius: 28px; padding: 30px 24px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); transform: scale(0.95); transition: 0.3s; }
@@ -110,6 +99,31 @@
         .live-item { font-size: 11px; font-weight: 700; padding: 12px; border-bottom: 1px solid #F1F5F9; display: flex; justify-content: space-between; background: #FFF; border-radius: 12px; margin-bottom: 5px;}
         .live-item span:first-child { color: var(--text-dark); }
         .live-item span:last-child { color: var(--emerald-main); font-weight: 900;}
+
+        /* --- STYLING KHUSUS CUSTOM ALERT & CONFIRM MODAL --- */
+        .cp-overlay { position: fixed; inset: 0; background: rgba(17, 24, 39, 0.8); backdrop-filter: blur(8px); z-index: 99999; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px; }
+        .cp-overlay.show { opacity: 1; visibility: visible; }
+        .cp-box { background: #FFF; border-radius: 28px; width: 100%; max-width: 320px; text-align: center; padding: 30px 24px; transform: scale(0.9); transition: 0.3s; box-shadow: 0 25px 50px rgba(0,0,0,0.2); }
+        .cp-overlay.show .cp-box { transform: scale(1); }
+        
+        .cp-icon { width: 65px; height: 65px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; margin: 0 auto 15px; }
+        .cp-icon.success { background: #D1FAE5; color: var(--emerald-main); }
+        .cp-icon.error { background: #FEE2E2; color: var(--danger-red); }
+        .cp-icon.warning { background: #FEF3C7; color: var(--warning-yellow); }
+        .cp-icon.info { background: #E0F2FE; color: #0284C7; }
+        
+        .cp-title { font-size: 18px; font-weight: 900; color: var(--text-dark); margin-bottom: 8px; }
+        .cp-desc { font-size: 12px; font-weight: 600; color: var(--text-gray); margin-bottom: 25px; line-height: 1.5; }
+        .cp-btn-wrap { display: flex; gap: 10px; }
+        .cp-btn { flex: 1; padding: 15px; border-radius: 14px; font-size: 13px; font-weight: 800; border: none; cursor: pointer; transition: 0.2s; }
+        .cp-btn:active { transform: scale(0.95); }
+        .cp-btn-primary { background: var(--emerald-main); color: #FFF; box-shadow: 0 5px 15px rgba(5,150,105,0.2);}
+        .cp-btn-cancel { background: #F1F5F9; color: var(--text-dark); }
+        .cp-btn-danger { background: var(--danger-red); color: #FFF; box-shadow: 0 5px 15px rgba(220,38,38,0.2);}
+        
+        /* Spinner untuk Loading Modal */
+        .spinner-custom { border: 4px solid rgba(0,0,0,0.1); width: 50px; height: 50px; border-radius: 50%; border-left-color: var(--emerald-main); animation: spin 1s linear infinite; margin: 0 auto 15px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
@@ -144,7 +158,11 @@
                         <div class="card-bottom-label">Saldo Kas Bulan Ini</div>
                         <div class="card-bottom-val" id="uiTotalMonth">Rp 0</div>
                     </div>
-                    <i class="fa-solid fa-building-columns" style="font-size: 24px; opacity: 0.3; color: #FFF;"></i>
+                    <!-- UPDATE: TOTAL ANGGOTA MUNCUL DI SINI -->
+                    <div style="text-align: right;">
+                        <div class="card-bottom-label">Total Anggota</div>
+                        <div class="card-bottom-val" style="color: #FFF;"><span id="uiTotalMembers">0</span> <i class="fa-solid fa-users" style="font-size: 14px; opacity:0.8;"></i></div>
+                    </div>
                 </div>
             </div>
 
@@ -152,7 +170,6 @@
                 <div class="section-title">Panel Pengurus <i class="fa-solid fa-shield-halved" style="color:var(--emerald-main)"></i></div>
                 <div class="pengurus-panel">
                     <div class="menu-grid" id="gridPengurus">
-                        <!-- LINK MENU DIARAHKAN KE superadmin.html -->
                         <div class="menu-item" id="menuSuperadmin" style="display: none;" onclick="window.location.href='superadmin.html'">
                             <div class="menu-icon" style="background:var(--text-dark); color:var(--gold-accent);"><i class="fa-solid fa-crown"></i></div><span>Sistem<br>Superadmin</span>
                         </div>
@@ -257,12 +274,75 @@
             </div>
         </div>
 
+        <!-- ============================================== -->
+        <!-- SYSTEM CUSTOM MODAL (PENGGANTI ALERT BAWAAN)   -->
+        <!-- ============================================== -->
+        <div class="cp-overlay" id="customAlert">
+            <div class="cp-box">
+                <div class="cp-icon success" id="caIcon"><i class="fa-solid fa-check"></i></div>
+                <h3 class="cp-title" id="caTitle">Pemberitahuan</h3>
+                <p class="cp-desc" id="caDesc">Pesan di sini.</p>
+                <button class="cp-btn cp-btn-primary" onclick="closeCustomAlert()" style="width: 100%;">Tutup</button>
+            </div>
+        </div>
+
+        <div class="cp-overlay" id="customConfirm">
+            <div class="cp-box">
+                <div class="cp-icon warning"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <h3 class="cp-title" id="ccTitle">Konfirmasi</h3>
+                <p class="cp-desc" id="ccDesc">Apakah Anda yakin?</p>
+                <div class="cp-btn-wrap">
+                    <button class="cp-btn cp-btn-cancel" onclick="closeCustomConfirm()">Batal</button>
+                    <button class="cp-btn cp-btn-danger" id="ccBtnYes">Ya, Lanjutkan</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="cp-overlay" id="customLoading">
+            <div class="cp-box" style="padding: 40px 20px;">
+                <div class="spinner-custom"></div>
+                <h3 class="cp-title" id="clTitle" style="margin-bottom: 0;">Memproses...</h3>
+            </div>
+        </div>
+
     </main>
 
+    <!-- SCRIPT UTAMA FIREBASE & LOGIKA -->
     <script type="module">
         import { auth, db } from './db-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
         import { doc, getDoc, onSnapshot, collection, addDoc, serverTimestamp, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+        // ==============================================
+        // FUNGSI KENDALI CUSTOM MODAL (PENGGANTI ALERT)
+        // ==============================================
+        window.customAlert = function(title, desc, type = 'success') {
+            const el = document.getElementById('customAlert');
+            document.getElementById('caTitle').innerText = title;
+            document.getElementById('caDesc').innerText = desc;
+            const iconEl = document.getElementById('caIcon');
+            if(type === 'success') { iconEl.className = 'cp-icon success'; iconEl.innerHTML = '<i class="fa-solid fa-check"></i>'; }
+            else if(type === 'error') { iconEl.className = 'cp-icon error'; iconEl.innerHTML = '<i class="fa-solid fa-xmark"></i>'; }
+            else { iconEl.className = 'cp-icon warning'; iconEl.innerHTML = '<i class="fa-solid fa-bell"></i>'; }
+            el.classList.add('show');
+        }
+        window.closeCustomAlert = function() { document.getElementById('customAlert').classList.remove('show'); }
+
+        window.customConfirm = function(title, desc, onYes) {
+            const el = document.getElementById('customConfirm');
+            document.getElementById('ccTitle').innerText = title;
+            document.getElementById('ccDesc').innerText = desc;
+            document.getElementById('ccBtnYes').onclick = function() { closeCustomConfirm(); onYes(); };
+            el.classList.add('show');
+        }
+        window.closeCustomConfirm = function() { document.getElementById('customConfirm').classList.remove('show'); }
+
+        window.showLoading = function(title = "Memproses...") {
+            document.getElementById('clTitle').innerText = title;
+            document.getElementById('customLoading').classList.add('show');
+        }
+        window.hideLoading = function() { document.getElementById('customLoading').classList.remove('show'); }
+        // ==============================================
 
         let currentRole = "member";
         let currentUserEmail = "";
@@ -270,86 +350,120 @@
         let currentEvent = null;
         let html5QrcodeScanner = null;
         let liveUnsubscribe = null;
+        
+        // VARIABEL BARU UNTUK SYARAT ABSEN
+        let myHakAbsen = "otomatis"; // Default ikuti sistem akumulasi
+        let myTotalSedekahAllTime = 0;
 
-        onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentUserEmail = user.email;
-                onSnapshot(doc(db, "users", user.email), (docSnap) => {
-                    if (docSnap.exists()) {
-                        const d = docSnap.data();
-                        currentRole = (d.role || "member").toLowerCase(); 
-                        currentUserName = d.nama_lengkap || "Tanpa Nama";
-                        
-                        document.getElementById('uiUserName').innerText = currentUserName;
-                        const picEl = document.getElementById('uiProfilePic');
-                        
-                        // FIX TYPO ERROR YANG BIKIN STUCK DI SINI:
-                        if (d.profile_image) { 
-                            picEl.style.backgroundImage = `url('${d.profile_image}')`; 
-                            picEl.innerText = ""; 
-                            picEl.style.border = "none"; 
-                        } else { 
-                            picEl.style.backgroundImage = "none"; 
-                            picEl.innerText = currentUserName.charAt(0).toUpperCase(); 
-                        }
-
-                        const rText = document.getElementById('uiRoleText');
-                        const panel = document.getElementById('panelPengurus');
-
-                        if (d.status === "Pending Admin" && currentRole !== "superadmin") {
-                            document.getElementById('uiUserName').innerText = "Menunggu Verifikasi"; rText.innerHTML = '<i class="fa-solid fa-lock"></i> STATUS PENDING'; rText.style.color = "#DC2626"; 
-                            document.querySelector('.content-area').style.opacity = '0.3'; document.querySelector('.content-area').style.pointerEvents = 'none'; return; 
-                        } else { document.querySelector('.content-area').style.opacity = '1'; document.querySelector('.content-area').style.pointerEvents = 'auto'; }
-
-                        if (currentRole === "superadmin") { 
-                            panel.style.display = "block"; 
-                            document.getElementById('menuSuperadmin').style.display = "flex"; 
-                            document.getElementById('menuBendahara').style.display = "flex"; 
-                            document.getElementById('menuAdmin').style.display = "flex"; 
-                            rText.innerHTML = '<i class="fa-solid fa-shield"></i> ADMIN'; // Mode Menyamar
-                            rText.style.color = "#0A84FF"; 
-                        } 
-                        else if (currentRole === "bendahara") { 
-                            panel.style.display = "block"; 
-                            document.getElementById('menuBendahara').style.display = "flex"; 
-                            rText.innerHTML = '<i class="fa-solid fa-vault"></i> BENDAHARA'; 
-                            rText.style.color = "var(--emerald-main)"; 
-                        } 
-                        else if (currentRole === "admin") { 
-                            panel.style.display = "block"; 
-                            document.getElementById('menuAdmin').style.display = "flex"; 
-                            rText.innerHTML = '<i class="fa-solid fa-shield"></i> ADMIN'; 
-                            rText.style.color = "#0A84FF"; 
-                        }
-                        else { 
-                            rText.innerHTML = '<i class="fa-solid fa-circle-check"></i> ANGGOTA AKTIF'; 
-                            rText.style.color = "var(--emerald-main)"; 
-                        }
-                    } else { auth.signOut(); window.location.href = 'login.html'; }
-                });
-
-                onSnapshot(collection(db, "transactions"), (snapshot) => {
-                    let totalSaldo = 0, saldoBulanIni = 0;
-                    const now = new Date();
-                    snapshot.forEach((docTrx) => {
-                        const dataTrx = docTrx.data();
-                        if (dataTrx.status !== "pending" && dataTrx.status !== "rejected") {
-                            const nominal = Number(dataTrx.nominal) || 0;
-                            const tgl = dataTrx.tanggal ? dataTrx.tanggal.toDate() : new Date(); 
+                try {
+                    onSnapshot(doc(db, "users", user.email), (docSnap) => {
+                        if (docSnap.exists()) {
+                            const d = docSnap.data();
                             
-                            if (dataTrx.jenis === "Pemasukan") totalSaldo += nominal; else totalSaldo -= nominal;
-                            if (tgl.getMonth() === now.getMonth() && tgl.getFullYear() === now.getFullYear()) {
-                                if (dataTrx.jenis === "Pemasukan") saldoBulanIni += nominal; else saldoBulanIni -= nominal;
+                            currentRole = String(d.role || "member").toLowerCase().trim(); 
+                            currentUserName = String(d.nama_lengkap || "Tanpa Nama");
+                            myHakAbsen = d.hak_absen || "otomatis"; // Ngebaca bypass superadmin
+                            
+                            document.getElementById('uiUserName').innerText = currentUserName;
+                            
+                            const picEl = document.getElementById('uiProfilePic');
+                            if (d.profile_image) { 
+                                picEl.style.backgroundImage = `url('${d.profile_image}')`; 
+                                picEl.innerText = ""; 
+                                picEl.style.border = "none"; 
+                            } else { 
+                                picEl.style.backgroundImage = "none"; 
+                                picEl.innerText = currentUserName.charAt(0).toUpperCase(); 
                             }
-                        }
-                    });
-                    document.getElementById('uiTotalAll').innerText = "Rp " + totalSaldo.toLocaleString('id-ID');
-                    document.getElementById('uiTotalMonth').innerText = "Rp " + saldoBulanIni.toLocaleString('id-ID');
-                });
 
+                            const rText = document.getElementById('uiRoleText');
+                            const panel = document.getElementById('panelPengurus');
+
+                            if (d.status === "Pending Admin" && currentRole !== "superadmin") {
+                                document.getElementById('uiUserName').innerText = "Menunggu Verifikasi"; rText.innerHTML = '<i class="fa-solid fa-lock"></i> STATUS PENDING'; rText.style.color = "#DC2626"; 
+                                document.querySelector('.content-area').style.opacity = '0.3'; document.querySelector('.content-area').style.pointerEvents = 'none'; return; 
+                            } else if (d.status === "Banned") {
+                                document.getElementById('uiUserName').innerText = "AKUN DIBLOKIR"; rText.innerHTML = '<i class="fa-solid fa-ban"></i> DIBEKUKAN'; rText.style.color = "#DC2626"; 
+                                document.querySelector('.content-area').style.opacity = '0.2'; document.querySelector('.content-area').style.pointerEvents = 'none'; return; 
+                            } else { document.querySelector('.content-area').style.opacity = '1'; document.querySelector('.content-area').style.pointerEvents = 'auto'; }
+
+                            // TAMPILAN KASTA
+                            if (currentRole === "superadmin") { 
+                                panel.style.display = "block"; 
+                                document.getElementById('menuSuperadmin').style.display = "flex"; 
+                                document.getElementById('menuBendahara').style.display = "flex"; 
+                                document.getElementById('menuAdmin').style.display = "flex"; 
+                                rText.innerHTML = '<i class="fa-solid fa-shield"></i> ADMIN'; 
+                                rText.style.color = "#0A84FF"; 
+                            } 
+                            else if (currentRole === "bendahara") { 
+                                panel.style.display = "block"; 
+                                document.getElementById('menuBendahara').style.display = "flex"; 
+                                rText.innerHTML = '<i class="fa-solid fa-vault"></i> BENDAHARA'; 
+                                rText.style.color = "var(--emerald-main)"; 
+                            } 
+                            else if (currentRole === "admin") { 
+                                panel.style.display = "block"; 
+                                document.getElementById('menuAdmin').style.display = "flex"; 
+                                rText.innerHTML = '<i class="fa-solid fa-shield"></i> ADMIN'; 
+                                rText.style.color = "#0A84FF"; 
+                            }
+                            else { 
+                                rText.innerHTML = '<i class="fa-solid fa-circle-check"></i> ANGGOTA AKTIF'; 
+                                rText.style.color = "var(--emerald-main)"; 
+                            }
+                        } else { auth.signOut(); window.location.href = 'login.html'; }
+                    });
+
+                    // Tarik Data Total Anggota Aktif
+                    onSnapshot(collection(db, "users"), (userSnap) => {
+                        let totalAktif = 0;
+                        userSnap.forEach(u => {
+                            if(u.data().status !== "Banned") totalAktif++;
+                        });
+                        document.getElementById('uiTotalMembers').innerText = totalAktif;
+                    });
+
+                    // Tarik Saldo Komunitas & Hitung Sedekah All-Time User Sendiri
+                    onSnapshot(collection(db, "transactions"), (snapshot) => {
+                        let totalSaldo = 0, saldoBulanIni = 0;
+                        let akumulasiSaya = 0; // Buat ngitung syarat absen
+                        const now = new Date();
+                        
+                        snapshot.forEach((docTrx) => {
+                            const dataTrx = docTrx.data();
+                            if (dataTrx.status !== "pending" && dataTrx.status !== "rejected") {
+                                const nominal = Number(dataTrx.nominal) || 0;
+                                const tgl = dataTrx.tanggal ? dataTrx.tanggal.toDate() : new Date(); 
+                                
+                                // Uang Kas Utama
+                                if (dataTrx.jenis === "Pemasukan") totalSaldo += nominal; else totalSaldo -= nominal;
+                                if (tgl.getMonth() === now.getMonth() && tgl.getFullYear() === now.getFullYear()) {
+                                    if (dataTrx.jenis === "Pemasukan") saldoBulanIni += nominal; else saldoBulanIni -= nominal;
+                                }
+
+                                // Ngitung Dompet All Time User
+                                if(dataTrx.pengirim === currentUserEmail && dataTrx.jenis === "Pemasukan") {
+                                    akumulasiSaya += nominal;
+                                }
+                            }
+                        });
+                        
+                        myTotalSedekahAllTime = akumulasiSaya;
+                        document.getElementById('uiTotalAll').innerText = "Rp " + totalSaldo.toLocaleString('id-ID');
+                        document.getElementById('uiTotalMonth').innerText = "Rp " + saldoBulanIni.toLocaleString('id-ID');
+                    });
+                } catch(errorUI) {
+                    console.error("Terjadi error UI:", errorUI);
+                    customAlert("Gagal Memuat", "Ada masalah saat memuat profil Anda. Mohon refresh halaman.", "error");
+                }
             } else { window.location.href = 'login.html'; }
         });
 
+        // BUKTI TRANSFER / SEDEKAH
         window.openQrisModal = async function() { 
             document.getElementById('modalQrisManual').classList.add('show'); 
             const configDoc = await getDoc(doc(db, "settings", "app_config"));
@@ -392,7 +506,7 @@
                 snapshotTrx.forEach(docSnap => { totalSedekahBulanIni += Number(docSnap.data().nominal); });
 
                 if ((totalSedekahBulanIni + nominalInput) > limitMaksimal) {
-                    alert(`Sedekah ditolak!\n\nBatas maksimal sedekah anggota adalah Rp ${limitMaksimal.toLocaleString('id-ID')} per bulan.\nTotal donasi Anda bulan ini sudah: Rp ${totalSedekahBulanIni.toLocaleString('id-ID')}`);
+                    customAlert("Sedekah Ditolak", `Batas maksimal sedekah anggota adalah Rp ${limitMaksimal.toLocaleString('id-ID')} per bulan.\nTotal donasi Anda bulan ini sudah: Rp ${totalSedekahBulanIni.toLocaleString('id-ID')}`, "warning");
                     btn.innerHTML = 'Kirim <i class="fa-solid fa-paper-plane"></i>'; btn.disabled = false;
                     return; 
                 }
@@ -404,42 +518,55 @@
                     nominal: nominalInput, bukti_image: base64Image, tanggal: serverTimestamp()
                 });
                 
-                alert("Alhamdulillah! Sedekah berhasil dikirim dan menunggu konfirmasi Bendahara.");
+                customAlert("Alhamdulillah", "Sedekah berhasil dikirim dan menunggu konfirmasi Bendahara.", "success");
                 window.closeQrisModal();
             } catch (err) { 
-                console.error(err); alert("Gagal mengirim bukti transfer. Periksa koneksi Anda."); 
+                console.error(err); customAlert("Error", "Gagal mengirim bukti transfer. Periksa koneksi Anda.", "error"); 
             } finally { 
                 btn.innerHTML = 'Kirim <i class="fa-solid fa-paper-plane"></i>'; btn.disabled = false; 
             }
         }
 
+        // ==============================================
+        // LOGIKA RADAR & ABSENSI (UPDATE POIN 5 & 6)
+        // ==============================================
         onSnapshot(doc(db, "settings", "event_config"), (docSnap) => {
             const menuAbsen = document.getElementById('menuAbsensi');
             if (docSnap.exists()) {
                 currentEvent = docSnap.data();
                 const isActive = (currentEvent.is_active === true || currentEvent.is_active === "true");
-                
-                if (isActive) { 
-                    menuAbsen.style.display = 'flex'; 
-                } else { 
-                    menuAbsen.style.display = 'none'; 
-                }
-            } else {
-                menuAbsen.style.display = 'none';
-            }
+                if (isActive) { menuAbsen.style.display = 'flex'; } else { menuAbsen.style.display = 'none'; }
+            } else { menuAbsen.style.display = 'none'; }
         });
 
-        window.handleAbsensiClick = function() {
+        window.handleAbsensiClick = async function() {
             const isActive = currentEvent && (currentEvent.is_active === true || currentEvent.is_active === "true");
-            if (!isActive) return alert("Acara sudah ditutup oleh Superadmin.");
+            if (!isActive) return customAlert("Radar Dimatikan", "Akses acara saat ini ditutup oleh Superadmin.", "warning");
             
             if (currentRole === "member") {
+                
+                // CEK HAK AKSES BARCODE (Bypass Superadmin & Syarat Kas)
+                if (myHakAbsen === "kunci_paksa") {
+                    return customAlert("Akses Diblokir", "Akses QR Code Anda telah dikunci oleh pengurus. Harap hubungi Admin.", "error");
+                }
+                
+                if (myHakAbsen === "otomatis") {
+                    let minSedekahTarget = 0;
+                    const cDoc = await getDoc(doc(db, "settings", "app_config"));
+                    if(cDoc.exists() && cDoc.data().min_sedekah_absen) minSedekahTarget = Number(cDoc.data().min_sedekah_absen);
+                    
+                    if (myTotalSedekahAllTime < minSedekahTarget) {
+                        return customAlert("Gembok Sedekah", `Total donasi kas all-time Anda baru mencapai Rp ${myTotalSedekahAllTime.toLocaleString('id-ID')}.\n\nAnda belum memenuhi syarat minimum partisipasi kas (Rp ${minSedekahTarget.toLocaleString('id-ID')}) untuk membuka Barcode. Hubungi Admin untuk pendaftaran manual.`, "warning");
+                    }
+                }
+                
+                // Kalau aman / hak aksesnya "buka_paksa", baru munculin Barcode
                 const qrData = currentUserEmail; 
                 document.getElementById('imgMemberQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(qrData)}`;
                 document.getElementById('qrNameText').innerText = currentUserName;
                 document.getElementById('modalMemberQR').classList.add('show');
-            } else {
-                checkGPSAndOpenScanner();
+            } else { 
+                checkGPSAndOpenScanner(); 
             }
         }
 
@@ -450,11 +577,12 @@
         }
 
         function checkGPSAndOpenScanner() {
-            if (!navigator.geolocation) return alert("HP Anda tidak mendukung GPS.");
+            if (!navigator.geolocation) return customAlert("Error GPS", "HP Anda tidak mendukung fitur Lokasi GPS.", "error");
             
-            alert("Mencari Sinyal Satelit GPS... Harap tunggu.");
+            showLoading("Mencari Sinyal Satelit GPS...");
             navigator.geolocation.getCurrentPosition(
                 (pos) => {
+                    hideLoading();
                     const lat = pos.coords.latitude; const lon = pos.coords.longitude;
                     const evtLat = parseFloat(currentEvent.lat); const evtLng = parseFloat(currentEvent.lng);
                     const dist = getDistanceFromLatLonInM(lat, lon, evtLat, evtLng);
@@ -462,15 +590,17 @@
                     if (dist <= currentEvent.radius) { openScanner(); } 
                     else {
                         if (currentRole === 'superadmin') {
-                            if(confirm(`GPS Peringatan: Anda berada ${Math.round(dist)} meter dari lokasi acara.\n\nKarena Anda SUPERADMIN, apakah ingin memaksa (Bypass) membuka Radar?`)) { openScanner(); }
-                        } else {
-                            alert(`AKSES DITOLAK!\n\nAnda berada ${Math.round(dist)} meter dari lokasi acara. Harap mendekat ke titik kordinat (Toleransi: ${currentEvent.radius}m) untuk membuka Scanner.`);
+                            customConfirm("Peringatan Jarak Satelit", `Anda berada ${Math.round(dist)} meter dari lokasi acara. Karena Anda Superadmin, apakah ingin memaksa buka Radar?`, () => { openScanner(); });
+                        } else { 
+                            customAlert("Akses Ditolak", `Anda berada ${Math.round(dist)} meter dari lokasi acara. Harap mendekat ke titik kordinat (Toleransi: ${currentEvent.radius}m) untuk membuka Scanner.`, "error"); 
                         }
                     }
                 },
                 (err) => { 
-                    if(currentRole === 'superadmin' && confirm("Sinyal GPS Gagal/Nyangkut!\nBypass buka Radar karena Anda Superadmin?")) { openScanner(); }
-                    else { alert("Gagal mengambil GPS. Pastikan izin lokasi di browser menyala."); }
+                    hideLoading();
+                    if(currentRole === 'superadmin') { 
+                        customConfirm("Sinyal GPS Gagal/Nyangkut!", "Karena Anda Superadmin, apakah ingin memaksa Bypass buka Radar Scanner?", () => { openScanner(); });
+                    } else { customAlert("Gagal Melacak GPS", "Pastikan fitur lokasi di HP dan Browser menyala lalu coba lagi.", "error"); }
                 },
                 { enableHighAccuracy: true, timeout: 10000 }
             );
@@ -490,7 +620,6 @@
             liveUnsubscribe = onSnapshot(qLive, (snap) => {
                 let listData = [];
                 snap.forEach(d => listData.push(d.data()));
-                
                 listData.sort((a,b) => {
                     let t1 = a.scan_time ? a.scan_time.toMillis() : 0;
                     let t2 = b.scan_time ? b.scan_time.toMillis() : 0;
@@ -524,26 +653,26 @@
             if(html5QrcodeScanner) html5QrcodeScanner.pause();
             try {
                 await processAbsen(decodedText, false, "");
-                alert("Absen Berhasil: " + decodedText);
-            } catch(e) { alert(e.message); }
-            setTimeout(() => { if(html5QrcodeScanner) html5QrcodeScanner.resume(); }, 2000);
+                customAlert("Absen Berhasil", "Anggota dengan kode " + decodedText + " telah tercatat.", "success");
+            } catch(e) { customAlert("Gagal Absen", e.message, "error"); }
+            setTimeout(() => { if(html5QrcodeScanner) html5QrcodeScanner.resume(); }, 2500);
         }
 
         window.submitManualAbsen = async function() {
             const manualName = document.getElementById('inputManualName').value;
-            if(!manualName) return alert("Ketik nama atau NIK member!");
+            if(!manualName) return customAlert("Form Kosong", "Ketik nama atau NIK member terlebih dahulu!", "warning");
             try {
                 await processAbsen("Manual Bypass", true, manualName);
-                alert("Absen Manual Berhasil untuk: " + manualName);
+                customAlert("Absen Manual Berhasil", "Member " + manualName + " telah tercatat hadir.", "success");
                 document.getElementById('inputManualName').value = "";
-            } catch(e) { alert(e.message); }
+            } catch(e) { customAlert("Gagal Absen", e.message, "error"); }
         }
 
         async function processAbsen(scannedEmail, isManual, manualName) {
             const qCheck = query(collection(db, "absensi_acara"), where("event_name", "==", currentEvent.nama_acara), where("member_email", "==", scannedEmail));
             if(!isManual) {
                 const snapCheck = await getDocs(qCheck);
-                if(!snapCheck.empty) throw new Error("Gagal: Member ini SUDAH ABSEN sebelumnya!");
+                if(!snapCheck.empty) throw new Error("Member ini SUDAH ABSEN sebelumnya!");
             }
 
             let memberName = manualName;
@@ -559,6 +688,17 @@
                 is_manual: isManual,
                 scan_time: serverTimestamp(),
                 scanner_admin: currentUserName
+            });
+        }
+    </script>
+    
+    <!-- PWA SERVICE WORKER REGISTRATION -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch(err => {
+                    console.log('PWA SW Registration Failed:', err);
+                });
             });
         }
     </script>

@@ -6,6 +6,9 @@
     <meta name="theme-color" content="#F4F6F5">
     <title>Direktori Anggota - KGR</title>
     
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon.png">
+    
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -20,29 +23,35 @@
         body { margin: 0; background: #E2E8E4; font-family: 'Montserrat', sans-serif; color: var(--text-main); display: flex; justify-content: center; min-height: 100vh; -webkit-tap-highlight-color: transparent;}
         * { box-sizing: border-box; outline: none; text-decoration: none; }
 
-        .app-container { width: 100%; max-width: 480px; background-color: var(--bg-surface); min-height: 100vh; position: relative; display: flex; flex-direction: column; padding-bottom: 50px;}
-        @media (min-width: 600px) { .app-container { height: 90vh; max-height: 900px; border-radius: 40px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15); border: 8px solid #FFFFFF; margin: auto; } }
+        .app-container { width: 100%; height: 100dvh; max-width: 480px; background-color: var(--bg-surface); position: relative; display: flex; flex-direction: column; }
+        @media (min-width: 600px) { .app-container { height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15); border: 8px solid #FFFFFF; margin: auto; } }
 
-        /* HEADER BERSIH */
+        /* HEADER */
         .header-main { padding: 40px 20px 20px; position: relative; z-index: 10; text-align: center; background: #FFF; border-bottom: 1px solid rgba(0,0,0,0.03); border-radius: 0 0 30px 30px; box-shadow: var(--shadow-card);}
         .btn-back { position: absolute; left: 20px; top: 40px; width: 40px; height: 40px; border-radius: 14px; background: #F4F6F5; display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text-main); font-size: 18px; transition: 0.2s;}
         .btn-back:active { transform: scale(0.9); }
         .sub-tag { font-size: 10px; font-weight: 800; letter-spacing: 2px; color: var(--emerald-main); text-transform: uppercase; margin-bottom: 5px; display: block; }
         .main-title { font-size: 24px; font-weight: 900; color: var(--text-main); margin: 0; letter-spacing: -1px; }
 
-        /* SEARCH BOX KACA */
-        .search-container { padding: 0 20px 15px; position: sticky; top: 0; z-index: 99; margin-top: 15px; }
-        .search-box { background: var(--glass-bg); backdrop-filter: blur(15px); border-radius: 20px; padding: 5px 20px; display: flex; align-items: center; box-shadow: var(--shadow-card); border: 1px solid #FFF; transition: 0.3s; }
+        /* KOTAK TOTAL ANGGOTA */
+        .count-panel { padding: 15px 20px 0; display: flex; justify-content: space-between; align-items: center; }
+        .count-panel p { font-size: 11px; font-weight: 800; color: var(--text-gray); text-transform: uppercase; letter-spacing: 0.5px; }
+        .count-badge { background: var(--emerald-main); color: #FFF; padding: 4px 10px; border-radius: 10px; font-size: 11px; font-weight: 900; }
+
+        /* SEARCH BOX */
+        .search-container { padding: 10px 20px 15px; position: sticky; top: 0; z-index: 99; }
+        .search-box { background: var(--glass-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-radius: 20px; padding: 5px 20px; display: flex; align-items: center; box-shadow: var(--shadow-card); border: 1px solid #FFF; transition: 0.3s; }
         .search-box:focus-within { transform: scale(1.02); border-color: var(--emerald-main); box-shadow: 0 15px 30px rgba(5,150,105,0.1); }
         .search-box i { color: var(--emerald-main); font-size: 18px; margin-right: 12px; }
         .search-box input { flex: 1; border: none; padding: 16px 0; font-family: 'Montserrat'; font-size: 13px; font-weight: 700; background: transparent; color: var(--text-main); }
 
-        .list-container { padding: 0 20px 30px; display: flex; flex-direction: column; gap: 12px; flex-grow: 1;}
+        .list-container { padding: 0 20px 30px; display: flex; flex-direction: column; gap: 12px; flex-grow: 1; overflow-y: auto; scrollbar-width: none; }
+        .list-container::-webkit-scrollbar { display: none; }
         
-        /* CARD MEMBER MEWAH */
+        /* CARD MEMBER */
         .member-card { background: #FFF; border-radius: 24px; padding: 15px; display: flex; align-items: center; gap: 15px; box-shadow: var(--shadow-card); border: 1px solid rgba(0,0,0,0.02); transition: 0.3s; }
         .member-card.is-pengurus { background: linear-gradient(135deg, #FFFFFF 0%, #ECFDF5 100%); border-color: rgba(5, 150, 105, 0.2); }
-        .member-card.is-pending { opacity: 0.7; } /* Efek pudar untuk yang belum di-approve */
+        .member-card.is-pending { opacity: 0.6; filter: grayscale(0.5); }
 
         .m-photo { width: 60px; height: 60px; border-radius: 18px; object-fit: cover; background: var(--text-main); border: 3px solid #FFF; flex-shrink: 0; cursor: zoom-in; box-shadow: 0 8px 15px rgba(0,0,0,0.1); display: flex; justify-content: center; align-items: center; font-weight: 900; font-size: 24px; color: var(--gold-accent);}
         .is-pengurus .m-photo { border-color: var(--gold-accent); }
@@ -58,17 +67,21 @@
         .bg-admin { background: rgba(10, 132, 255, 0.1); color: #0A84FF; }
         .bg-bendahara { background: rgba(5, 150, 105, 0.1); color: var(--emerald-main); }
         .bg-status { background: #DCFCE7; color: #16A34A; }
-        .bg-pending { background: #FFF3CD; color: #856404; } /* Badge Kuning Pending */
+        .bg-pending { background: #FFF3CD; color: #856404; }
 
         .btn-call { width: 40px; height: 40px; border-radius: 14px; background: #E0F2FE; color: #0284C7; border: none; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.15);}
         .btn-call:active { transform: scale(0.9); background: #0284C7; color: #FFF; }
 
-        /* LIGHTBOX FOTO */
-        .photo-viewer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 99999; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); padding: 20px;}
-        .pv-container { position: relative; max-width: 400px; width: 100%; text-align: center; }
-        .pv-container img { width: 100%; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); object-fit: cover; max-height: 70vh; border: 3px solid rgba(255,255,255,0.2); }
+        /* LIGHTBOX POP-UP FOTO ELEGAN */
+        .photo-viewer-overlay { position: fixed; inset: 0; background: rgba(17, 24, 39, 0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 99999; display: none; align-items: center; justify-content: center; padding: 20px; opacity: 0; transition: 0.3s;}
+        .photo-viewer-overlay.show { display: flex; opacity: 1; }
+        .pv-container { position: relative; max-width: 400px; width: 100%; text-align: center; transform: scale(0.95); transition: 0.3s; }
+        .photo-viewer-overlay.show .pv-container { transform: scale(1); }
+        .pv-container img { width: 100%; border-radius: 28px; box-shadow: 0 25px 50px rgba(0,0,0,0.4); object-fit: cover; max-height: 70vh; border: 4px solid #FFF; }
         .pv-close { position: absolute; top: -15px; right: -15px; width: 40px; height: 40px; border-radius: 50%; background: #FFF; color: var(--text-main); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: 0.2s; border: none; }
         .pv-close:active { transform: scale(0.9); }
+        
+        .empty-state { text-align: center; padding: 50px 20px; color: var(--text-gray); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
     </style>
 </head>
 <body>
@@ -80,23 +93,29 @@
             <h1 class="main-title">DATA ANGGOTA</h1>
         </header>
 
+        <div class="count-panel">
+            <p>Pasukan Terdaftar</p>
+            <span class="count-badge" id="uiCountAnggota">0 Orang</span>
+        </div>
+
         <div class="search-container">
             <div class="search-box">
                 <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Cari nama atau WA.." onkeyup="filterList()">
+                <input type="text" id="searchInput" placeholder="Cari nama, WA, atau kasta..." onkeyup="filterList()">
             </div>
         </div>
 
         <main class="list-container" id="memberList">
-            <div style="text-align:center; padding:50px; color:var(--text-muted); font-size: 12px; font-weight: 700;">
-                <i class="fas fa-spinner fa-spin"></i> Menarik Data Server...
+            <div class="empty-state">
+                <i class="fas fa-spinner fa-spin" style="font-size:24px; color:var(--emerald-main); margin-bottom:10px;"></i>
+                <p>Menarik Data Server KGR...</p>
             </div>
         </main>
 
         <div class="photo-viewer-overlay" id="photoViewer" onclick="closePhoto()">
             <div class="pv-container" onclick="event.stopPropagation()">
-                <img id="pvImage" src="">
-                <button class="pv-close" onclick="closePhoto()"><i class="fas fa-times"></i></button>
+                <img id="pvImage" src="" alt="Foto Profil">
+                <button type="button" class="pv-close" onclick="closePhoto()"><i class="fas fa-times"></i></button>
             </div>
         </div>
     </div>
@@ -120,13 +139,17 @@
         function loadMembersData() {
             onSnapshot(collection(db, "users"), (snap) => {
                 membersData = [];
+                let totalHitung = 0;
+
                 snap.forEach(document => { 
                     const d = document.data();
-                    // FILTER DIPERBAIKI: Tampilkan SEMUA asal jangan yang udah lu "Banned"
                     if(d.status !== "Banned") {
                         membersData.push({ id: document.id, ...d }); 
+                        totalHitung++; // Hitung total seluruh anggota aktif & pending
                     }
                 });
+                
+                document.getElementById('uiCountAnggota').innerText = totalHitung + " Orang";
                 renderList(membersData);
             });
         }
@@ -134,40 +157,45 @@
         function renderList(data) {
             const list = document.getElementById('memberList'); list.innerHTML = '';
             
-            // Urutkan: Superadmin -> Admin/Bendahara -> Member Biasa
+            // Urutkan: Superadmin (Dewa nyamar jadi Admin biasa) -> Admin/Bendahara -> Member Biasa
             data.sort((a, b) => {
-                const rA = (a.role||"").toLowerCase(); const rB = (b.role||"").toLowerCase();
+                const rA = String(a.role || "member").toLowerCase().trim(); 
+                const rB = String(b.role || "member").toLowerCase().trim();
                 const score = { 'superadmin': 1, 'admin': 2, 'bendahara': 2, 'member': 3 };
                 const sA = score[rA] || 3; const sB = score[rB] || 3;
                 return sA - sB;
             });
 
-            if(data.length === 0) { list.innerHTML = '<div style="text-align:center; padding:30px; color:#999; font-size:12px; font-weight:700;">Data anggota tidak ditemukan.</div>'; return; }
+            if(data.length === 0) { list.innerHTML = '<div class="empty-state"><p>Data anggota tidak ditemukan.</p></div>'; return; }
 
             data.forEach((m) => {
-                const role = (m.role || "member").toLowerCase();
-                const status = m.status || "Pending Admin"; // Ambil statusnya
+                const role = String(m.role || "member").toLowerCase().trim();
+                const status = String(m.status || "Pending Admin").trim();
                 const isPengurus = (role !== 'member');
                 
-                // Kasih efek beda kalau dia masih Pending
                 let cardClass = isPengurus ? 'member-card is-pengurus' : 'member-card';
                 if (status === 'Pending Admin') cardClass += ' is-pending';
 
-                const name = m.nama_lengkap || "Tanpa Nama";
-                const wa = m.no_wa || "Tidak ada nomor";
+                const name = String(m.nama_lengkap || "Tanpa Nama");
+                // PROTEKSI ARMOR TIPE DATA: Konversi mutlak ke String biar ga crash pas direplace
+                const waStr = m.no_wa ? String(m.no_wa) : "Tidak ada nomor";
                 
                 let photoHtml = '';
-                if (m.profile_image) { photoHtml = `<img src="${m.profile_image}" class="m-photo" onclick="viewPhoto('${m.profile_image}')">`; } 
-                else { photoHtml = `<div class="m-photo" ${role==='superadmin'?'style="background:var(--gold-accent);color:#000;"':''}>${name.charAt(0).toUpperCase()}</div>`; }
+                if (m.profile_image) { 
+                    photoHtml = `<img src="${m.profile_image}" class="m-photo" onclick="viewPhoto('${m.profile_image}')">`; 
+                } else { 
+                    // Visual Disguise: Jika Superadmin, dapet inisial warna emas mewah
+                    photoHtml = `<div class="m-photo" ${role==='superadmin'?'style="background:var(--text-dark);color:var(--gold-accent);border-color:var(--gold-accent);"':''}>${name.charAt(0).toUpperCase()}</div>`; 
+                }
 
-                let waLink = wa !== "Tidak ada nomor" ? `https://wa.me/62${wa.replace(/^0+/, '')}` : '#';
+                // Pelindung replacer regex anti-crash
+                let waLink = waStr !== "Tidak ada nomor" ? `https://wa.me/62${waStr.replace(/^0+/, '')}` : '#';
                 
                 let roleHtml = `<span class="badge bg-role">MEMBER</span>`;
-                if(role === 'superadmin') roleHtml = `<span class="badge bg-super"><i class="fas fa-crown"></i> SUPERADMIN</span>`;
+                if(role === 'superadmin') roleHtml = `<span class="badge bg-admin"><i class="fas fa-shield"></i> ADMIN</span>`; // Penyamaran Dewa
                 else if(role === 'admin') roleHtml = `<span class="badge bg-admin"><i class="fas fa-shield"></i> ADMIN</span>`;
                 else if(role === 'bendahara') roleHtml = `<span class="badge bg-bendahara"><i class="fas fa-vault"></i> BENDAHARA</span>`;
 
-                // Badge Status Baru
                 let statusHtml = status === 'Pending Admin' ? 
                     `<span class="badge bg-pending"><i class="fas fa-lock"></i> PENDING</span>` : 
                     `<span class="badge bg-status"><i class="fas fa-check-circle"></i> AKTIF</span>`;
@@ -177,7 +205,7 @@
                         ${photoHtml}
                         <div class="m-info">
                             <div class="m-name">${name}</div>
-                            <div class="m-wa-name"><i class="fab fa-whatsapp" style="color:#25D366; font-size: 14px;"></i> ${wa}</div>
+                            <div class="m-wa-name"><i class="fab fa-whatsapp" style="color:#25D366; font-size: 14px;"></i> ${waStr}</div>
                             <div class="m-badges">${roleHtml} ${statusHtml}</div>
                         </div>
                         <a href="${waLink}" class="btn-call" target="_blank" title="Chat WhatsApp"><i class="fas fa-comment-dots"></i></a>
@@ -189,15 +217,31 @@
         window.filterList = () => {
             const txt = document.getElementById('searchInput').value.toLowerCase();
             const filtered = membersData.filter(m => 
-                (m.nama_lengkap && m.nama_lengkap.toLowerCase().includes(txt)) || 
-                (m.no_wa && m.no_wa.toLowerCase().includes(txt)) || 
-                (m.role && m.role.toLowerCase().includes(txt))
+                (m.nama_lengkap && String(m.nama_lengkap).toLowerCase().includes(txt)) || 
+                (m.no_wa && String(m.no_wa).toLowerCase().includes(txt)) || 
+                (m.role && String(m.role).toLowerCase().includes(txt))
             );
             renderList(filtered);
         };
 
-        window.viewPhoto = (src) => { document.getElementById('pvImage').src = src; document.getElementById('photoViewer').style.display = 'flex'; };
-        window.closePhoto = () => { document.getElementById('photoViewer').style.display = 'none'; };
+        // CUSTOM LOGIKA MODAL POP-UP FOTO ELEGAN
+        window.viewPhoto = (src) => { 
+            document.getElementById('pvImage').src = src; 
+            const viewer = document.getElementById('photoViewer');
+            viewer.style.display = 'flex';
+            setTimeout(() => viewer.classList.add('show'), 10);
+        };
+        window.closePhoto = () => { 
+            const viewer = document.getElementById('photoViewer');
+            viewer.classList.remove('show');
+            setTimeout(() => viewer.style.display = 'none', 300);
+        };
+    </script>
+    
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW Fail', err)); });
+        }
     </script>
 </body>
 </html>

@@ -14,7 +14,7 @@
         :root { 
             --bg-base: #F4F6F5; --text-dark: #111827; --text-gray: #4B5563; 
             --emerald-main: #059669; --gold-accent: #FBBF24;
-            --color-pending: #F59E0B; --color-approved: #059669; --color-rejected: #DC2626; 
+            --color-pending: #F59E0B; --color-process: #0284C7; --color-final: #8B5CF6; --color-approved: #059669; --color-rejected: #DC2626; 
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -31,12 +31,10 @@
         .content-area { flex-grow: 1; overflow-y: auto; padding: 25px 24px 100px; scrollbar-width: none; }
         .content-area::-webkit-scrollbar { display: none; }
         
-        /* TABS MEMBAL */
         .tabs-container { display: flex; gap: 10px; margin-bottom: 25px; }
         .tab-btn { flex: 1; padding: 14px; border-radius: 14px; font-size: 13px; font-weight: 800; background: #FFF; border: 1px solid rgba(0,0,0,0.05); text-align: center; cursor: pointer; transition: 0.2s; color: var(--text-gray);}
         .tab-btn.active { background: var(--emerald-main); color: #FFF; border-color: var(--emerald-main); box-shadow: 0 5px 15px rgba(5,150,105,0.3);}
 
-        /* KARTU PENGAJUAN (HIGH CONTRAST) */
         .request-card { background: #FFF; border-radius: 24px; padding: 20px; margin-bottom: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.02); transition: 0.2s;}
         .request-card:active { transform: scale(0.98); }
         .req-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
@@ -44,24 +42,22 @@
         .req-date { font-size: 11px; color: var(--text-gray); font-weight: 700; margin-top: 4px; display: flex; align-items: center; gap: 5px;}
         .req-amount { font-size: 16px; font-weight: 900; color: var(--text-dark); background: #F9F9F9; padding: 6px 12px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.04);}
         .req-body { font-size: 12px; color: var(--text-gray); font-weight: 600; margin-bottom: 15px; line-height: 1.5; background: #F9F9F9; padding: 12px; border-radius: 12px;}
+        .req-target { font-size: 11px; font-weight: 800; color: var(--emerald-dark); margin-bottom: 10px; display: flex; align-items: center; gap: 5px; }
         
         .status-tracker { background: #FFF; border: 1px solid rgba(0,0,0,0.05); padding: 12px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; }
-        .status-badge { font-size: 11px; font-weight: 800; text-transform: uppercase; display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 8px;}
-        .status-badge.pending { background: rgba(245, 158, 11, 0.1); color: var(--color-pending); }
+        .status-badge { font-size: 10px; font-weight: 800; text-transform: uppercase; display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 8px;}
+        .status-badge.tunjuk { background: rgba(245, 158, 11, 0.1); color: var(--color-pending); }
+        .status-badge.verifikasi { background: rgba(2, 132, 199, 0.1); color: var(--color-process); }
+        .status-badge.final { background: rgba(139, 92, 246, 0.1); color: var(--color-final); }
         .status-badge.approved { background: rgba(5, 150, 105, 0.1); color: var(--color-approved); }
         .status-badge.rejected { background: rgba(220, 38, 38, 0.1); color: var(--color-rejected); }
-        
-        .approval-info { font-size: 10px; font-weight: 800; background: #F9F9F9; padding: 6px 12px; border-radius: 10px; display: flex; gap: 10px; }
-        .approval-info span.yes { color: var(--emerald-main); }
-        .approval-info span.no { color: var(--text-gray); opacity: 0.6;}
 
-        /* TOMBOL AKSI ADMIN */
         .action-buttons { display: flex; gap: 10px; margin-top: 15px; border-top: 1px dashed rgba(0,0,0,0.1); padding-top: 15px; }
-        .btn-act { flex: 1; padding: 14px; border-radius: 12px; font-size: 13px; font-weight: 800; cursor: pointer; border: none; transition: 0.2s;}
+        .btn-act { flex: 1; padding: 14px; border-radius: 12px; font-size: 12px; font-weight: 800; cursor: pointer; border: none; transition: 0.2s;}
+        .btn-act.primary { background: var(--text-dark); color: #FFF; }
         .btn-act.approve { background: rgba(5, 150, 105, 0.1); color: var(--emerald-main); }
-        .btn-act.approve:active { background: var(--emerald-main); color: #FFF; transform: scale(0.95);}
         .btn-act.reject { background: rgba(220, 38, 38, 0.1); color: var(--color-rejected); }
-        .btn-act.reject:active { background: var(--color-rejected); color: #FFF; transform: scale(0.95);}
+        .btn-act:active { transform: scale(0.95);}
 
         .btn-create { width: 100%; padding: 18px; border-radius: 18px; font-size: 14px; font-weight: 900; background: var(--text-dark); color: #FFF; border: none; margin-bottom: 25px; cursor: pointer; transition: 0.2s; box-shadow: 0 10px 20px rgba(0,0,0,0.1);}
         .btn-create:active { transform: scale(0.96); }
@@ -86,9 +82,60 @@
         .form-input:focus { border-color: var(--emerald-main); background: #FFF; }
         .btn-submit { width: 100%; padding: 18px; border-radius: 16px; font-size: 14px; font-weight: 900; background: var(--text-dark); color: #FFF; border: none; margin-top: 10px; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.15); transition: 0.2s;}
         .btn-submit:active { transform: scale(0.96); }
+
+        /* WARNING NIK HISTORY */
+        .nik-warning { background: #FEF2F2; border: 1px dashed #DC2626; padding: 15px; border-radius: 12px; margin-bottom: 15px; display: none; }
+        .nik-warning h4 { color: #DC2626; font-size: 13px; font-weight: 900; margin-bottom: 5px; display: flex; align-items: center; gap: 5px;}
+        .nik-warning p { color: #991B1B; font-size: 11px; font-weight: 600; line-height: 1.4; }
+
+        /* --- STYLING KHUSUS CUSTOM ALERT & CONFIRM MODAL --- */
+        .cp-overlay { position: fixed; inset: 0; background: rgba(17, 24, 39, 0.8); backdrop-filter: blur(8px); z-index: 99999; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px; }
+        .cp-overlay.show { opacity: 1; visibility: visible; }
+        .cp-box { background: #FFF; border-radius: 28px; width: 100%; max-width: 320px; text-align: center; padding: 30px 24px; transform: scale(0.9); transition: 0.3s; box-shadow: 0 25px 50px rgba(0,0,0,0.2); }
+        .cp-overlay.show .cp-box { transform: scale(1); }
+        .cp-icon { width: 65px; height: 65px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; margin: 0 auto 15px; }
+        .cp-icon.success { background: #D1FAE5; color: var(--emerald-main); }
+        .cp-icon.error { background: #FEE2E2; color: var(--color-rejected); }
+        .cp-icon.warning { background: #FEF3C7; color: var(--color-pending); }
+        .cp-title { font-size: 18px; font-weight: 900; color: var(--text-dark); margin-bottom: 8px; }
+        .cp-desc { font-size: 12px; font-weight: 600; color: var(--text-gray); margin-bottom: 25px; line-height: 1.5; }
+        .cp-btn-wrap { display: flex; gap: 10px; }
+        .cp-btn { flex: 1; padding: 15px; border-radius: 14px; font-size: 13px; font-weight: 800; border: none; cursor: pointer; transition: 0.2s; }
+        .cp-btn:active { transform: scale(0.95); }
+        .cp-btn-primary { background: var(--emerald-main); color: #FFF; }
+        .cp-btn-cancel { background: #F1F5F9; color: var(--text-dark); }
+        .cp-btn-danger { background: var(--color-rejected); color: #FFF; }
+        .spinner-custom { border: 4px solid rgba(0,0,0,0.1); width: 50px; height: 50px; border-radius: 50%; border-left-color: var(--emerald-main); animation: spin 1s linear infinite; margin: 0 auto 15px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
+    <div class="cp-overlay" id="customAlert">
+        <div class="cp-box">
+            <div class="cp-icon success" id="caIcon"><i class="fa-solid fa-check"></i></div>
+            <h3 class="cp-title" id="caTitle">Pemberitahuan</h3>
+            <p class="cp-desc" id="caDesc">Pesan di sini.</p>
+            <button class="cp-btn cp-btn-primary" onclick="closeCustomAlert()" style="width: 100%;">Tutup</button>
+        </div>
+    </div>
+    <div class="cp-overlay" id="customConfirm">
+        <div class="cp-box">
+            <div class="cp-icon warning"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <h3 class="cp-title" id="ccTitle">Konfirmasi</h3>
+            <p class="cp-desc" id="ccDesc">Apakah Anda yakin?</p>
+            <div class="cp-btn-wrap">
+                <button class="cp-btn cp-btn-cancel" onclick="closeCustomConfirm()">Batal</button>
+                <button class="cp-btn cp-btn-danger" id="ccBtnYes">Ya, Lanjutkan</button>
+            </div>
+        </div>
+    </div>
+    <div class="cp-overlay" id="customLoading">
+        <div class="cp-box" style="padding: 40px 20px;">
+            <div class="spinner-custom"></div>
+            <h3 class="cp-title" id="clTitle" style="margin-bottom: 0;">Memproses...</h3>
+        </div>
+    </div>
+
     <div class="app-container">
         <div class="header-page">
             <div class="btn-back" onclick="window.location.href='index.html'"><i class="fa-solid fa-arrow-left"></i></div>
@@ -98,19 +145,19 @@
         <div class="content-area">
             <div class="tabs-container" id="tabContainer">
                 <div class="tab-btn active" onclick="switchTab('pengajuan-saya')">Pengajuan Saya</div>
-                <div class="tab-btn" id="tabApproval" style="display: none;" onclick="switchTab('persetujuan')">Perlu Persetujuan</div>
+                <div class="tab-btn" id="tabTugas" style="display: none;" onclick="switchTab('tugas-saya')">Tugas & Persetujuan</div>
             </div>
 
             <div id="viewPengajuanSaya">
-                <button class="btn-create" onclick="openModal()"><i class="fa-solid fa-file-circle-plus"></i> Buat Pengajuan Baru</button>
+                <button class="btn-create" id="btnBuatBaru" style="display: none;" onclick="openModalReq()"><i class="fa-solid fa-file-circle-plus"></i> Buat Pengajuan Baru</button>
                 <div id="listSaya">
                     <div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i><p>Memuat data...</p></div>
                 </div>
             </div>
 
-            <div id="viewPersetujuan" style="display: none;">
-                <div id="listPersetujuan">
-                    <div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i><p>Memuat antrean...</p></div>
+            <div id="viewTugas" style="display: none;">
+                <div id="listTugas">
+                    <div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i><p>Memuat antrean tugas...</p></div>
                 </div>
             </div>
         </div>
@@ -120,12 +167,20 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3>Form Pengajuan Kas</h3>
-                <button type="button" onclick="closeModal()" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+                <button type="button" onclick="closeModalReq()" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <form id="formReq" onsubmit="submitPengajuan(event)">
                 <div class="form-group">
-                    <label class="form-label">Tujuan / Nama Pengajuan</label>
-                    <input type="text" id="reqJudul" class="form-input" placeholder="Contoh: Dana Kopi Darat" required autocomplete="off">
+                    <label class="form-label">Tujuan / Judul Pengajuan</label>
+                    <input type="text" id="reqJudul" class="form-input" placeholder="Contoh: Bantuan Sakit" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Nama Target (Yang Dibantu)</label>
+                    <input type="text" id="reqTargetNama" class="form-input" placeholder="Nama lengkap penerima" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">NIK Target (16 Digit)</label>
+                    <input type="tel" id="reqTargetNik" class="form-input" placeholder="Wajib 16 Digit NIK" required maxlength="16" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Nominal Kas (Rp)</label>
@@ -133,19 +188,112 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Rincian Penggunaan</label>
-                    <textarea id="reqDeskripsi" class="form-input" rows="3" placeholder="Jelaskan rincian penggunaan dana secara singkat..." required style="resize: none;"></textarea>
+                    <textarea id="reqDeskripsi" class="form-input" rows="3" placeholder="Jelaskan secara singkat alasan pengajuan..." required style="resize: none;"></textarea>
                 </div>
                 <button type="submit" id="btnKirimPengajuan" class="btn-submit"><i class="fa-solid fa-paper-plane"></i> Kirim Pengajuan</button>
             </form>
         </div>
     </div>
 
+    <div id="modalTunjuk" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Tunjuk Verifikator</h3>
+                <button type="button" onclick="document.getElementById('modalTunjuk').classList.remove('show')" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Pilih Admin Pemeriksa Lapangan</label>
+                <select id="selectVerifikator" class="form-input">
+                    </select>
+            </div>
+            <button class="btn-submit" onclick="prosesTunjuk()"><i class="fa-solid fa-user-check"></i> Tugaskan Admin</button>
+        </div>
+    </div>
+
+    <div id="modalVerifikasi" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Verifikasi Lapangan</h3>
+                <button type="button" onclick="document.getElementById('modalVerifikasi').classList.remove('show')" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <p style="font-size: 11px; color: var(--text-gray); margin-bottom: 20px; font-weight: 700;">Wajib ambil foto bukti penyerahan/kondisi secara langsung dari lokasi.</p>
+            <form onsubmit="prosesVerifikasi(event)">
+                <div class="form-group">
+                    <label class="form-label">Foto Bukti (Kamera Langsung)</label>
+                    <input type="file" id="fotoVerif" class="form-input" accept="image/*" capture="environment" required style="padding: 10px;">
+                </div>
+                <button type="submit" class="btn-submit"><i class="fa-solid fa-camera"></i> Upload & Teruskan ke Superadmin</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modalFinal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Final Approval (Dewa)</h3>
+                <button type="button" onclick="document.getElementById('modalFinal').classList.remove('show')" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div id="boxWarningNik" class="nik-warning">
+                <h4><i class="fa-solid fa-triangle-exclamation"></i> PERHATIAN: NIK SUDAH MENERIMA</h4>
+                <p id="txtWarningNik">NIK ini tercatat sudah pernah dicairkan bantuannya pada tanggal X.</p>
+            </div>
+
+            <div style="text-align: center; margin-bottom: 20px;">
+                <p style="font-size: 11px; font-weight: 700; color: var(--text-gray); margin-bottom: 10px;">Bukti Foto Verifikator:</p>
+                <img id="imgBuktiFinal" src="" style="width: 100%; max-height: 250px; object-fit: contain; border-radius: 12px; border: 2px dashed rgba(0,0,0,0.1);">
+            </div>
+
+            <div class="action-buttons" style="border: none; padding: 0; margin-top: 0;">
+                <button class="btn-act reject" onclick="eksekusiFinal('reject')" style="background: var(--color-rejected); color: #FFF;"><i class="fa-solid fa-xmark"></i> Deny (Tolak)</button>
+                <button class="btn-act approve" onclick="eksekusiFinal('approve')" style="background: var(--emerald-main); color: #FFF;"><i class="fa-solid fa-check-double"></i> Setujui & Cairkan</button>
+            </div>
+        </div>
+    </div>
+
     <script type="module">
         import { auth, db } from './db-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
-        import { collection, onSnapshot, doc, updateDoc, getDoc, addDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+        import { collection, onSnapshot, doc, updateDoc, getDoc, getDocs, addDoc, serverTimestamp, query, orderBy, where } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-        let userRole = "member"; let userEmail = ""; let isApprover = false;
+        // ==============================================
+        // FUNGSI KENDALI CUSTOM MODAL
+        // ==============================================
+        window.customAlert = function(title, desc, type = 'success') {
+            const el = document.getElementById('customAlert');
+            document.getElementById('caTitle').innerText = title; document.getElementById('caDesc').innerText = desc;
+            const iconEl = document.getElementById('caIcon');
+            if(type === 'success') { iconEl.className = 'cp-icon success'; iconEl.innerHTML = '<i class="fa-solid fa-check"></i>'; }
+            else if(type === 'error') { iconEl.className = 'cp-icon error'; iconEl.innerHTML = '<i class="fa-solid fa-xmark"></i>'; }
+            else { iconEl.className = 'cp-icon warning'; iconEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>'; }
+            el.classList.add('show');
+        }
+        window.closeCustomAlert = function() { document.getElementById('customAlert').classList.remove('show'); }
+
+        window.customConfirm = function(title, desc, onYes) {
+            const el = document.getElementById('customConfirm');
+            document.getElementById('ccTitle').innerText = title; document.getElementById('ccDesc').innerText = desc;
+            document.getElementById('ccBtnYes').onclick = function() { closeCustomConfirm(); onYes(); };
+            el.classList.add('show');
+        }
+        window.closeCustomConfirm = function() { document.getElementById('customConfirm').classList.remove('show'); }
+
+        window.showLoading = function(title = "Memproses...") {
+            document.getElementById('clTitle').innerText = title; document.getElementById('customLoading').classList.add('show');
+        }
+        window.hideLoading = function() { document.getElementById('customLoading').classList.remove('show'); }
+
+        // ==============================================
+        // ENKRIPSI NIK
+        // ==============================================
+        const CRYPTO_OFFSET = 7;
+        function encryptData(plainText) {
+            if (!plainText) return ""; let shifted = plainText.split("").map(char => String.fromCharCode(char.charCodeAt(0) + CRYPTO_OFFSET)).join(""); return btoa(unescape(encodeURIComponent(shifted)));
+        }
+
+        let userRole = "member"; let userEmail = ""; let userName = "";
+        let listAdmins = []; 
+        let activeDocId = ""; // Nyimpen ID yang lagi diproses
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -153,92 +301,221 @@
                 const docSnap = await getDoc(doc(db, "users", userEmail));
                 if (docSnap.exists()) {
                     const dataUser = docSnap.data();
-                    userRole = (dataUser.role || "member").toLowerCase(); isApprover = (dataUser.can_approve === true);
+                    userRole = (dataUser.role || "member").toLowerCase(); 
+                    userName = dataUser.nama_lengkap || "Pengurus";
                     
-                    if (["superadmin", "admin", "bendahara"].includes(userRole)) document.getElementById('tabApproval').style.display = 'block';
+                    if (["superadmin", "admin", "bendahara"].includes(userRole)) {
+                        document.getElementById('tabTugas').style.display = 'block';
+                        document.getElementById('btnBuatBaru').style.display = 'block'; // Cuma pengurus yang bisa ngajuin
+                        if(userRole === 'superadmin') loadAdmins(); // Tarik nama admin buat dropdown
+                    }
                     loadDataPengajuan(); 
                 }
             } else { window.location.href = 'login.html'; }
         });
 
+        // Tarik daftar Admin untuk opsi Tunjuk Verifikator
+        async function loadAdmins() {
+            const q = query(collection(db, "users"), where("role", "==", "admin"));
+            const snaps = await getDocs(q);
+            let options = '<option value="">-- Pilih Admin --</option>';
+            snaps.forEach(d => { options += `<option value="${d.id}">${d.data().nama_lengkap} (${d.id})</option>`; });
+            document.getElementById('selectVerifikator').innerHTML = options;
+        }
+
         window.switchTab = function(viewId) {
             document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active')); event.target.classList.add('active');
             document.getElementById('viewPengajuanSaya').style.display = viewId === 'pengajuan-saya' ? 'block' : 'none';
-            document.getElementById('viewPersetujuan').style.display = viewId === 'persetujuan' ? 'block' : 'none';
+            document.getElementById('viewTugas').style.display = viewId === 'tugas-saya' ? 'block' : 'none';
         }
 
-        window.openModal = function() { document.getElementById('reqModal').classList.add('show'); }
-        window.closeModal = function() { document.getElementById('reqModal').classList.remove('show'); document.getElementById('formReq').reset(); }
+        window.openModalReq = function() { document.getElementById('reqModal').classList.add('show'); }
+        window.closeModalReq = function() { document.getElementById('reqModal').classList.remove('show'); document.getElementById('formReq').reset(); }
 
+        // TAHAP 1: ADMIN KIRIM PENGAJUAN
         window.submitPengajuan = async function(e) {
-            e.preventDefault(); const btn = document.getElementById('btnKirimPengajuan'); btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim...'; btn.disabled = true;
+            e.preventDefault(); 
+            const nik = document.getElementById('reqTargetNik').value;
+            if (nik.length !== 16) return customAlert("NIK Salah", "NIK target harus berjumlah 16 digit angka.", "error");
+
+            showLoading("Mengirim Pengajuan...");
             try {
-                await addDoc(collection(db, "pengajuan_dana"), { pengaju_email: userEmail, judul: document.getElementById('reqJudul').value, nominal: Number(document.getElementById('reqNominal').value), deskripsi: document.getElementById('reqDeskripsi').value, status: "pending", admin_approvals: [], bendahara_approvals: [], tanggal: serverTimestamp() });
-                alert('Pengajuan berhasil dikirim! Menunggu persetujuan pengurus.'); closeModal();
-            } catch (error) { alert('Gagal mengirim pengajuan.'); } finally { btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Pengajuan'; btn.disabled = false; }
+                await addDoc(collection(db, "pengajuan_dana"), { 
+                    pengaju_email: userEmail, pengaju_nama: userName,
+                    judul: document.getElementById('reqJudul').value, 
+                    target_nama: document.getElementById('reqTargetNama').value,
+                    target_nik: encryptData(nik), // NIK disimpen dalam bentuk enkripsi
+                    nominal: Number(document.getElementById('reqNominal').value), 
+                    deskripsi: document.getElementById('reqDeskripsi').value, 
+                    status: "pending_tunjuk", // TAHAP 1
+                    tanggal: serverTimestamp() 
+                });
+                hideLoading();
+                customAlert('Berhasil', 'Pengajuan telah dikirim! Menunggu Superadmin menunjuk Verifikator.', 'success'); 
+                closeModalReq();
+            } catch (error) { hideLoading(); customAlert('Gagal', 'Sistem gagal menyimpan pengajuan.', 'error'); } 
         }
 
         function loadDataPengajuan() {
             onSnapshot(query(collection(db, "pengajuan_dana"), orderBy("tanggal", "desc")), (snapshot) => {
-                const listSaya = document.getElementById('listSaya'); const listPersetujuan = document.getElementById('listPersetujuan');
-                listSaya.innerHTML = ""; listPersetujuan.innerHTML = ""; let countSaya = 0, countPersetujuan = 0;
+                const listSaya = document.getElementById('listSaya'); const listTugas = document.getElementById('listTugas');
+                listSaya.innerHTML = ""; listTugas.innerHTML = ""; let countSaya = 0, countTugas = 0;
 
                 snapshot.forEach((docSnap) => {
                     const data = docSnap.data(); const id = docSnap.id;
                     let tglText = "Baru saja"; if(data.tanggal) tglText = data.tanggal.toDate().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
                     
-                    const adminArray = data.admin_approvals || []; const bdhArray = data.bendahara_approvals || [];
-                    const sudahApprove = adminArray.includes(userEmail) || bdhArray.includes(userEmail);
-                    const isApproved = adminArray.length >= 2 && bdhArray.length >= 1;
-                    
-                    let statusText = data.status === 'rejected' ? 'Ditolak' : (isApproved || data.status === 'approved' ? 'Cair / Disetujui' : 'Diproses');
-                    let statusClass = data.status === 'rejected' ? 'rejected' : (isApproved || data.status === 'approved' ? 'approved' : 'pending');
+                    let statusText = ""; let statusClass = ""; let actionBtn = "";
 
-                    let bolehMelihatTombol = false;
-                    if (data.pengaju_email !== userEmail && !isApproved && !sudahApprove && data.status === 'pending') {
-                        if (userRole === "superadmin" || userRole === "bendahara" || (userRole === "admin" && isApprover === true)) bolehMelihatTombol = true; 
+                    // LOGIKA TAMPILAN BERDASARKAN STATUS ALUR BARU
+                    if (data.status === 'pending_tunjuk') {
+                        statusText = "Tunggu Verifikator"; statusClass = "tunjuk";
+                        if (userRole === 'superadmin') {
+                            actionBtn = `<button class="btn-act primary" onclick="bukaModalTunjuk('${id}')"><i class="fa-solid fa-user-check"></i> Tunjuk Verifikator</button>`;
+                        }
+                    } else if (data.status === 'pending_verifikasi') {
+                        statusText = "Verifikasi Lapangan"; statusClass = "verifikasi";
+                        if (userEmail === data.verifikator_email) {
+                            actionBtn = `<button class="btn-act primary" onclick="bukaModalVerifikasi('${id}')"><i class="fa-solid fa-camera"></i> Lakukan Verifikasi</button>`;
+                        }
+                    } else if (data.status === 'pending_approval') {
+                        statusText = "Menunggu Final Approval"; statusClass = "final";
+                        if (userRole === 'superadmin') {
+                            actionBtn = `<button class="btn-act primary" style="background:var(--color-final);" onclick="bukaModalFinal('${id}', '${data.target_nik}', '${data.foto_verifikasi}')"><i class="fa-solid fa-gavel"></i> Eksekusi Final</button>`;
+                        }
+                    } else if (data.status === 'approved') {
+                        statusText = "Cair / Disetujui"; statusClass = "approved";
+                    } else if (data.status === 'rejected') {
+                        statusText = "Ditolak"; statusClass = "rejected";
                     }
 
                     const htmlCard = `
                         <div class="request-card">
                             <div class="req-header">
-                                <div><div class="req-title">${data.judul}</div><div class="req-date"><i class="fa-solid fa-calendar-day"></i> ${tglText} <br> <i class="fa-solid fa-user"></i> ${data.pengaju_email}</div></div>
+                                <div>
+                                    <div class="req-title">${data.judul}</div>
+                                    <div class="req-date"><i class="fa-solid fa-calendar-day"></i> ${tglText} | Oleh: ${data.pengaju_nama}</div>
+                                </div>
                                 <div class="req-amount">Rp ${Number(data.nominal).toLocaleString('id-ID')}</div>
                             </div>
+                            <div class="req-target"><i class="fa-solid fa-hand-holding-heart"></i> Target: ${data.target_nama}</div>
                             <div class="req-body">${data.deskripsi}</div>
                             <div class="status-tracker">
-                                <div class="status-badge ${statusClass}"><i class="fa-solid ${statusClass === 'approved' ? 'fa-circle-check' : (statusClass === 'rejected' ? 'fa-circle-xmark' : 'fa-clock')}"></i> ${statusText}</div>
-                                <div class="approval-info"><span class="${bdhArray.length >= 1 ? 'yes' : 'no'}">Bdh: ${bdhArray.length}/1</span><span class="${adminArray.length >= 2 ? 'yes' : 'no'}">Adm: ${adminArray.length}/2</span></div>
+                                <div class="status-badge ${statusClass}"><i class="fa-solid fa-circle-info"></i> ${statusText}</div>
                             </div>
-                            <div class="action-buttons" style="display: ${bolehMelihatTombol ? 'flex' : 'none'};">
-                                <button class="btn-act reject" onclick="tolakDana('${id}')"><i class="fa-solid fa-xmark"></i> Tolak</button>
-                                <button class="btn-act approve" onclick="setujuiDana('${id}')"><i class="fa-solid fa-check"></i> Setujui</button>
-                            </div>
+                            ${actionBtn ? `<div class="action-buttons">${actionBtn}</div>` : ''}
                         </div>`;
 
                     if (data.pengaju_email === userEmail) { listSaya.innerHTML += htmlCard; countSaya++; } 
-                    else { listPersetujuan.innerHTML += htmlCard; countPersetujuan++; }
+                    // Tampilkan di tab Tugas jika dia Superadmin (harus nunjuk/final), atau jika dia Admin Verifikator yg ditunjuk
+                    else if (userRole === 'superadmin' || userEmail === data.verifikator_email) { 
+                        listTugas.innerHTML += htmlCard; countTugas++; 
+                    }
                 });
 
-                if(countSaya === 0) listSaya.innerHTML = '<div class="empty-state"><i class="fa-solid fa-folder-open"></i><p>Anda belum memiliki riwayat pengajuan dana kas.</p></div>';
-                if(countPersetujuan === 0) listPersetujuan.innerHTML = '<div class="empty-state"><i class="fa-solid fa-check-double"></i><p>Tidak ada antrean yang menunggu persetujuan Anda.</p></div>';
+                if(countSaya === 0) listSaya.innerHTML = '<div class="empty-state"><i class="fa-solid fa-folder-open"></i><p>Anda belum memiliki riwayat pengajuan dana.</p></div>';
+                if(countTugas === 0) listTugas.innerHTML = '<div class="empty-state"><i class="fa-solid fa-check-double"></i><p>Tidak ada tugas / antrean untuk Anda.</p></div>';
             });
         }
 
-        window.setujuiDana = async function(docId) {
+        // TAHAP 2: SUPERADMIN NUNJUK ADMIN
+        window.bukaModalTunjuk = function(id) { activeDocId = id; document.getElementById('modalTunjuk').classList.add('show'); }
+        window.prosesTunjuk = async function() {
+            const verifEmail = document.getElementById('selectVerifikator').value;
+            if(!verifEmail) return customAlert("Pilih Admin", "Harap pilih Admin dari daftar.", "warning");
+            
+            showLoading("Menugaskan...");
             try {
-                const reqRef = doc(db, "pengajuan_dana", docId); const docSnap = await getDoc(reqRef); const data = docSnap.data();
-                let adminArray = data.admin_approvals || []; let bdhArray = data.bendahara_approvals || [];
-
-                if (userRole === "bendahara") bdhArray.push(userEmail); else if (userRole === "admin" || userRole === "superadmin") adminArray.push(userEmail);
-
-                let statusBaru = "pending"; if (bdhArray.length >= 1 && adminArray.length >= 2) statusBaru = "approved";
-                await updateDoc(reqRef, { admin_approvals: adminArray, bendahara_approvals: bdhArray, status: statusBaru });
-                if(statusBaru === "approved") alert("Korum Terpenuhi! Pengajuan resmi DISETUJUI.");
-            } catch(e) { alert("Gagal memproses persetujuan."); }
+                await updateDoc(doc(db, "pengajuan_dana", activeDocId), { verifikator_email: verifEmail, status: "pending_verifikasi" });
+                hideLoading(); customAlert("Berhasil", "Admin telah ditugaskan ke lapangan.", "success");
+                document.getElementById('modalTunjuk').classList.remove('show');
+            } catch(e) { hideLoading(); customAlert("Gagal", "Sistem error saat menugaskan.", "error"); }
         }
 
-        window.tolakDana = async function(docId) { if(confirm("Yakin ingin MENOLAK pengajuan ini secara permanen?")) { await updateDoc(doc(db, "pengajuan_dana", docId), { status: "rejected" }); } }
+        // TAHAP 3: ADMIN FOTO LAPANGAN
+        const getBase64 = (file) => new Promise((res, rej) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => res(reader.result); reader.onerror = error => rej(error); });
+        
+        window.bukaModalVerifikasi = function(id) { activeDocId = id; document.getElementById('modalVerifikasi').classList.add('show'); }
+        window.prosesVerifikasi = async function(e) {
+            e.preventDefault();
+            const fileInput = document.getElementById('fotoVerif').files[0];
+            if(!fileInput) return customAlert("Kamera Kosong", "Anda wajib mengambil foto langsung.", "warning");
+
+            showLoading("Mengupload Foto Bukti...");
+            try {
+                const base64Image = await getBase64(fileInput);
+                await updateDoc(doc(db, "pengajuan_dana", activeDocId), { foto_verifikasi: base64Image, status: "pending_approval" });
+                hideLoading(); customAlert("Terkirim", "Bukti verifikasi berhasil diserahkan ke Superadmin.", "success");
+                document.getElementById('modalVerifikasi').classList.remove('show');
+            } catch(e) { hideLoading(); customAlert("Gagal", "Gagal upload gambar, ukurannya mungkin terlalu besar.", "error"); }
+        }
+
+        // TAHAP 4: FINAL APPROVAL BANG DENY (ANTI-DOBEL NIK)
+        window.bukaModalFinal = async function(id, encNik, imgSrc) {
+            activeDocId = id;
+            document.getElementById('imgBuktiFinal').src = imgSrc;
+            document.getElementById('boxWarningNik').style.display = 'none';
+
+            showLoading("Mengecek Histori NIK...");
+            try {
+                // CEK HISTORI NIK DI DATABASE
+                const qHistory = query(collection(db, "pengajuan_dana"), where("target_nik", "==", encNik), where("status", "==", "approved"));
+                const snap = await getDocs(qHistory);
+                
+                if (!snap.empty) {
+                    // Cari tanggal pencairan paling baru
+                    let lastDate = null;
+                    snap.forEach(d => { 
+                        const tgl = d.data().tanggal_cair ? d.data().tanggal_cair.toDate() : null;
+                        if(tgl && (!lastDate || tgl > lastDate)) lastDate = tgl;
+                    });
+                    
+                    if (lastDate) {
+                        document.getElementById('txtWarningNik').innerText = `NIK ini tercatat sudah pernah dicairkan bantuannya pada: ${lastDate.toLocaleDateString('id-ID')}.`;
+                        document.getElementById('boxWarningNik').style.display = 'block';
+                    }
+                }
+                hideLoading();
+                document.getElementById('modalFinal').classList.add('show');
+            } catch(e) { hideLoading(); customAlert("Error Database", "Gagal mengecek histori NIK.", "error"); }
+        }
+
+        window.eksekusiFinal = function(action) {
+            let msg = action === 'approve' ? "Anda yakin ingin MENYETUJUI dan mencairkan dana ini?" : "Anda yakin ingin MENOLAK pengajuan ini?";
+            customConfirm("Final Eksekusi", msg, async () => {
+                showLoading("Mengeksekusi Keputusan...");
+                try {
+                    const reqRef = doc(db, "pengajuan_dana", activeDocId);
+                    
+                    if (action === 'approve') {
+                        const snap = await getDoc(reqRef);
+                        const d = snap.data();
+                        
+                        // 1. Ubah Status Pengajuan
+                        await updateDoc(reqRef, { status: "approved", tanggal_cair: serverTimestamp() });
+                        
+                        // 2. Potong Uang Kas (Bikin Record Transaksi Otomatis)
+                        await addDoc(collection(db, "transactions"), {
+                            jenis: "Pengeluaran", metode: "Sistem Pengajuan", status: "approved", pengirim: "Sistem Kas", 
+                            nama_keterangan: "Pencairan: " + d.judul + " (" + d.target_nama + ")",
+                            nominal: d.nominal, tanggal: serverTimestamp()
+                        });
+
+                        hideLoading(); customAlert("Dana Cair!", "Pengajuan disetujui dan saldo kas berhasil dipotong.", "success");
+                    } else {
+                        await updateDoc(reqRef, { status: "rejected" });
+                        hideLoading(); customAlert("Ditolak", "Pengajuan resmi ditolak.", "success");
+                    }
+                    document.getElementById('modalFinal').classList.remove('show');
+                } catch(e) { hideLoading(); customAlert("Gagal", "Sistem gagal mengeksekusi.", "error"); }
+            });
+        }
+    </script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(err => console.log('PWA SW Failed', err)); });
+        }
     </script>
 </body>
 </html>

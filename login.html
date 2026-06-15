@@ -7,6 +7,8 @@
     <title>Keamanan Maksimal - KGR</title>
     
     <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon.png">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
     
@@ -15,6 +17,7 @@
             --bg-base: #F4F6F5; --text-dark: #111827; --text-gray: #4B5563;
             --emerald-dark: #064E3B; --emerald-main: #059669; 
             --gold-accent: #FBBF24; --danger-red: #DC2626; --success-green: #059669;
+            --warning-yellow: #D97706;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -54,18 +57,26 @@
         .toggle-view.active { display: block; animation: fadeIn 0.4s ease forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* ALERT MODAL */
-        .custom-alert-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 99999; opacity: 0; visibility: hidden; transition: 0.3s ease; padding: 24px; }
-        .custom-alert-overlay.show { opacity: 1; visibility: visible; }
-        .custom-alert-box { background: #FFF; border-radius: 30px; padding: 30px 24px; width: 100%; max-width: 320px; text-align: center; transform: scale(0.9); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1); box-shadow: 0 25px 50px rgba(0,0,0,0.2);}
-        .custom-alert-overlay.show .custom-alert-box { transform: scale(1); }
-        .alert-icon { font-size: 55px; margin-bottom: 15px; }
-        .alert-icon.error { color: var(--danger-red); }
-        .alert-icon.success { color: var(--success-green); }
-        .alert-title { font-size: 18px; font-weight: 900; color: var(--text-dark); margin-bottom: 8px; }
-        .alert-msg { font-size: 13px; font-weight: 700; color: var(--text-gray); margin-bottom: 25px; line-height: 1.4;}
-        .btn-alert { width: 100%; padding: 16px; border-radius: 14px; font-size: 14px; font-weight: 900; border: none; cursor: pointer; color: #FFF; background: var(--text-dark); transition: 0.2s;}
-        .btn-alert:active { transform: scale(0.95); }
+        /* --- STYLING KHUSUS CUSTOM ALERT & CONFIRM MODAL --- */
+        .cp-overlay { position: fixed; inset: 0; background: rgba(17, 24, 39, 0.8); backdrop-filter: blur(8px); z-index: 99999; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px; }
+        .cp-overlay.show { opacity: 1; visibility: visible; }
+        .cp-box { background: #FFF; border-radius: 28px; width: 100%; max-width: 320px; text-align: center; padding: 30px 24px; transform: scale(0.9); transition: 0.3s; box-shadow: 0 25px 50px rgba(0,0,0,0.2); }
+        .cp-overlay.show .cp-box { transform: scale(1); }
+        
+        .cp-icon { width: 65px; height: 65px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; margin: 0 auto 15px; }
+        .cp-icon.success { background: #D1FAE5; color: var(--emerald-main); }
+        .cp-icon.error { background: #FEE2E2; color: var(--danger-red); }
+        .cp-icon.warning { background: #FEF3C7; color: var(--warning-yellow); }
+        .cp-icon.info { background: #E0F2FE; color: #0284C7; }
+        
+        .cp-title { font-size: 18px; font-weight: 900; color: var(--text-dark); margin-bottom: 8px; }
+        .cp-desc { font-size: 12px; font-weight: 600; color: var(--text-gray); margin-bottom: 25px; line-height: 1.5; }
+        .cp-btn-wrap { display: flex; gap: 10px; }
+        .cp-btn { flex: 1; padding: 15px; border-radius: 14px; font-size: 13px; font-weight: 800; border: none; cursor: pointer; transition: 0.2s; }
+        .cp-btn:active { transform: scale(0.95); }
+        .cp-btn-primary { background: var(--emerald-main); color: #FFF; box-shadow: 0 5px 15px rgba(5,150,105,0.2);}
+        .cp-btn-cancel { background: #F1F5F9; color: var(--text-dark); }
+        .cp-btn-danger { background: var(--danger-red); color: #FFF; box-shadow: 0 5px 15px rgba(220,38,38,0.2);}
 
         /* ANIMASI TYPEWRITER */
         .intro-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--emerald-dark); z-index: 9999; display: none; flex-direction: column; justify-content: center; align-items: center; }
@@ -80,12 +91,27 @@
 </head>
 <body>
 
-    <div id="customAlert" class="custom-alert-overlay">
-        <div class="custom-alert-box">
-            <div id="alertIcon" class="alert-icon"><i class="fa-solid fa-circle-info"></i></div>
-            <h3 id="alertTitle" class="alert-title">Info</h3>
-            <p id="alertMessage" class="alert-msg">Pesan</p>
-            <button class="btn-alert" onclick="document.getElementById('customAlert').classList.remove('show')">Mengerti</button>
+    <!-- ============================================== -->
+    <!-- SYSTEM CUSTOM MODAL (PENGGANTI ALERT BAWAAN)   -->
+    <!-- ============================================== -->
+    <div class="cp-overlay" id="customAlert">
+        <div class="cp-box">
+            <div class="cp-icon success" id="caIcon"><i class="fa-solid fa-check"></i></div>
+            <h3 class="cp-title" id="caTitle">Pemberitahuan</h3>
+            <p class="cp-desc" id="caDesc">Pesan di sini.</p>
+            <button class="cp-btn cp-btn-primary" onclick="closeCustomAlert()" style="width: 100%;">Tutup</button>
+        </div>
+    </div>
+
+    <div class="cp-overlay" id="customConfirm">
+        <div class="cp-box">
+            <div class="cp-icon warning"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <h3 class="cp-title" id="ccTitle">Konfirmasi</h3>
+            <p class="cp-desc" id="ccDesc">Apakah Anda yakin?</p>
+            <div class="cp-btn-wrap">
+                <button class="cp-btn cp-btn-cancel" onclick="closeCustomConfirm()">Batal</button>
+                <button class="cp-btn cp-btn-danger" id="ccBtnYes">Ya, Lanjutkan</button>
+            </div>
         </div>
     </div>
 
@@ -127,7 +153,7 @@
             <!-- STEP REGISTER -->
             <div id="stepRegister" class="toggle-view">
                 <form id="formRegister">
-                    <div class="form-group"><i class="fa-solid fa-user input-icon"></i><input type="text" id="regName" class="form-input" placeholder="Nama Sesuai KTP" required></div>
+                    <div class="form-group"><i class="fa-solid fa-user input-icon"></i><input type="text" id="regName" class="form-input" placeholder="Nama Lengkap (KTP)" required></div>
                     <div class="form-group"><i class="fa-solid fa-id-card input-icon"></i><input type="tel" id="regNik" class="form-input" placeholder="16 Digit NIK" required maxlength="16" oninput="this.value = this.value.replace(/[^0-9]/g, '');"></div>
                     <div class="form-group"><i class="fa-brands fa-whatsapp input-icon"></i><input type="tel" id="regWa" class="form-input" placeholder="Nomor WhatsApp" required oninput="this.value = this.value.replace(/[^0-9]/g, '');"></div>
                     <div class="form-group"><i class="fa-solid fa-envelope input-icon"></i><input type="email" id="regEmail" class="form-input" placeholder="Email Aktif (Gmail/Yahoo)" required></div>
@@ -137,7 +163,7 @@
                 <span class="link-text" onclick="switchView('stepLogin')">Sudah punya akun? <span>Masuk</span></span>
             </div>
 
-            <!-- STEP LUPA PASSWORD (BARU) -->
+            <!-- STEP LUPA PASSWORD -->
             <div id="stepForgot" class="toggle-view">
                 <h3 style="font-size: 16px; font-weight: 900; margin-bottom: 5px; color: var(--text-dark);">Reset Password</h3>
                 <p style="font-size: 11px; color: var(--text-gray); font-weight: 600; margin-bottom: 15px;">Link pemulihan akan dikirimkan ke kotak masuk email Anda.</p>
@@ -156,9 +182,33 @@
 
     <script type="module">
         import { auth, db } from './db-config.js'; 
-        // IMPORT SEND PASSWORD RESET EMAIL DITAMBAHKAN
         import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
         import { doc, getDoc, setDoc, serverTimestamp, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+        // ==============================================
+        // FUNGSI KENDALI CUSTOM MODAL
+        // ==============================================
+        window.customAlert = function(title, desc, type = 'success') {
+            const el = document.getElementById('customAlert');
+            document.getElementById('caTitle').innerText = title;
+            document.getElementById('caDesc').innerText = desc;
+            const iconEl = document.getElementById('caIcon');
+            if(type === 'success') { iconEl.className = 'cp-icon success'; iconEl.innerHTML = '<i class="fa-solid fa-check"></i>'; }
+            else if(type === 'error') { iconEl.className = 'cp-icon error'; iconEl.innerHTML = '<i class="fa-solid fa-xmark"></i>'; }
+            else { iconEl.className = 'cp-icon warning'; iconEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>'; }
+            el.classList.add('show');
+        }
+        window.closeCustomAlert = function() { document.getElementById('customAlert').classList.remove('show'); }
+
+        window.customConfirm = function(title, desc, onYes) {
+            const el = document.getElementById('customConfirm');
+            document.getElementById('ccTitle').innerText = title;
+            document.getElementById('ccDesc').innerText = desc;
+            document.getElementById('ccBtnYes').onclick = function() { closeCustomConfirm(); onYes(); };
+            el.classList.add('show');
+        }
+        window.closeCustomConfirm = function() { document.getElementById('customConfirm').classList.remove('show'); }
+        // ==============================================
 
         // BROWSER FINGERPRINTING
         function getDeviceID() {
@@ -182,29 +232,25 @@
             if (/^(.)\1{15}$/.test(nik)) return false; return true;
         }
 
-        window.showAlert = function(type, title, message) {
-            document.getElementById('alertTitle').innerText = title; document.getElementById('alertMessage').innerText = message;
-            document.getElementById('alertIcon').className = 'alert-icon ' + type; document.getElementById('customAlert').classList.add('show');
-        }
         window.switchView = function(viewId) { document.querySelectorAll('.toggle-view').forEach(el => el.classList.remove('active')); document.getElementById(viewId).classList.add('active'); }
 
-        // FUNGSI LUPA PASSWORD (BARU)
+        // FUNGSI LUPA PASSWORD
         document.getElementById('formForgot').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btnForgotSubmit');
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses...'; btn.disabled = true;
             try {
                 await sendPasswordResetEmail(auth, document.getElementById('resetEmail').value);
-                showAlert('success', 'Email Terkirim', 'Link reset password telah dikirim. Silahkan cek kotak masuk atau folder spam di email Anda.');
+                customAlert('Email Terkirim', 'Link reset password telah dikirim. Silahkan cek kotak masuk atau folder spam di email Anda.', 'success');
                 setTimeout(() => { switchView('stepLogin'); }, 3000);
             } catch (error) {
-                showAlert('error', 'Gagal', error.message.replace('Firebase: ', ''));
+                customAlert('Gagal', error.message.replace('Firebase: ', ''), 'error');
             } finally {
                 btn.innerHTML = 'Kirim Link Reset <i class="fa-solid fa-paper-plane"></i>'; btn.disabled = false;
             }
         });
 
-        // PROSES PENDAFTARAN BARU
+        // PROSES PENDAFTARAN BARU DENGAN VALIDASI KTP
         document.getElementById('formRegister').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btnRegisterSubmit');
@@ -216,12 +262,18 @@
             const email = document.getElementById('regEmail').value.toLowerCase();
             const pass = document.getElementById('regPass').value;
 
-            // FIX: yahoo.co.id DITAMBAHKAN KE WHITELIST
+            // VALIDASI NAMA MINIMAL 2 KATA
+            const nameParts = name.trim().split(/\s+/);
+            if (nameParts.length < 2) {
+                customAlert('Nama Tidak Lengkap', 'Harap masukkan Nama Lengkap sesuai KTP (Minimal 2 kata).', 'warning');
+                btn.innerHTML = 'Daftar Akun Baru <i class="fa-solid fa-user-plus"></i>'; btn.disabled = false; return;
+            }
+
             const allowedDomains = ["gmail.com", "yahoo.com", "yahoo.co.id"];
             const userDomain = email.split('@')[1];
             
-            if (!allowedDomains.includes(userDomain)) { showAlert('error', 'Domain Ditolak', 'Gunakan alamat email @gmail.com, @yahoo.com, atau @yahoo.co.id.'); btn.innerHTML = 'Daftar Akun Baru <i class="fa-solid fa-user-plus"></i>'; btn.disabled = false; return; }
-            if (!isValidNIK(nikInput)) { showAlert('error', 'NIK Palsu', 'Sistem mendeteksi format NIK tidak valid.'); btn.innerHTML = 'Daftar Akun Baru <i class="fa-solid fa-user-plus"></i>'; btn.disabled = false; return; }
+            if (!allowedDomains.includes(userDomain)) { customAlert('Domain Ditolak', 'Gunakan alamat email @gmail.com, @yahoo.com, atau @yahoo.co.id.', 'error'); btn.innerHTML = 'Daftar Akun Baru <i class="fa-solid fa-user-plus"></i>'; btn.disabled = false; return; }
+            if (!isValidNIK(nikInput)) { customAlert('NIK Ditolak', 'Sistem mendeteksi format NIK tidak valid. Pastikan 16 digit benar.', 'error'); btn.innerHTML = 'Daftar Akun Baru <i class="fa-solid fa-user-plus"></i>'; btn.disabled = false; return; }
 
             try {
                 const encryptedInputNik = encryptData(nikInput);
@@ -247,13 +299,13 @@
 
                 await setDoc(doc(db, "users", userRecord.email), { 
                     nama_lengkap: name, nik: encryptedInputNik, no_wa: waInput, email: email, 
-                    role: "member", status: "Pending Admin", device_id: getDeviceID(), created_at: serverTimestamp() 
+                    role: "member", status: "Pending Admin", device_id: getDeviceID(), created_at: serverTimestamp(), hak_absen: "otomatis" 
                 });
 
-                showAlert('success', 'Registrasi Berhasil', 'Silahkan cek kotak masuk email Anda untuk verifikasi.'); 
-                setTimeout(() => { switchView('stepLogin'); document.getElementById('formRegister').reset(); }, 3000);
+                customAlert('Registrasi Berhasil', 'Silahkan cek kotak masuk email Anda untuk melakukan verifikasi akun.', 'success'); 
+                setTimeout(() => { switchView('stepLogin'); document.getElementById('formRegister').reset(); }, 3500);
 
-            } catch (error) { showAlert('error', 'Pendaftaran Ditolak', error.message.replace('Firebase: ', '')); } 
+            } catch (error) { customAlert('Pendaftaran Ditolak', error.message.replace('Firebase: ', ''), 'error'); } 
             finally { btn.innerHTML = 'Daftar Akun Baru <i class="fa-solid fa-user-plus"></i>'; btn.disabled = false; }
         });
 
@@ -262,15 +314,15 @@
             e.preventDefault(); const btn = document.getElementById('btnLoginSubmit'); btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memverifikasi...'; btn.disabled = true;
             try {
                 const uc = await signInWithEmailAndPassword(auth, document.getElementById('logEmail').value, document.getElementById('logPass').value);
-                if (!uc.user.emailVerified) throw new Error("Email belum diverifikasi. Cek kotak masuk Anda.");
+                if (!uc.user.emailVerified) throw new Error("Email belum diverifikasi. Silahkan cek kotak masuk Anda.");
                 
                 const userDoc = await getDoc(doc(db, "users", uc.user.email));
                 if (userDoc.exists()) {
                     const dbDeviceId = userDoc.data().device_id;
-                    if (dbDeviceId && dbDeviceId !== getDeviceID()) { auth.signOut(); throw new Error("AKSES ILEGAL DITOLAK:\n\nAkun ini sudah dikunci permanen untuk perangkat (HP) lain."); }
+                    if (dbDeviceId && dbDeviceId !== getDeviceID()) { auth.signOut(); throw new Error("Akses Ilegal! Akun ini sudah dikunci permanen untuk perangkat (HP) lain."); }
                 }
                 window.playTypewriterAndRedirect();
-            } catch (error) { showAlert('error', 'Gagal Masuk', error.message.replace('Firebase: ', '')); btn.innerHTML = 'Masuk Aplikasi <i class="fa-solid fa-right-to-bracket"></i>'; btn.disabled = false; }
+            } catch (error) { customAlert('Gagal Masuk', error.message.replace('Firebase: ', ''), 'error'); btn.innerHTML = 'Masuk Aplikasi <i class="fa-solid fa-right-to-bracket"></i>'; btn.disabled = false; }
         });
 
         window.playTypewriterAndRedirect = async function() {
@@ -281,6 +333,17 @@
             await new Promise(r => setTimeout(r, 200)); 
             await typeText("ANAK OJOL BABAH ALUN", document.getElementById('text2'));
             setTimeout(() => { window.location.href = 'index.html'; }, 800);
+        }
+    </script>
+
+    <!-- PWA SERVICE WORKER REGISTRATION -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch(err => {
+                    console.log('PWA SW Registration Failed:', err);
+                });
+            });
         }
     </script>
 </body>

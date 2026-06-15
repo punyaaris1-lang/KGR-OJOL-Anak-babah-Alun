@@ -10,31 +10,47 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
     <style>
-        :root { --bg-base: #F4F6F5; --text-dark: #111827; --text-gray: #4B5563; --emerald-card: linear-gradient(135deg, #065F46 0%, #022C22 100%); --gold-accent: #FBBF24; --silver: #9CA3AF; --bronze: #B45309; }
+        :root { 
+            --bg-base: #F4F6F5; --text-dark: #111827; --text-gray: #4B5563; 
+            --emerald-main: #059669; --emerald-dark: #064E3B; 
+            --gold-accent: #FBBF24; --silver: #9CA3AF; --bronze: #B45309; 
+            --danger-red: #DC2626; --warning-yellow: #F59E0B;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: #E2E8E4; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        
         .app-container { width: 100%; max-width: 414px; height: 100vh; background-color: var(--bg-base); background-image: radial-gradient(circle at 50% 35%, rgba(5, 150, 105, 0.12) 0%, rgba(5, 150, 105, 0.03) 35%, var(--bg-base) 70%); position: relative; overflow-x: hidden; overflow-y: auto; display: flex; flex-direction: column; color: var(--text-dark); }
         @media (min-width: 600px) { .app-container { max-width: 480px; height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15); border: 8px solid #FFFFFF; margin: auto; } }
 
         .header-page { padding: 40px 24px 20px; display: flex; align-items: center; gap: 15px; z-index: 10; background: #FFF; box-shadow: 0 4px 15px rgba(0,0,0,0.02); border-bottom: 1px solid rgba(0,0,0,0.05);}
         .btn-back { width: 42px; height: 42px; border-radius: 14px; background: #F5F5F7; color: var(--text-dark); display: flex; justify-content: center; align-items: center; font-size: 18px; cursor: pointer; transition: 0.2s; border: 1px solid rgba(0,0,0,0.05);}
-        .btn-back:active { transform: scale(0.85); background: #059669; color: #FFF; }
+        .btn-back:active { transform: scale(0.85); background: var(--emerald-main); color: #FFF; }
         .header-page h2 { font-size: 18px; font-weight: 900; letter-spacing: -0.5px; }
 
         .content-area { flex-grow: 1; overflow-y: auto; padding: 25px 24px 110px; scrollbar-width: none; }
         .content-area::-webkit-scrollbar { display: none; }
 
-        .info-card { background: var(--emerald-card); border-radius: 24px; padding: 25px; margin-bottom: 25px; text-align: center; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 20px 40px rgba(5, 150, 105, 0.25); position: relative; overflow: hidden; }
+        .info-card { background: linear-gradient(135deg, var(--emerald-main) 0%, var(--emerald-dark) 100%); border-radius: 24px; padding: 25px; margin-bottom: 20px; text-align: center; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 20px 40px rgba(5, 150, 105, 0.25); position: relative; overflow: hidden; }
         .info-card::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(to bottom right, rgba(255,255,255,0.15) 0%, transparent 40%, transparent 100%); transform: rotate(30deg); pointer-events: none; }
         .info-block { display: flex; flex-direction: column; align-items: center; position: relative; z-index: 2;}
         .info-block h3 { font-size: 26px; font-weight: 900; color: #FFFFFF; margin-bottom: 4px; text-shadow: 0 4px 10px rgba(0,0,0,0.3);}
         .info-block p { font-size: 11px; font-weight: 800; color: rgba(255,255,255,0.8); text-transform: uppercase; }
         .info-divider { width: 1px; height: 40px; background: rgba(255,255,255,0.2); z-index: 2;}
 
-        .section-title { font-size: 15px; font-weight: 900; margin: 0 0 15px; color: var(--text-dark); text-transform: uppercase; letter-spacing: 1px;}
+        /* TOOLS KONTROL */
+        .controls-wrapper { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 10px;}
+        .filter-select { flex: 1; padding: 12px 15px; border-radius: 14px; border: 1px solid rgba(0,0,0,0.05); background: #FFF; font-size: 12px; font-weight: 800; color: var(--text-dark); outline: none; box-shadow: 0 5px 15px rgba(0,0,0,0.02);}
         
-        .list-item { display: flex; align-items: center; padding: 16px 15px; border-radius: 20px; margin-bottom: 12px; background: #FFF; border: 1px solid rgba(0,0,0,0.02); box-shadow: 0 5px 15px rgba(0,0,0,0.03); transition: 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .btn-export-panel { background: var(--text-dark); color: #FFF; padding: 12px 15px; border-radius: 14px; font-size: 12px; font-weight: 800; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: 0.2s; white-space: nowrap;}
+        .btn-export-panel:active { transform: scale(0.95); }
+
+        .section-title { font-size: 14px; font-weight: 900; margin: 0 0 15px; color: var(--text-gray); text-transform: uppercase; letter-spacing: 1px;}
+        
+        /* LEADERBOARD LIST */
+        .list-item { display: flex; align-items: center; padding: 16px 15px; border-radius: 20px; margin-bottom: 12px; background: #FFF; border: 1px solid rgba(0,0,0,0.02); box-shadow: 0 5px 15px rgba(0,0,0,0.03); transition: 0.2s;}
         .list-item:active { transform: scale(0.96); background: #F9F9F9; }
 
         .rank { width: 35px; font-size: 16px; font-weight: 900; color: var(--text-dark); text-align: center; flex-shrink: 0;}
@@ -42,7 +58,7 @@
         .rank.top-2 { font-size: 24px; color: var(--silver); filter: drop-shadow(0 2px 5px rgba(156, 163, 175, 0.5)); }
         .rank.top-3 { font-size: 24px; color: var(--bronze); filter: drop-shadow(0 2px 5px rgba(180, 83, 9, 0.5)); }
 
-        .avatar { width: 50px; height: 50px; border-radius: 50%; margin: 0 12px; background-color: #F5F5F7; border: 2px solid #FFF; box-shadow: 0 4px 10px rgba(0,0,0,0.1); flex-shrink: 0; display: flex; justify-content: center; align-items: center; font-size: 20px; font-weight: 900; color: var(--text-dark); }
+        .avatar { width: 50px; height: 50px; border-radius: 50%; margin: 0 12px; background-color: #F5F5F7; border: 2px solid #FFF; box-shadow: 0 4px 10px rgba(0,0,0,0.1); flex-shrink: 0; display: flex; justify-content: center; align-items: center; font-size: 20px; font-weight: 900; color: var(--text-dark); object-fit: cover;}
         .info { flex-grow: 1; overflow: hidden; }
         .info h4 { font-size: 14px; font-weight: 900; color: var(--text-dark); margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
         .info p { font-size: 11px; color: var(--text-gray); font-weight: 700;}
@@ -53,9 +69,61 @@
         .empty-state { text-align: center; padding: 40px 20px; color: var(--text-gray); border: 2px dashed rgba(0,0,0,0.1); border-radius: 20px; }
         .empty-state i { font-size: 35px; margin-bottom: 10px; opacity: 0.5; }
         .empty-state p { font-size: 13px; font-weight: 700; }
+
+        /* MODAL EXPORT DATA (KHUSUS PENGUASA) */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: flex-end; z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s ease; }
+        .modal-overlay.show { opacity: 1; visibility: visible; }
+        .modal-content { background: #FFF; border-radius: 32px 32px 0 0; padding: 30px 24px 40px; width: 100%; max-width: 480px; transform: translateY(100%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1); box-shadow: 0 -10px 40px rgba(0,0,0,0.15);}
+        .modal-overlay.show .modal-content { transform: translateY(0); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-header h3 { font-size: 18px; font-weight: 900; color: var(--text-dark); }
+        .btn-close-modal { width: 32px; height: 32px; border-radius: 50%; border: none; background: #F5F5F7; display: flex; justify-content: center; align-items: center; font-size: 14px; cursor: pointer; color: var(--text-dark); transition: 0.2s;}
+        
+        .form-group { margin-bottom: 15px; }
+        .form-label { display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; color: var(--text-gray); }
+        .form-input { width: 100%; padding: 15px; border-radius: 14px; border: 2px solid rgba(0,0,0,0.06); font-size: 14px; font-weight: 700; outline: none; background: #F9F9F9; color: var(--text-dark); transition: 0.2s;}
+        .form-input:focus { border-color: var(--emerald-main); background: #FFF; }
+        
+        .btn-action-group { display: flex; gap: 10px; margin-top: 20px;}
+        .btn-export { flex: 1; padding: 16px; border-radius: 14px; border: none; font-size: 13px; font-weight: 900; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; color: #FFF; transition: 0.2s; }
+        .btn-export.excel { background: #1D6F42; box-shadow: 0 5px 15px rgba(29, 111, 66, 0.2);}
+        .btn-export.pdf { background: #E04B4B; box-shadow: 0 5px 15px rgba(224, 75, 75, 0.2);}
+        .btn-export:active { transform: scale(0.95); }
+
+        /* CUSTOM POPUP (ALERT & CONFIRM) */
+        .cp-overlay { position: fixed; inset: 0; background: rgba(17, 24, 39, 0.8); backdrop-filter: blur(8px); z-index: 99999; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px; }
+        .cp-overlay.show { opacity: 1; visibility: visible; }
+        .cp-box { background: #FFF; border-radius: 28px; width: 100%; max-width: 320px; text-align: center; padding: 30px 24px; transform: scale(0.9); transition: 0.3s; box-shadow: 0 25px 50px rgba(0,0,0,0.2); }
+        .cp-overlay.show .cp-box { transform: scale(1); }
+        .cp-icon { width: 65px; height: 65px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; margin: 0 auto 15px; }
+        .cp-icon.success { background: #D1FAE5; color: var(--emerald-main); }
+        .cp-icon.error { background: #FEE2E2; color: var(--danger-red); }
+        .cp-icon.warning { background: #FEF3C7; color: var(--warning-yellow); }
+        .cp-title { font-size: 18px; font-weight: 900; color: var(--text-dark); margin-bottom: 8px; }
+        .cp-desc { font-size: 12px; font-weight: 600; color: var(--text-gray); margin-bottom: 25px; line-height: 1.5; }
+        .cp-btn-primary { width: 100%; padding: 15px; border-radius: 14px; font-size: 13px; font-weight: 800; border: none; cursor: pointer; transition: 0.2s; background: var(--emerald-main); color: #FFF; box-shadow: 0 5px 15px rgba(5,150,105,0.2);}
+        .cp-btn-primary:active { transform: scale(0.95); }
+        
+        .spinner-custom { border: 4px solid rgba(0,0,0,0.1); width: 50px; height: 50px; border-radius: 50%; border-left-color: var(--emerald-main); animation: spin 1s linear infinite; margin: 0 auto 15px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
+    <div class="cp-overlay" id="customAlert">
+        <div class="cp-box">
+            <div class="cp-icon success" id="caIcon"><i class="fa-solid fa-check"></i></div>
+            <h3 class="cp-title" id="caTitle">Pemberitahuan</h3>
+            <p class="cp-desc" id="caDesc">Pesan</p>
+            <button class="cp-btn-primary" onclick="closeCustomAlert()">Tutup</button>
+        </div>
+    </div>
+    <div class="cp-overlay" id="customLoading">
+        <div class="cp-box" style="padding: 40px 20px;">
+            <div class="spinner-custom"></div>
+            <h3 class="cp-title" id="clTitle" style="margin-bottom: 0;">Memproses...</h3>
+        </div>
+    </div>
+
     <div class="app-container">
         <div class="header-page">
             <div class="btn-back" onclick="window.location.href='index.html'"><i class="fa-solid fa-arrow-left"></i></div>
@@ -75,13 +143,47 @@
                 </div>
             </div>
 
+            <div class="controls-wrapper">
+                <select id="filterBulan" class="filter-select" onchange="renderLeaderboard()">
+                    <option value="all">🏆 Klasemen Sepanjang Masa (All-Time)</option>
+                    </select>
+                
+                <button id="btnExportPanel" class="btn-export-panel" style="display: none;" onclick="openExportModal()"><i class="fa-solid fa-cloud-arrow-down"></i> Tarik Data</button>
+            </div>
+
             <div class="section-title">Klasemen Kebaikan</div>
 
             <div id="donaturList">
                 <div class="empty-state">
                     <i class="fa-solid fa-spinner fa-spin"></i>
-                    <p>Mengambil data klasemen kebaikan...</p>
+                    <p>Menarik data klasemen dari server...</p>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalExport" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h3>Tarik Laporan Donatur</h3>
+                    <p style="font-size: 11px; color: var(--text-gray); font-weight: 700; margin-top: 3px;">Rekapitulasi total sedekah per-anggota.</p>
+                </div>
+                <button type="button" onclick="document.getElementById('modalExport').classList.remove('show')" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Tanggal Awal</label>
+                <input type="date" id="expStart" class="form-input" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Tanggal Akhir</label>
+                <input type="date" id="expEnd" class="form-input" required>
+            </div>
+
+            <div class="btn-action-group">
+                <button class="btn-export excel" onclick="prosesExport('excel')"><i class="fa-solid fa-file-excel"></i> File Excel (.csv)</button>
+                <button class="btn-export pdf" onclick="prosesExport('pdf')"><i class="fa-solid fa-file-pdf"></i> Dokumen PDF</button>
             </div>
         </div>
     </div>
@@ -89,65 +191,263 @@
     <script type="module">
         import { auth, db } from './db-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
-        import { collection, query, where, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+        import { collection, query, where, onSnapshot, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-        onAuthStateChanged(auth, (user) => { if (!user) window.location.href = 'login.html'; });
+        // KENDALI CUSTOM MODAL
+        window.customAlert = function(title, desc, type = 'success') {
+            const el = document.getElementById('customAlert');
+            document.getElementById('caTitle').innerText = title; document.getElementById('caDesc').innerText = desc;
+            const iconEl = document.getElementById('caIcon');
+            if(type === 'success') { iconEl.className = 'cp-icon success'; iconEl.innerHTML = '<i class="fa-solid fa-check"></i>'; }
+            else if(type === 'error') { iconEl.className = 'cp-icon error'; iconEl.innerHTML = '<i class="fa-solid fa-xmark"></i>'; }
+            else { iconEl.className = 'cp-icon warning'; iconEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>'; }
+            el.classList.add('show');
+        }
+        window.closeCustomAlert = function() { document.getElementById('customAlert').classList.remove('show'); }
+        window.showLoading = function(title = "Memproses...") { document.getElementById('clTitle').innerText = title; document.getElementById('customLoading').classList.add('show'); }
+        window.hideLoading = function() { document.getElementById('customLoading').classList.remove('show'); }
 
-        async function loadKlasemenDonatur() {
+        let userRole = "member";
+        let rawTransactions = [];
+        let userMap = {};
+
+        onAuthStateChanged(auth, async (user) => { 
+            if (user) {
+                const docSnap = await getDoc(doc(db, "users", user.email));
+                if (docSnap.exists()) {
+                    userRole = (docSnap.data().role || "member").toLowerCase();
+                    // BUKA RUANG RAHASIA JIKA DIA PENGUASA
+                    if (["superadmin", "bendahara"].includes(userRole)) {
+                        document.getElementById('btnExportPanel').style.display = 'flex';
+                    }
+                    loadDatabase();
+                }
+            } else { window.location.href = 'login.html'; } 
+        });
+
+        // Generate Opsi Bulan di Dropdown Otomatis
+        function generateMonthOptions() {
+            const select = document.getElementById('filterBulan');
+            const now = new Date();
+            const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+            
+            // Generate 6 bulan ke belakang
+            for (let i = 0; i < 6; i++) {
+                let d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+                let val = `${d.getFullYear()}-${(d.getMonth()+1).toString().padStart(2, '0')}`;
+                let text = `${months[d.getMonth()]} ${d.getFullYear()}`;
+                
+                let opt = document.createElement('option');
+                opt.value = val;
+                opt.innerHTML = (i === 0 ? "📅 Bulan Ini (" : "📅 ") + text + (i === 0 ? ")" : "");
+                select.appendChild(opt);
+            }
+        }
+        generateMonthOptions();
+
+        async function loadDatabase() {
             try {
+                // Tarik Kamus Nama User
                 const usersSnap = await getDocs(collection(db, "users"));
-                let userMap = {};
-                usersSnap.forEach(doc => { userMap[doc.data().email] = doc.data().nama_lengkap || "Hamba Allah"; });
+                userMap = {};
+                usersSnap.forEach(doc => { 
+                    userMap[doc.id] = {
+                        nama: doc.data().nama_lengkap || "Tanpa Nama",
+                        foto: doc.data().profile_image || null
+                    }; 
+                });
 
+                // Tarik Semua Transaksi Kas Masuk
                 const trxRef = collection(db, "transactions");
                 const q = query(trxRef, where("jenis", "==", "Pemasukan"));
 
                 onSnapshot(q, (snapshot) => {
-                    let donorMap = {}; let grandTotal = 0; let validDonorsCount = 0;
-
+                    rawTransactions = [];
                     snapshot.forEach((docSnap) => {
                         const data = docSnap.data();
                         if (data.status !== "pending" && data.status !== "rejected" && data.pengirim) {
-                            const email = data.pengirim; const nominal = Number(data.nominal) || 0;
-                            if (!donorMap[email]) { donorMap[email] = { total: 0, count: 0 }; validDonorsCount++; }
-                            donorMap[email].total += nominal; donorMap[email].count += 1; grandTotal += nominal;
+                            rawTransactions.push({
+                                pengirim: data.pengirim,
+                                nominal: Number(data.nominal) || 0,
+                                tanggal: data.tanggal ? data.tanggal.toDate() : new Date()
+                            });
                         }
                     });
-
-                    document.getElementById('uiTotalDonatur').innerText = validDonorsCount;
-                    document.getElementById('uiTotalDana').innerText = "Rp " + (grandTotal >= 1000000 ? (grandTotal/1000000).toFixed(1) + 'Jt' : grandTotal.toLocaleString('id-ID'));
-
-                    let sortedDonors = Object.keys(donorMap).map(email => ({
-                        nama: userMap[email] || "Anggota KGR", total: donorMap[email].total, frekuensi: donorMap[email].count
-                    })).sort((a, b) => b.total - a.total);
-
-                    const listContainer = document.getElementById('donaturList'); listContainer.innerHTML = "";
-
-                    if (sortedDonors.length === 0) {
-                        listContainer.innerHTML = `<div class="empty-state"><i class="fa-solid fa-box-open"></i><p>Belum ada donatur yang disetujui.</p></div>`; return;
-                    }
-
-                    sortedDonors.forEach((donor, index) => {
-                        const rankPos = index + 1;
-                        let rankIcon = rankPos, rankClass = "", borderClass = "";
-
-                        if (rankPos === 1) { rankIcon = '<i class="fa-solid fa-crown"></i>'; rankClass = "top-1"; borderClass = "gold-border"; }
-                        else if (rankPos === 2) { rankIcon = '<i class="fa-solid fa-medal"></i>'; rankClass = "top-2"; }
-                        else if (rankPos === 3) { rankIcon = '<i class="fa-solid fa-award"></i>'; rankClass = "top-3"; }
-
-                        listContainer.innerHTML += `
-                            <div class="list-item ${borderClass}">
-                                <div class="rank ${rankClass}">${rankIcon}</div>
-                                <div class="avatar">${donor.nama.charAt(0).toUpperCase()}</div>
-                                <div class="info"><h4>${donor.nama}</h4><p>${donor.frekuensi}x Transaksi Sedekah</p></div>
-                                <div class="amount">Rp ${donor.total.toLocaleString('id-ID')}<span>Total Sedekah</span></div>
-                            </div>
-                        `;
-                    });
+                    renderLeaderboard();
                 });
-            } catch (error) { document.getElementById('donaturList').innerHTML = `<div class="empty-state"><p>Gagal terhubung ke server.</p></div>`; }
+            } catch (error) { document.getElementById('donaturList').innerHTML = `<div class="empty-state"><p>Gagal terhubung ke database.</p></div>`; }
         }
-        loadKlasemenDonatur();
+
+        window.renderLeaderboard = function() {
+            const filterVal = document.getElementById('filterBulan').value;
+            let donorMap = {}; let grandTotal = 0; let validDonorsCount = 0;
+
+            rawTransactions.forEach(trx => {
+                let isMatch = false;
+                if (filterVal === "all") {
+                    isMatch = true;
+                } else {
+                    const [fYear, fMonth] = filterVal.split("-");
+                    if (trx.tanggal.getFullYear() == fYear && (trx.tanggal.getMonth() + 1) == fMonth) {
+                        isMatch = true;
+                    }
+                }
+
+                if (isMatch) {
+                    if (!donorMap[trx.pengirim]) { donorMap[trx.pengirim] = { total: 0, count: 0 }; validDonorsCount++; }
+                    donorMap[trx.pengirim].total += trx.nominal; 
+                    donorMap[trx.pengirim].count += 1; 
+                    grandTotal += trx.nominal;
+                }
+            });
+
+            // Update Kartu Dashboard
+            document.getElementById('uiTotalDonatur').innerText = validDonorsCount;
+            document.getElementById('uiTotalDana').innerText = "Rp " + (grandTotal >= 1000000 ? (grandTotal/1000000).toFixed(2) + 'Jt' : grandTotal.toLocaleString('id-ID'));
+
+            // Sort Leaderboard
+            let sortedDonors = Object.keys(donorMap).map(email => ({
+                email: email,
+                nama: userMap[email] ? userMap[email].nama : "Hamba Allah",
+                foto: userMap[email] ? userMap[email].foto : null,
+                total: donorMap[email].total, 
+                frekuensi: donorMap[email].count
+            })).sort((a, b) => b.total - a.total);
+
+            const listContainer = document.getElementById('donaturList'); listContainer.innerHTML = "";
+
+            if (sortedDonors.length === 0) {
+                listContainer.innerHTML = `<div class="empty-state"><i class="fa-solid fa-box-open"></i><p>Belum ada data donasi pada periode ini.</p></div>`; return;
+            }
+
+            sortedDonors.forEach((donor, index) => {
+                const rankPos = index + 1;
+                let rankIcon = rankPos, rankClass = "", borderClass = "";
+
+                if (rankPos === 1) { rankIcon = '<i class="fa-solid fa-crown"></i>'; rankClass = "top-1"; borderClass = "gold-border"; }
+                else if (rankPos === 2) { rankIcon = '<i class="fa-solid fa-medal"></i>'; rankClass = "top-2"; }
+                else if (rankPos === 3) { rankIcon = '<i class="fa-solid fa-award"></i>'; rankClass = "top-3"; }
+
+                let photoHtml = donor.foto 
+                    ? `<img src="${donor.foto}" class="avatar">` 
+                    : `<div class="avatar">${donor.nama.charAt(0).toUpperCase()}</div>`;
+
+                listContainer.innerHTML += `
+                    <div class="list-item ${borderClass}">
+                        <div class="rank ${rankClass}">${rankIcon}</div>
+                        ${photoHtml}
+                        <div class="info"><h4>${donor.nama}</h4><p>${donor.frekuensi}x Partisipasi Sedekah</p></div>
+                        <div class="amount">Rp ${donor.total.toLocaleString('id-ID')}<span>Total Sedekah</span></div>
+                    </div>
+                `;
+            });
+        }
+
+        // ==============================================
+        // FITUR EXPORT DATABASE (CUSTOM DATE)
+        // ==============================================
+        window.openExportModal = function() { document.getElementById('modalExport').classList.add('show'); }
+
+        window.prosesExport = function(type) {
+            const startInput = document.getElementById('expStart').value;
+            const endInput = document.getElementById('expEnd').value;
+            
+            if(!startInput || !endInput) return customAlert("Tanggal Kosong", "Harap tentukan Tanggal Awal dan Akhir terlebih dahulu.", "warning");
+            
+            const startD = new Date(startInput); startD.setHours(0,0,0,0);
+            const endD = new Date(endInput); endD.setHours(23,59,59,999);
+
+            if(startD > endD) return customAlert("Logika Tanggal Salah", "Tanggal Awal tidak boleh lebih besar dari Tanggal Akhir.", "error");
+
+            showLoading("Merangkum Database...");
+
+            // Kumpulkan Data
+            let reportMap = {}; let grandTotal = 0;
+            rawTransactions.forEach(trx => {
+                if(trx.tanggal >= startD && trx.tanggal <= endD) {
+                    if (!reportMap[trx.pengirim]) reportMap[trx.pengirim] = { total: 0, count: 0 };
+                    reportMap[trx.pengirim].total += trx.nominal;
+                    reportMap[trx.pengirim].count += 1;
+                    grandTotal += trx.nominal;
+                }
+            });
+
+            let reportData = Object.keys(reportMap).map(email => ({
+                nama: userMap[email] ? userMap[email].nama : email,
+                email: email,
+                frekuensi: reportMap[email].count,
+                total: reportMap[email].total
+            })).sort((a, b) => b.total - a.total);
+
+            if(reportData.length === 0) {
+                hideLoading(); return customAlert("Data Kosong", "Tidak ada transaksi sedekah di rentang tanggal yang Anda pilih.", "warning");
+            }
+
+            const formatTglStr = `${startD.toLocaleDateString('id-ID')} s/d ${endD.toLocaleDateString('id-ID')}`;
+
+            setTimeout(() => {
+                if (type === 'excel') {
+                    // EXPORT KE EXCEL/CSV
+                    let csv = "data:text/csv;charset=utf-8,Peringkat,Nama Lengkap,Email,Jumlah Transaksi,Total Donasi (Rp)\n";
+                    reportData.forEach((d, i) => { csv += `${i+1},${(d.nama).replace(/,/g,' ')},${d.email},${d.frekuensi},${d.total}\n`; });
+                    csv += `\n,,,TOTAL KESELURUHAN,${grandTotal}\n`;
+                    
+                    const link = document.createElement("a");
+                    link.href = encodeURI(csv); link.download = `Rekap_Donatur_KGR.csv`;
+                    document.body.appendChild(link); link.click(); document.body.removeChild(link);
+                    hideLoading(); customAlert("Berhasil", "File Excel telah diunduh.", "success");
+                    document.getElementById('modalExport').classList.remove('show');
+                } else if (type === 'pdf') {
+                    // EXPORT KE PDF
+                    const el = document.createElement('div');
+                    el.style.padding = '30px'; el.style.fontFamily = 'Helvetica, Arial, sans-serif';
+                    let rows = "";
+                    
+                    reportData.forEach((d, i) => {
+                        rows += `<tr style="border-bottom: 1px solid #EEE;">
+                            <td style="padding:10px; font-size:12px; text-align:center;">${i+1}</td>
+                            <td style="padding:10px; font-size:12px; font-weight:bold;">${d.nama}</td>
+                            <td style="padding:10px; font-size:12px; text-align:center;">${d.frekuensi}x</td>
+                            <td style="padding:10px; font-size:12px; text-align:right;">Rp ${d.total.toLocaleString('id-ID')}</td>
+                        </tr>`;
+                    });
+
+                    el.innerHTML = `
+                        <h2 style="text-align:center; color:#064E3B; margin-bottom:5px; text-transform:uppercase;">Rekapitulasi Donatur Kas</h2>
+                        <h4 style="text-align:center; color:#333; margin-bottom:20px; font-weight:normal;">Ojol Anak Babah Alun (KGR)</h4>
+                        <p style="font-size:12px; margin-bottom:15px; background:#F4F6F5; padding:10px; border-radius:8px;">
+                            <strong>Periode Tarikan:</strong> ${formatTglStr} <br>
+                            <strong>Total Donatur Terlibat:</strong> ${reportData.length} Orang
+                        </p>
+                        <table style="width:100%; border-collapse:collapse; margin-top:20px;">
+                            <tr style="background:#059669; color:#FFF; text-align:left;">
+                                <th style="padding:12px; text-align:center; width:50px;">Rank</th>
+                                <th style="padding:12px;">Nama Lengkap</th>
+                                <th style="padding:12px; text-align:center;">Frekuensi</th>
+                                <th style="padding:12px; text-align:right;">Total Donasi</th>
+                            </tr>
+                            ${rows}
+                            <tr style="background:#064E3B; color:#FFF; font-weight:bold;">
+                                <td colspan="3" style="padding:15px; text-align:right; font-size:14px;">TOTAL KESELURUHAN TERKUMPUL:</td>
+                                <td style="padding:15px; text-align:right; font-size:14px;">Rp ${grandTotal.toLocaleString('id-ID')}</td>
+                            </tr>
+                        </table>
+                        <p style="text-align:center; font-size:10px; color:#999; margin-top:30px;">Dokumen ini dicetak otomatis dari Sistem KGR pada ${new Date().toLocaleString('id-ID')}</p>
+                    `;
+                    
+                    html2pdf().set({margin: 10, filename: 'Rekap_Donatur_KGR.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } }).from(el).save().then(() => {
+                        hideLoading(); customAlert("Berhasil", "File PDF telah diunduh.", "success");
+                        document.getElementById('modalExport').classList.remove('show');
+                    });
+                }
+            }, 800); // Simulasi delay loading dikit biar terasa proses penarikan data
+        }
+    </script>
+    
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(err => console.log('PWA SW Failed', err)); });
+        }
     </script>
 </body>
 </html>
