@@ -110,7 +110,6 @@
     </style>
 </head>
 <body>
-    <!-- CUSTOM ALERTS & VIEWERS -->
     <div class="cp-overlay" id="customAlert">
         <div class="cp-box">
             <div class="cp-icon success" id="caIcon"><i class="fa-solid fa-check"></i></div>
@@ -136,7 +135,6 @@
             <h3 class="cp-title" id="clTitle" style="margin-bottom: 0;">Memproses...</h3>
         </div>
     </div>
-    <!-- VIEW IMAGE FULLSCREEN -->
     <div class="cp-overlay" id="modalImage" onclick="closeImageView()">
         <div class="cp-box" style="padding: 10px; background: transparent; box-shadow: none; max-width: 450px;" onclick="event.stopPropagation()">
             <img id="imgViewerSrc" src="" style="width: 100%; border-radius: 24px; border: 4px solid #FFF; max-height: 70vh; object-fit: contain;">
@@ -144,7 +142,6 @@
         </div>
     </div>
 
-    <!-- MAIN APP -->
     <div class="app-container">
         <div class="header-page">
             <div class="btn-back" onclick="window.location.href='index.html'"><i class="fa-solid fa-arrow-left"></i></div>
@@ -172,7 +169,6 @@
         </div>
     </div>
 
-    <!-- MODAL 1: BIKIN PENGAJUAN BARU -->
     <div id="reqModal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -209,7 +205,6 @@
         </div>
     </div>
 
-    <!-- MODAL 2: SUPERADMIN TUNJUK VERIFIKATOR -->
     <div id="modalTunjuk" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -219,14 +214,12 @@
             <div class="form-group">
                 <label class="form-label">Pilih Admin Pemeriksa Lapangan</label>
                 <select id="selectVerifikator" class="form-input">
-                    <!-- Diisi lewat JS -->
-                </select>
+                    </select>
             </div>
             <button class="btn-submit" onclick="prosesTunjuk()"><i class="fa-solid fa-user-check"></i> Tugaskan Admin</button>
         </div>
     </div>
 
-    <!-- MODAL 3: ADMIN VERIFIKATOR (KAMERA ON THE SPOT) -->
     <div id="modalVerifikasi" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -244,7 +237,6 @@
         </div>
     </div>
 
-    <!-- MODAL 4: FINAL APPROVAL SUPERADMIN (KOMPARASI 2 FOTO) -->
     <div id="modalFinal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -257,7 +249,6 @@
                 <p id="txtWarningNik">NIK ini tercatat sudah pernah dicairkan bantuannya pada tanggal X.</p>
             </div>
 
-            <!-- KOMPARASI 2 FOTO -->
             <div style="display: flex; gap: 10px; margin-bottom: 20px;">
                 <div style="flex: 1; text-align: center;">
                     <p style="font-size: 9px; font-weight: 800; color: var(--text-gray); margin-bottom: 5px;">Bukti Pengajuan Awal</p>
@@ -363,6 +354,12 @@
 
             const fileInput = document.getElementById('reqFoto').files[0];
             if (!fileInput) return customAlert("Foto Kosong", "Harap lampirkan foto pendukung pengajuan.", "warning");
+            
+            // --- PROTEKSI MEMORI BASE64 LIMIT 3MB ---
+            if (fileInput.size > 3 * 1024 * 1024) {
+                return customAlert("Foto Terlalu Besar", "Ukuran foto pengajuan maksimal 3MB. Silakan pilih foto lain yang lebih kecil.", "warning");
+            }
+            // ----------------------------------------
 
             showLoading("Mengirim Pengajuan...");
             try {
@@ -474,6 +471,12 @@
             const fileInput = document.getElementById('fotoVerif').files[0];
             if(!fileInput) return customAlert("Kamera Kosong", "Anda wajib mengambil foto langsung.", "warning");
 
+            // --- PROTEKSI MEMORI BASE64 LIMIT 3MB ---
+            if (fileInput.size > 3 * 1024 * 1024) {
+                return customAlert("Foto Terlalu Besar", "Ukuran foto lapangan maksimal 3MB.", "warning");
+            }
+            // ----------------------------------------
+
             showLoading("Mengupload Foto Bukti...");
             try {
                 const base64Image = await getBase64(fileInput);
@@ -544,7 +547,6 @@
         }
     </script>
 
-    <!-- PWA SW -->
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(err => console.log('PWA SW Failed', err)); });

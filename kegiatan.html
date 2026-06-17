@@ -14,7 +14,7 @@
         :root { 
             --bg-base: #F4F6F5; --text-dark: #111827; --text-gray: #4B5563; 
             --emerald-main: #059669; --emerald-dark: #064E3B; --emerald-card: linear-gradient(135deg, #065F46 0%, #022C22 100%);
-            --gold-accent: #FBBF24; --color-out: #DC2626; 
+            --gold-accent: #FBBF24; --color-out: #DC2626; --warning-yellow: #F59E0B;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -31,7 +31,6 @@
         .content-area { flex-grow: 1; overflow-y: auto; padding: 25px 24px 110px; scrollbar-width: none; }
         .content-area::-webkit-scrollbar { display: none; }
 
-        /* SUMMARY CARD PREMIUM */
         .summary-card { background: var(--emerald-card); border-radius: 24px; padding: 25px 20px; margin-bottom: 25px; text-align: center; box-shadow: 0 20px 40px rgba(5, 150, 105, 0.25); position: relative; overflow: hidden;}
         .summary-card::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(to bottom right, rgba(255,255,255,0.15) 0%, transparent 40%, transparent 100%); transform: rotate(30deg); pointer-events: none; }
         .summary-card .label { font-size: 11px; font-weight: 800; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; position: relative; z-index: 2;}
@@ -44,7 +43,6 @@
         .btn-tambah:active { transform: scale(0.96); }
         .btn-tambah i { color: var(--gold-accent); }
 
-        /* KARTU KEGIATAN HIGH CONTRAST */
         .kegiatan-item { border-radius: 24px; overflow: hidden; margin-bottom: 20px; background: #FFF; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 10px 25px rgba(0,0,0,0.04); position: relative; transition: 0.2s;}
         .kegiatan-item:active { transform: scale(0.98); }
         
@@ -87,9 +85,55 @@
         .file-upload-btn { width: 100%; padding: 16px; border-radius: 14px; background: #F9F9F9; border: 2px dashed var(--emerald-main); font-size: 13px; font-weight: 800; display: flex; justify-content: center; align-items: center; gap: 8px; color: var(--text-dark); transition: 0.2s;}
         .btn-submit { width: 100%; padding: 18px; border-radius: 16px; font-size: 14px; font-weight: 900; background: var(--text-dark); color: #FFF; border: none; margin-top: 10px; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.15); transition: 0.2s;}
         .btn-submit:active { transform: scale(0.96); }
+
+        /* CUSTOM POPUP (ALERT & CONFIRM) */
+        .cp-overlay { position: fixed; inset: 0; background: rgba(17, 24, 39, 0.8); backdrop-filter: blur(8px); z-index: 99999; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px; }
+        .cp-overlay.show { opacity: 1; visibility: visible; }
+        .cp-box { background: #FFF; border-radius: 28px; width: 100%; max-width: 320px; text-align: center; padding: 30px 24px; transform: scale(0.9); transition: 0.3s; box-shadow: 0 25px 50px rgba(0,0,0,0.2); }
+        .cp-overlay.show .cp-box { transform: scale(1); }
+        .cp-icon { width: 65px; height: 65px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; margin: 0 auto 15px; }
+        .cp-icon.success { background: #D1FAE5; color: var(--emerald-main); }
+        .cp-icon.error { background: #FEE2E2; color: var(--color-out); }
+        .cp-icon.warning { background: #FEF3C7; color: var(--warning-yellow); }
+        .cp-title { font-size: 18px; font-weight: 900; color: var(--text-dark); margin-bottom: 8px; }
+        .cp-desc { font-size: 12px; font-weight: 600; color: var(--text-gray); margin-bottom: 25px; line-height: 1.5; }
+        .cp-btn-wrap { display: flex; gap: 10px; }
+        .cp-btn { flex: 1; padding: 15px; border-radius: 14px; font-size: 13px; font-weight: 800; border: none; cursor: pointer; transition: 0.2s; }
+        .cp-btn:active { transform: scale(0.95); }
+        .cp-btn-primary { background: var(--emerald-main); color: #FFF; width: 100%; box-shadow: 0 5px 15px rgba(5,150,105,0.2);}
+        .cp-btn-cancel { background: #F4F6F5; color: var(--text-dark); }
+        .cp-btn-danger { background: var(--color-out); color: #FFF; box-shadow: 0 5px 15px rgba(220,38,38,0.2);}
+        .spinner-custom { border: 4px solid rgba(0,0,0,0.1); width: 50px; height: 50px; border-radius: 50%; border-left-color: var(--emerald-main); animation: spin 1s linear infinite; margin: 0 auto 15px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
+    <div class="cp-overlay" id="customAlert">
+        <div class="cp-box">
+            <div class="cp-icon success" id="caIcon"><i class="fa-solid fa-check"></i></div>
+            <h3 class="cp-title" id="caTitle">Pemberitahuan</h3>
+            <p class="cp-desc" id="caDesc">Pesan</p>
+            <button class="cp-btn cp-btn-primary" onclick="closeCustomAlert()">Mengerti</button>
+        </div>
+    </div>
+    <div class="cp-overlay" id="customConfirm">
+        <div class="cp-box">
+            <div class="cp-icon warning"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <h3 class="cp-title" id="ccTitle">Konfirmasi</h3>
+            <p class="cp-desc" id="ccDesc">Apakah Anda yakin?</p>
+            <div class="cp-btn-wrap">
+                <button class="cp-btn cp-btn-cancel" onclick="closeCustomConfirm()">Batal</button>
+                <button class="cp-btn cp-btn-danger" id="ccBtnYes">Ya, Eksekusi</button>
+            </div>
+        </div>
+    </div>
+    <div class="cp-overlay" id="customLoading">
+        <div class="cp-box" style="padding: 40px 20px;">
+            <div class="spinner-custom"></div>
+            <h3 class="cp-title" id="clTitle" style="margin-bottom: 0;">Memproses...</h3>
+        </div>
+    </div>
+
     <div class="app-container">
         <div class="header-page">
             <div class="btn-back" onclick="window.location.href='index.html'"><i class="fa-solid fa-arrow-left"></i></div>
@@ -156,6 +200,24 @@
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
         import { collection, onSnapshot, doc, getDoc, addDoc, deleteDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
+        // KENDALI CUSTOM MODAL
+        window.customAlert = function(title, desc, type = 'success') {
+            const el = document.getElementById('customAlert'); document.getElementById('caTitle').innerText = title; document.getElementById('caDesc').innerText = desc;
+            const iconEl = document.getElementById('caIcon');
+            if(type === 'success') { iconEl.className = 'cp-icon success'; iconEl.innerHTML = '<i class="fa-solid fa-check"></i>'; }
+            else if(type === 'error') { iconEl.className = 'cp-icon error'; iconEl.innerHTML = '<i class="fa-solid fa-xmark"></i>'; }
+            else { iconEl.className = 'cp-icon warning'; iconEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>'; }
+            el.classList.add('show');
+        }
+        window.closeCustomAlert = function() { document.getElementById('customAlert').classList.remove('show'); }
+        window.customConfirm = function(title, desc, onYes) {
+            const el = document.getElementById('customConfirm'); document.getElementById('ccTitle').innerText = title; document.getElementById('ccDesc').innerText = desc;
+            document.getElementById('ccBtnYes').onclick = function() { closeCustomConfirm(); onYes(); }; el.classList.add('show');
+        }
+        window.closeCustomConfirm = function() { document.getElementById('customConfirm').classList.remove('show'); }
+        window.showLoading = function(title = "Memproses...") { document.getElementById('clTitle').innerText = title; document.getElementById('customLoading').classList.add('show'); }
+        window.hideLoading = function() { document.getElementById('customLoading').classList.remove('show'); }
+
         let userRole = "member";
 
         onAuthStateChanged(auth, async (user) => {
@@ -182,12 +244,25 @@
 
         window.submitKegiatan = async function(e) {
             e.preventDefault();
-            const btn = document.getElementById('btnKirimKegiatan'); btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengupload...'; btn.disabled = true;
+            const fileInput = document.getElementById('kegFoto').files[0];
+            if(!fileInput) return customAlert("Foto Kosong", "Harap pilih foto dokumentasi.", "warning");
+            
+            // BOM WAKTU PROTEKSI BASE64 
+            if(fileInput.size > 3 * 1024 * 1024) return customAlert("Foto Terlalu Besar", "Ukuran foto maksimal 3MB biar HP anggota lain nggak ngelag saat buka menu ini.", "warning");
+            
+            showLoading("Mengupload Kegiatan...");
             try {
-                let base64Image = await getBase64(document.getElementById('kegFoto').files[0]);
-                await addDoc(collection(db, "kegiatan_sosial"), { judul: document.getElementById('kegJudul').value, lokasi: document.getElementById('kegLokasi').value, nominal: Number(document.getElementById('kegNominal').value), bukti_image: base64Image, tanggal: serverTimestamp() });
-                alert('Dokumentasi Kegiatan berhasil ditambahkan!'); closeModal();
-            } catch (error) { alert('Gagal mengupload kegiatan.'); } finally { btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Upload Kegiatan'; btn.disabled = false; }
+                let base64Image = await getBase64(fileInput);
+                await addDoc(collection(db, "kegiatan_sosial"), { 
+                    judul: document.getElementById('kegJudul').value, 
+                    lokasi: document.getElementById('kegLokasi').value, 
+                    nominal: Number(document.getElementById('kegNominal').value), 
+                    bukti_image: base64Image, 
+                    tanggal: serverTimestamp() 
+                });
+                hideLoading(); customAlert('Berhasil', 'Dokumentasi Kegiatan berhasil ditambahkan!', 'success'); 
+                closeModal();
+            } catch (error) { hideLoading(); customAlert('Gagal', 'Gagal mengupload kegiatan.', 'error'); } 
         }
 
         function loadDataKegiatan() {
@@ -228,7 +303,21 @@
             });
         }
 
-        window.hapusKegiatan = async function(docId) { if(confirm("Yakin ingin menghapus dokumentasi kegiatan ini?")) { await deleteDoc(doc(db, "kegiatan_sosial", docId)); } }
+        window.hapusKegiatan = async function(docId) { 
+            customConfirm("Hapus Dokumentasi", "Yakin ingin menghapus dokumentasi kegiatan ini secara permanen?", async () => {
+                showLoading("Menghapus Data...");
+                try {
+                    await deleteDoc(doc(db, "kegiatan_sosial", docId)); 
+                    hideLoading(); customAlert("Terhapus", "Data berhasil dihapus.", "success");
+                } catch(e) { hideLoading(); customAlert("Gagal", "Sistem error saat menghapus.", "error");}
+            });
+        }
+    </script>
+    
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW Fail', err)); });
+        }
     </script>
 </body>
 </html>

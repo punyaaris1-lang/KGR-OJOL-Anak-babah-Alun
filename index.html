@@ -158,7 +158,6 @@
                         <div class="card-bottom-label">Saldo Kas Bulan Ini</div>
                         <div class="card-bottom-val" id="uiTotalMonth">Rp 0</div>
                     </div>
-                    <!-- UPDATE: TOTAL ANGGOTA MUNCUL DI SINI -->
                     <div style="text-align: right;">
                         <div class="card-bottom-label">Total Anggota</div>
                         <div class="card-bottom-val" style="color: #FFF;"><span id="uiTotalMembers">0</span> <i class="fa-solid fa-users" style="font-size: 14px; opacity:0.8;"></i></div>
@@ -274,9 +273,6 @@
             </div>
         </div>
 
-        <!-- ============================================== -->
-        <!-- SYSTEM CUSTOM MODAL (PENGGANTI ALERT BAWAAN)   -->
-        <!-- ============================================== -->
         <div class="cp-overlay" id="customAlert">
             <div class="cp-box">
                 <div class="cp-icon success" id="caIcon"><i class="fa-solid fa-check"></i></div>
@@ -307,7 +303,6 @@
 
     </main>
 
-    <!-- SCRIPT UTAMA FIREBASE & LOGIKA -->
     <script type="module">
         import { auth, db } from './db-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
@@ -488,6 +483,14 @@
 
         window.submitSedekah = async function(e) {
             e.preventDefault();
+            
+            // --- PROTEKSI MEMORI BASE64 LIMIT 3MB ---
+            const fileBkt = document.getElementById('inputBukti').files[0];
+            if(fileBkt && fileBkt.size > 3 * 1024 * 1024) {
+                return customAlert("Foto Terlalu Besar", "Ukuran foto bukti maksimal 3MB. Silakan pilih foto lain yang lebih kecil.", "warning");
+            }
+            // ----------------------------------------
+
             const nominalInput = Number(document.getElementById('inputNominal').value);
             const btn = document.getElementById('btnSubmitSedekah');
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Proses...'; btn.disabled = true;
@@ -511,7 +514,7 @@
                     return; 
                 }
 
-                let base64Image = await getBase64(document.getElementById('inputBukti').files[0]);
+                let base64Image = await getBase64(fileBkt);
                 await addDoc(collection(db, "transactions"), {
                     jenis: "Pemasukan", metode: "QRIS Manual", status: "pending", pengirim: currentUserEmail, 
                     nama_keterangan: document.getElementById('inputPesan').value || "Sedekah Kas",
@@ -692,7 +695,6 @@
         }
     </script>
     
-    <!-- PWA SERVICE WORKER REGISTRATION -->
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
