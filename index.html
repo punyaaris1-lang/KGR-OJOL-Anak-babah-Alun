@@ -78,12 +78,12 @@
         /* LAYOUT ASLI: BANNER ATAS */
         .header-cover { position: relative; width: 100%; height: 260px; min-height: 260px; flex-shrink: 0; background-image: url('1000417166.jpg'); background-size: cover; background-position: center; border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; z-index: 1; box-shadow: 0 15px 30px rgba(0,0,0,0.3); }
         
-        /* REVISI: OVERLAY BANNER DIBIKIN LEBIH BENING DI ATAS */
-        .header-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, transparent 0%, rgba(15, 23, 42, 0.3) 50%, #0F172A 100%); border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; }
+        /* OVERLAY BANNER (Revisi: Lebih Bening di Atas Biar Foto Terang) */
+        .header-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.1) 40%, rgba(15, 23, 42, 0.9) 85%, #0F172A 100%); border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; }
 
         .brand-container { position: absolute; top: 50px; left: 0; width: 100%; text-align: center; z-index: 10; padding: 0 20px; }
-        .main-title { font-size: clamp(20px, 5.5vw, 24px); font-weight: 900; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2; color: #FFFFFF; text-shadow: 0 4px 15px rgba(0,0,0,0.6); margin-bottom: 2px; }
-        .sub-title { font-size: clamp(11px, 3vw, 13px); font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--gold-accent); text-shadow: 0 3px 8px rgba(0,0,0,0.6); }
+        .main-title { font-size: clamp(20px, 5.5vw, 24px); font-weight: 900; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2; color: #FFFFFF; text-shadow: 0 2px 5px rgba(0,0,0,0.8), 0 5px 15px rgba(0,0,0,0.6); margin-bottom: 2px; }
+        .sub-title { font-size: clamp(11px, 3vw, 13px); font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--gold-accent); text-shadow: 0 2px 5px rgba(0,0,0,0.8), 0 5px 15px rgba(0,0,0,0.6); }
 
         /* LAYOUT ASLI: FOTO PROFIL NANGKRING */
         .profile-area { display: flex; justify-content: space-between; align-items: flex-end; padding: 0 24px; margin-top: -50px; position: relative; z-index: 10; }
@@ -97,8 +97,8 @@
         .user-intro h2 { font-size: clamp(22px, 6vw, 26px); font-weight: 900; color: #FFFFFF; letter-spacing: -0.5px; }
         .user-intro p { font-size: 12px; font-weight: 800; color: var(--emerald-main); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 4px; }
 
-        /* REVISI: PADDING BAWAH DITAMBAH BIAR GAK NABRAK DOCK */
-        .content-area { padding: 0 24px 140px; z-index: 5; position: relative; flex-grow: 1;}
+        /* REVISI: Dorongan 150px di bawah biar menu lolos dari Dock */
+        .content-area { padding: 0 24px 150px; z-index: 5; position: relative; flex-grow: 1; }
         
         /* PREMIUM CARD SALDO */
         .premium-card { border-radius: 24px; padding: 25px; margin-bottom: 25px; position: relative; overflow: hidden; }
@@ -183,6 +183,7 @@
 </head>
 <body>
 
+    <!-- Cahaya Latar Belakang (Orbs) -->
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
     <div class="orb orb-3"></div>
@@ -349,7 +350,7 @@
 
                     <div style="display: flex; gap: 10px;">
                         <button type="button" class="btn-action btn-outline" style="flex: 1;" onclick="closeQrisModal()">Batal</button>
-                        <button type="submit" class="btn-action" id="btnSubmitSedekah" style="flex: 1.5;">Kirim <i class="fa-solid fa-paper-plane"></i></button>
+                        <button type="submit" class="btn-action" id="btnSubmitSedekah" style="flex: 1.5; background: var(--emerald-main);">Kirim <i class="fa-solid fa-paper-plane"></i></button>
                     </div>
                 </form>
             </div>
@@ -385,12 +386,15 @@
 
     </main>
 
-    <!-- SCRIPT UTAMA FIREBASE & LOGIKA -->
+    <!-- SCRIPT UTAMA FIREBASE & LOGIKA (DENGAN PROTEKSI 3MB) -->
     <script type="module">
         import { auth, db } from './db-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
         import { doc, getDoc, onSnapshot, collection, addDoc, serverTimestamp, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
+        // ==============================================
+        // FUNGSI KENDALI CUSTOM MODAL (PENGGANTI ALERT)
+        // ==============================================
         window.customAlert = function(title, desc, type = 'success') {
             const el = document.getElementById('customAlert');
             document.getElementById('caTitle').innerText = title;
@@ -417,6 +421,7 @@
             document.getElementById('customLoading').classList.add('show');
         }
         window.hideLoading = function() { document.getElementById('customLoading').classList.remove('show'); }
+        // ==============================================
 
         let currentRole = "member";
         let currentUserEmail = "";
@@ -438,18 +443,17 @@
                             
                             currentRole = String(d.role || "member").toLowerCase().trim(); 
                             currentUserName = String(d.nama_lengkap || "Tanpa Nama");
-                            myHakAbsen = d.hak_absen || "otomatis"; 
+                            myHakAbsen = d.hak_absen || "otomatis";
                             
                             document.getElementById('uiUserName').innerText = currentUserName;
                             
                             const picEl = document.getElementById('uiProfilePic');
                             if (d.profile_image) { 
                                 picEl.style.backgroundImage = `url('${d.profile_image}')`; 
-                                picEl.innerText = ""; 
-                                picEl.style.border = "none"; 
+                                picEl.innerHTML = ""; 
                             } else { 
                                 picEl.style.backgroundImage = "none"; 
-                                picEl.innerText = currentUserName.charAt(0).toUpperCase(); 
+                                picEl.innerHTML = currentUserName.charAt(0).toUpperCase(); 
                             }
 
                             const rText = document.getElementById('uiRoleText');
@@ -463,7 +467,7 @@
                                 document.querySelector('.content-area').style.opacity = '0.2'; document.querySelector('.content-area').style.pointerEvents = 'none'; return; 
                             } else { document.querySelector('.content-area').style.opacity = '1'; document.querySelector('.content-area').style.pointerEvents = 'auto'; }
 
-                            // TAMPILAN KASTA 
+                            // TAMPILAN KASTA (Diubah biar cocok di Dark Mode)
                             if (currentRole === "superadmin") { 
                                 panel.style.display = "block"; 
                                 document.getElementById('menuSuperadmin').style.display = "flex"; 
@@ -565,6 +569,7 @@
         window.submitSedekah = async function(e) {
             e.preventDefault();
             
+            // --- PROTEKSI MEMORI BASE64 LIMIT 3MB ---
             const fileBkt = document.getElementById('inputBukti').files[0];
             if(fileBkt && fileBkt.size > 3 * 1024 * 1024) {
                 return customAlert("Foto Terlalu Besar", "Ukuran foto bukti maksimal 3MB. Silakan pilih foto lain yang lebih kecil.", "warning");
