@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#0F172A">
+    <meta name="theme-color" content="#F4F6F5">
     <meta name="description" content="Kotak Gotong Royong - Ojol Anak Babah Alun">
     <title>Dashboard - KGR</title>
     
@@ -11,179 +11,220 @@
     <link rel="apple-touch-icon" href="icon.png">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
     
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
     <style>
         :root {
-            --emerald-dark: #022C22; 
+            --bg-base: #F4F6F5; 
+            --text-dark: #0F172A; 
+            --text-gray: #64748B; 
+            --emerald-dark: #064E3B; 
             --emerald-main: #059669; 
-            --gold-accent: #FBBF24; 
+            --emerald-light: #10B981;
+            --gold-accent: #F59E0B; 
             --danger-red: #EF4444; 
-            --warning-yellow: #F59E0B;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
         
-        /* BACKGROUND GELAP (DARK MODE) + ORBS NEON */
+        /* BACKGROUND TERANG & BERSIH KGR ORI */
         body { 
-            background-color: #0F172A; 
+            background-color: var(--bg-base); 
             display: flex; justify-content: center; align-items: center; 
             min-height: 100vh; margin: 0; overflow: hidden; position: relative;
+            color: var(--text-dark);
         }
 
-        /* LINGKARAN CAHAYA (ORBS) BIAR KACA NGE-BLUR */
-        .orb { position: absolute; border-radius: 50%; filter: blur(70px); z-index: 0; animation: float 10s infinite alternate ease-in-out;}
-        .orb-1 { top: 10%; left: -10%; width: 300px; height: 300px; background: rgba(5, 150, 105, 0.4); }
-        .orb-2 { bottom: 10%; right: -15%; width: 350px; height: 350px; background: rgba(5, 150, 105, 0.3); animation-delay: -5s;}
-        .orb-3 { top: 50%; right: 10%; width: 150px; height: 150px; background: rgba(251, 191, 36, 0.2); animation-duration: 8s;}
+        /* LINGKARAN GLOWING HIJAU & EMAS DI BACKGROUND (BIAR KACA KELIHATAN HIDUP) */
+        .orb { position: absolute; border-radius: 50%; filter: blur(60px); z-index: 0; animation: float 12s infinite alternate ease-in-out;}
+        .orb-1 { top: 20%; left: -10%; width: 300px; height: 300px; background: rgba(16, 185, 129, 0.15); }
+        .orb-2 { bottom: 10%; right: -15%; width: 350px; height: 350px; background: rgba(5, 150, 105, 0.1); animation-delay: -5s;}
+        .orb-3 { top: 45%; right: 10%; width: 200px; height: 200px; background: rgba(245, 158, 11, 0.1); animation-duration: 8s;}
 
-        @keyframes float { 0% { transform: translate(0, 0); } 100% { transform: translate(30px, 50px); } }
+        @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(25px, 40px) scale(1.1); } }
 
         /* CONTAINER APLIKASI */
         .app-container { 
             width: 100%; height: 100dvh; 
-            background: transparent; 
+            background: transparent; /* Transparan biar blur tembus */
             position: relative; z-index: 10; 
             overflow-x: hidden; overflow-y: auto; 
             display: flex; flex-direction: column; 
             scrollbar-width: none;
         }
         .app-container::-webkit-scrollbar { display: none; }
-        @media (min-width: 600px) { .app-container { max-width: 480px; height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 40px 80px rgba(0,0,0,0.5); border: 4px solid rgba(255,255,255,0.1); margin: auto; } }
+        @media (min-width: 600px) { .app-container { max-width: 480px; height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 40px 80px rgba(0,0,0,0.15); border: 8px solid #FFFFFF; margin: auto; background: rgba(244, 246, 245, 0.85); backdrop-filter: blur(20px);} }
 
         /* ========================================= */
-        /* CLASS GLASSMORPHISM (EFEK KACA PREMIUM)   */
+        /* CLASS LIGHT GLASSMORPHISM (MENGKILAP)     */
         /* ========================================= */
         .glass-panel {
-            background: rgba(255, 255, 255, 0.05); 
-            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); 
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-            border-top: 1px solid rgba(255, 255, 255, 0.2); 
-            border-left: 1px solid rgba(255, 255, 255, 0.15); 
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            color: #FFFFFF;
+            background: rgba(255, 255, 255, 0.7); /* Kaca putih susu */
+            backdrop-filter: blur(25px) saturate(150%); /* Saturate bikin warna di belakangnya nyala */
+            -webkit-backdrop-filter: blur(25px) saturate(150%); 
+            border: 1px solid rgba(255, 255, 255, 1); /* Garis tepi putih tegas (efek shiny) */
+            box-shadow: 
+                0 15px 35px rgba(5, 150, 105, 0.05), /* Bayangan luar hijau super halus */
+                inset 0 0 20px rgba(255, 255, 255, 0.6); /* Pantulan cahaya dari dalam */
+            border-radius: 26px;
         }
 
+        /* PREMIUM CARD (SALDO KAS - HIJAU GLOWING) */
         .glass-emerald {
-            background: linear-gradient(135deg, rgba(5, 150, 105, 0.4) 0%, rgba(2, 44, 34, 0.6) 100%);
+            background: linear-gradient(135deg, rgba(5, 150, 105, 0.9) 0%, rgba(4, 120, 87, 0.95) 100%);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-top: 1px solid rgba(5, 150, 105, 0.5);
-            box-shadow: 0 15px 35px rgba(5, 150, 105, 0.3);
-            color: #FFF;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 
+                0 20px 40px rgba(5, 150, 105, 0.25), /* Bayangan hijau memancar */
+                inset 0 2px 10px rgba(255, 255, 255, 0.15);
+            color: #FFF; border-radius: 26px;
         }
 
         /* LAYOUT ASLI: BANNER ATAS */
-        .header-cover { position: relative; width: 100%; height: 260px; min-height: 260px; flex-shrink: 0; background-image: url('1000417166.jpg'); background-size: cover; background-position: center; border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; z-index: 1; box-shadow: 0 15px 30px rgba(0,0,0,0.3); }
+        .header-cover { position: relative; width: 100%; height: 260px; min-height: 260px; flex-shrink: 0; background-image: url('1000417166.jpg'); background-size: cover; background-position: center; border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; z-index: 1; box-shadow: 0 15px 35px rgba(5, 150, 105, 0.15); }
         
-        /* OVERLAY BANNER (Revisi: Lebih Bening di Atas Biar Foto Terang) */
-        .header-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.1) 40%, rgba(15, 23, 42, 0.9) 85%, #0F172A 100%); border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; }
+        /* OVERLAY GRADASI (TERANG DI ATAS, MENGGELAP DI BAWAH BIAR TEKS KEBACA) */
+        .header-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.6) 100%); border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; }
 
-        .brand-container { position: absolute; top: 50px; left: 0; width: 100%; text-align: center; z-index: 10; padding: 0 20px; }
-        .main-title { font-size: clamp(20px, 5.5vw, 24px); font-weight: 900; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2; color: #FFFFFF; text-shadow: 0 2px 5px rgba(0,0,0,0.8), 0 5px 15px rgba(0,0,0,0.6); margin-bottom: 2px; }
-        .sub-title { font-size: clamp(11px, 3vw, 13px); font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--gold-accent); text-shadow: 0 2px 5px rgba(0,0,0,0.8), 0 5px 15px rgba(0,0,0,0.6); }
+        .brand-container { position: absolute; top: 45px; left: 0; width: 100%; text-align: center; z-index: 10; padding: 0 20px; }
+        .main-title { font-size: clamp(20px, 5.5vw, 24px); font-weight: 900; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2; color: #FFFFFF; text-shadow: 0 4px 15px rgba(0,0,0,0.6); margin-bottom: 2px; }
+        .sub-title { font-size: clamp(11px, 3vw, 13px); font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--gold-accent); text-shadow: 0 2px 8px rgba(0,0,0,0.6); }
 
-        /* LAYOUT ASLI: FOTO PROFIL NANGKRING */
+        /* LAYOUT ASLI: FOTO PROFIL NANGKRING (GLOSSY) */
         .profile-area { display: flex; justify-content: space-between; align-items: flex-end; padding: 0 24px; margin-top: -50px; position: relative; z-index: 10; }
         
-        .profile-pic { width: clamp(80px, 22vw, 90px); height: clamp(80px, 22vw, 90px); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: clamp(32px, 8vw, 40px); font-weight: 900; color: var(--gold-accent); background-size: cover; background-position: center; border: 3px solid rgba(255,255,255,0.3); }
+        .profile-pic { width: clamp(80px, 22vw, 90px); height: clamp(80px, 22vw, 90px); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: clamp(32px, 8vw, 40px); font-weight: 900; color: var(--emerald-main); background-size: cover; background-position: center; border: 4px solid #FFFFFF; background-color: #F8FAFC; box-shadow: 0 12px 25px rgba(5,150,105,0.15); cursor: pointer; transition: 0.2s;}
+        .profile-pic:active { transform: scale(0.95); }
         
-        .btn-settings { width: 42px; height: 42px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 18px; cursor: pointer; transition: 0.2s; margin-bottom: 10px; color: #FFF; }
-        .btn-settings:active { transform: scale(0.9); }
+        .btn-settings { width: 42px; height: 42px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 18px; cursor: pointer; transition: 0.2s; margin-bottom: 10px; color: var(--emerald-dark); background: #FFFFFF; box-shadow: 0 8px 20px rgba(5,150,105,0.15); border: 1px solid rgba(255,255,255,0.8); }
+        .btn-settings:active { transform: scale(0.9); background: var(--emerald-light); color: #FFF;}
 
         .user-intro { padding: 15px 24px 20px; z-index: 5; position: relative; }
-        .user-intro h2 { font-size: clamp(22px, 6vw, 26px); font-weight: 900; color: #FFFFFF; letter-spacing: -0.5px; }
-        .user-intro p { font-size: 12px; font-weight: 800; color: var(--emerald-main); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 4px; }
+        .user-intro h2 { font-size: clamp(22px, 6vw, 26px); font-weight: 900; color: var(--text-dark); letter-spacing: -0.5px; margin-bottom: 2px;}
+        .user-intro p { font-size: 12px; font-weight: 800; color: var(--emerald-main); text-transform: uppercase; letter-spacing: 1.5px; display: flex; align-items: center; gap: 5px; }
 
-        /* REVISI: Dorongan 150px di bawah biar menu lolos dari Dock */
+        /* PADDING BAWAH (ANTI TABRAK DOCK) - Diperlebar jadi 150px */
         .content-area { padding: 0 24px 150px; z-index: 5; position: relative; flex-grow: 1; }
         
         /* PREMIUM CARD SALDO */
-        .premium-card { border-radius: 24px; padding: 25px; margin-bottom: 25px; position: relative; overflow: hidden; }
-        .card-label { font-size: clamp(13px, 3.5vw, 15px); color: rgba(255,255,255,0.9); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; display: flex; justify-content: space-between; position: relative; z-index: 2;}
-        .card-balance { font-size: clamp(28px, 8vw, 38px); font-weight: 900; color: #FFFFFF; letter-spacing: -1px; margin-bottom: 20px; position: relative; z-index: 2; text-shadow: 0 4px 10px rgba(0,0,0,0.3);}
+        .premium-card { padding: 25px; margin-bottom: 25px; position: relative; overflow: hidden; transition: 0.3s;}
+        .premium-card:active { transform: scale(0.98); }
+        .card-label { font-size: clamp(12px, 3.5vw, 14px); color: rgba(255,255,255,0.9); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; display: flex; justify-content: space-between; position: relative; z-index: 2;}
+        .card-balance { font-size: clamp(28px, 8vw, 38px); font-weight: 900; color: #FFFFFF; letter-spacing: -1px; margin-bottom: 20px; position: relative; z-index: 2; text-shadow: 0 4px 10px rgba(0,0,0,0.15);}
         .card-bottom { display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 15px; position: relative; z-index: 2;}
-        .card-bottom-label { font-size: clamp(12px, 3.5vw, 14px); color: rgba(255,255,255,0.8); font-weight: 600; margin-bottom: 3px; }
-        .card-bottom-val { font-size: clamp(16px, 4.5vw, 20px); font-weight: 800; color: var(--gold-accent); }
+        .card-bottom-label { font-size: clamp(11px, 3.5vw, 13px); color: rgba(255,255,255,0.85); font-weight: 700; margin-bottom: 3px; }
+        .card-bottom-val { font-size: clamp(15px, 4vw, 18px); font-weight: 900; color: #FEF3C7; } /* Kuning Emas Lembut */
 
-        .section-title { font-size: clamp(14px, 4.5vw, 16px); font-weight: 900; margin: 20px 0 15px; color: #FFFFFF; display: flex; align-items: center; gap: 8px; letter-spacing: 1px;}
+        .section-title { font-size: clamp(14px, 4.5vw, 16px); font-weight: 900; margin: 20px 0 15px; color: var(--emerald-dark); display: flex; align-items: center; gap: 8px; letter-spacing: 0.5px;}
         .pengurus-panel { border: none; padding: 0; background: transparent; margin-bottom: 25px; }
         
-        /* MENU GRID KACA */
+        /* MENU GRID KACA (GLOSSY 3D EFFECT) */
         .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-        .menu-item { border-radius: 20px; padding: 18px 5px; display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer; transition: 0.2s; }
-        .menu-icon { width: 45px; height: 45px; border-radius: 14px; background: rgba(255,255,255,0.1); color: var(--gold-accent); display: flex; justify-content: center; align-items: center; font-size: 20px; transition: 0.2s; box-shadow: inset 0 2px 5px rgba(255,255,255,0.1);}
-        .menu-item:active { transform: scale(0.95); background: rgba(255,255,255,0.15); }
-        .menu-item span { font-size: 10px; font-weight: 800; color: #FFFFFF; text-align: center; line-height: 1.3; opacity: 0.9;}
-
-        .menu-absen { border: 1px solid rgba(5, 150, 105, 0.5); background: rgba(5, 150, 105, 0.15); }
-        .menu-absen .menu-icon { background: rgba(5, 150, 105, 0.4); color: #34D399; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);}
-
-        /* BOTTOM NAV KACA */
-        .bottom-nav-container { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: auto; min-width: 320px; z-index: 20; }
-        .floating-nav { display: flex; justify-content: space-between; align-items: center; padding: 12px 35px; border-radius: 40px; gap: 40px; }
         
-        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; color: rgba(255,255,255,0.5); cursor: pointer; transition: 0.3s; }
-        .nav-item i { font-size: 24px; transition: 0.2s; } 
-        .nav-item span { font-size: 11px; font-weight: 800; letter-spacing: 0.5px;} 
-        .nav-item.active { color: var(--gold-accent); filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.4)); }
+        .menu-item { padding: 18px 5px; display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer; transition: 0.2s; }
+        .menu-item:active { transform: scale(0.95); background: rgba(255,255,255,0.9); }
+        
+        .menu-icon { 
+            width: 48px; height: 48px; border-radius: 16px; 
+            background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%); 
+            color: var(--emerald-main); display: flex; justify-content: center; align-items: center; 
+            font-size: 22px; transition: 0.2s; 
+            border: 1px solid rgba(5, 150, 105, 0.1);
+            box-shadow: 0 8px 16px rgba(5, 150, 105, 0.08), inset 0 2px 4px #FFFFFF; /* Efek tombol timbul 3D */
+        }
+        .menu-icon.gold { color: var(--gold-accent); }
+        .menu-icon.blue { color: #0284C7; }
+        
+        .menu-item span { font-size: 10px; font-weight: 800; color: var(--text-dark); text-align: center; line-height: 1.3;}
+
+        /* Menu Absen Khusus (Warna Menonjol) */
+        .menu-absen { border: 2px solid rgba(16, 185, 129, 0.5); background: rgba(209, 250, 229, 0.5); box-shadow: 0 15px 30px rgba(5, 150, 105, 0.15);}
+        .menu-absen .menu-icon { background: linear-gradient(135deg, #10B981 0%, #059669 100%); color: #FFF; box-shadow: 0 5px 15px rgba(5, 150, 105, 0.4), inset 0 2px 4px rgba(255,255,255,0.3);}
+
+        /* BOTTOM NAV KACA (TATA LETAK SEMPURNA) */
+        .bottom-nav-container { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: auto; min-width: 320px; z-index: 50; }
+        
+        .floating-nav { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 10px 40px; border-radius: 40px; gap: 50px; 
+            background: rgba(255, 255, 255, 0.85); /* Agak solid biar gak saru sama list belakang */
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 1);
+            box-shadow: 0 20px 40px rgba(5, 150, 105, 0.15);
+        }
+        
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--text-gray); opacity: 0.7; cursor: pointer; transition: 0.3s; }
+        .nav-item i { font-size: 22px; transition: 0.2s; } 
+        .nav-item span { font-size: 10px; font-weight: 800; letter-spacing: 0.5px;} 
+        .nav-item.active { color: var(--emerald-main); opacity: 1; filter: drop-shadow(0 4px 6px rgba(5, 150, 105, 0.3)); }
         
         .center-btn { position: relative; top: -25px; flex-shrink: 0;}
-        .center-fab { width: 65px; height: 65px; border-radius: 50%; background: linear-gradient(135deg, var(--emerald-main) 0%, var(--emerald-dark) 100%); box-shadow: 0 15px 25px rgba(5, 150, 105, 0.4); display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2px; color: #FFFFFF; font-size: 24px; border: 3px solid rgba(255,255,255,0.4); transition: 0.2s;}
+        .center-fab { 
+            width: 65px; height: 65px; border-radius: 50%; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2px; 
+            color: #FFFFFF; font-size: 26px; 
+            background: linear-gradient(135deg, var(--emerald-light) 0%, var(--emerald-main) 100%); 
+            border: 4px solid #FFFFFF; 
+            box-shadow: 0 15px 25px rgba(5, 150, 105, 0.4), inset 0 2px 4px rgba(255,255,255,0.4); 
+            transition: 0.2s; cursor: pointer;
+        }
         .center-fab:active { transform: scale(0.9); }
         .center-fab span { font-size: 9px; font-weight: 800; }
 
-        /* MODAL KHUSUS DARK THEME */
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px;}
+        /* ============================================== */
+        /* MODALS KACA TERANG (BERSIH & KEBACA JELAS)     */
+        /* ============================================== */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px;}
         .modal-overlay.show { opacity: 1; visibility: visible; }
-        .modal-card { background: rgba(30, 41, 59, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 28px; padding: 30px 24px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.5); transform: scale(0.95); transition: 0.3s; color: #FFF; }
+        .modal-card { background: rgba(255, 255, 255, 0.95); border: 1px solid #FFF; border-radius: 30px; padding: 30px 24px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.3); transform: scale(0.95); transition: 0.3s; color: var(--text-dark); }
         .modal-overlay.show .modal-card { transform: scale(1); }
         
-        .qr-display { width: 220px; height: 220px; margin: 0 auto 20px; border: 4px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 10px; background: #FFF; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .qr-display { width: 220px; height: 220px; margin: 0 auto 20px; border: 4px solid var(--emerald-main); border-radius: 20px; padding: 10px; background: #FFF; box-shadow: 0 15px 30px rgba(5,150,105,0.15); }
         .qr-display img { width: 100%; height: 100%; object-fit: contain; }
 
-        #reader { width: 100%; border-radius: 20px; overflow: hidden; border: 4px solid var(--emerald-main); margin-bottom: 20px; box-shadow: 0 10px 20px rgba(5,150,105,0.3); background: #FFF;}
+        #reader { width: 100%; border-radius: 20px; overflow: hidden; border: 4px solid var(--emerald-main); margin-bottom: 20px; box-shadow: 0 15px 30px rgba(5,150,105,0.15); background: #FFF;}
 
-        .form-input { width: 100%; padding: 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #FFF; font-size: 14px; font-weight: 700; outline: none; margin-bottom: 12px; transition: 0.2s;}
-        .form-input::placeholder { color: rgba(255,255,255,0.4); }
-        .form-input:focus { border-color: var(--emerald-main); background: rgba(255,255,255,0.1);}
+        .form-input { width: 100%; padding: 16px; border-radius: 14px; border: 2px solid rgba(0,0,0,0.06); background: #F8FAFC; color: var(--text-dark); font-size: 14px; font-weight: 700; outline: none; margin-bottom: 12px; transition: 0.2s;}
+        .form-input::placeholder { color: var(--text-gray); opacity: 0.6; }
+        .form-input:focus { border-color: var(--emerald-main); background: #FFF; box-shadow: 0 5px 15px rgba(5,150,105,0.1);}
         
-        .btn-action { width: 100%; padding: 16px; border-radius: 16px; font-size: 14px; font-weight: 800; background: var(--emerald-main); color: #FFF; border: none; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px;}
-        .btn-outline { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #FFF; }
+        .btn-action { width: 100%; padding: 16px; border-radius: 16px; font-size: 14px; font-weight: 900; background: var(--emerald-main); color: #FFF; border: none; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; box-shadow: 0 10px 20px rgba(5,150,105,0.25); transition: 0.2s;}
+        .btn-action:active { transform: scale(0.95); }
+        .btn-outline { background: #F1F5F9; border: 1px solid rgba(0,0,0,0.05); color: var(--text-dark); box-shadow: none; }
 
-        .live-item { font-size: 11px; font-weight: 700; padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; background: rgba(255,255,255,0.05); border-radius: 12px; margin-bottom: 5px;}
-        .live-item span:first-child { color: #FFF; }
-        .live-item span:last-child { color: #34D399; font-weight: 900;}
+        .live-item { font-size: 11px; font-weight: 700; padding: 12px; border-bottom: 1px solid rgba(0,0,0,0.05); display: flex; justify-content: space-between; background: #FFF; border-radius: 12px; margin-bottom: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.02);}
+        .live-item span:first-child { color: var(--text-dark); }
+        .live-item span:last-child { color: var(--emerald-main); font-weight: 900;}
 
-        /* --- STYLING KHUSUS CUSTOM ALERT & CONFIRM MODAL --- */
-        .cp-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(10px); z-index: 99999; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px; }
+        /* --- STYLING KHUSUS CUSTOM ALERT & CONFIRM MODAL (TERANG GLOWING) --- */
+        .cp-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(10px); z-index: 99999; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px; }
         .cp-overlay.show { opacity: 1; visibility: visible; }
-        .cp-box { background: rgba(30, 41, 59, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 28px; width: 100%; max-width: 320px; text-align: center; padding: 30px 24px; transform: scale(0.9); transition: 0.3s; box-shadow: 0 25px 50px rgba(0,0,0,0.5); color: #FFF; }
+        .cp-box { background: rgba(255, 255, 255, 0.95); border: 1px solid #FFF; border-radius: 30px; width: 100%; max-width: 320px; text-align: center; padding: 30px 24px; transform: scale(0.9); transition: 0.3s; box-shadow: 0 25px 50px rgba(0,0,0,0.3); color: var(--text-dark); }
         .cp-overlay.show .cp-box { transform: scale(1); }
         
         .cp-icon { width: 65px; height: 65px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; margin: 0 auto 15px; }
-        .cp-icon.success { background: rgba(5, 150, 105, 0.2); color: #34D399; }
-        .cp-icon.error { background: rgba(239, 68, 68, 0.2); color: var(--danger-red); }
-        .cp-icon.warning { background: rgba(245, 158, 11, 0.2); color: var(--gold-accent); }
+        .cp-icon.success { background: rgba(16, 185, 129, 0.15); color: var(--emerald-main); }
+        .cp-icon.error { background: rgba(239, 68, 68, 0.15); color: var(--danger-red); }
+        .cp-icon.warning { background: rgba(245, 158, 11, 0.15); color: var(--gold-accent); }
         
-        .cp-title { font-size: 18px; font-weight: 900; color: #FFF; margin-bottom: 8px; }
-        .cp-desc { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.7); margin-bottom: 25px; line-height: 1.5; }
+        .cp-title { font-size: 18px; font-weight: 900; color: var(--text-dark); margin-bottom: 8px; }
+        .cp-desc { font-size: 12px; font-weight: 600; color: var(--text-gray); margin-bottom: 25px; line-height: 1.5; }
         .cp-btn-wrap { display: flex; gap: 10px; }
         .cp-btn { flex: 1; padding: 15px; border-radius: 14px; font-size: 13px; font-weight: 800; border: none; cursor: pointer; transition: 0.2s; }
         .cp-btn:active { transform: scale(0.95); }
-        .cp-btn-primary { background: var(--emerald-main); color: #FFF; box-shadow: 0 5px 15px rgba(5,150,105,0.3);}
-        .cp-btn-cancel { background: rgba(255,255,255,0.1); color: #FFF; border: 1px solid rgba(255,255,255,0.2);}
-        .cp-btn-danger { background: var(--danger-red); color: #FFF; box-shadow: 0 5px 15px rgba(239,68,68,0.3);}
+        .cp-btn-primary { background: var(--emerald-main); color: #FFF; box-shadow: 0 8px 20px rgba(5,150,105,0.3);}
+        .cp-btn-cancel { background: #F1F5F9; color: var(--text-dark); border: 1px solid rgba(0,0,0,0.05);}
+        .cp-btn-danger { background: var(--danger-red); color: #FFF; box-shadow: 0 8px 20px rgba(239,68,68,0.3);}
         
-        .spinner-custom { border: 4px solid rgba(255,255,255,0.1); width: 50px; height: 50px; border-radius: 50%; border-left-color: var(--emerald-main); animation: spin 1s linear infinite; margin: 0 auto 15px; }
+        .spinner-custom { border: 4px solid rgba(5,150,105,0.1); width: 50px; height: 50px; border-radius: 50%; border-left-color: var(--emerald-main); animation: spin 1s linear infinite; margin: 0 auto 15px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <!-- Cahaya Latar Belakang (Orbs) -->
+    <!-- Cahaya Latar Belakang Hijau/Emas Tipis -->
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
     <div class="orb orb-3"></div>
@@ -192,6 +233,7 @@
         
         <!-- LAYOUT ASLI: BANNER FOTO DI ATAS -->
         <div class="header-cover">
+            <!-- REVISI: Overlay Bening di Atas (Muka Jelas), Gelap di Bawah (Teks Jelas) -->
             <div class="header-overlay"></div>
             <div class="brand-container">
                 <div class="main-title">KOTAK GOTONG ROYONG</div>
@@ -201,8 +243,8 @@
 
         <!-- LAYOUT ASLI: FOTO PROFIL NANGKRING -->
         <div class="profile-area">
-            <div class="glass-panel profile-pic" id="uiProfilePic"></div>
-            <div class="glass-panel btn-settings" onclick="window.location.href='profil.html'"><i class="fa-solid fa-gear"></i></div>
+            <div class="profile-pic" id="uiProfilePic"></div>
+            <div class="btn-settings" onclick="window.location.href='profil.html'"><i class="fa-solid fa-gear"></i></div>
         </div>
 
         <div class="user-intro">
@@ -212,7 +254,7 @@
 
         <div class="content-area">
             
-            <!-- KARTU PREMIUM KACA GELAP -->
+            <!-- KARTU PREMIUM HIJAU GLOWING -->
             <div class="glass-emerald premium-card">
                 <div class="card-label"><span>Total Kas (Keseluruhan)</span><i class="fa-brands fa-nfc-symbol" style="font-size: 20px;"></i></div>
                 <div class="card-balance" id="uiTotalAll">Rp 0</div>
@@ -234,13 +276,13 @@
                 <div class="section-title">Panel Pengurus <i class="fa-solid fa-shield-halved" style="color:var(--emerald-main)"></i></div>
                 <div class="pengurus-panel">
                     <div class="menu-grid" id="gridPengurus">
-                        <div class="glass-panel menu-item darker" id="menuSuperadmin" style="display: none;" onclick="window.location.href='superadmin.html'">
-                            <div class="menu-icon" style="color:var(--gold-accent);"><i class="fa-solid fa-crown"></i></div><span>Sistem<br>Superadmin</span>
+                        <div class="glass-panel menu-item" id="menuSuperadmin" style="display: none;" onclick="window.location.href='superadmin.html'">
+                            <div class="menu-icon gold"><i class="fa-solid fa-crown"></i></div><span>Sistem<br>Superadmin</span>
                         </div>
-                        <div class="glass-panel menu-item darker" id="menuBendahara" style="display: none;" onclick="window.location.href='superadmin.html'">
-                            <div class="menu-icon blue" style="color: #38BDF8;"><i class="fa-solid fa-vault"></i></div><span>Verifikasi<br>Sedekah</span>
+                        <div class="glass-panel menu-item" id="menuBendahara" style="display: none;" onclick="window.location.href='superadmin.html'">
+                            <div class="menu-icon blue"><i class="fa-solid fa-vault"></i></div><span>Verifikasi<br>Sedekah</span>
                         </div>
-                        <div class="glass-panel menu-item darker" id="menuAdmin" style="display: none;" onclick="window.location.href='superadmin.html'">
+                        <div class="glass-panel menu-item" id="menuAdmin" style="display: none;" onclick="window.location.href='superadmin.html'">
                             <div class="menu-icon"><i class="fa-solid fa-user-gear"></i></div><span>Kelola<br>Anggota</span>
                         </div>
                     </div>
@@ -251,33 +293,33 @@
             <div class="menu-grid">
                 
                 <div class="glass-panel menu-item menu-absen" id="menuAbsensi" style="display: none;" onclick="handleAbsensiClick()">
-                    <div class="menu-icon"><i class="fa-solid fa-satellite-dish"></i></div><span>Absensi<br>Acara</span>
+                    <div class="menu-icon"><i class="fa-solid fa-satellite-dish"></i></div><span style="color: var(--emerald-dark);">Absensi<br>Acara</span>
                 </div>
 
                 <div class="glass-panel menu-item" onclick="window.location.href='anggota.html'">
                     <div class="menu-icon"><i class="fa-solid fa-users"></i></div><span>Data<br>Anggota</span>
                 </div>
                 <div class="glass-panel menu-item" onclick="window.location.href='laporan.html'">
-                    <div class="menu-icon" style="color: #38BDF8;"><i class="fa-solid fa-file-invoice-dollar"></i></div><span>Laporan<br>Kas</span>
+                    <div class="menu-icon blue"><i class="fa-solid fa-file-invoice-dollar"></i></div><span>Laporan<br>Kas</span>
                 </div>
                 
-                <div class="glass-panel menu-item darker" onclick="window.location.href='kegiatan.html'">
+                <div class="glass-panel menu-item" onclick="window.location.href='kegiatan.html'">
                     <div class="menu-icon"><i class="fa-solid fa-hand-holding-heart"></i></div><span>Kegiatan<br>Sosial</span>
                 </div>
-                <div class="glass-panel menu-item darker" onclick="window.location.href='info.html'">
+                <div class="glass-panel menu-item" onclick="window.location.href='info.html'">
                     <div class="menu-icon"><i class="fa-solid fa-circle-info"></i></div><span>Pusat<br>Info</span>
                 </div>
-                <div class="glass-panel menu-item darker" onclick="window.location.href='donatur.html'">
-                    <div class="menu-icon" style="color: var(--gold-accent);"><i class="fa-solid fa-ranking-star"></i></div><span>Daftar<br>Donatur</span>
+                <div class="glass-panel menu-item" onclick="window.location.href='donatur.html'">
+                    <div class="menu-icon gold"><i class="fa-solid fa-ranking-star"></i></div><span>Daftar<br>Donatur</span>
                 </div>
                 
-                <div class="glass-panel menu-item darker" onclick="window.location.href='pengajuan.html'">
+                <div class="glass-panel menu-item" onclick="window.location.href='pengajuan.html'">
                     <div class="menu-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div><span>Pengajuan<br>Dana</span>
                 </div>
             </div>
         </div>
 
-        <!-- BOTTOM NAV KACA -->
+        <!-- BOTTOM NAV KACA PUTIH GLOWING -->
         <div class="bottom-nav-container">
             <div class="glass-panel floating-nav">
                 <div class="nav-item active"><i class="fa-solid fa-house"></i><span>Beranda</span></div>
@@ -289,51 +331,51 @@
         </div>
 
         <!-- ============================================== -->
-        <!-- MODALS (DISESUAIKAN DENGAN TEMA DARK KACA)     -->
+        <!-- MODALS (TERANG & BERSIH)                       -->
         <!-- ============================================== -->
         <div id="modalMemberQR" class="modal-overlay">
             <div class="modal-card">
-                <h3 style="font-weight: 900; color: #FFF;">Kartu Kehadiran</h3>
-                <p style="font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.7); margin-bottom: 20px;">Tunjukkan QR Code ini kepada Admin Acara.</p>
+                <h3 style="font-weight: 900; color: var(--text-dark);">Kartu Kehadiran</h3>
+                <p style="font-size: 11px; font-weight: 700; color: var(--text-gray); margin-bottom: 20px;">Tunjukkan QR Code ini kepada Admin Acara.</p>
                 <div class="qr-display"><img id="imgMemberQR" src="" alt="Loading QR..."></div>
-                <h4 id="qrNameText" style="margin-bottom: 20px; color: #FFF;">...</h4>
+                <h4 id="qrNameText" style="margin-bottom: 20px; color: var(--text-dark);">...</h4>
                 <button type="button" class="btn-action btn-outline" onclick="document.getElementById('modalMemberQR').classList.remove('show')">Tutup</button>
             </div>
         </div>
 
         <div id="modalAdminScanner" class="modal-overlay">
             <div class="modal-card" style="padding: 20px;">
-                <h3 style="font-weight: 900; font-size: 16px; margin-bottom: 15px; color: #FFF;"><i class="fa-solid fa-satellite-dish" style="color:var(--emerald-main)"></i> Radar Acara Aktif</h3>
+                <h3 style="font-weight: 900; font-size: 16px; margin-bottom: 15px; color: var(--text-dark);"><i class="fa-solid fa-satellite-dish" style="color:var(--emerald-main)"></i> Radar Acara Aktif</h3>
                 
                 <div id="scannerBox">
                     <div id="reader"></div>
-                    <button class="btn-action" style="background: rgba(255,255,255,0.1); margin-bottom: 10px;" onclick="toggleManualBypass(true)"><i class="fa-solid fa-keyboard"></i> Absen Manual (Bypass)</button>
+                    <button class="btn-action btn-outline" style="margin-bottom: 10px;" onclick="toggleManualBypass(true)"><i class="fa-solid fa-keyboard"></i> Absen Manual (Bypass)</button>
                 </div>
 
                 <div id="manualBox" style="display: none; text-align: left;">
-                    <label style="font-size: 11px; font-weight: 800; color: rgba(255,255,255,0.7);">Input Manual (Bypass Scanner)</label>
+                    <label style="font-size: 11px; font-weight: 800; color: var(--text-gray);">Input Manual (Bypass Scanner)</label>
                     <input type="text" id="inputManualName" class="form-input" placeholder="Ketik Nama Lengkap / NIK Member">
                     <button class="btn-action" style="margin-bottom: 10px;" onclick="submitManualAbsen()"><i class="fa-solid fa-check"></i> Hadirkan Member</button>
                     <button class="btn-action btn-outline" style="margin-bottom: 10px;" onclick="toggleManualBypass(false)"><i class="fa-solid fa-camera"></i> Kembali ke Kamera</button>
                 </div>
 
-                <div style="margin-top: 15px; border-top: 2px dashed rgba(255,255,255,0.2); padding-top: 15px;">
-                    <h4 style="font-size: 12px; font-weight: 800; text-align: left; margin-bottom: 10px; color: #FFF;">Live Hadir: <span id="liveCount" style="color: #34D399;">0</span> Orang</h4>
-                    <div id="liveListContainer" style="max-height: 120px; overflow-y: auto; text-align: left; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 12px;">
-                        <div style='text-align:center; font-size:11px; color:rgba(255,255,255,0.5); font-weight: 700;'>Belum ada yang hadir</div>
+                <div style="margin-top: 15px; border-top: 2px dashed rgba(0,0,0,0.1); padding-top: 15px;">
+                    <h4 style="font-size: 12px; font-weight: 800; text-align: left; margin-bottom: 10px; color: var(--text-dark);">Live Hadir: <span id="liveCount" style="color: var(--emerald-main);">0</span> Orang</h4>
+                    <div id="liveListContainer" style="max-height: 120px; overflow-y: auto; text-align: left; background: #F9FAFB; padding: 10px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.05);">
+                        <div style='text-align:center; font-size:11px; color:#999; font-weight: 700;'>Belum ada yang hadir</div>
                     </div>
                 </div>
 
-                <button class="btn-action" onclick="closeScannerModal()" style="background: rgba(239, 68, 68, 0.2); color: #FCA5A5; margin-top: 15px;">Tutup Radar</button>
+                <button class="btn-action btn-outline" onclick="closeScannerModal()" style="color: var(--danger-red); border-color: rgba(239,68,68,0.3); background: rgba(239,68,68,0.05); margin-top: 15px;">Tutup Radar</button>
             </div>
         </div>
 
         <div id="modalQrisManual" class="modal-overlay">
             <div class="modal-card">
-                <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 5px; color: #FFF;">Scan QRIS Kas</h3>
-                <p style="font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.7); margin-bottom: 20px;">KGR Ojol Anak Babah Alun</p>
+                <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 5px; color: var(--text-dark);">Scan QRIS Kas</h3>
+                <p style="font-size: 11px; font-weight: 700; color: var(--text-gray); margin-bottom: 20px;">KGR Ojol Anak Babah Alun</p>
                 
-                <div class="qr-display" style="border-color: var(--emerald-main);">
+                <div class="qr-display">
                     <img id="qrisImgSource" src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" alt="QRIS">
                 </div>
 
@@ -350,7 +392,7 @@
 
                     <div style="display: flex; gap: 10px;">
                         <button type="button" class="btn-action btn-outline" style="flex: 1;" onclick="closeQrisModal()">Batal</button>
-                        <button type="submit" class="btn-action" id="btnSubmitSedekah" style="flex: 1.5; background: var(--emerald-main);">Kirim <i class="fa-solid fa-paper-plane"></i></button>
+                        <button type="submit" class="btn-action" id="btnSubmitSedekah" style="flex: 1.5;">Kirim <i class="fa-solid fa-paper-plane"></i></button>
                     </div>
                 </form>
             </div>
@@ -386,15 +428,12 @@
 
     </main>
 
-    <!-- SCRIPT UTAMA FIREBASE & LOGIKA (DENGAN PROTEKSI 3MB) -->
+    <!-- SCRIPT UTAMA FIREBASE & LOGIKA -->
     <script type="module">
         import { auth, db } from './db-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
         import { doc, getDoc, onSnapshot, collection, addDoc, serverTimestamp, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-        // ==============================================
-        // FUNGSI KENDALI CUSTOM MODAL (PENGGANTI ALERT)
-        // ==============================================
         window.customAlert = function(title, desc, type = 'success') {
             const el = document.getElementById('customAlert');
             document.getElementById('caTitle').innerText = title;
@@ -421,7 +460,6 @@
             document.getElementById('customLoading').classList.add('show');
         }
         window.hideLoading = function() { document.getElementById('customLoading').classList.remove('show'); }
-        // ==============================================
 
         let currentRole = "member";
         let currentUserEmail = "";
@@ -450,64 +488,48 @@
                             const picEl = document.getElementById('uiProfilePic');
                             if (d.profile_image) { 
                                 picEl.style.backgroundImage = `url('${d.profile_image}')`; 
-                                picEl.innerHTML = ""; 
+                                picEl.innerText = ""; 
+                                picEl.style.border = "none"; 
                             } else { 
                                 picEl.style.backgroundImage = "none"; 
-                                picEl.innerHTML = currentUserName.charAt(0).toUpperCase(); 
+                                picEl.innerText = currentUserName.charAt(0).toUpperCase(); 
                             }
 
                             const rText = document.getElementById('uiRoleText');
                             const panel = document.getElementById('panelPengurus');
 
                             if (d.status === "Pending Admin" && currentRole !== "superadmin") {
-                                document.getElementById('uiUserName').innerText = "Menunggu Verifikasi"; rText.innerHTML = '<i class="fa-solid fa-lock"></i> STATUS PENDING'; rText.style.color = "#F87171"; 
+                                document.getElementById('uiUserName').innerText = "Menunggu Verifikasi"; rText.innerHTML = '<i class="fa-solid fa-lock"></i> STATUS PENDING'; rText.style.color = "var(--danger-red)"; 
                                 document.querySelector('.content-area').style.opacity = '0.3'; document.querySelector('.content-area').style.pointerEvents = 'none'; return; 
                             } else if (d.status === "Banned") {
-                                document.getElementById('uiUserName').innerText = "AKUN DIBLOKIR"; rText.innerHTML = '<i class="fa-solid fa-ban"></i> DIBEKUKAN'; rText.style.color = "#F87171"; 
+                                document.getElementById('uiUserName').innerText = "AKUN DIBLOKIR"; rText.innerHTML = '<i class="fa-solid fa-ban"></i> DIBEKUKAN'; rText.style.color = "var(--danger-red)"; 
                                 document.querySelector('.content-area').style.opacity = '0.2'; document.querySelector('.content-area').style.pointerEvents = 'none'; return; 
                             } else { document.querySelector('.content-area').style.opacity = '1'; document.querySelector('.content-area').style.pointerEvents = 'auto'; }
 
-                            // TAMPILAN KASTA (Diubah biar cocok di Dark Mode)
+                            // TAMPILAN KASTA TEMA TERANG
                             if (currentRole === "superadmin") { 
-                                panel.style.display = "block"; 
-                                document.getElementById('menuSuperadmin').style.display = "flex"; 
-                                document.getElementById('menuBendahara').style.display = "flex"; 
-                                document.getElementById('menuAdmin').style.display = "flex"; 
-                                rText.innerHTML = '<i class="fa-solid fa-shield"></i> ADMIN'; 
-                                rText.style.color = "#38BDF8"; 
-                            } 
-                            else if (currentRole === "bendahara") { 
-                                panel.style.display = "block"; 
-                                document.getElementById('menuBendahara').style.display = "flex"; 
-                                rText.innerHTML = '<i class="fa-solid fa-vault"></i> BENDAHARA'; 
-                                rText.style.color = "#34D399"; 
-                            } 
-                            else if (currentRole === "admin") { 
-                                panel.style.display = "block"; 
-                                document.getElementById('menuAdmin').style.display = "flex"; 
-                                rText.innerHTML = '<i class="fa-solid fa-shield"></i> ADMIN'; 
-                                rText.style.color = "#38BDF8"; 
-                            }
-                            else { 
-                                rText.innerHTML = '<i class="fa-solid fa-circle-check"></i> ANGGOTA AKTIF'; 
-                                rText.style.color = "#34D399"; 
+                                panel.style.display = "block"; document.getElementById('menuSuperadmin').style.display = "flex"; document.getElementById('menuBendahara').style.display = "flex"; document.getElementById('menuAdmin').style.display = "flex"; 
+                                rText.innerHTML = '<i class="fa-solid fa-shield"></i> ADMIN'; rText.style.color = "#0284C7"; 
+                            } else if (currentRole === "bendahara") { 
+                                panel.style.display = "block"; document.getElementById('menuBendahara').style.display = "flex"; 
+                                rText.innerHTML = '<i class="fa-solid fa-vault"></i> BENDAHARA'; rText.style.color = "var(--emerald-main)"; 
+                            } else if (currentRole === "admin") { 
+                                panel.style.display = "block"; document.getElementById('menuAdmin').style.display = "flex"; 
+                                rText.innerHTML = '<i class="fa-solid fa-shield"></i> ADMIN'; rText.style.color = "#0284C7"; 
+                            } else { 
+                                rText.innerHTML = '<i class="fa-solid fa-circle-check"></i> ANGGOTA AKTIF'; rText.style.color = "var(--emerald-main)"; 
                             }
                         } else { auth.signOut(); window.location.href = 'login.html'; }
                     });
 
                     onSnapshot(collection(db, "users"), (userSnap) => {
-                        let totalAktif = 0;
-                        userSnap.forEach(u => {
-                            if(u.data().status !== "Banned") totalAktif++;
-                        });
+                        let totalAktif = 0; userSnap.forEach(u => { if(u.data().status !== "Banned") totalAktif++; });
                         document.getElementById('uiTotalMembers').innerText = totalAktif;
                     });
 
                     onSnapshot(collection(db, "transactions"), (snapshot) => {
-                        let totalSaldo = 0, saldoBulanIni = 0;
-                        let akumulasiSaya = 0; 
+                        let totalSaldo = 0, saldoBulanIni = 0, akumulasiSaya = 0;
                         const now = new Date();
-                        
                         snapshot.forEach((docTrx) => {
                             const dataTrx = docTrx.data();
                             if (dataTrx.status !== "pending" && dataTrx.status !== "rejected") {
@@ -518,10 +540,7 @@
                                 if (tgl.getMonth() === now.getMonth() && tgl.getFullYear() === now.getFullYear()) {
                                     if (dataTrx.jenis === "Pemasukan") saldoBulanIni += nominal; else saldoBulanIni -= nominal;
                                 }
-
-                                if(dataTrx.pengirim === currentUserEmail && dataTrx.jenis === "Pemasukan") {
-                                    akumulasiSaya += nominal;
-                                }
+                                if(dataTrx.pengirim === currentUserEmail && dataTrx.jenis === "Pemasukan") akumulasiSaya += nominal;
                             }
                         });
                         
@@ -531,16 +550,13 @@
                         const uiMonth = document.getElementById('uiTotalMonth');
                         if (saldoBulanIni < 0) {
                             uiMonth.innerText = "- Rp " + Math.abs(saldoBulanIni).toLocaleString('id-ID');
-                            uiMonth.style.color = "#FCA5A5"; 
+                            uiMonth.style.color = "var(--danger-red)"; 
                         } else {
                             uiMonth.innerText = "+ Rp " + saldoBulanIni.toLocaleString('id-ID');
                             uiMonth.style.color = "#FFF";
                         }
                     });
-                } catch(errorUI) {
-                    console.error("Terjadi error UI:", errorUI);
-                    customAlert("Gagal Memuat", "Ada masalah saat memuat profil Anda. Mohon refresh halaman.", "error");
-                }
+                } catch(errorUI) { customAlert("Gagal Memuat", "Ada masalah saat memuat profil Anda. Mohon refresh halaman.", "error"); }
             } else { window.location.href = 'login.html'; }
         });
 
@@ -569,7 +585,6 @@
         window.submitSedekah = async function(e) {
             e.preventDefault();
             
-            // --- PROTEKSI MEMORI BASE64 LIMIT 3MB ---
             const fileBkt = document.getElementById('inputBukti').files[0];
             if(fileBkt && fileBkt.size > 3 * 1024 * 1024) {
                 return customAlert("Foto Terlalu Besar", "Ukuran foto bukti maksimal 3MB. Silakan pilih foto lain yang lebih kecil.", "warning");
@@ -710,10 +725,10 @@
                 let html = "";
                 listData.forEach(data => {
                     const time = data.scan_time ? data.scan_time.toDate().toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'}) : '';
-                    html += `<div class="live-item"><span><i class="fa-solid fa-check-circle" style="color:#34D399;"></i> ${data.member_name}</span><span>${time}</span></div>`;
+                    html += `<div class="live-item"><span><i class="fa-solid fa-check-circle" style="color:var(--emerald-main);"></i> ${data.member_name}</span><span>${time}</span></div>`;
                 });
 
-                document.getElementById('liveListContainer').innerHTML = html || "<div style='text-align:center; font-size:11px; color:rgba(255,255,255,0.5); font-weight:700;'>Belum ada yang hadir</div>";
+                document.getElementById('liveListContainer').innerHTML = html || "<div style='text-align:center; font-size:11px; color:var(--text-gray); font-weight:700;'>Belum ada yang hadir</div>";
                 document.getElementById('liveCount').innerText = listData.length;
             });
         }

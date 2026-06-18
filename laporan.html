@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#0F172A">
+    <meta name="theme-color" content="#F4F6F5">
     <title>Laporan Keuangan Kas - KGR</title>
     
     <link rel="manifest" href="manifest.json">
@@ -15,111 +15,113 @@
 
     <style>
         :root { 
-            --emerald-main: #059669; --emerald-dark: #022C22; 
-            --color-in: #34D399; --color-out: #FCA5A5; --gold-accent: #FBBF24;
-            --danger-red: #EF4444; --warning-yellow: #F59E0B;
+            --bg-base: #F4F6F5; --text-dark: #0F172A; --text-gray: #64748B; 
+            --emerald-main: #059669; --emerald-dark: #064E3B; --emerald-light: #10B981;
+            --color-in: #059669; --color-out: #EF4444; --gold-accent: #F59E0B;
+            --danger-red: #EF4444;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
         
-        body { background-color: #0F172A; display: flex; justify-content: center; min-height: 100vh; overflow: hidden; position: relative; color: #FFF; margin: 0;}
+        body { background-color: var(--bg-base); display: flex; justify-content: center; min-height: 100vh; overflow: hidden; position: relative; color: var(--text-dark); margin: 0;}
 
-        /* NEON ORBS */
-        .orb { position: absolute; border-radius: 50%; filter: blur(70px); z-index: 0; animation: float 10s infinite alternate ease-in-out;}
-        .orb-1 { top: 10%; left: -10%; width: 250px; height: 250px; background: rgba(5, 150, 105, 0.4); }
-        .orb-2 { bottom: 10%; right: -10%; width: 300px; height: 300px; background: rgba(5, 150, 105, 0.3); animation-delay: -5s;}
-        @keyframes float { 0% { transform: translate(0, 0); } 100% { transform: translate(30px, 50px); } }
+        /* NEON ORBS TERANG */
+        .orb { position: absolute; border-radius: 50%; filter: blur(60px); z-index: 0; animation: float 12s infinite alternate ease-in-out;}
+        .orb-1 { top: 20%; left: -10%; width: 300px; height: 300px; background: rgba(16, 185, 129, 0.15); }
+        .orb-2 { bottom: 10%; right: -15%; width: 350px; height: 350px; background: rgba(5, 150, 105, 0.1); animation-delay: -5s;}
 
-        .app-container { width: 100%; max-width: 480px; background: transparent; display: flex; flex-direction: column; min-height: 100vh; position: relative; z-index: 10; overflow-x: hidden; overflow-y: auto; scrollbar-width: none;}
+        @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(25px, 40px) scale(1.1); } }
+
+        .app-container { width: 100%; max-width: 480px; background: transparent; display: flex; flex-direction: column; height: 100dvh; position: relative; z-index: 10; overflow-x: hidden; overflow-y: auto; scrollbar-width: none;}
         .app-container::-webkit-scrollbar { display: none; }
-        @media (min-width: 600px) { .app-container { height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 40px 80px rgba(0,0,0,0.5); border: 4px solid rgba(255,255,255,0.1); margin: auto; } }
+        @media (min-width: 600px) { .app-container { height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 40px 80px rgba(0,0,0,0.15); border: 8px solid #FFFFFF; margin: auto; background: rgba(244, 246, 245, 0.85); backdrop-filter: blur(20px);} }
 
         /* GLASSMORPHISM */
-        .glass-panel { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); border-top: 1px solid rgba(255, 255, 255, 0.2); border-left: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); border-radius: 24px; color: #FFF;}
-        .glass-emerald { background: linear-gradient(135deg, rgba(5, 150, 105, 0.4) 0%, rgba(2, 44, 34, 0.6) 100%); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.15); border-top: 1px solid rgba(5, 150, 105, 0.5); box-shadow: 0 15px 35px rgba(5, 150, 105, 0.3); border-radius: 24px; color: #FFF;}
+        .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(25px) saturate(150%); -webkit-backdrop-filter: blur(25px) saturate(150%); border: 1px solid #FFF; box-shadow: 0 15px 35px rgba(5, 150, 105, 0.05), inset 0 0 20px rgba(255, 255, 255, 0.6); border-radius: 26px; }
+        .glass-emerald { background: linear-gradient(135deg, rgba(5, 150, 105, 0.9) 0%, rgba(4, 120, 87, 0.95) 100%); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 20px 40px rgba(5, 150, 105, 0.25), inset 0 2px 10px rgba(255, 255, 255, 0.15); color: #FFF; border-radius: 26px;}
 
-        .header-page { padding: 40px 24px 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 10; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(10px);}
-        .btn-back { width: 42px; height: 42px; border-radius: 14px; background: rgba(255,255,255,0.1); display: flex; justify-content: center; align-items: center; cursor: pointer; color: #FFF; transition: 0.2s; border: 1px solid rgba(255,255,255,0.2);}
-        .btn-back:active { transform: scale(0.9); background: var(--emerald-main); }
-        .header-page h2 { font-size: 18px; font-weight: 900; letter-spacing: -0.5px; color: #FFF;}
+        .header-page { padding: 40px 24px 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid #FFF; z-index: 10; background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(20px);}
+        .btn-back { width: 42px; height: 42px; border-radius: 14px; background: #FFF; display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text-dark); transition: 0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.05);}
+        .btn-back:active { transform: scale(0.9); background: var(--emerald-main); color: #FFF;}
+        .header-page h2 { font-size: 18px; font-weight: 900; letter-spacing: -0.5px;}
         
-        .content-area { flex-grow: 1; padding: 20px 24px 100px; }
+        .content-area { flex-grow: 1; padding: 25px 24px 100px;}
         
         .balance-card { padding: 25px; margin-bottom: 20px; position: relative; overflow: hidden;}
-        .total-balance { font-size: 32px; font-weight: 900; margin: 5px 0 0; color: #FFF; letter-spacing: -1px; text-shadow: 0 4px 10px rgba(0,0,0,0.3);}
+        .total-balance { font-size: 32px; font-weight: 900; margin: 5px 0 0; color: #FFF; letter-spacing: -1px; text-shadow: 0 4px 10px rgba(0,0,0,0.15);}
         
-        .btn-add { width: 100%; padding: 18px; border-radius: 16px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #FFF; font-size: 14px; font-weight: 900; cursor: pointer; margin-bottom: 25px; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px;}
-        .btn-add:active { transform: scale(0.96); background: var(--emerald-main); border-color: var(--emerald-main);}
+        .btn-add { width: 100%; padding: 18px; border-radius: 16px; background: #FFF; color: var(--emerald-main); font-size: 14px; font-weight: 900; border: 1px solid #FFF; cursor: pointer; margin-bottom: 25px; transition: 0.2s; box-shadow: 0 10px 20px rgba(5,150,105,0.1); display: flex; justify-content: center; align-items: center; gap: 8px;}
+        .btn-add:active { transform: scale(0.96); background: var(--emerald-main); color: #FFF;}
         
         .filter-section { display: flex; gap: 10px; margin-bottom: 15px; align-items: center;}
-        .filter-select { flex: 1; padding: 14px 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); font-size: 13px; font-weight: 800; color: #FFF; outline: none; appearance: none;}
-        .filter-select option { background: #0F172A; color: #FFF; }
+        .filter-select { flex: 1; padding: 14px 16px; border-radius: 14px; border: 2px solid rgba(0,0,0,0.06); background: #FFF; font-size: 13px; font-weight: 800; color: var(--text-dark); outline: none; box-shadow: 0 5px 15px rgba(0,0,0,0.02); appearance: none; transition: 0.2s;}
+        .filter-select:focus { border-color: var(--emerald-main); box-shadow: 0 5px 15px rgba(5,150,105,0.1);}
         
         .summary-box { padding: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;}
         .sum-item { flex: 1; text-align: center; }
-        .sum-item:not(:last-child) { border-right: 1px solid rgba(255,255,255,0.1); }
-        .sum-label { font-size: 9px; font-weight: 800; color: rgba(255,255,255,0.7); text-transform: uppercase; margin-bottom: 5px;}
+        .sum-item:not(:last-child) { border-right: 1px solid rgba(0,0,0,0.05); }
+        .sum-label { font-size: 9px; font-weight: 800; color: var(--text-gray); text-transform: uppercase; margin-bottom: 5px;}
         .sum-val { font-size: 13px; font-weight: 900; }
-        .val-in { color: var(--color-in); }
-        .val-out { color: var(--color-out); }
-        .val-total { color: #FFF; }
+        .val-in { color: var(--emerald-main); }
+        .val-out { color: var(--danger-red); }
+        .val-total { color: var(--text-dark); }
 
         .tabs-container { display: flex; gap: 8px; margin-bottom: 15px; }
-        .tab-btn { flex: 1; padding: 12px; border-radius: 12px; font-size: 12px; font-weight: 800; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); cursor: pointer; text-align: center; color: rgba(255,255,255,0.7); transition: 0.2s;}
-        .tab-btn.active { background: var(--emerald-main); color: #FFF; border-color: transparent;}
+        .tab-btn { flex: 1; padding: 12px; border-radius: 12px; font-size: 12px; font-weight: 800; background: #FFF; border: 1px solid rgba(0,0,0,0.05); cursor: pointer; text-align: center; color: var(--text-gray); transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.02);}
+        .tab-btn.active { background: var(--emerald-main); color: #FFF; border-color: var(--emerald-main); box-shadow: 0 5px 15px rgba(5,150,105,0.3);}
         
         .trx-item { padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; transition: 0.2s;}
-        .trx-item:active { transform: scale(0.98); background: rgba(255,255,255,0.1);}
+        .trx-item:active { transform: scale(0.98); background: rgba(255,255,255,0.9);}
         .icon-box { width: 45px; height: 45px; border-radius: 14px; display: flex; justify-content: center; align-items: center; font-size: 18px; flex-shrink: 0;}
-        .icon-in { background: rgba(52, 211, 153, 0.2); color: var(--color-in); }
-        .icon-out { background: rgba(252, 165, 165, 0.2); color: var(--color-out); }
+        .icon-in { background: rgba(16, 185, 129, 0.15); color: var(--emerald-main); }
+        .icon-out { background: rgba(239, 68, 68, 0.15); color: var(--danger-red); }
         .trx-info { flex-grow: 1; padding: 0 12px; overflow: hidden;}
-        .trx-info h4 { font-size: 13px; font-weight: 900; color: #FFF; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
-        .trx-info p { font-size: 10px; color: rgba(255,255,255,0.6); font-weight: 700;}
+        .trx-info h4 { font-size: 13px; font-weight: 900; color: var(--text-dark); margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+        .trx-info p { font-size: 10px; color: var(--text-gray); font-weight: 700;}
         .trx-amount { font-size: 14px; font-weight: 900; text-align: right;}
         
         .export-group { display: flex; gap: 10px; margin-bottom: 25px;}
-        .btn-export { flex: 1; padding: 14px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.2); font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; color: #FFF; transition: 0.2s;}
-        .btn-export.excel { background: rgba(16, 185, 129, 0.2); color: #34D399; }
-        .btn-export.pdf { background: rgba(239, 68, 68, 0.2); color: #FCA5A5; }
+        .btn-export { flex: 1; padding: 14px; border-radius: 14px; border: none; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: 0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.05);}
+        .btn-export.excel { background: #FFF; color: var(--emerald-main); border: 1px solid rgba(16, 185, 129, 0.3);}
+        .btn-export.pdf { background: #FFF; color: var(--danger-red); border: 1px solid rgba(239, 68, 68, 0.3);}
         .btn-export:active { transform: scale(0.95); }
         
-        .empty-state { text-align: center; padding: 40px 20px; font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.5); border: 2px dashed rgba(255,255,255,0.1); border-radius: 20px;}
+        .empty-state { text-align: center; padding: 40px 20px; font-size: 12px; font-weight: 700; color: var(--text-gray); border: 2px dashed rgba(0,0,0,0.1); border-radius: 20px;}
         .empty-state i { font-size: 30px; margin-bottom: 10px; opacity: 0.5;}
 
-        /* MODAL DARK THEME */
-        .modal-overlay, .cp-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(10px); z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s; display: flex; justify-content: center; align-items: center;}
+        /* MODAL KACA PUTIH TERANG */
+        .modal-overlay, .cp-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(10px); z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s; display: flex; justify-content: center; align-items: center;}
         .modal-overlay { align-items: flex-end; padding: 0; }
         .cp-overlay { padding: 20px; }
         .modal-overlay.show, .cp-overlay.show { opacity: 1; visibility: visible; }
         
-        .modal-content { background: rgba(30, 41, 59, 0.98); border-top: 1px solid rgba(255,255,255,0.1); border-radius: 32px 32px 0 0; padding: 30px 24px 40px; width: 100%; max-width: 480px; transform: translateY(100%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1); box-shadow: 0 -10px 40px rgba(0,0,0,0.5); color: #FFF; max-height: 85vh; overflow-y: auto;}
+        .modal-content { background: rgba(255, 255, 255, 0.95); border: 1px solid #FFF; border-radius: 32px 32px 0 0; padding: 30px 24px 40px; width: 100%; max-width: 480px; transform: translateY(100%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1); box-shadow: 0 -10px 40px rgba(0,0,0,0.2); color: var(--text-dark); max-height: 85vh; overflow-y: auto;}
         .modal-overlay.show .modal-content { transform: translateY(0); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-        .modal-header h3 { font-size: 18px; font-weight: 900; color: #FFF; }
-        .btn-close-modal { width: 34px; height: 34px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.1); display: flex; justify-content: center; align-items: center; font-size: 16px; cursor: pointer; color: #FFF; transition: 0.2s;}
+        .modal-header h3 { font-size: 18px; font-weight: 900; }
+        .btn-close-modal { width: 34px; height: 34px; border-radius: 50%; border: none; background: #F1F5F9; display: flex; justify-content: center; align-items: center; font-size: 16px; cursor: pointer; color: var(--text-dark); transition: 0.2s;}
         .btn-close-modal:active { transform: scale(0.9); }
         
-        .form-group { margin-bottom: 15px; }
-        .form-label { display: block; font-size: 11px; font-weight: 800; color: rgba(255,255,255,0.7); margin-bottom: 8px; text-transform: uppercase;}
-        .form-input { width: 100%; padding: 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.2); margin-bottom: 15px; font-size: 13px; font-weight: 700; color: #FFF; outline: none; background: rgba(255,255,255,0.05); transition: 0.2s;}
-        .form-input:focus { border-color: var(--emerald-main); background: rgba(255,255,255,0.1);}
+        .form-group { margin-bottom: 15px; text-align: left;}
+        .form-label { display: block; font-size: 11px; font-weight: 800; color: var(--text-gray); margin-bottom: 8px; text-transform: uppercase;}
+        .form-input { width: 100%; padding: 16px; border-radius: 14px; border: 2px solid rgba(0,0,0,0.06); margin-bottom: 15px; font-size: 13px; font-weight: 700; color: var(--text-dark); outline: none; background: #F8FAFC; transition: 0.2s;}
+        .form-input:focus { border-color: var(--emerald-main); background: #FFF; box-shadow: 0 5px 15px rgba(5,150,105,0.1);}
 
-        /* CUSTOM POPUP (ALERT & CONFIRM) */
-        .cp-box { background: rgba(30, 41, 59, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 28px; width: 100%; max-width: 320px; text-align: center; padding: 30px 24px; transform: scale(0.9); transition: 0.3s; box-shadow: 0 25px 50px rgba(0,0,0,0.5); color: #FFF; }
+        /* CUSTOM POPUP TERANG GLOWING */
+        .cp-box { background: rgba(255, 255, 255, 0.95); border: 1px solid #FFF; border-radius: 30px; width: 100%; max-width: 320px; text-align: center; padding: 30px 24px; transform: scale(0.9); transition: 0.3s; box-shadow: 0 25px 50px rgba(0,0,0,0.2); color: var(--text-dark); }
         .cp-overlay.show .cp-box { transform: scale(1); }
         .cp-icon { width: 65px; height: 65px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; margin: 0 auto 15px; }
-        .cp-icon.success { background: rgba(5, 150, 105, 0.2); color: #34D399; }
-        .cp-icon.error { background: rgba(239, 68, 68, 0.2); color: var(--danger-red); }
-        .cp-icon.warning { background: rgba(245, 158, 11, 0.2); color: var(--gold-accent); }
-        .cp-title { font-size: 18px; font-weight: 900; margin-bottom: 8px; color: #FFF;}
-        .cp-desc { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.7); margin-bottom: 25px; line-height: 1.5; }
+        .cp-icon.success { background: rgba(16, 185, 129, 0.15); color: var(--emerald-main); }
+        .cp-icon.error { background: rgba(239, 68, 68, 0.15); color: var(--danger-red); }
+        .cp-icon.warning { background: rgba(245, 158, 11, 0.15); color: var(--gold-accent); }
+        .cp-title { font-size: 18px; font-weight: 900; margin-bottom: 8px; }
+        .cp-desc { font-size: 12px; font-weight: 600; color: var(--text-gray); margin-bottom: 25px; line-height: 1.5; }
         .cp-btn-wrap { display: flex; gap: 10px; }
         .cp-btn { flex: 1; padding: 15px; border-radius: 14px; font-size: 13px; font-weight: 800; border: none; cursor: pointer; transition: 0.2s; }
         .cp-btn:active { transform: scale(0.95); }
-        .cp-btn-primary { background: var(--emerald-main); color: #FFF; box-shadow: 0 5px 15px rgba(5,150,105,0.3);}
-        .cp-btn-cancel { background: rgba(255,255,255,0.1); color: #FFF; border: 1px solid rgba(255,255,255,0.2);}
-        .cp-btn-danger { background: var(--danger-red); color: #FFF; box-shadow: 0 5px 15px rgba(239,68,68,0.3);}
-        .spinner-custom { border: 4px solid rgba(255,255,255,0.1); width: 50px; height: 50px; border-radius: 50%; border-left-color: var(--emerald-main); animation: spin 1s linear infinite; margin: 0 auto 15px; }
+        .cp-btn-primary { background: var(--emerald-main); color: #FFF; box-shadow: 0 8px 20px rgba(5,150,105,0.3);}
+        .cp-btn-cancel { background: #F1F5F9; color: var(--text-dark); border: 1px solid rgba(0,0,0,0.05);}
+        .cp-btn-danger { background: var(--danger-red); color: #FFF; box-shadow: 0 8px 20px rgba(239,68,68,0.3);}
+        .spinner-custom { border: 4px solid rgba(5,150,105,0.1); width: 50px; height: 50px; border-radius: 50%; border-left-color: var(--emerald-main); animation: spin 1s linear infinite; margin: 0 auto 15px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
@@ -130,7 +132,7 @@
             <div class="cp-icon success" id="caIcon"><i class="fa-solid fa-check"></i></div>
             <h3 class="cp-title" id="caTitle">Pemberitahuan</h3>
             <p class="cp-desc" id="caDesc">Pesan</p>
-            <button class="cp-btn cp-btn-primary" onclick="closeCustomAlert()" style="width: 100%;">Tutup</button>
+            <button class="cp-btn cp-btn-primary" onclick="closeCustomAlert()" style="width: 100%;">Mengerti</button>
         </div>
     </div>
     <div class="cp-overlay" id="customConfirm">
@@ -152,9 +154,9 @@
     </div>
 
     <div class="cp-overlay" id="modalImage" onclick="closeImageView()">
-        <div class="cp-box" style="padding: 10px; background: transparent; border: none; box-shadow: none; max-width: 450px;" onclick="event.stopPropagation()">
-            <img id="imgViewerSrc" src="" style="width: 100%; border-radius: 24px; border: 4px solid rgba(255,255,255,0.5); max-height: 70vh; object-fit: contain;">
-            <button class="btn-close-modal" style="margin: 15px auto 0; width: 40px; height: 40px;" onclick="closeImageView()"><i class="fa-solid fa-xmark"></i></button>
+        <div class="cp-box" style="padding: 10px; background: transparent; border:none; box-shadow: none; max-width: 450px;" onclick="event.stopPropagation()">
+            <img id="imgViewerSrc" src="" style="width: 100%; border-radius: 24px; border: 4px solid #FFF; max-height: 70vh; object-fit: contain; box-shadow: 0 15px 35px rgba(0,0,0,0.3);">
+            <button class="btn-close-modal" style="margin: 15px auto 0;" onclick="closeImageView()"><i class="fa-solid fa-xmark"></i></button>
         </div>
     </div>
 
@@ -168,10 +170,10 @@
         </div>
         
         <div class="content-area">
-            <button id="btnTambahTrx" class="btn-add" style="display: none;" onclick="document.getElementById('trxModal').classList.add('show')"><i class="fa-solid fa-pen-to-square"></i> Input Transaksi Manual</button>
+            <button id="btnTambahTrx" class="btn-add glass-panel" style="display: none;" onclick="document.getElementById('trxModal').classList.add('show')"><i class="fa-solid fa-pen-to-square"></i> Input Transaksi Manual</button>
             
             <div class="glass-emerald balance-card">
-                <div style="font-size: 11px; text-transform: uppercase; font-weight: 800; color: var(--gold-accent);">Saldo Kas Keseluruhan (All-Time)</div>
+                <div style="font-size: 11px; text-transform: uppercase; font-weight: 800; color: #FDE68A;">Saldo Kas Keseluruhan (All-Time)</div>
                 <div class="total-balance" id="uiTotalSaldo">Rp 0</div>
             </div>
 
@@ -227,7 +229,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Arus Transaksi</label>
-                    <select id="trxType" class="form-input" style="padding:15px; margin-bottom:0;">
+                    <select id="trxType" class="form-input" style="padding:15px; margin-bottom:0; appearance:none;">
                         <option value="Pemasukan">Pemasukan (Uang Masuk ke Kas)</option>
                         <option value="Pengeluaran">Pengeluaran (Uang Keluar)</option>
                     </select>
@@ -242,9 +244,9 @@
                 </div>
                 <div class="form-group" style="margin-bottom: 25px;">
                     <label class="form-label">Foto Bukti / Nota (Opsional)</label>
-                    <input type="file" id="trxBukti" class="form-input" accept="image/*" style="padding: 10px; margin-bottom:0;">
+                    <input type="file" id="trxBukti" class="form-input" accept="image/*" style="padding: 10px; margin-bottom:0; background: #FFF; border: 2px dashed rgba(0,0,0,0.1);">
                 </div>
-                <button type="submit" class="btn-add" style="margin-bottom: 0; background: var(--emerald-main); border:none;"><i class="fa-solid fa-floppy-disk"></i> Simpan ke Server</button>
+                <button type="submit" class="btn-submit"><i class="fa-solid fa-floppy-disk"></i> Simpan ke Server</button>
             </form>
         </div>
     </div>
@@ -374,10 +376,10 @@
                 const fDate = t.parsedDate.toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric'});
                 
                 const btnDelete = (userRole === 'superadmin' || userRole === 'bendahara') 
-                    ? `<button onclick="hapusLaporan('${t.docId}')" style="background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.3); border-radius:10px; padding:6px; color:var(--color-out); cursor:pointer; font-size:14px; margin-left:12px; transition:0.2s;"><i class="fa-solid fa-trash-can"></i></button>` : '';
+                    ? `<button onclick="hapusLaporan('${t.docId}')" style="background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.2); border-radius:10px; padding:6px 10px; color:var(--color-out); cursor:pointer; font-size:14px; margin-left:12px; transition:0.2s;"><i class="fa-solid fa-trash-can"></i></button>` : '';
                 
                 const btnImage = (t.bukti_image) 
-                    ? `<button onclick="viewImage('${t.bukti_image}')" style="background:rgba(52,211,153,0.1); border:1px solid rgba(52,211,153,0.3); border-radius:10px; padding:6px; color:var(--color-in); cursor:pointer; font-size:14px; margin-left:12px; transition:0.2s;"><i class="fa-solid fa-image"></i></button>` : '';
+                    ? `<button onclick="viewImage('${t.bukti_image}')" style="background:rgba(16, 185, 129, 0.1); border:1px solid rgba(16, 185, 129, 0.2); border-radius:10px; padding:6px 10px; color:var(--color-in); cursor:pointer; font-size:14px; margin-left:12px; transition:0.2s;"><i class="fa-solid fa-image"></i></button>` : '';
 
                 return `
                 <div class="glass-panel trx-item">

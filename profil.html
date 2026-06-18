@@ -3,81 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#0F172A">
+    <meta name="theme-color" content="#F4F6F5">
     <title>Profil Saya - KGR</title>
     
     <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon.png">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
         :root { 
-            --emerald-main: #059669; --emerald-dark: #022C22; --gold-accent: #FBBF24;
-            --danger-red: #EF4444; --warning-yellow: #F59E0B;
+            --bg-base: #F4F6F5; --text-dark: #0F172A; --text-gray: #64748B; 
+            --emerald-main: #059669; --emerald-dark: #064E3B; --gold-accent: #F59E0B;
+            --danger-red: #EF4444; 
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
         
-        body { background-color: #0F172A; display: flex; justify-content: center; min-height: 100vh; overflow: hidden; position: relative; color: #FFF; margin: 0;}
+        body { background-color: var(--bg-base); display: flex; justify-content: center; min-height: 100vh; overflow: hidden; position: relative; color: var(--text-dark); margin: 0;}
 
-        .orb { position: absolute; border-radius: 50%; filter: blur(70px); z-index: 0; animation: float 10s infinite alternate ease-in-out;}
-        .orb-1 { top: 10%; left: -10%; width: 300px; height: 300px; background: rgba(5, 150, 105, 0.4); }
-        .orb-2 { bottom: 10%; right: -15%; width: 350px; height: 350px; background: rgba(5, 150, 105, 0.3); animation-delay: -5s;}
-        
-        @keyframes float { 0% { transform: translate(0, 0); } 100% { transform: translate(30px, 50px); } }
+        .orb { position: absolute; border-radius: 50%; filter: blur(60px); z-index: 0; animation: float 12s infinite alternate ease-in-out;}
+        .orb-1 { top: 20%; left: -10%; width: 300px; height: 300px; background: rgba(16, 185, 129, 0.15); }
+        .orb-2 { bottom: 10%; right: -15%; width: 350px; height: 350px; background: rgba(5, 150, 105, 0.1); animation-delay: -5s;}
+
+        @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(25px, 40px) scale(1.1); } }
 
         .app-container { width: 100%; max-width: 480px; background: transparent; display: flex; flex-direction: column; height: 100dvh; position: relative; z-index: 10; overflow-x: hidden; overflow-y: auto; scrollbar-width: none;}
         .app-container::-webkit-scrollbar { display: none; }
-        @media (min-width: 600px) { .app-container { height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 40px 80px rgba(0,0,0,0.5); border: 4px solid rgba(255,255,255,0.1); margin: auto; } }
+        @media (min-width: 600px) { .app-container { height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 40px 80px rgba(0,0,0,0.15); border: 8px solid #FFFFFF; margin: auto; background: rgba(244, 246, 245, 0.85); backdrop-filter: blur(20px);} }
 
         /* GLASSMORPHISM */
-        .glass-panel { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); border-top: 1px solid rgba(255, 255, 255, 0.2); border-left: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); border-radius: 24px;}
+        .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(25px) saturate(150%); -webkit-backdrop-filter: blur(25px) saturate(150%); border: 1px solid rgba(255, 255, 255, 1); box-shadow: 0 15px 35px rgba(5, 150, 105, 0.05), inset 0 0 20px rgba(255, 255, 255, 0.6); border-radius: 26px; }
 
-        .header-page { padding: 40px 24px 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 10; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(10px);}
-        .btn-back { width: 42px; height: 42px; border-radius: 14px; background: rgba(255,255,255,0.1); display: flex; justify-content: center; align-items: center; cursor: pointer; color: #FFF; transition: 0.2s; border: 1px solid rgba(255,255,255,0.2);}
-        .btn-back:active { transform: scale(0.9); background: var(--emerald-main); }
-        .header-page h2 { font-size: 18px; font-weight: 900; letter-spacing: -0.5px; color: #FFF;}
+        .header-page { padding: 40px 24px 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid #FFF; z-index: 10; background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(20px);}
+        .btn-back { width: 42px; height: 42px; border-radius: 14px; background: #FFF; display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text-dark); transition: 0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.05);}
+        .btn-back:active { transform: scale(0.9); background: var(--emerald-main); color: #FFF; }
+        .header-page h2 { font-size: 18px; font-weight: 900; letter-spacing: -0.5px; color: var(--text-dark);}
 
         .content-area { flex-grow: 1; padding: 25px 24px 100px; }
 
         .photo-edit-section { text-align: center; margin-bottom: 30px; position: relative;}
-        .photo-circle { width: 110px; height: 110px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 4px solid rgba(255,255,255,0.3); box-shadow: 0 10px 25px rgba(0,0,0,0.3); margin: 0 auto 15px; display: flex; justify-content: center; align-items: center; font-size: 40px; font-weight: 900; color: var(--gold-accent); position: relative; background-size: cover; background-position: center;}
+        .photo-circle { width: 110px; height: 110px; border-radius: 50%; background: #FFF; border: 4px solid #FFF; box-shadow: 0 15px 30px rgba(5,150,105,0.15); margin: 0 auto 15px; display: flex; justify-content: center; align-items: center; font-size: 40px; font-weight: 900; color: var(--emerald-main); position: relative; background-size: cover; background-position: center;}
         
-        .btn-change-photo { position: absolute; bottom: 0; right: 0; width: 36px; height: 36px; border-radius: 50%; background: var(--emerald-main); color: #FFF; border: 3px solid #0F172A; display: flex; justify-content: center; align-items: center; font-size: 14px; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(5,150,105,0.5);}
+        .btn-change-photo { position: absolute; bottom: 0; right: 0; width: 36px; height: 36px; border-radius: 50%; background: var(--emerald-main); color: #FFF; border: 3px solid #FFF; display: flex; justify-content: center; align-items: center; font-size: 14px; cursor: pointer; transition: 0.2s; box-shadow: 0 5px 15px rgba(5,150,105,0.3);}
         .btn-change-photo:active { transform: scale(0.9); }
         .hidden-file-input { display: none; }
 
         .form-card { padding: 25px 20px; margin-bottom: 20px; }
         .form-group { margin-bottom: 18px; text-align: left; }
-        .form-label { display: block; font-size: 11px; font-weight: 800; color: rgba(255,255,255,0.7); margin-bottom: 8px; text-transform: uppercase;}
-        .form-input { width: 100%; padding: 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.2); font-size: 14px; font-weight: 700; color: #FFF; outline: none; background: rgba(255,255,255,0.05); transition: 0.2s;}
-        .form-input:focus { border-color: var(--emerald-main); background: rgba(255,255,255,0.1);}
-        .form-input:disabled { background: rgba(255,255,255,0.02); color: rgba(255,255,255,0.5); cursor: not-allowed; border-color: rgba(255,255,255,0.05);}
+        .form-label { display: block; font-size: 11px; font-weight: 800; color: var(--text-gray); margin-bottom: 8px; text-transform: uppercase;}
+        .form-input { width: 100%; padding: 16px; border-radius: 14px; border: 2px solid rgba(0,0,0,0.06); font-size: 14px; font-weight: 700; color: var(--text-dark); outline: none; background: #F8FAFC; transition: 0.2s;}
+        .form-input:focus { border-color: var(--emerald-main); background: #FFF; box-shadow: 0 5px 15px rgba(5,150,105,0.1);}
+        .form-input:disabled { background: rgba(0,0,0,0.03); color: var(--text-gray); cursor: not-allowed; border-color: transparent;}
 
-        .btn-save { width: 100%; padding: 18px; border-radius: 16px; font-size: 14px; font-weight: 900; background: var(--emerald-main); color: #FFF; border: none; cursor: pointer; transition: 0.2s; box-shadow: 0 10px 20px rgba(5,150,105,0.3); display: flex; justify-content: center; align-items: center; gap: 8px;}
+        .btn-save { width: 100%; padding: 18px; border-radius: 16px; font-size: 14px; font-weight: 900; background: var(--emerald-main); color: #FFF; border: none; cursor: pointer; transition: 0.2s; box-shadow: 0 10px 20px rgba(5,150,105,0.25); display: flex; justify-content: center; align-items: center; gap: 8px;}
         .btn-save:active { transform: scale(0.96); }
 
-        .btn-logout { width: 100%; padding: 18px; border-radius: 16px; font-size: 14px; font-weight: 900; background: rgba(239,68,68,0.2); color: #FCA5A5; border: 1px solid rgba(239,68,68,0.5); cursor: pointer; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px;}
+        .btn-logout { width: 100%; padding: 18px; border-radius: 16px; font-size: 14px; font-weight: 900; background: rgba(239,68,68,0.1); color: var(--danger-red); border: 1px solid rgba(239,68,68,0.2); cursor: pointer; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px;}
         .btn-logout:active { transform: scale(0.96); background: var(--danger-red); color: #FFF;}
 
-        /* MODAL DARK THEME */
-        .cp-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(10px); z-index: 99999; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px; }
+        /* MODAL KACA PUTIH TERANG */
+        .cp-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(10px); z-index: 99999; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px; }
         .cp-overlay.show { opacity: 1; visibility: visible; }
-        .cp-box { background: rgba(30, 41, 59, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 28px; width: 100%; max-width: 320px; text-align: center; padding: 30px 24px; transform: scale(0.9); transition: 0.3s; box-shadow: 0 25px 50px rgba(0,0,0,0.5); color: #FFF; }
+        .cp-box { background: rgba(255, 255, 255, 0.95); border: 1px solid #FFF; border-radius: 30px; width: 100%; max-width: 320px; text-align: center; padding: 30px 24px; transform: scale(0.9); transition: 0.3s; box-shadow: 0 25px 50px rgba(0,0,0,0.2); color: var(--text-dark); }
         .cp-overlay.show .cp-box { transform: scale(1); }
+        
         .cp-icon { width: 65px; height: 65px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; margin: 0 auto 15px; }
-        .cp-icon.success { background: rgba(5, 150, 105, 0.2); color: #34D399; }
-        .cp-icon.error { background: rgba(239, 68, 68, 0.2); color: var(--danger-red); }
-        .cp-icon.warning { background: rgba(245, 158, 11, 0.2); color: var(--gold-accent); }
-        .cp-title { font-size: 18px; font-weight: 900; margin-bottom: 8px; color: #FFF;}
-        .cp-desc { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.7); margin-bottom: 25px; line-height: 1.5; }
+        .cp-icon.success { background: rgba(16, 185, 129, 0.15); color: var(--emerald-main); }
+        .cp-icon.error { background: rgba(239, 68, 68, 0.15); color: var(--danger-red); }
+        .cp-icon.warning { background: rgba(245, 158, 11, 0.15); color: var(--gold-accent); }
+        
+        .cp-title { font-size: 18px; font-weight: 900; margin-bottom: 8px; }
+        .cp-desc { font-size: 12px; font-weight: 600; color: var(--text-gray); margin-bottom: 25px; line-height: 1.5; }
         .cp-btn-wrap { display: flex; gap: 10px; }
         .cp-btn { flex: 1; padding: 15px; border-radius: 14px; font-size: 13px; font-weight: 800; border: none; cursor: pointer; transition: 0.2s; }
         .cp-btn:active { transform: scale(0.95); }
-        .cp-btn-primary { background: var(--emerald-main); color: #FFF; box-shadow: 0 5px 15px rgba(5,150,105,0.3);}
-        .cp-btn-cancel { background: rgba(255,255,255,0.1); color: #FFF; border: 1px solid rgba(255,255,255,0.2);}
-        .cp-btn-danger { background: var(--danger-red); color: #FFF; box-shadow: 0 5px 15px rgba(239,68,68,0.3);}
-        .spinner-custom { border: 4px solid rgba(255,255,255,0.1); width: 50px; height: 50px; border-radius: 50%; border-left-color: var(--emerald-main); animation: spin 1s linear infinite; margin: 0 auto 15px; }
+        .cp-btn-primary { background: var(--emerald-main); color: #FFF; box-shadow: 0 8px 20px rgba(5,150,105,0.3);}
+        .cp-btn-cancel { background: #F1F5F9; color: var(--text-dark); border: 1px solid rgba(0,0,0,0.05);}
+        .cp-btn-danger { background: var(--danger-red); color: #FFF; box-shadow: 0 8px 20px rgba(239,68,68,0.3);}
+        
+        .spinner-custom { border: 4px solid rgba(5,150,105,0.1); width: 50px; height: 50px; border-radius: 50%; border-left-color: var(--emerald-main); animation: spin 1s linear infinite; margin: 0 auto 15px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
@@ -88,7 +94,7 @@
             <div class="cp-icon success" id="caIcon"><i class="fa-solid fa-check"></i></div>
             <h3 class="cp-title" id="caTitle">Pemberitahuan</h3>
             <p class="cp-desc" id="caDesc">Pesan</p>
-            <button class="cp-btn cp-btn-primary" onclick="closeCustomAlert()" style="width: 100%;">Tutup</button>
+            <button class="cp-btn cp-btn-primary" onclick="closeCustomAlert()">Mengerti</button>
         </div>
     </div>
     <div class="cp-overlay" id="customConfirm">
@@ -109,7 +115,7 @@
         </div>
     </div>
 
-    <!-- Cahaya Latar Belakang -->
+    <!-- Cahaya Latar Belakang Pastel -->
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
 
@@ -127,7 +133,7 @@
                     <i class="fa-solid fa-camera"></i>
                 </label>
                 <input type="file" id="inputPhoto" class="hidden-file-input" accept="image/*" onchange="previewPhoto(event)">
-                <p style="font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.5); margin-top: 15px;">Ketuk ikon kamera untuk mengganti foto.</p>
+                <p style="font-size: 11px; font-weight: 700; color: var(--text-gray); margin-top: 15px;">Ketuk ikon kamera untuk mengganti foto.</p>
             </div>
 
             <div class="glass-panel form-card">
@@ -139,7 +145,7 @@
                     <!-- NIK TETAP TERKUNCI & TERDEKRIPSI -->
                     <div class="form-group">
                         <label class="form-label">NIK Terdaftar (Permanen)</label>
-                        <input type="text" id="pfNik" class="form-input" disabled style="background: rgba(251, 191, 36, 0.1); border-color: rgba(251, 191, 36, 0.4); color: var(--gold-accent);">
+                        <input type="text" id="pfNik" class="form-input" disabled style="background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.3); color: var(--gold-accent);">
                     </div>
                     <div class="form-group">
                         <label class="form-label">Nama Sesuai KTP</label>
@@ -223,7 +229,7 @@
             const file = event.target.files[0];
             if (!file) return;
 
-            // PROTEKSI 3MB UTUH
+            // PROTEKSI 3MB 
             if (file.size > 3 * 1024 * 1024) {
                 return customAlert("Foto Terlalu Besar", "Ukuran foto maksimal 3MB. Silahkan pilih foto lain.", "warning");
             }

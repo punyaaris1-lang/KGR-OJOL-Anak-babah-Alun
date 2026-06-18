@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#0F172A">
+    <meta name="theme-color" content="#F4F6F5">
     <title>Pengajuan Dana - KGR</title>
     
     <link rel="manifest" href="manifest.json">
@@ -12,109 +12,111 @@
     
     <style>
         :root { 
-            --emerald-main: #059669; --emerald-dark: #022C22; 
-            --gold-accent: #FBBF24; --danger-red: #EF4444; --warning-yellow: #F59E0B;
-            --color-pending: #FBBF24; --color-process: #38BDF8; --color-final: #A78BFA; --color-approved: #34D399; --color-rejected: #FCA5A5; 
+            --bg-base: #F4F6F5; --text-dark: #0F172A; --text-gray: #64748B; 
+            --emerald-main: #059669; --emerald-dark: #064E3B; --emerald-light: #10B981;
+            --gold-accent: #F59E0B; --danger-red: #EF4444; --warning-yellow: #F59E0B;
+            --color-pending: #F59E0B; --color-process: #0284C7; --color-final: #8B5CF6; --color-approved: #059669; --color-rejected: #EF4444; 
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
         
-        body { background-color: #0F172A; display: flex; justify-content: center; min-height: 100vh; overflow: hidden; position: relative; color: #FFF; margin: 0;}
+        body { background-color: var(--bg-base); display: flex; justify-content: center; min-height: 100vh; overflow: hidden; position: relative; color: var(--text-dark); margin: 0;}
 
-        .orb { position: absolute; border-radius: 50%; filter: blur(70px); z-index: 0; animation: float 10s infinite alternate ease-in-out;}
-        .orb-1 { top: 5%; left: -10%; width: 250px; height: 250px; background: rgba(5, 150, 105, 0.4); }
-        .orb-2 { bottom: 10%; right: -10%; width: 300px; height: 300px; background: rgba(5, 150, 105, 0.3); animation-delay: -5s;}
+        /* NEON ORBS TERANG */
+        .orb { position: absolute; border-radius: 50%; filter: blur(60px); z-index: 0; animation: float 10s infinite alternate ease-in-out;}
+        .orb-1 { top: 10%; left: -10%; width: 250px; height: 250px; background: rgba(16, 185, 129, 0.15); }
+        .orb-2 { bottom: 10%; right: -10%; width: 300px; height: 300px; background: rgba(5, 150, 105, 0.1); animation-delay: -5s;}
         @keyframes float { 0% { transform: translate(0, 0); } 100% { transform: translate(30px, 50px); } }
 
         .app-container { width: 100%; max-width: 480px; background: transparent; display: flex; flex-direction: column; height: 100dvh; position: relative; z-index: 10; overflow-x: hidden; overflow-y: auto; scrollbar-width: none;}
         .app-container::-webkit-scrollbar { display: none; }
-        @media (min-width: 600px) { .app-container { height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 40px 80px rgba(0,0,0,0.5); border: 4px solid rgba(255,255,255,0.1); margin: auto; } }
+        @media (min-width: 600px) { .app-container { height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 40px 80px rgba(0,0,0,0.15); border: 8px solid #FFFFFF; margin: auto; background: rgba(244, 246, 245, 0.85); backdrop-filter: blur(20px);} }
 
         /* GLASSMORPHISM */
-        .glass-panel { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); border-top: 1px solid rgba(255, 255, 255, 0.2); border-left: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); border-radius: 24px; color: #FFF;}
+        .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(25px) saturate(150%); -webkit-backdrop-filter: blur(25px) saturate(150%); border: 1px solid #FFF; box-shadow: 0 15px 35px rgba(5, 150, 105, 0.05), inset 0 0 20px rgba(255, 255, 255, 0.6); border-radius: 26px; }
 
-        .header-page { padding: 40px 24px 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 10; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(10px);}
-        .btn-back { width: 42px; height: 42px; border-radius: 14px; background: rgba(255,255,255,0.1); display: flex; justify-content: center; align-items: center; cursor: pointer; color: #FFF; transition: 0.2s; border: 1px solid rgba(255,255,255,0.2);}
-        .btn-back:active { transform: scale(0.9); background: var(--emerald-main); }
-        .header-page h2 { font-size: 18px; font-weight: 900; letter-spacing: -0.5px; color: #FFF;}
+        .header-page { padding: 40px 24px 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid #FFF; z-index: 10; background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(20px);}
+        .btn-back { width: 42px; height: 42px; border-radius: 14px; background: #FFF; display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text-dark); transition: 0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.05);}
+        .btn-back:active { transform: scale(0.9); background: var(--emerald-main); color: #FFF; }
+        .header-page h2 { font-size: 18px; font-weight: 900; letter-spacing: -0.5px; color: var(--text-dark);}
         
         .content-area { flex-grow: 1; padding: 25px 24px 100px; }
         
         .tabs-container { display: flex; gap: 10px; margin-bottom: 25px; }
-        .tab-btn { flex: 1; padding: 14px; border-radius: 14px; font-size: 13px; font-weight: 800; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); text-align: center; cursor: pointer; transition: 0.2s; color: rgba(255,255,255,0.6);}
-        .tab-btn.active { background: var(--emerald-main); color: #FFF; border-color: var(--emerald-main); box-shadow: 0 5px 15px rgba(5,150,105,0.3);}
+        .tab-btn { flex: 1; padding: 14px; border-radius: 14px; font-size: 13px; font-weight: 800; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.4); text-align: center; cursor: pointer; transition: 0.2s; color: var(--text-gray); box-shadow: 0 5px 15px rgba(0,0,0,0.02);}
+        .tab-btn.active { background: var(--emerald-main); color: #FFF; border-color: transparent; box-shadow: 0 5px 15px rgba(5,150,105,0.3);}
 
         .request-card { padding: 20px; margin-bottom: 15px; transition: 0.2s;}
-        .request-card:active { transform: scale(0.98); background: rgba(255,255,255,0.1);}
+        .request-card:active { transform: scale(0.98); background: rgba(255,255,255,0.9);}
         .req-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
-        .req-title { font-size: 15px; font-weight: 900; color: #FFF; line-height: 1.3;}
-        .req-date { font-size: 11px; color: rgba(255,255,255,0.6); font-weight: 700; margin-top: 4px; display: flex; align-items: center; gap: 5px;}
-        .req-amount { font-size: 16px; font-weight: 900; color: #FFF; background: rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2);}
-        .req-body { font-size: 12px; color: rgba(255,255,255,0.8); font-weight: 600; margin-bottom: 15px; line-height: 1.5; background: rgba(0,0,0,0.2); padding: 12px; border-radius: 12px;}
-        .req-target { font-size: 11px; font-weight: 800; color: var(--gold-accent); margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; gap: 5px; }
+        .req-title { font-size: 15px; font-weight: 900; color: var(--text-dark); line-height: 1.3;}
+        .req-date { font-size: 11px; color: var(--text-gray); font-weight: 700; margin-top: 4px; display: flex; align-items: center; gap: 5px;}
+        .req-amount { font-size: 16px; font-weight: 900; color: var(--emerald-main); background: rgba(16, 185, 129, 0.1); padding: 6px 12px; border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.2);}
+        .req-body { font-size: 12px; color: var(--text-gray); font-weight: 600; margin-bottom: 15px; line-height: 1.5; background: #F8FAFC; padding: 12px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.05);}
+        .req-target { font-size: 11px; font-weight: 800; color: var(--text-dark); margin-bottom: 10px; display: flex; align-items: center; gap: 5px; justify-content: space-between; }
         
-        .status-tracker { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .status-tracker { background: rgba(255,255,255,0.5); border: 1px solid rgba(0,0,0,0.05); padding: 12px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; }
         .status-badge { font-size: 10px; font-weight: 800; text-transform: uppercase; display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 8px;}
-        .status-badge.tunjuk { background: rgba(251, 191, 36, 0.2); color: var(--color-pending); }
-        .status-badge.verifikasi { background: rgba(56, 189, 248, 0.2); color: var(--color-process); }
-        .status-badge.final { background: rgba(167, 139, 250, 0.2); color: var(--color-final); }
-        .status-badge.approved { background: rgba(52, 211, 153, 0.2); color: var(--color-approved); }
-        .status-badge.rejected { background: rgba(252, 165, 165, 0.2); color: var(--color-rejected); }
+        .status-badge.tunjuk { background: rgba(245, 158, 11, 0.15); color: var(--color-pending); }
+        .status-badge.verifikasi { background: rgba(2, 132, 199, 0.15); color: var(--color-process); }
+        .status-badge.final { background: rgba(167, 139, 250, 0.15); color: var(--color-final); }
+        .status-badge.approved { background: rgba(16, 185, 129, 0.15); color: var(--color-approved); }
+        .status-badge.rejected { background: rgba(239, 68, 68, 0.15); color: var(--color-rejected); }
 
-        .action-buttons { display: flex; gap: 10px; margin-top: 15px; border-top: 1px dashed rgba(255,255,255,0.2); padding-top: 15px; }
+        .action-buttons { display: flex; gap: 10px; margin-top: 15px; border-top: 1px dashed rgba(0,0,0,0.1); padding-top: 15px; }
         .btn-act { flex: 1; padding: 14px; border-radius: 12px; font-size: 12px; font-weight: 800; cursor: pointer; border: none; transition: 0.2s;}
-        .btn-act.primary { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #FFF; }
-        .btn-act.approve { background: rgba(52, 211, 153, 0.2); color: #34D399; }
-        .btn-act.reject { background: rgba(252, 165, 165, 0.2); color: #FCA5A5; }
+        .btn-act.primary { background: #FFF; border: 1px solid rgba(0,0,0,0.1); color: var(--text-dark); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .btn-act.approve { background: rgba(16, 185, 129, 0.15); color: var(--emerald-main); }
+        .btn-act.reject { background: rgba(239, 68, 68, 0.15); color: var(--danger-red); }
         .btn-act:active { transform: scale(0.95);}
 
-        .btn-create { width: 100%; padding: 18px; border-radius: 18px; font-size: 14px; font-weight: 900; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #FFF; margin-bottom: 25px; cursor: pointer; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px;}
-        .btn-create:active { transform: scale(0.96); background: var(--emerald-main); border-color: var(--emerald-main);}
+        .btn-create { width: 100%; padding: 18px; border-radius: 18px; font-size: 14px; font-weight: 900; background: #FFF; border: 1px solid #FFF; color: var(--emerald-main); margin-bottom: 25px; cursor: pointer; transition: 0.2s; box-shadow: 0 10px 20px rgba(5,150,105,0.1); display: flex; justify-content: center; align-items: center; gap: 8px;}
+        .btn-create:active { transform: scale(0.96); background: var(--emerald-main); color: #FFF;}
         
-        .empty-state { text-align: center; padding: 40px 20px; color: rgba(255,255,255,0.5); border: 2px dashed rgba(255,255,255,0.1); border-radius: 24px;}
+        .empty-state { text-align: center; padding: 40px 20px; color: var(--text-gray); border: 2px dashed rgba(0,0,0,0.1); border-radius: 24px;}
         .empty-state i { font-size: 35px; margin-bottom: 10px; opacity: 0.5;}
-
-        /* MODAL DARK THEME */
-        .modal-overlay, .cp-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(10px); z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s; display: flex; justify-content: center; align-items: center;}
+        .empty-state p { font-size: 13px; font-weight: 700; }
+        
+        /* MODAL BOUNCY TERANG */
+        .modal-overlay, .cp-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(10px); z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s; display: flex; justify-content: center; align-items: center;}
         .modal-overlay { align-items: flex-end; padding: 0; }
         .cp-overlay { padding: 20px; }
         .modal-overlay.show, .cp-overlay.show { opacity: 1; visibility: visible; }
         
-        .modal-content { background: rgba(30, 41, 59, 0.98); border-top: 1px solid rgba(255,255,255,0.1); border-radius: 32px 32px 0 0; padding: 30px 24px 40px; width: 100%; max-width: 480px; transform: translateY(100%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1); box-shadow: 0 -10px 40px rgba(0,0,0,0.5); color: #FFF; max-height: 85vh; overflow-y: auto;}
+        .modal-content { background: rgba(255, 255, 255, 0.95); border: 1px solid #FFF; border-radius: 32px 32px 0 0; padding: 30px 24px 40px; width: 100%; max-width: 480px; transform: translateY(100%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1); box-shadow: 0 -10px 40px rgba(0,0,0,0.2); color: var(--text-dark); max-height: 85vh; overflow-y: auto;}
         .modal-overlay.show .modal-content { transform: translateY(0); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-        .modal-header h3 { font-size: 18px; font-weight: 900; color: #FFF; }
-        .btn-close-modal { width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.1); display: flex; justify-content: center; align-items: center; font-size: 14px; cursor: pointer; color: #FFF; transition: 0.2s;}
+        .modal-header h3 { font-size: 18px; font-weight: 900; }
+        .btn-close-modal { width: 32px; height: 32px; border-radius: 50%; border: none; background: #F1F5F9; display: flex; justify-content: center; align-items: center; font-size: 14px; cursor: pointer; color: var(--text-dark); transition: 0.2s;}
         .btn-close-modal:active { transform: scale(0.9); }
         
-        .form-group { margin-bottom: 15px; text-align: left;}
-        .form-label { display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; color: rgba(255,255,255,0.7); }
-        .form-input { width: 100%; padding: 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.2); font-size: 14px; font-weight: 700; outline: none; background: rgba(255,255,255,0.05); color: #FFF; transition: 0.2s;}
-        .form-input::placeholder { color: rgba(255,255,255,0.4); }
-        .form-input:focus { border-color: var(--emerald-main); background: rgba(255,255,255,0.1); }
-        .btn-submit { width: 100%; padding: 18px; border-radius: 16px; font-size: 14px; font-weight: 900; background: var(--emerald-main); color: #FFF; border: none; margin-top: 10px; cursor: pointer; box-shadow: 0 10px 20px rgba(5,150,105,0.3); transition: 0.2s;}
+        .form-group { margin-bottom: 15px; text-align: left; }
+        .form-label { display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; color: var(--text-gray); }
+        .form-input { width: 100%; padding: 16px; border-radius: 14px; border: 2px solid rgba(0,0,0,0.06); font-size: 14px; font-weight: 700; outline: none; background: #F8FAFC; color: var(--text-dark); transition: 0.2s;}
+        .form-input:focus { border-color: var(--emerald-main); background: #FFF; box-shadow: 0 5px 15px rgba(5,150,105,0.1); }
+        .btn-submit { width: 100%; padding: 18px; border-radius: 16px; font-size: 14px; font-weight: 900; background: var(--emerald-main); color: #FFF; border: none; margin-top: 10px; cursor: pointer; box-shadow: 0 10px 20px rgba(5,150,105,0.3); transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px;}
         .btn-submit:active { transform: scale(0.96); }
 
         .nik-warning { background: rgba(239, 68, 68, 0.1); border: 1px dashed var(--danger-red); padding: 15px; border-radius: 12px; margin-bottom: 15px; display: none; }
         .nik-warning h4 { color: var(--danger-red); font-size: 13px; font-weight: 900; margin-bottom: 5px; display: flex; align-items: center; gap: 5px;}
         .nik-warning p { color: #FCA5A5; font-size: 11px; font-weight: 600; line-height: 1.4; }
 
-        /* CUSTOM POPUP (ALERT & CONFIRM) */
-        .cp-box { background: rgba(30, 41, 59, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 28px; width: 100%; max-width: 320px; text-align: center; padding: 30px 24px; transform: scale(0.9); transition: 0.3s; box-shadow: 0 25px 50px rgba(0,0,0,0.5); color: #FFF; }
+        /* CUSTOM POPUP TERANG GLOWING */
+        .cp-box { background: rgba(255, 255, 255, 0.95); border: 1px solid #FFF; border-radius: 30px; width: 100%; max-width: 320px; text-align: center; padding: 30px 24px; transform: scale(0.9); transition: 0.3s; box-shadow: 0 25px 50px rgba(0,0,0,0.2); color: var(--text-dark); }
         .cp-overlay.show .cp-box { transform: scale(1); }
         .cp-icon { width: 65px; height: 65px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; margin: 0 auto 15px; }
-        .cp-icon.success { background: rgba(5, 150, 105, 0.2); color: #34D399; }
-        .cp-icon.error { background: rgba(239, 68, 68, 0.2); color: var(--danger-red); }
-        .cp-icon.warning { background: rgba(245, 158, 11, 0.2); color: var(--gold-accent); }
-        .cp-title { font-size: 18px; font-weight: 900; margin-bottom: 8px; color: #FFF;}
-        .cp-desc { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.7); margin-bottom: 25px; line-height: 1.5; }
+        .cp-icon.success { background: rgba(16, 185, 129, 0.15); color: var(--emerald-main); }
+        .cp-icon.error { background: rgba(239, 68, 68, 0.15); color: var(--danger-red); }
+        .cp-icon.warning { background: rgba(245, 158, 11, 0.15); color: var(--gold-accent); }
+        .cp-title { font-size: 18px; font-weight: 900; margin-bottom: 8px; }
+        .cp-desc { font-size: 12px; font-weight: 600; color: var(--text-gray); margin-bottom: 25px; line-height: 1.5; }
         .cp-btn-wrap { display: flex; gap: 10px; }
         .cp-btn { flex: 1; padding: 15px; border-radius: 14px; font-size: 13px; font-weight: 800; border: none; cursor: pointer; transition: 0.2s; }
         .cp-btn:active { transform: scale(0.95); }
-        .cp-btn-primary { background: var(--emerald-main); color: #FFF; box-shadow: 0 5px 15px rgba(5,150,105,0.3);}
-        .cp-btn-cancel { background: rgba(255,255,255,0.1); color: #FFF; border: 1px solid rgba(255,255,255,0.2);}
-        .cp-btn-danger { background: var(--danger-red); color: #FFF; box-shadow: 0 5px 15px rgba(239,68,68,0.3);}
-        .spinner-custom { border: 4px solid rgba(255,255,255,0.1); width: 50px; height: 50px; border-radius: 50%; border-left-color: var(--emerald-main); animation: spin 1s linear infinite; margin: 0 auto 15px; }
+        .cp-btn-primary { background: var(--emerald-main); color: #FFF; box-shadow: 0 8px 20px rgba(5,150,105,0.3);}
+        .cp-btn-cancel { background: #F1F5F9; color: var(--text-dark); border: 1px solid rgba(0,0,0,0.05);}
+        .cp-btn-danger { background: var(--danger-red); color: #FFF; box-shadow: 0 8px 20px rgba(239,68,68,0.3);}
+        .spinner-custom { border: 4px solid rgba(5,150,105,0.1); width: 50px; height: 50px; border-radius: 50%; border-left-color: var(--emerald-main); animation: spin 1s linear infinite; margin: 0 auto 15px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
@@ -145,8 +147,8 @@
         </div>
     </div>
     <div class="cp-overlay" id="modalImage" onclick="closeImageView()">
-        <div class="cp-box" style="padding: 10px; background: transparent; border:none; box-shadow: none; max-width: 450px;" onclick="event.stopPropagation()">
-            <img id="imgViewerSrc" src="" style="width: 100%; border-radius: 24px; border: 4px solid rgba(255,255,255,0.3); max-height: 70vh; object-fit: contain;">
+        <div class="cp-box" style="padding: 10px; background: transparent; border: none; box-shadow: none; max-width: 450px;" onclick="event.stopPropagation()">
+            <img id="imgViewerSrc" src="" style="width: 100%; border-radius: 24px; border: 4px solid rgba(255,255,255,0.6); max-height: 70vh; object-fit: contain;">
             <button class="btn-close-modal" style="margin: 15px auto 0; width: 40px; height: 40px;" onclick="closeImageView()"><i class="fa-solid fa-xmark"></i></button>
         </div>
     </div>
@@ -167,7 +169,7 @@
             </div>
 
             <div id="viewPengajuanSaya">
-                <button class="btn-create" id="btnBuatBaru" style="display: none;" onclick="openModalReq()"><i class="fa-solid fa-file-circle-plus"></i> Buat Pengajuan Baru</button>
+                <button class="btn-create glass-panel" id="btnBuatBaru" style="display: none;" onclick="openModalReq()"><i class="fa-solid fa-file-circle-plus"></i> Buat Pengajuan Baru</button>
                 <div id="listSaya">
                     <div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i><p>Memuat data...</p></div>
                 </div>
@@ -181,7 +183,6 @@
         </div>
     </div>
 
-    <!-- MODAL 1: BIKIN PENGAJUAN BARU -->
     <div id="reqModal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -207,7 +208,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Foto Pendukung (Wajib)</label>
-                    <input type="file" id="reqFoto" class="form-input" accept="image/*" required style="padding: 10px; border:2px dashed rgba(255,255,255,0.3);">
+                    <input type="file" id="reqFoto" class="form-input" accept="image/*" required style="padding: 10px; border:2px dashed rgba(0,0,0,0.1); background: #FFF;">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Rincian Penggunaan</label>
@@ -218,7 +219,6 @@
         </div>
     </div>
 
-    <!-- MODAL 2: SUPERADMIN TUNJUK VERIFIKATOR -->
     <div id="modalTunjuk" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -228,32 +228,30 @@
             <div class="form-group">
                 <label class="form-label">Pilih Admin Pemeriksa Lapangan</label>
                 <select id="selectVerifikator" class="form-input" style="appearance: none;">
-                    <option style="background:#0F172A;" value="">-- Pilih Admin --</option>
+                    <option value="">-- Pilih Admin --</option>
                 </select>
             </div>
             <button class="btn-submit" onclick="prosesTunjuk()"><i class="fa-solid fa-user-check"></i> Tugaskan Admin</button>
         </div>
     </div>
 
-    <!-- MODAL 3: ADMIN VERIFIKATOR (KAMERA ON THE SPOT) -->
     <div id="modalVerifikasi" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
                 <h3>Verifikasi Lapangan</h3>
                 <button type="button" onclick="document.getElementById('modalVerifikasi').classList.remove('show')" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <p style="font-size: 11px; color: rgba(255,255,255,0.7); margin-bottom: 20px; font-weight: 700;">Wajib ambil foto bukti penyerahan/kondisi secara langsung dari lokasi.</p>
+            <p style="font-size: 11px; color: var(--text-gray); margin-bottom: 20px; font-weight: 700;">Wajib ambil foto bukti penyerahan/kondisi secara langsung dari lokasi.</p>
             <form onsubmit="prosesVerifikasi(event)">
                 <div class="form-group">
                     <label class="form-label">Foto Bukti (Kamera Langsung)</label>
-                    <input type="file" id="fotoVerif" class="form-input" accept="image/*" capture="environment" required style="padding: 10px; border:2px dashed rgba(255,255,255,0.3);">
+                    <input type="file" id="fotoVerif" class="form-input" accept="image/*" capture="environment" required style="padding: 10px; border:2px dashed rgba(0,0,0,0.1); background: #FFF;">
                 </div>
                 <button type="submit" class="btn-submit"><i class="fa-solid fa-camera"></i> Upload & Teruskan ke Superadmin</button>
             </form>
         </div>
     </div>
 
-    <!-- MODAL 4: FINAL APPROVAL SUPERADMIN (KOMPARASI 2 FOTO) -->
     <div id="modalFinal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -266,11 +264,10 @@
                 <p id="txtWarningNik">NIK ini tercatat sudah pernah dicairkan bantuannya pada tanggal X.</p>
             </div>
 
-            <!-- KOMPARASI 2 FOTO -->
             <div style="display: flex; gap: 10px; margin-bottom: 20px;">
                 <div style="flex: 1; text-align: center;">
-                    <p style="font-size: 9px; font-weight: 800; color: rgba(255,255,255,0.7); margin-bottom: 5px;">Bukti Pengajuan Awal</p>
-                    <img id="imgBuktiAwal" src="" style="width: 100%; height: 120px; object-fit: cover; border-radius: 12px; border: 2px dashed rgba(255,255,255,0.2); cursor: pointer;" onclick="viewImage(this.src)" title="Klik untuk perbesar">
+                    <p style="font-size: 9px; font-weight: 800; color: var(--text-gray); margin-bottom: 5px;">Bukti Pengajuan Awal</p>
+                    <img id="imgBuktiAwal" src="" style="width: 100%; height: 120px; object-fit: cover; border-radius: 12px; border: 2px dashed rgba(0,0,0,0.1); cursor: pointer;" onclick="viewImage(this.src)" title="Klik untuk perbesar">
                 </div>
                 <div style="flex: 1; text-align: center;">
                     <p style="font-size: 9px; font-weight: 800; color: var(--emerald-main); margin-bottom: 5px;">Bukti Verifikator (Valid)</p>
@@ -279,7 +276,7 @@
             </div>
 
             <div class="action-buttons" style="border: none; padding: 0; margin-top: 0;">
-                <button class="btn-act reject" onclick="eksekusiFinal('reject')" style="background: rgba(239, 68, 68, 0.2); color: #FCA5A5; border: 1px solid rgba(239, 68, 68, 0.3);"><i class="fa-solid fa-xmark"></i> Deny (Tolak)</button>
+                <button class="btn-act reject" onclick="eksekusiFinal('reject')" style="background: rgba(239, 68, 68, 0.15); color: var(--danger-red); border: 1px solid rgba(239, 68, 68, 0.2);"><i class="fa-solid fa-xmark"></i> Deny (Tolak)</button>
                 <button class="btn-act approve" onclick="eksekusiFinal('approve')" style="background: var(--emerald-main); color: #FFF; border: none; box-shadow: 0 5px 15px rgba(5,150,105,0.3);"><i class="fa-solid fa-check-double"></i> Setujui & Cairkan</button>
             </div>
         </div>
@@ -290,6 +287,7 @@
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
         import { collection, onSnapshot, doc, updateDoc, getDoc, getDocs, addDoc, serverTimestamp, query, orderBy, where } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
+        // KENDALI CUSTOM MODAL
         window.customAlert = function(title, desc, type = 'success') {
             const el = document.getElementById('customAlert'); document.getElementById('caTitle').innerText = title; document.getElementById('caDesc').innerText = desc;
             const iconEl = document.getElementById('caIcon');
@@ -341,8 +339,8 @@
         async function loadAdmins() {
             const q = query(collection(db, "users"), where("role", "==", "admin"));
             const snaps = await getDocs(q);
-            let options = '<option style="background:#0F172A;" value="">-- Pilih Admin --</option>';
-            snaps.forEach(d => { options += `<option style="background:#0F172A;" value="${d.id}">${d.data().nama_lengkap}</option>`; });
+            let options = '<option value="">-- Pilih Admin --</option>';
+            snaps.forEach(d => { options += `<option value="${d.id}">${d.data().nama_lengkap}</option>`; });
             document.getElementById('selectVerifikator').innerHTML = options;
         }
 
@@ -365,7 +363,7 @@
             
             // PROTEKSI 3MB
             if (fileInput.size > 3 * 1024 * 1024) {
-                return customAlert("Foto Terlalu Besar", "Ukuran foto pengajuan maksimal 3MB.", "warning");
+                return customAlert("Foto Terlalu Besar", "Ukuran foto pengajuan maksimal 3MB. Silakan pilih foto lain yang lebih kecil.", "warning");
             }
 
             showLoading("Mengirim Pengajuan...");
@@ -405,14 +403,14 @@
                         if (userEmail === data.verifikator_email) actionBtn = `<button class="btn-act primary" onclick="bukaModalVerifikasi('${id}')"><i class="fa-solid fa-camera"></i> Lakukan Verifikasi</button>`;
                     } else if (data.status === 'pending_approval') {
                         statusText = "Menunggu Final Approval"; statusClass = "final";
-                        if (userRole === 'superadmin') actionBtn = `<button class="btn-act primary" style="background:rgba(167, 139, 250, 0.2); color:#A78BFA; border:1px solid rgba(167, 139, 250, 0.4);" onclick="bukaModalFinal('${id}', '${data.target_nik}', '${data.foto_verifikasi}', '${data.foto_pengajuan}')"><i class="fa-solid fa-gavel"></i> Eksekusi Final</button>`;
+                        if (userRole === 'superadmin') actionBtn = `<button class="btn-act primary" style="background:rgba(167, 139, 250, 0.1); color:#A78BFA; border:1px solid rgba(167, 139, 250, 0.3);" onclick="bukaModalFinal('${id}', '${data.target_nik}', '${data.foto_verifikasi}', '${data.foto_pengajuan}')"><i class="fa-solid fa-gavel"></i> Eksekusi Final</button>`;
                     } else if (data.status === 'approved') {
                         statusText = "Cair / Disetujui"; statusClass = "approved";
                     } else if (data.status === 'rejected') {
                         statusText = "Ditolak"; statusClass = "rejected";
                     }
 
-                    const fotoPengajuanBtn = data.foto_pengajuan ? `<button class="btn-act primary" style="background:rgba(56, 189, 248, 0.15); border:1px solid rgba(56, 189, 248, 0.3); color:#38BDF8; flex: none; width: auto; padding: 6px 12px;" onclick="viewImage('${data.foto_pengajuan}')" title="Lihat Foto Bukti"><i class="fa-solid fa-image"></i></button>` : '';
+                    const fotoPengajuanBtn = data.foto_pengajuan ? `<button class="btn-act primary" style="background:rgba(2, 132, 199, 0.1); border:1px solid rgba(2, 132, 199, 0.2); color:#0284C7; flex: none; width: auto; padding: 6px 12px;" onclick="viewImage('${data.foto_pengajuan}')" title="Lihat Foto Bukti"><i class="fa-solid fa-image"></i></button>` : '';
 
                     const htmlCard = `
                         <div class="glass-panel request-card">

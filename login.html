@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#0F172A">
+    <meta name="theme-color" content="#F4F6F5">
     <title>Keamanan Maksimal - KGR</title>
     
     <link rel="manifest" href="manifest.json">
@@ -14,27 +14,32 @@
     
     <style>
         :root {
-            --emerald-dark: #022C22; 
+            --bg-base: #F4F6F5; 
+            --text-dark: #0F172A; 
+            --text-gray: #64748B; 
+            --emerald-dark: #064E3B; 
             --emerald-main: #059669; 
-            --gold-accent: #FBBF24; 
+            --emerald-light: #10B981;
+            --gold-accent: #F59E0B; 
             --danger-red: #EF4444; 
-            --warning-yellow: #F59E0B;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
         
-        /* BACKGROUND GELAP + NEON ORBS */
+        /* BACKGROUND TERANG + CAHAYA NEON HIJAU/EMAS TIPIS */
         body { 
-            background-color: #0F172A; display: flex; justify-content: center; align-items: center; 
-            min-height: 100vh; overflow: hidden; position: relative; color: #FFF;
+            background-color: var(--bg-base); 
+            display: flex; justify-content: center; align-items: center; 
+            min-height: 100vh; margin: 0; overflow: hidden; position: relative;
+            color: var(--text-dark);
         }
 
-        .orb { position: absolute; border-radius: 50%; filter: blur(70px); z-index: 0; animation: float 10s infinite alternate ease-in-out;}
-        .orb-1 { top: -5%; left: -10%; width: 300px; height: 300px; background: rgba(5, 150, 105, 0.4); }
-        .orb-2 { bottom: 10%; right: -15%; width: 350px; height: 350px; background: rgba(5, 150, 105, 0.3); animation-delay: -5s;}
-        .orb-3 { top: 40%; right: 10%; width: 150px; height: 150px; background: rgba(251, 191, 36, 0.2); animation-duration: 8s;}
+        .orb { position: absolute; border-radius: 50%; filter: blur(60px); z-index: 0; animation: float 12s infinite alternate ease-in-out;}
+        .orb-1 { top: 20%; left: -10%; width: 300px; height: 300px; background: rgba(16, 185, 129, 0.15); }
+        .orb-2 { bottom: 10%; right: -15%; width: 350px; height: 350px; background: rgba(5, 150, 105, 0.1); animation-delay: -5s;}
+        .orb-3 { top: 45%; right: 10%; width: 200px; height: 200px; background: rgba(245, 158, 11, 0.1); animation-duration: 8s;}
 
-        @keyframes float { 0% { transform: translate(0, 0); } 100% { transform: translate(30px, 50px); } }
+        @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(25px, 40px) scale(1.1); } }
 
         .app-container { 
             width: 100%; max-width: 414px; height: 100vh; background: transparent;
@@ -42,69 +47,71 @@
         }
 
         @media (min-width: 600px) { 
-            .app-container { max-width: 400px; height: 85vh; max-height: 800px; border-radius: 40px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5); border: 4px solid rgba(255,255,255,0.1); } 
+            .app-container { max-width: 400px; height: 85vh; max-height: 800px; border-radius: 40px; box-shadow: 0 40px 80px rgba(0,0,0,0.15); border: 8px solid #FFFFFF; margin: auto; background: rgba(244, 246, 245, 0.85); backdrop-filter: blur(20px);} 
         }
 
-        /* CARD KACA LOGIN */
+        /* CARD KACA LOGIN (GLOWING) */
         .auth-card { 
-            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); 
-            border: 1px solid rgba(255, 255, 255, 0.1); border-top: 1px solid rgba(255, 255, 255, 0.2); border-left: 1px solid rgba(255, 255, 255, 0.15); 
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); border-radius: 30px; padding: 40px 24px; z-index: 2; position: relative; text-align: center; 
+            background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(25px) saturate(150%); -webkit-backdrop-filter: blur(25px) saturate(150%); 
+            border: 1px solid rgba(255, 255, 255, 1); 
+            box-shadow: 0 15px 35px rgba(5, 150, 105, 0.05), inset 0 0 20px rgba(255, 255, 255, 0.6); 
+            border-radius: 30px; padding: 40px 24px; z-index: 2; position: relative; text-align: center; 
         }
 
-        .branding h1 { font-size: 20px; font-weight: 900; color: #FFF; margin-bottom: 5px; text-shadow: 0 2px 10px rgba(0,0,0,0.5);}
-        .branding p { font-size: 11px; font-weight: 800; color: var(--gold-accent); letter-spacing: 2px; margin-bottom: 25px; text-transform: uppercase;}
-        .logo-icon { width: 70px; height: 70px; border-radius: 20px; background: linear-gradient(135deg, #059669 0%, #022C22 100%); color: #FFF; display: flex; justify-content: center; align-items: center; font-size: 32px; margin: 0 auto 20px; box-shadow: 0 10px 20px rgba(5, 150, 105, 0.3); border: 2px solid rgba(255,255,255,0.2); }
+        .branding h1 { font-size: 20px; font-weight: 900; color: var(--text-dark); margin-bottom: 5px;}
+        .branding p { font-size: 11px; font-weight: 800; color: var(--emerald-main); letter-spacing: 2px; margin-bottom: 25px; text-transform: uppercase;}
+        
+        .logo-icon { width: 70px; height: 70px; border-radius: 20px; background: linear-gradient(135deg, var(--emerald-light) 0%, var(--emerald-main) 100%); color: #FFF; display: flex; justify-content: center; align-items: center; font-size: 32px; margin: 0 auto 20px; box-shadow: 0 15px 25px rgba(5, 150, 105, 0.3), inset 0 2px 4px rgba(255,255,255,0.4); border: 3px solid #FFF; }
 
         .form-group { margin-bottom: 15px; text-align: left; position: relative; }
-        .form-group i.input-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.5); font-size: 14px; }
+        .form-group i.input-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-gray); font-size: 14px; opacity: 0.7;}
         
         .form-input { 
-            width: 100%; padding: 16px 16px 16px 45px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1); 
-            font-size: 13px; font-weight: 700; color: #FFF; outline: none; background: rgba(255,255,255,0.05); transition: 0.2s;
+            width: 100%; padding: 16px 16px 16px 45px; border-radius: 14px; border: 2px solid rgba(0,0,0,0.06); 
+            font-size: 13px; font-weight: 700; color: var(--text-dark); outline: none; background: #F8FAFC; transition: 0.2s;
         }
-        .form-input::placeholder { color: rgba(255,255,255,0.4); }
-        .form-input:focus { border-color: var(--emerald-main); background: rgba(255,255,255,0.1);}
+        .form-input::placeholder { color: var(--text-gray); opacity: 0.6; }
+        .form-input:focus { border-color: var(--emerald-main); background: #FFF; box-shadow: 0 5px 15px rgba(5,150,105,0.1);}
 
-        .btn-auth { width: 100%; padding: 16px; border-radius: 14px; font-size: 14px; font-weight: 900; background: var(--emerald-main); color: #FFF; border: none; margin-top: 5px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 8px 20px rgba(5,150,105,0.3);}
+        .btn-auth { width: 100%; padding: 16px; border-radius: 14px; font-size: 14px; font-weight: 900; background: var(--emerald-main); color: #FFF; border: none; margin-top: 5px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; transition: all 0.2s; box-shadow: 0 10px 20px rgba(5,150,105,0.25);}
         .btn-auth:active { transform: scale(0.95); }
-        .btn-auth:disabled { background: rgba(255,255,255,0.2); cursor: not-allowed; transform: none; box-shadow: none; color: rgba(255,255,255,0.5);}
+        .btn-auth:disabled { background: #CBD5E1; cursor: not-allowed; transform: none; box-shadow: none; color: #64748B;}
+        .btn-auth i { color: #FFF; opacity: 0.9;}
 
-        .link-text { font-size: 12px; font-weight: 800; color: rgba(255,255,255,0.6); margin-top: 20px; display: inline-block; cursor: pointer; }
-        .link-text span { color: var(--emerald-main); text-shadow: 0 0 10px rgba(5,150,105,0.4); }
+        .link-text { font-size: 12px; font-weight: 800; color: var(--text-gray); margin-top: 20px; display: inline-block; cursor: pointer; }
+        .link-text span { color: var(--emerald-main); }
 
         .toggle-view { display: none; }
         .toggle-view.active { display: block; animation: fadeIn 0.4s ease forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* CUSTOM POPUP (DARK THEME) */
-        .cp-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); z-index: 99999; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px; }
+        /* CUSTOM POPUP (LIGHT THEME GLOWING) */
+        .cp-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(10px); z-index: 99999; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px; }
         .cp-overlay.show { opacity: 1; visibility: visible; }
-        .cp-box { background: rgba(30, 41, 59, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 28px; width: 100%; max-width: 320px; text-align: center; padding: 30px 24px; transform: scale(0.9); transition: 0.3s; box-shadow: 0 25px 50px rgba(0,0,0,0.5); color: #FFF; }
+        .cp-box { background: rgba(255, 255, 255, 0.95); border: 1px solid #FFF; border-radius: 30px; width: 100%; max-width: 320px; text-align: center; padding: 30px 24px; transform: scale(0.9); transition: 0.3s; box-shadow: 0 25px 50px rgba(0,0,0,0.2); color: var(--text-dark); }
         .cp-overlay.show .cp-box { transform: scale(1); }
         
         .cp-icon { width: 65px; height: 65px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; margin: 0 auto 15px; }
-        .cp-icon.success { background: rgba(5,150,105,0.2); color: #34D399; }
-        .cp-icon.error { background: rgba(239,68,68,0.2); color: var(--danger-red); }
-        .cp-icon.warning { background: rgba(245,158,11,0.2); color: var(--gold-accent); }
-        .cp-icon.info { background: rgba(56,189,248,0.2); color: #38BDF8; }
+        .cp-icon.success { background: rgba(16, 185, 129, 0.15); color: var(--emerald-main); }
+        .cp-icon.error { background: rgba(239, 68, 68, 0.15); color: var(--danger-red); }
+        .cp-icon.warning { background: rgba(245, 158, 11, 0.15); color: var(--gold-accent); }
         
         .cp-title { font-size: 18px; font-weight: 900; margin-bottom: 8px; }
-        .cp-desc { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.7); margin-bottom: 25px; line-height: 1.5; }
+        .cp-desc { font-size: 12px; font-weight: 600; color: var(--text-gray); margin-bottom: 25px; line-height: 1.5; }
         .cp-btn-wrap { display: flex; gap: 10px; }
         .cp-btn { flex: 1; padding: 15px; border-radius: 14px; font-size: 13px; font-weight: 800; border: none; cursor: pointer; transition: 0.2s; }
         .cp-btn:active { transform: scale(0.95); }
-        .cp-btn-primary { background: var(--emerald-main); color: #FFF; box-shadow: 0 5px 15px rgba(5,150,105,0.3);}
-        .cp-btn-cancel { background: rgba(255,255,255,0.1); color: #FFF; border: 1px solid rgba(255,255,255,0.2);}
-        .cp-btn-danger { background: var(--danger-red); color: #FFF; box-shadow: 0 5px 15px rgba(220,38,38,0.3);}
+        .cp-btn-primary { background: var(--emerald-main); color: #FFF; box-shadow: 0 8px 20px rgba(5,150,105,0.3);}
+        .cp-btn-cancel { background: #F1F5F9; color: var(--text-dark); border: 1px solid rgba(0,0,0,0.05);}
+        .cp-btn-danger { background: var(--danger-red); color: #FFF; box-shadow: 0 8px 20px rgba(239,68,68,0.3);}
 
-        /* ANIMASI TYPEWRITER */
-        .intro-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0F172A; z-index: 9999; display: none; flex-direction: column; justify-content: center; align-items: center; }
+        /* ANIMASI TYPEWRITER (LIGHT) */
+        .intro-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-base); z-index: 9999; display: none; flex-direction: column; justify-content: center; align-items: center; }
         .intro-overlay.active { display: flex; }
         .typewriter-box { text-align: center; padding: 20px; }
-        .type-line-1 { font-size: clamp(22px, 6vw, 26px); font-weight: 900; color: #FFF; margin-bottom: 5px; min-height: 32px; letter-spacing: 1px; }
-        .type-line-2 { font-size: 14px; font-weight: 800; color: var(--gold-accent); min-height: 18px; letter-spacing: 2px; }
-        .cursor { display: inline-block; width: 3px; height: 1em; background: var(--gold-accent); vertical-align: middle; margin-left: 2px; animation: blink 0.7s infinite; }
+        .type-line-1 { font-size: clamp(22px, 6vw, 26px); font-weight: 900; color: var(--text-dark); margin-bottom: 5px; min-height: 32px; letter-spacing: 1px; }
+        .type-line-2 { font-size: 14px; font-weight: 800; color: var(--emerald-main); min-height: 18px; letter-spacing: 2px; }
+        .cursor { display: inline-block; width: 3px; height: 1em; background: var(--emerald-main); vertical-align: middle; margin-left: 2px; animation: blink 0.7s infinite; }
         .cursor.hidden { display: none; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
     </style>
@@ -145,7 +152,7 @@
     <div class="orb orb-3"></div>
 
     <div class="app-container">
-        <div class="auth-card">
+        <div class="glass-panel auth-card">
             <div class="logo-icon"><i class="fa-solid fa-hands-holding-child"></i></div>
             <div class="branding">
                 <h1>KOTAK GOTONG ROYONG</h1>
@@ -186,8 +193,8 @@
 
             <!-- STEP LUPA PASSWORD -->
             <div id="stepForgot" class="toggle-view">
-                <h3 style="font-size: 16px; font-weight: 900; margin-bottom: 5px; color: #FFF;">Reset Password</h3>
-                <p style="font-size: 11px; color: rgba(255,255,255,0.6); font-weight: 600; margin-bottom: 15px;">Link pemulihan akan dikirimkan ke kotak masuk email Anda.</p>
+                <h3 style="font-size: 16px; font-weight: 900; margin-bottom: 5px; color: var(--text-dark);">Reset Password</h3>
+                <p style="font-size: 11px; color: var(--text-gray); font-weight: 600; margin-bottom: 15px;">Link pemulihan akan dikirimkan ke kotak masuk email Anda.</p>
                 <form id="formForgot">
                     <div class="form-group">
                         <i class="fa-solid fa-envelope input-icon"></i>
@@ -208,7 +215,8 @@
 
         window.customAlert = function(title, desc, type = 'success') {
             const el = document.getElementById('customAlert');
-            document.getElementById('caTitle').innerText = title; document.getElementById('caDesc').innerText = desc;
+            document.getElementById('caTitle').innerText = title;
+            document.getElementById('caDesc').innerText = desc;
             const iconEl = document.getElementById('caIcon');
             if(type === 'success') { iconEl.className = 'cp-icon success'; iconEl.innerHTML = '<i class="fa-solid fa-check"></i>'; }
             else if(type === 'error') { iconEl.className = 'cp-icon error'; iconEl.innerHTML = '<i class="fa-solid fa-xmark"></i>'; }
@@ -216,6 +224,15 @@
             el.classList.add('show');
         }
         window.closeCustomAlert = function() { document.getElementById('customAlert').classList.remove('show'); }
+
+        window.customConfirm = function(title, desc, onYes) {
+            const el = document.getElementById('customConfirm');
+            document.getElementById('ccTitle').innerText = title;
+            document.getElementById('ccDesc').innerText = desc;
+            document.getElementById('ccBtnYes').onclick = function() { closeCustomConfirm(); onYes(); };
+            el.classList.add('show');
+        }
+        window.closeCustomConfirm = function() { document.getElementById('customConfirm').classList.remove('show'); }
 
         function getDeviceID() {
             const nav = window.navigator; const screen = window.screen;
@@ -248,8 +265,11 @@
                 await sendPasswordResetEmail(auth, document.getElementById('resetEmail').value);
                 customAlert('Email Terkirim', 'Link reset password telah dikirim. Silahkan cek kotak masuk atau folder spam di email Anda.', 'success');
                 setTimeout(() => { switchView('stepLogin'); }, 3000);
-            } catch (error) { customAlert('Gagal', error.message.replace('Firebase: ', ''), 'error'); } 
-            finally { btn.innerHTML = 'Kirim Link Reset <i class="fa-solid fa-paper-plane"></i>'; btn.disabled = false; }
+            } catch (error) {
+                customAlert('Gagal', error.message.replace('Firebase: ', ''), 'error');
+            } finally {
+                btn.innerHTML = 'Kirim Link Reset <i class="fa-solid fa-paper-plane"></i>'; btn.disabled = false;
+            }
         });
 
         document.getElementById('formRegister').addEventListener('submit', async (e) => {
@@ -264,7 +284,10 @@
             const pass = document.getElementById('regPass').value;
 
             const nameParts = name.trim().split(/\s+/);
-            if (nameParts.length < 2) { customAlert('Nama Tidak Lengkap', 'Harap masukkan Nama Lengkap sesuai KTP (Minimal 2 kata).', 'warning'); btn.innerHTML = 'Daftar Akun Baru <i class="fa-solid fa-user-plus"></i>'; btn.disabled = false; return; }
+            if (nameParts.length < 2) {
+                customAlert('Nama Tidak Lengkap', 'Harap masukkan Nama Lengkap sesuai KTP (Minimal 2 kata).', 'warning');
+                btn.innerHTML = 'Daftar Akun Baru <i class="fa-solid fa-user-plus"></i>'; btn.disabled = false; return;
+            }
 
             const allowedDomains = ["gmail.com", "yahoo.com", "yahoo.co.id"];
             const userDomain = email.split('@')[1];
@@ -276,11 +299,11 @@
                 const encryptedInputNik = encryptData(nikInput);
                 const qNik = query(collection(db, "users"), where("nik", "==", encryptedInputNik));
                 const snapNik = await getDocs(qNik);
-                if (!snapNik.empty) throw new Error("NIK ini sudah terdaftar dengan akun lain! Hubungi pengurus.");
+                if (!snapNik.empty) { throw new Error("NIK ini sudah terdaftar dengan akun lain! Hubungi pengurus."); }
 
                 const qWa = query(collection(db, "users"), where("no_wa", "==", waInput));
                 const snapWa = await getDocs(qWa);
-                if (!snapWa.empty) throw new Error("Nomor WhatsApp ini sudah digunakan oleh akun lain!");
+                if (!snapWa.empty) { throw new Error("Nomor WhatsApp ini sudah digunakan oleh akun lain!"); }
 
                 let userRecord;
                 try {
@@ -289,7 +312,8 @@
                     await sendEmailVerification(userRecord);
                 } catch (authErr) {
                     if (authErr.code === 'auth/email-already-in-use') { 
-                        const uc = await signInWithEmailAndPassword(auth, email, pass); userRecord = uc.user; 
+                        const uc = await signInWithEmailAndPassword(auth, email, pass); 
+                        userRecord = uc.user; 
                     } else { throw authErr; }
                 }
 
@@ -331,7 +355,7 @@
         }
     </script>
     <script>
-        if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(err => console.log('PWA SW Failed', err)); }); }
+        if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(err => { console.log('PWA SW Failed:', err); }); }); }
     </script>
 </body>
 </html>
