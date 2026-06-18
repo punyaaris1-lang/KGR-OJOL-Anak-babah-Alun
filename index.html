@@ -41,14 +41,13 @@
 
         @keyframes float { 0% { transform: translate(0, 0); } 100% { transform: translate(30px, 50px); } }
 
-        /* CONTAINER APLIKASI (TRANSPARAN BIAR BG KELIHATAN) */
+        /* CONTAINER APLIKASI */
         .app-container { 
             width: 100%; height: 100dvh; 
             background: transparent; 
             position: relative; z-index: 10; 
             overflow-x: hidden; overflow-y: auto; 
             display: flex; flex-direction: column; 
-            padding-bottom: 130px; 
             scrollbar-width: none;
         }
         .app-container::-webkit-scrollbar { display: none; }
@@ -79,8 +78,8 @@
         /* LAYOUT ASLI: BANNER ATAS */
         .header-cover { position: relative; width: 100%; height: 260px; min-height: 260px; flex-shrink: 0; background-image: url('1000417166.jpg'); background-size: cover; background-position: center; border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; z-index: 1; box-shadow: 0 15px 30px rgba(0,0,0,0.3); }
         
-        /* OVERLAY BANNER NYATU SAMA DARK MODE */
-        .header-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(15, 23, 42, 0.2) 0%, rgba(15, 23, 42, 0.6) 60%, #0F172A 100%); border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; }
+        /* REVISI: OVERLAY BANNER DIBIKIN LEBIH BENING DI ATAS */
+        .header-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, transparent 0%, rgba(15, 23, 42, 0.3) 50%, #0F172A 100%); border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; }
 
         .brand-container { position: absolute; top: 50px; left: 0; width: 100%; text-align: center; z-index: 10; padding: 0 20px; }
         .main-title { font-size: clamp(20px, 5.5vw, 24px); font-weight: 900; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2; color: #FFFFFF; text-shadow: 0 4px 15px rgba(0,0,0,0.6); margin-bottom: 2px; }
@@ -98,7 +97,8 @@
         .user-intro h2 { font-size: clamp(22px, 6vw, 26px); font-weight: 900; color: #FFFFFF; letter-spacing: -0.5px; }
         .user-intro p { font-size: 12px; font-weight: 800; color: var(--emerald-main); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 4px; }
 
-        .content-area { padding: 0 24px; z-index: 5; position: relative; }
+        /* REVISI: PADDING BAWAH DITAMBAH BIAR GAK NABRAK DOCK */
+        .content-area { padding: 0 24px 140px; z-index: 5; position: relative; flex-grow: 1;}
         
         /* PREMIUM CARD SALDO */
         .premium-card { border-radius: 24px; padding: 25px; margin-bottom: 25px; position: relative; overflow: hidden; }
@@ -121,7 +121,7 @@
         .menu-absen { border: 1px solid rgba(5, 150, 105, 0.5); background: rgba(5, 150, 105, 0.15); }
         .menu-absen .menu-icon { background: rgba(5, 150, 105, 0.4); color: #34D399; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);}
 
-        /* BOTTOM NAV KACA (REVISI ESTETIK) */
+        /* BOTTOM NAV KACA */
         .bottom-nav-container { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: auto; min-width: 320px; z-index: 20; }
         .floating-nav { display: flex; justify-content: space-between; align-items: center; padding: 12px 35px; border-radius: 40px; gap: 40px; }
         
@@ -174,7 +174,7 @@
         .cp-btn { flex: 1; padding: 15px; border-radius: 14px; font-size: 13px; font-weight: 800; border: none; cursor: pointer; transition: 0.2s; }
         .cp-btn:active { transform: scale(0.95); }
         .cp-btn-primary { background: var(--emerald-main); color: #FFF; box-shadow: 0 5px 15px rgba(5,150,105,0.3);}
-        .cp-btn-cancel { background: rgba(255,255,255,0.1); color: #FFF; }
+        .cp-btn-cancel { background: rgba(255,255,255,0.1); color: #FFF; border: 1px solid rgba(255,255,255,0.2);}
         .cp-btn-danger { background: var(--danger-red); color: #FFF; box-shadow: 0 5px 15px rgba(239,68,68,0.3);}
         
         .spinner-custom { border: 4px solid rgba(255,255,255,0.1); width: 50px; height: 50px; border-radius: 50%; border-left-color: var(--emerald-main); animation: spin 1s linear infinite; margin: 0 auto 15px; }
@@ -183,7 +183,6 @@
 </head>
 <body>
 
-    <!-- Cahaya Latar Belakang (Orbs) -->
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
     <div class="orb orb-3"></div>
@@ -277,7 +276,7 @@
             </div>
         </div>
 
-        <!-- BOTTOM NAV KACA (YANG SUDAH DIREVISI ESTETIK) -->
+        <!-- BOTTOM NAV KACA -->
         <div class="bottom-nav-container">
             <div class="glass-panel floating-nav">
                 <div class="nav-item active"><i class="fa-solid fa-house"></i><span>Beranda</span></div>
@@ -386,15 +385,12 @@
 
     </main>
 
-    <!-- SCRIPT UTAMA FIREBASE & LOGIKA (DENGAN PROTEKSI 3MB) -->
+    <!-- SCRIPT UTAMA FIREBASE & LOGIKA -->
     <script type="module">
         import { auth, db } from './db-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
         import { doc, getDoc, onSnapshot, collection, addDoc, serverTimestamp, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-        // ==============================================
-        // FUNGSI KENDALI CUSTOM MODAL (PENGGANTI ALERT)
-        // ==============================================
         window.customAlert = function(title, desc, type = 'success') {
             const el = document.getElementById('customAlert');
             document.getElementById('caTitle').innerText = title;
@@ -421,7 +417,6 @@
             document.getElementById('customLoading').classList.add('show');
         }
         window.hideLoading = function() { document.getElementById('customLoading').classList.remove('show'); }
-        // ==============================================
 
         let currentRole = "member";
         let currentUserEmail = "";
@@ -443,7 +438,7 @@
                             
                             currentRole = String(d.role || "member").toLowerCase().trim(); 
                             currentUserName = String(d.nama_lengkap || "Tanpa Nama");
-                            myHakAbsen = d.hak_absen || "otomatis";
+                            myHakAbsen = d.hak_absen || "otomatis"; 
                             
                             document.getElementById('uiUserName').innerText = currentUserName;
                             
@@ -468,7 +463,7 @@
                                 document.querySelector('.content-area').style.opacity = '0.2'; document.querySelector('.content-area').style.pointerEvents = 'none'; return; 
                             } else { document.querySelector('.content-area').style.opacity = '1'; document.querySelector('.content-area').style.pointerEvents = 'auto'; }
 
-                            // TAMPILAN KASTA (Diubah biar cocok di Dark Mode)
+                            // TAMPILAN KASTA 
                             if (currentRole === "superadmin") { 
                                 panel.style.display = "block"; 
                                 document.getElementById('menuSuperadmin').style.display = "flex"; 
@@ -570,7 +565,6 @@
         window.submitSedekah = async function(e) {
             e.preventDefault();
             
-            // --- PROTEKSI MEMORI BASE64 LIMIT 3MB ---
             const fileBkt = document.getElementById('inputBukti').files[0];
             if(fileBkt && fileBkt.size > 3 * 1024 * 1024) {
                 return customAlert("Foto Terlalu Besar", "Ukuran foto bukti maksimal 3MB. Silakan pilih foto lain yang lebih kecil.", "warning");

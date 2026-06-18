@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#064E3B">
+    <meta name="theme-color" content="#0F172A">
     <title>Pusat Informasi - KGR</title>
     
     <link rel="manifest" href="manifest.json">
@@ -11,70 +11,139 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
-        :root { --bg-base: #F4F6F5; --text-dark: #111827; --text-gray: #4B5563; --emerald-main: #059669; --gold-accent: #FBBF24; --danger-red: #DC2626; --danger-light: rgba(220, 38, 38, 0.1); }
+        :root { 
+            --emerald-main: #059669; --emerald-dark: #022C22; 
+            --gold-accent: #FBBF24; --danger-red: #EF4444; --warning-yellow: #F59E0B;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: #E2E8E4; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .app-container { width: 100%; max-width: 414px; height: 100vh; background-color: var(--bg-base); background-image: radial-gradient(circle at 50% 35%, rgba(5, 150, 105, 0.12) 0%, rgba(5, 150, 105, 0.03) 35%, var(--bg-base) 70%); position: relative; overflow-x: hidden; overflow-y: auto; display: flex; flex-direction: column; color: var(--text-dark); }
-        @media (min-width: 600px) { .app-container { max-width: 480px; height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15); border: 8px solid #FFFFFF; margin: auto;} }
+        
+        body { background-color: #0F172A; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; position: relative; color: #FFF; margin: 0;}
 
-        .header-page { padding: 40px 24px 20px; display: flex; align-items: center; gap: 15px; background: #FFF; z-index: 10; border-bottom: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 15px rgba(0,0,0,0.02);}
-        .btn-back { width: 42px; height: 42px; border-radius: 14px; background: #F5F5F7; color: var(--text-dark); display: flex; justify-content: center; align-items: center; font-size: 18px; cursor: pointer; transition: 0.2s; border: 1px solid rgba(0,0,0,0.05); }
-        .btn-back:active { transform: scale(0.85); background: var(--emerald-main); color: #FFF; }
-        .header-page h2 { font-size: 18px; font-weight: 900; letter-spacing: -0.5px; }
+        /* NEON ORBS */
+        .orb { position: absolute; border-radius: 50%; filter: blur(70px); z-index: 0; animation: float 10s infinite alternate ease-in-out;}
+        .orb-1 { top: 10%; right: -10%; width: 250px; height: 250px; background: rgba(5, 150, 105, 0.4); }
+        .orb-2 { bottom: 5%; left: -10%; width: 300px; height: 300px; background: rgba(5, 150, 105, 0.3); animation-delay: -5s;}
+        @keyframes float { 0% { transform: translate(0, 0); } 100% { transform: translate(30px, 50px); } }
 
-        .content-area { flex-grow: 1; overflow-y: auto; padding: 25px 24px 110px; scrollbar-width: none; }
-        .content-area::-webkit-scrollbar { display: none; }
+        .app-container { width: 100%; max-width: 414px; height: 100vh; background: transparent; position: relative; overflow-x: hidden; overflow-y: auto; display: flex; flex-direction: column; z-index: 10; scrollbar-width: none;}
+        .app-container::-webkit-scrollbar { display: none; }
+        @media (min-width: 600px) { .app-container { max-width: 480px; height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 40px 80px rgba(0,0,0,0.5); border: 4px solid rgba(255,255,255,0.1); margin: auto; } }
 
-        .btn-add-info { width: 100%; padding: 18px; border-radius: 18px; font-size: 14px; font-weight: 900; background: var(--text-dark); color: #FFF; border: none; margin-bottom: 25px; display: flex; justify-content: center; align-items: center; gap: 8px; cursor: pointer; transition: 0.2s; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); }
-        .btn-add-info:active { transform: scale(0.96); }
+        /* GLASSMORPHISM */
+        .glass-panel { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); border-top: 1px solid rgba(255, 255, 255, 0.2); border-left: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); border-radius: 24px; color: #FFF;}
+
+        .header-page { padding: 40px 24px 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 10; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(10px);}
+        .btn-back { width: 42px; height: 42px; border-radius: 14px; background: rgba(255,255,255,0.1); display: flex; justify-content: center; align-items: center; cursor: pointer; color: #FFF; transition: 0.2s; border: 1px solid rgba(255,255,255,0.2);}
+        .btn-back:active { transform: scale(0.9); background: var(--emerald-main); }
+        .header-page h2 { font-size: 18px; font-weight: 900; letter-spacing: -0.5px; color: #FFF;}
+
+        .content-area { flex-grow: 1; padding: 25px 24px 110px; }
+
+        .btn-add-info { width: 100%; padding: 18px; border-radius: 18px; font-size: 14px; font-weight: 900; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #FFF; display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 25px; cursor: pointer; transition: 0.2s; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); }
+        .btn-add-info:active { transform: scale(0.96); background: var(--emerald-main); border-color: var(--emerald-main); }
         .btn-add-info i { color: var(--gold-accent); }
 
-        .section-title { font-size: 15px; font-weight: 900; margin: 0 0 15px; color: var(--text-dark); text-transform: uppercase; letter-spacing: 1px;}
+        .section-title { font-size: 15px; font-weight: 900; margin: 0 0 15px; color: #FFF; text-transform: uppercase; letter-spacing: 1px;}
 
-        /* INFO CARD */
-        .info-card { padding: 22px 20px; border-radius: 20px; margin-bottom: 15px; background: #FFF; border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 5px 20px rgba(0,0,0,0.02); position: relative; overflow: hidden; transition: 0.2s;}
-        .info-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: var(--emerald-main); }
-        .info-card.urgent::before { background: var(--danger-red); }
-        .info-card.urgent { background: linear-gradient(to right, rgba(220, 38, 38, 0.02), #FFF); border-color: rgba(220, 38, 38, 0.1); }
+        /* INFO CARD (GLASSMORPHISM) */
+        .info-card { padding: 22px 20px; margin-bottom: 15px; position: relative; overflow: hidden; transition: 0.2s;}
+        .info-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: var(--emerald-main); box-shadow: 0 0 10px var(--emerald-main);}
+        .info-card.urgent::before { background: var(--danger-red); box-shadow: 0 0 10px var(--danger-red); }
+        .info-card.urgent { background: linear-gradient(to right, rgba(239, 68, 68, 0.1), rgba(255,255,255,0.05)); border-color: rgba(239, 68, 68, 0.3); }
 
         .info-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .badge { padding: 5px 10px; border-radius: 8px; font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
-        .badge.gold { background: rgba(5, 150, 105, 0.15); color: var(--emerald-main); }
-        .badge.red { background: var(--danger-light); color: var(--danger-red); }
+        .badge.gold { background: rgba(5, 150, 105, 0.2); color: #34D399; }
+        .badge.red { background: rgba(239, 68, 68, 0.2); color: #FCA5A5; }
         
-        .info-date { font-size: 11px; font-weight: 800; color: var(--text-gray); }
-        .info-card h3 { font-size: 16px; font-weight: 900; color: var(--text-dark); margin-bottom: 8px; line-height: 1.4; letter-spacing: -0.3px;}
-        .info-card p { font-size: 13px; font-weight: 700; color: var(--text-gray); line-height: 1.6; margin-bottom: 16px; white-space: pre-wrap;}
+        .info-date { font-size: 11px; font-weight: 800; color: rgba(255,255,255,0.6); }
+        .info-card h3 { font-size: 16px; font-weight: 900; color: #FFF; margin-bottom: 8px; line-height: 1.4; letter-spacing: -0.3px;}
+        .info-card p { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.8); line-height: 1.6; margin-bottom: 16px; white-space: pre-wrap;}
 
-        .info-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(0,0,0,0.1); padding-top: 15px; margin-top: 15px; }
-        .info-author { font-size: 11px; font-weight: 800; color: var(--text-gray); display: flex; align-items: center; gap: 5px;}
-        .info-author i { color: var(--emerald-main); }
-        .btn-delete { background: var(--danger-light); color: var(--danger-red); border: none; padding: 8px 14px; border-radius: 10px; font-size: 11px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: 0.2s;}
+        .info-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.2); padding-top: 15px; margin-top: 15px; }
+        .info-author { font-size: 11px; font-weight: 800; color: rgba(255,255,255,0.6); display: flex; align-items: center; gap: 5px;}
+        .info-author i { color: #34D399; }
+        .btn-delete { background: rgba(239, 68, 68, 0.2); color: #FCA5A5; border: 1px solid rgba(239, 68, 68, 0.3); padding: 8px 14px; border-radius: 10px; font-size: 11px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: 0.2s;}
         .btn-delete:active { background: var(--danger-red); color: #FFF; transform: scale(0.9); }
 
-        .empty-state { text-align: center; padding: 40px 20px; color: var(--text-gray); border: 2px dashed rgba(0,0,0,0.1); border-radius: 20px;}
+        .empty-state { text-align: center; padding: 40px 20px; color: rgba(255,255,255,0.5); border: 2px dashed rgba(255,255,255,0.1); border-radius: 20px;}
         .empty-state i { font-size: 35px; margin-bottom: 10px; opacity: 0.5; }
         .empty-state p { font-size: 13px; font-weight: 700; }
 
-        /* MODAL BOUNCY */
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: flex-end; z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s ease; }
-        .modal-overlay.show { opacity: 1; visibility: visible; }
-        .modal-content { background: #FFF; border-radius: 32px 32px 0 0; padding: 30px 24px 40px; width: 100%; max-width: 480px; transform: translateY(100%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1); box-shadow: 0 -10px 40px rgba(0,0,0,0.15);}
+        /* MODAL DARK THEME */
+        .modal-overlay, .cp-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(10px); z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s; display: flex; justify-content: center; align-items: center;}
+        .modal-overlay { align-items: flex-end; padding: 0; }
+        .cp-overlay { padding: 20px; }
+        .modal-overlay.show, .cp-overlay.show { opacity: 1; visibility: visible; }
+        
+        .modal-content { background: rgba(30, 41, 59, 0.98); border-top: 1px solid rgba(255,255,255,0.1); border-radius: 32px 32px 0 0; padding: 30px 24px 40px; width: 100%; max-width: 480px; transform: translateY(100%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1); box-shadow: 0 -10px 40px rgba(0,0,0,0.5); color: #FFF;}
         .modal-overlay.show .modal-content { transform: translateY(0); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .modal-header h3 { font-size: 18px; font-weight: 900; color: var(--text-dark); }
-        .btn-close-modal { width: 32px; height: 32px; border-radius: 50%; border: none; background: #F5F5F7; display: flex; justify-content: center; align-items: center; font-size: 14px; cursor: pointer; color: var(--text-dark); transition: 0.2s;}
+        .modal-header h3 { font-size: 18px; font-weight: 900; color: #FFF; }
+        .btn-close-modal { width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.1); display: flex; justify-content: center; align-items: center; font-size: 14px; cursor: pointer; color: #FFF; transition: 0.2s;}
         .btn-close-modal:active { transform: scale(0.9); }
         
         .form-group { margin-bottom: 15px; }
-        .form-label { display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; color: var(--text-gray); }
-        .form-input { width: 100%; padding: 16px; border-radius: 14px; border: 2px solid rgba(0,0,0,0.06); font-size: 14px; font-weight: 700; outline: none; background: #F9F9F9; color: var(--text-dark); appearance: none; transition: 0.2s;}
-        .form-input:focus { border-color: var(--emerald-main); background: #FFF; }
-        .btn-submit { width: 100%; padding: 18px; border-radius: 16px; font-size: 14px; font-weight: 900; background: var(--text-dark); color: #FFF; border: none; margin-top: 10px; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.15); transition: 0.2s;}
+        .form-label { display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; color: rgba(255,255,255,0.7); }
+        .form-input { width: 100%; padding: 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.2); font-size: 14px; font-weight: 700; outline: none; background: rgba(255,255,255,0.05); color: #FFF; appearance: none; transition: 0.2s;}
+        .form-input::placeholder { color: rgba(255,255,255,0.4); }
+        .form-input:focus { border-color: var(--emerald-main); background: rgba(255,255,255,0.1); }
+        .form-input option { background: #0F172A; color: #FFF; }
+        
+        .btn-submit { width: 100%; padding: 18px; border-radius: 16px; font-size: 14px; font-weight: 900; background: var(--emerald-main); color: #FFF; border: none; margin-top: 10px; cursor: pointer; box-shadow: 0 10px 20px rgba(5,150,105,0.3); transition: 0.2s;}
         .btn-submit:active { transform: scale(0.96); }
+
+        /* CUSTOM POPUP (ALERT & CONFIRM) */
+        .cp-box { background: rgba(30, 41, 59, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 28px; width: 100%; max-width: 320px; text-align: center; padding: 30px 24px; transform: scale(0.9); transition: 0.3s; box-shadow: 0 25px 50px rgba(0,0,0,0.5); color: #FFF; }
+        .cp-overlay.show .cp-box { transform: scale(1); }
+        .cp-icon { width: 65px; height: 65px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; margin: 0 auto 15px; }
+        .cp-icon.success { background: rgba(5, 150, 105, 0.2); color: #34D399; }
+        .cp-icon.error { background: rgba(239, 68, 68, 0.2); color: var(--danger-red); }
+        .cp-icon.warning { background: rgba(245, 158, 11, 0.2); color: var(--gold-accent); }
+        .cp-title { font-size: 18px; font-weight: 900; color: #FFF; margin-bottom: 8px; }
+        .cp-desc { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.7); margin-bottom: 25px; line-height: 1.5; }
+        .cp-btn-wrap { display: flex; gap: 10px; }
+        .cp-btn { flex: 1; padding: 15px; border-radius: 14px; font-size: 13px; font-weight: 800; border: none; cursor: pointer; transition: 0.2s; }
+        .cp-btn:active { transform: scale(0.95); }
+        .cp-btn-primary { background: var(--emerald-main); color: #FFF; box-shadow: 0 5px 15px rgba(5,150,105,0.3);}
+        .cp-btn-cancel { background: rgba(255,255,255,0.1); color: #FFF; border: 1px solid rgba(255,255,255,0.2);}
+        .cp-btn-danger { background: var(--danger-red); color: #FFF; box-shadow: 0 5px 15px rgba(239,68,68,0.3);}
+        .spinner-custom { border: 4px solid rgba(255,255,255,0.1); width: 50px; height: 50px; border-radius: 50%; border-left-color: var(--emerald-main); animation: spin 1s linear infinite; margin: 0 auto 15px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
+
+    <div class="cp-overlay" id="customAlert">
+        <div class="cp-box">
+            <div class="cp-icon success" id="caIcon"><i class="fa-solid fa-check"></i></div>
+            <h3 class="cp-title" id="caTitle">Pemberitahuan</h3>
+            <p class="cp-desc" id="caDesc">Pesan</p>
+            <button class="cp-btn cp-btn-primary" onclick="closeCustomAlert()">Mengerti</button>
+        </div>
+    </div>
+    <div class="cp-overlay" id="customConfirm">
+        <div class="cp-box">
+            <div class="cp-icon warning"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <h3 class="cp-title" id="ccTitle">Konfirmasi</h3>
+            <p class="cp-desc" id="ccDesc">Apakah Anda yakin?</p>
+            <div class="cp-btn-wrap">
+                <button class="cp-btn cp-btn-cancel" onclick="closeCustomConfirm()">Batal</button>
+                <button class="cp-btn cp-btn-danger" id="ccBtnYes">Ya, Eksekusi</button>
+            </div>
+        </div>
+    </div>
+    <div class="cp-overlay" id="customLoading">
+        <div class="cp-box" style="padding: 40px 20px;">
+            <div class="spinner-custom"></div>
+            <h3 class="cp-title" id="clTitle" style="margin-bottom: 0;">Memproses...</h3>
+        </div>
+    </div>
+
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
     <div class="app-container">
         <div class="header-page">
             <div class="btn-back" onclick="window.location.href='index.html'"><i class="fa-solid fa-arrow-left"></i></div>
@@ -123,6 +192,25 @@
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
         import { collection, onSnapshot, doc, getDoc, addDoc, deleteDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
+        // KENDALI CUSTOM MODAL
+        window.customAlert = function(title, desc, type = 'success') {
+            const el = document.getElementById('customAlert'); document.getElementById('caTitle').innerText = title; document.getElementById('caDesc').innerText = desc;
+            const iconEl = document.getElementById('caIcon');
+            if(type === 'success') { iconEl.className = 'cp-icon success'; iconEl.innerHTML = '<i class="fa-solid fa-check"></i>'; }
+            else if(type === 'error') { iconEl.className = 'cp-icon error'; iconEl.innerHTML = '<i class="fa-solid fa-xmark"></i>'; }
+            else { iconEl.className = 'cp-icon warning'; iconEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>'; }
+            el.classList.add('show');
+        }
+        window.closeCustomAlert = function() { document.getElementById('customAlert').classList.remove('show'); }
+        window.customConfirm = function(title, desc, onYes) {
+            const el = document.getElementById('customConfirm'); document.getElementById('ccTitle').innerText = title; document.getElementById('ccDesc').innerText = desc;
+            document.getElementById('ccBtnYes').onclick = function() { closeCustomConfirm(); onYes(); }; el.classList.add('show');
+        }
+        window.closeCustomConfirm = function() { document.getElementById('customConfirm').classList.remove('show'); }
+        window.showLoading = function(title = "Memproses...") { document.getElementById('clTitle').innerText = title; document.getElementById('customLoading').classList.add('show'); }
+        window.hideLoading = function() { document.getElementById('customLoading').classList.remove('show'); }
+
+
         let userRole = "member"; let userName = "Admin KGR";
 
         onAuthStateChanged(auth, async (user) => {
@@ -149,8 +237,10 @@
                     let tglText = "Baru saja"; if(data.tanggal) tglText = data.tanggal.toDate().toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
                     
                     const isUrgent = data.tipe === "urgent";
-                    const cardClass = isUrgent ? "info-card urgent" : "info-card"; const badgeClass = isUrgent ? "badge red" : "badge gold";
-                    const badgeIcon = isUrgent ? "fa-triangle-exclamation" : "fa-bullhorn"; const badgeText = isUrgent ? "Wajib Dibaca" : "Informasi";
+                    const cardClass = isUrgent ? "glass-panel info-card urgent" : "glass-panel info-card"; 
+                    const badgeClass = isUrgent ? "badge red" : "badge gold";
+                    const badgeIcon = isUrgent ? "fa-triangle-exclamation" : "fa-bullhorn"; 
+                    const badgeText = isUrgent ? "Wajib Dibaca" : "Informasi";
 
                     const deleteBtnHtml = (userRole === "superadmin" || userRole === "admin") 
                         ? `<button class="btn-delete" onclick="hapusPengumuman('${id}')"><i class="fa-solid fa-trash-can"></i> Hapus</button>` : ``;
@@ -166,14 +256,25 @@
         }
 
         window.submitPengumuman = async function(e) {
-            e.preventDefault(); const btn = document.getElementById('btnSubmitInfo'); btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menerbitkan...'; btn.disabled = true;
+            e.preventDefault(); 
+            showLoading("Menerbitkan Pengumuman...");
             try {
                 await addDoc(collection(db, "pengumuman"), { tipe: document.getElementById('infoTipe').value, judul: document.getElementById('infoJudul').value, isi: document.getElementById('infoIsi').value, pembuat: userName, tanggal: serverTimestamp() });
+                hideLoading(); customAlert("Berhasil", "Pengumuman telah disebar ke seluruh anggota.", "success");
                 closeModal();
-            } catch (error) { alert('Gagal menerbitkan pengumuman.'); } finally { btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Terbitkan Sekarang'; btn.disabled = false; }
+            } catch (error) { hideLoading(); customAlert("Gagal", "Sistem error saat menerbitkan.", "error"); } 
         }
 
-        window.hapusPengumuman = async function(docId) { if(confirm("Apakah Anda yakin ingin menghapus pengumuman ini?")) { await deleteDoc(doc(db, "pengumuman", docId)); } }
+        window.hapusPengumuman = async function(docId) { 
+            customConfirm("Hapus Pengumuman", "Apakah Anda yakin ingin menarik/menghapus pengumuman ini?", async () => {
+                showLoading("Menghapus...");
+                try {
+                    await deleteDoc(doc(db, "pengumuman", docId)); 
+                    hideLoading(); customAlert("Terhapus", "Pengumuman ditarik.", "success");
+                } catch(e) { hideLoading(); customAlert("Gagal", "Error menghapus data.", "error"); }
+            });
+        }
     </script>
+    <script>if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW Fail', err)); }); }</script>
 </body>
 </html>
