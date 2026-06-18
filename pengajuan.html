@@ -22,7 +22,6 @@
         
         body { background-color: var(--bg-base); display: flex; justify-content: center; min-height: 100vh; overflow: hidden; position: relative; color: var(--text-dark); margin: 0;}
 
-        /* NEON ORBS TERANG */
         .orb { position: absolute; border-radius: 50%; filter: blur(60px); z-index: 0; animation: float 10s infinite alternate ease-in-out;}
         .orb-1 { top: 10%; left: -10%; width: 250px; height: 250px; background: rgba(16, 185, 129, 0.15); }
         .orb-2 { bottom: 10%; right: -10%; width: 300px; height: 300px; background: rgba(5, 150, 105, 0.1); animation-delay: -5s;}
@@ -92,8 +91,8 @@
         
         .form-group { margin-bottom: 15px; text-align: left; }
         .form-label { display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; color: var(--text-gray); }
-        .form-input { width: 100%; padding: 16px; border-radius: 14px; border: 2px solid rgba(0,0,0,0.06); font-size: 14px; font-weight: 700; outline: none; background: #F8FAFC; color: var(--text-dark); transition: 0.2s;}
-        .form-input:focus { border-color: var(--emerald-main); background: #FFF; box-shadow: 0 5px 15px rgba(5,150,105,0.1); }
+        .form-input, .form-select { width: 100%; padding: 16px; border-radius: 14px; border: 2px solid rgba(0,0,0,0.06); font-size: 14px; font-weight: 700; outline: none; background: #F8FAFC; color: var(--text-dark); transition: 0.2s;}
+        .form-input:focus, .form-select:focus { border-color: var(--emerald-main); background: #FFF; box-shadow: 0 5px 15px rgba(5,150,105,0.1); }
         .btn-submit { width: 100%; padding: 18px; border-radius: 16px; font-size: 14px; font-weight: 900; background: var(--emerald-main); color: #FFF; border: none; margin-top: 10px; cursor: pointer; box-shadow: 0 10px 20px rgba(5,150,105,0.3); transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px;}
         .btn-submit:active { transform: scale(0.96); }
 
@@ -169,6 +168,7 @@
             </div>
 
             <div id="viewPengajuanSaya">
+                <!-- INTEL, ADMIN, SUPERADMIN, DEVELOPER BISA MELIHAT TOMBOL INI -->
                 <button class="btn-create glass-panel" id="btnBuatBaru" style="display: none;" onclick="openModalReq()"><i class="fa-solid fa-file-circle-plus"></i> Buat Pengajuan Baru</button>
                 <div id="listSaya">
                     <div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i><p>Memuat data...</p></div>
@@ -219,19 +219,20 @@
         </div>
     </div>
 
+    <!-- MODAL TUNJUK (SUPERADMIN/DEVELOPER ONLY) -->
     <div id="modalTunjuk" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Tunjuk Verifikator</h3>
+                <h3>Tunjuk Verifikator Lapangan</h3>
                 <button type="button" onclick="document.getElementById('modalTunjuk').classList.remove('show')" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="form-group">
-                <label class="form-label">Pilih Admin Pemeriksa Lapangan</label>
-                <select id="selectVerifikator" class="form-input" style="appearance: none;">
-                    <option value="">-- Pilih Admin --</option>
+                <label class="form-label">Pilih Admin / Intel Lapangan</label>
+                <select id="selectVerifikator" class="form-select" style="appearance: none;">
+                    <option value="">-- Menarik Data --</option>
                 </select>
             </div>
-            <button class="btn-submit" onclick="prosesTunjuk()"><i class="fa-solid fa-user-check"></i> Tugaskan Admin</button>
+            <button class="btn-submit" onclick="prosesTunjuk()"><i class="fa-solid fa-user-check"></i> Tugaskan Anggota</button>
         </div>
     </div>
 
@@ -247,15 +248,16 @@
                     <label class="form-label">Foto Bukti (Kamera Langsung)</label>
                     <input type="file" id="fotoVerif" class="form-input" accept="image/*" capture="environment" required style="padding: 10px; border:2px dashed rgba(0,0,0,0.1); background: #FFF;">
                 </div>
-                <button type="submit" class="btn-submit"><i class="fa-solid fa-camera"></i> Upload & Teruskan ke Superadmin</button>
+                <button type="submit" class="btn-submit"><i class="fa-solid fa-camera"></i> Upload & Teruskan ke Pemimpin</button>
             </form>
         </div>
     </div>
 
+    <!-- MODAL FINAL (SUPERADMIN/DEVELOPER ONLY) -->
     <div id="modalFinal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Final Approval (Dewa)</h3>
+                <h3>Final Approval (Pimpinan)</h3>
                 <button type="button" onclick="document.getElementById('modalFinal').classList.remove('show')" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
@@ -270,7 +272,7 @@
                     <img id="imgBuktiAwal" src="" style="width: 100%; height: 120px; object-fit: cover; border-radius: 12px; border: 2px dashed rgba(0,0,0,0.1); cursor: pointer;" onclick="viewImage(this.src)" title="Klik untuk perbesar">
                 </div>
                 <div style="flex: 1; text-align: center;">
-                    <p style="font-size: 9px; font-weight: 800; color: var(--emerald-main); margin-bottom: 5px;">Bukti Verifikator (Valid)</p>
+                    <p style="font-size: 9px; font-weight: 800; color: var(--emerald-main); margin-bottom: 5px;">Bukti Verifikator Lapangan</p>
                     <img id="imgBuktiFinal" src="" style="width: 100%; height: 120px; object-fit: cover; border-radius: 12px; border: 2px solid var(--emerald-main); cursor: pointer;" onclick="viewImage(this.src)" title="Klik untuk perbesar">
                 </div>
             </div>
@@ -287,7 +289,6 @@
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
         import { collection, onSnapshot, doc, updateDoc, getDoc, getDocs, addDoc, serverTimestamp, query, orderBy, where } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-        // KENDALI CUSTOM MODAL
         window.customAlert = function(title, desc, type = 'success') {
             const el = document.getElementById('customAlert'); document.getElementById('caTitle').innerText = title; document.getElementById('caDesc').innerText = desc;
             const iconEl = document.getElementById('caIcon');
@@ -315,7 +316,7 @@
         }
 
         let userRole = "member"; let userEmail = ""; let userName = "";
-        let listAdmins = []; let activeDocId = ""; 
+        let activeDocId = ""; 
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -326,21 +327,29 @@
                     userRole = (dataUser.role || "member").toLowerCase(); 
                     userName = dataUser.nama_lengkap || "Pengurus";
                     
-                    if (["superadmin", "admin", "bendahara"].includes(userRole)) {
+                    // PENAMBAHAN AKSES KASTA "INTEL" & "DEVELOPER"
+                    if (["developer", "superadmin", "admin", "bendahara", "intel"].includes(userRole)) {
                         document.getElementById('tabTugas').style.display = 'block';
                         document.getElementById('btnBuatBaru').style.display = 'block';
-                        if(userRole === 'superadmin') loadAdmins(); 
+                        // Hanya Kasta Tertinggi yg berhak menarik data list intel untuk ditugaskan
+                        if(userRole === 'superadmin' || userRole === 'developer') loadAdminsAndIntel(); 
                     }
                     loadDataPengajuan(); 
                 }
             } else { window.location.href = 'login.html'; }
         });
 
-        async function loadAdmins() {
-            const q = query(collection(db, "users"), where("role", "==", "admin"));
+        // MESIN PENCARI INTEL (Hanya Bang Deny & Elu yang bisa narik data mereka ke dropdown)
+        async function loadAdminsAndIntel() {
+            const q = query(collection(db, "users"), where("role", "in", ["admin", "intel", "developer"]));
             const snaps = await getDocs(q);
-            let options = '<option value="">-- Pilih Admin --</option>';
-            snaps.forEach(d => { options += `<option value="${d.id}">${d.data().nama_lengkap}</option>`; });
+            let options = '<option value="">-- Pilih Orang Lapangan --</option>';
+            snaps.forEach(d => { 
+                const dt = d.data();
+                // Developer tau wujud aslinya, jadi dikasih tanda kurung siku di dropdown.
+                const hintRole = dt.role.toUpperCase();
+                options += `<option value="${d.id}">${dt.nama_lengkap} [${hintRole}]</option>`; 
+            });
             document.getElementById('selectVerifikator').innerHTML = options;
         }
 
@@ -363,7 +372,7 @@
             
             // PROTEKSI 3MB
             if (fileInput.size > 3 * 1024 * 1024) {
-                return customAlert("Foto Terlalu Besar", "Ukuran foto pengajuan maksimal 3MB. Silakan pilih foto lain yang lebih kecil.", "warning");
+                return customAlert("Foto Terlalu Besar", "Ukuran foto pengajuan maksimal 3MB.", "warning");
             }
 
             showLoading("Mengirim Pengajuan...");
@@ -380,7 +389,7 @@
                     status: "pending_tunjuk", 
                     tanggal: serverTimestamp() 
                 });
-                hideLoading(); customAlert('Berhasil', 'Pengajuan dikirim! Menunggu Verifikator.', 'success'); closeModalReq();
+                hideLoading(); customAlert('Berhasil', 'Pengajuan dikirim! Menunggu Pemimpin menunjuk Verifikator.', 'success'); closeModalReq();
             } catch (error) { hideLoading(); customAlert('Gagal', 'Sistem gagal menyimpan pengajuan.', 'error'); } 
         }
 
@@ -395,22 +404,24 @@
                     
                     let statusText = ""; let statusClass = ""; let actionBtn = "";
 
+                    // LOGIKA AKSES BERDASARKAN KASTA (Dewa vs Intel vs Bendahara)
                     if (data.status === 'pending_tunjuk') {
                         statusText = "Tunggu Verifikator"; statusClass = "tunjuk";
-                        if (userRole === 'superadmin') actionBtn = `<button class="btn-act primary" onclick="bukaModalTunjuk('${id}')"><i class="fa-solid fa-user-check"></i> Tunjuk Verifikator</button>`;
+                        if (userRole === 'superadmin' || userRole === 'developer') actionBtn = `<button class="btn-act primary" onclick="bukaModalTunjuk('${id}')"><i class="fa-solid fa-user-check"></i> Tunjuk Verifikator</button>`;
                     } else if (data.status === 'pending_verifikasi') {
                         statusText = "Verifikasi Lapangan"; statusClass = "verifikasi";
+                        // HANYA intel/admin yang DITUNJUK yang bisa lihat tombol ini
                         if (userEmail === data.verifikator_email) actionBtn = `<button class="btn-act primary" onclick="bukaModalVerifikasi('${id}')"><i class="fa-solid fa-camera"></i> Lakukan Verifikasi</button>`;
                     } else if (data.status === 'pending_approval') {
                         statusText = "Menunggu Final Approval"; statusClass = "final";
-                        if (userRole === 'superadmin') actionBtn = `<button class="btn-act primary" style="background:rgba(167, 139, 250, 0.1); color:#A78BFA; border:1px solid rgba(167, 139, 250, 0.3);" onclick="bukaModalFinal('${id}', '${data.target_nik}', '${data.foto_verifikasi}', '${data.foto_pengajuan}')"><i class="fa-solid fa-gavel"></i> Eksekusi Final</button>`;
+                        if (userRole === 'superadmin' || userRole === 'developer') actionBtn = `<button class="btn-act primary" style="background:rgba(167, 139, 250, 0.1); color:#8B5CF6; border:1px solid rgba(167, 139, 250, 0.3);" onclick="bukaModalFinal('${id}', '${data.target_nik}', '${data.foto_verifikasi}', '${data.foto_pengajuan}')"><i class="fa-solid fa-gavel"></i> Eksekusi Pencairan</button>`;
                     } else if (data.status === 'approved') {
                         statusText = "Cair / Disetujui"; statusClass = "approved";
                     } else if (data.status === 'rejected') {
                         statusText = "Ditolak"; statusClass = "rejected";
                     }
 
-                    const fotoPengajuanBtn = data.foto_pengajuan ? `<button class="btn-act primary" style="background:rgba(2, 132, 199, 0.1); border:1px solid rgba(2, 132, 199, 0.2); color:#0284C7; flex: none; width: auto; padding: 6px 12px;" onclick="viewImage('${data.foto_pengajuan}')" title="Lihat Foto Bukti"><i class="fa-solid fa-image"></i></button>` : '';
+                    const fotoPengajuanBtn = data.foto_pengajuan ? `<button class="btn-act primary" style="background:rgba(2, 132, 199, 0.1); border:1px solid rgba(2, 132, 199, 0.2); color:#0284C7; flex: none; width: auto; padding: 6px 12px;" onclick="viewImage('${data.foto_pengajuan}')" title="Lihat Foto Bukti Awal"><i class="fa-solid fa-image"></i></button>` : '';
 
                     const htmlCard = `
                         <div class="glass-panel request-card">
@@ -433,20 +444,22 @@
                         </div>`;
 
                     if (data.pengaju_email === userEmail) { listSaya.innerHTML += htmlCard; countSaya++; } 
-                    else if (userRole === 'superadmin' || userEmail === data.verifikator_email) { listTugas.innerHTML += htmlCard; countTugas++; }
+                    
+                    // Intel HANYA MUNCUL CARD-NYA KALAU DIA DITUNJUK. Developer & Superadmin lihat semuanya.
+                    else if (userRole === 'superadmin' || userRole === 'developer' || userEmail === data.verifikator_email) { listTugas.innerHTML += htmlCard; countTugas++; }
                 });
 
                 if(countSaya === 0) listSaya.innerHTML = '<div class="empty-state"><i class="fa-solid fa-folder-open"></i><p>Anda belum memiliki riwayat pengajuan dana.</p></div>';
-                if(countTugas === 0) listTugas.innerHTML = '<div class="empty-state"><i class="fa-solid fa-check-double"></i><p>Tidak ada tugas / antrean untuk Anda.</p></div>';
+                if(countTugas === 0) listTugas.innerHTML = '<div class="empty-state"><i class="fa-solid fa-check-double"></i><p>Tidak ada tugas verifikasi untuk Anda.</p></div>';
             });
         }
 
         window.bukaModalTunjuk = function(id) { activeDocId = id; document.getElementById('modalTunjuk').classList.add('show'); }
         window.prosesTunjuk = async function() {
             const verifEmail = document.getElementById('selectVerifikator').value;
-            if(!verifEmail) return customAlert("Pilih Admin", "Harap pilih Admin dari daftar.", "warning");
+            if(!verifEmail) return customAlert("Pilih Petugas", "Harap pilih orang dari daftar.", "warning");
             showLoading("Menugaskan...");
-            try { await updateDoc(doc(db, "pengajuan_dana", activeDocId), { verifikator_email: verifEmail, status: "pending_verifikasi" }); hideLoading(); customAlert("Berhasil", "Admin ditugaskan.", "success"); document.getElementById('modalTunjuk').classList.remove('show');
+            try { await updateDoc(doc(db, "pengajuan_dana", activeDocId), { verifikator_email: verifEmail, status: "pending_verifikasi" }); hideLoading(); customAlert("Berhasil", "Tim telah ditugaskan untuk verifikasi lapangan.", "success"); document.getElementById('modalTunjuk').classList.remove('show');
             } catch(e) { hideLoading(); customAlert("Gagal", "Sistem error saat menugaskan.", "error"); }
         }
 
@@ -463,7 +476,7 @@
             try {
                 const base64Image = await getBase64(fileInput);
                 await updateDoc(doc(db, "pengajuan_dana", activeDocId), { foto_verifikasi: base64Image, status: "pending_approval" });
-                hideLoading(); customAlert("Terkirim", "Verifikasi diserahkan ke Superadmin.", "success"); document.getElementById('modalVerifikasi').classList.remove('show');
+                hideLoading(); customAlert("Terkirim", "Verifikasi lapangan diserahkan ke Pemimpin.", "success"); document.getElementById('modalVerifikasi').classList.remove('show');
             } catch(e) { hideLoading(); customAlert("Gagal", "Gagal upload gambar.", "error"); }
         }
 
@@ -483,7 +496,7 @@
         }
 
         window.eksekusiFinal = function(action) {
-            let msg = action === 'approve' ? "Anda yakin ingin MENYETUJUI dan mencairkan dana ini?" : "Anda yakin ingin MENOLAK pengajuan ini?";
+            let msg = action === 'approve' ? "Anda yakin ingin MENYETUJUI dan memotong saldo kas untuk dana ini?" : "Anda yakin ingin MENOLAK pengajuan ini?";
             customConfirm("Final Eksekusi", msg, async () => {
                 showLoading("Mengeksekusi...");
                 try {
@@ -492,7 +505,7 @@
                         const snap = await getDoc(reqRef); const d = snap.data();
                         await updateDoc(reqRef, { status: "approved", tanggal_cair: serverTimestamp() });
                         await addDoc(collection(db, "transactions"), { jenis: "Pengeluaran", metode: "Sistem Pengajuan", status: "approved", pengirim: "Sistem Kas", nama_keterangan: "Pencairan: " + d.judul + " (" + d.target_nama + ")", nominal: d.nominal, tanggal: serverTimestamp() });
-                        hideLoading(); customAlert("Dana Cair!", "Pengajuan disetujui, kas dipotong.", "success");
+                        hideLoading(); customAlert("Dana Cair!", "Pengajuan disetujui, kas terpotong otomatis.", "success");
                     } else {
                         await updateDoc(reqRef, { status: "rejected" }); hideLoading(); customAlert("Ditolak", "Pengajuan resmi ditolak.", "success");
                     }

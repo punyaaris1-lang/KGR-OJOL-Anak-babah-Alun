@@ -29,7 +29,6 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
         
-        /* BACKGROUND TERANG & BERSIH KGR ORI */
         body { 
             background-color: var(--bg-base); 
             display: flex; justify-content: center; align-items: center; 
@@ -37,7 +36,6 @@
             color: var(--text-dark);
         }
 
-        /* LINGKARAN GLOWING HIJAU & EMAS DI BACKGROUND (BIAR KACA KELIHATAN HIDUP) */
         .orb { position: absolute; border-radius: 50%; filter: blur(60px); z-index: 0; animation: float 12s infinite alternate ease-in-out;}
         .orb-1 { top: 20%; left: -10%; width: 300px; height: 300px; background: rgba(16, 185, 129, 0.15); }
         .orb-2 { bottom: 10%; right: -15%; width: 350px; height: 350px; background: rgba(5, 150, 105, 0.1); animation-delay: -5s;}
@@ -45,10 +43,9 @@
 
         @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(25px, 40px) scale(1.1); } }
 
-        /* CONTAINER APLIKASI */
         .app-container { 
             width: 100%; height: 100dvh; 
-            background: transparent; /* Transparan biar blur tembus */
+            background: transparent; 
             position: relative; z-index: 10; 
             overflow-x: hidden; overflow-y: auto; 
             display: flex; flex-direction: column; 
@@ -57,47 +54,34 @@
         .app-container::-webkit-scrollbar { display: none; }
         @media (min-width: 600px) { .app-container { max-width: 480px; height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 40px 80px rgba(0,0,0,0.15); border: 8px solid #FFFFFF; margin: auto; background: rgba(244, 246, 245, 0.85); backdrop-filter: blur(20px);} }
 
-        /* ========================================= */
-        /* CLASS LIGHT GLASSMORPHISM (MENGKILAP)     */
-        /* ========================================= */
+        /* KACA PREMIUM */
         .glass-panel {
-            background: rgba(255, 255, 255, 0.7); /* Kaca putih susu */
-            backdrop-filter: blur(25px) saturate(150%); /* Saturate bikin warna di belakangnya nyala */
+            background: rgba(255, 255, 255, 0.7); 
+            backdrop-filter: blur(25px) saturate(150%); 
             -webkit-backdrop-filter: blur(25px) saturate(150%); 
-            border: 1px solid rgba(255, 255, 255, 1); /* Garis tepi putih tegas (efek shiny) */
-            box-shadow: 
-                0 15px 35px rgba(5, 150, 105, 0.05), /* Bayangan luar hijau super halus */
-                inset 0 0 20px rgba(255, 255, 255, 0.6); /* Pantulan cahaya dari dalam */
+            border: 1px solid rgba(255, 255, 255, 1); 
+            box-shadow: 0 15px 35px rgba(5, 150, 105, 0.05), inset 0 0 20px rgba(255, 255, 255, 0.6); 
             border-radius: 26px;
         }
 
-        /* PREMIUM CARD (SALDO KAS - HIJAU GLOWING) */
         .glass-emerald {
             background: linear-gradient(135deg, rgba(5, 150, 105, 0.9) 0%, rgba(4, 120, 87, 0.95) 100%);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 
-                0 20px 40px rgba(5, 150, 105, 0.25), /* Bayangan hijau memancar */
-                inset 0 2px 10px rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px rgba(5, 150, 105, 0.25), inset 0 2px 10px rgba(255, 255, 255, 0.15);
             color: #FFF; border-radius: 26px;
         }
 
-        /* LAYOUT ASLI: BANNER ATAS */
         .header-cover { position: relative; width: 100%; height: 260px; min-height: 260px; flex-shrink: 0; background-image: url('1000417166.jpg'); background-size: cover; background-position: center; border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; z-index: 1; box-shadow: 0 15px 35px rgba(5, 150, 105, 0.15); }
-        
-        /* OVERLAY GRADASI (TERANG DI ATAS, MENGGELAP DI BAWAH BIAR TEKS KEBACA) */
         .header-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.6) 100%); border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; }
 
         .brand-container { position: absolute; top: 45px; left: 0; width: 100%; text-align: center; z-index: 10; padding: 0 20px; }
         .main-title { font-size: clamp(20px, 5.5vw, 24px); font-weight: 900; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2; color: #FFFFFF; text-shadow: 0 4px 15px rgba(0,0,0,0.6); margin-bottom: 2px; }
         .sub-title { font-size: clamp(11px, 3vw, 13px); font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--gold-accent); text-shadow: 0 2px 8px rgba(0,0,0,0.6); }
 
-        /* LAYOUT ASLI: FOTO PROFIL NANGKRING (GLOSSY) */
         .profile-area { display: flex; justify-content: space-between; align-items: flex-end; padding: 0 24px; margin-top: -50px; position: relative; z-index: 10; }
-        
         .profile-pic { width: clamp(80px, 22vw, 90px); height: clamp(80px, 22vw, 90px); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: clamp(32px, 8vw, 40px); font-weight: 900; color: var(--emerald-main); background-size: cover; background-position: center; border: 4px solid #FFFFFF; background-color: #F8FAFC; box-shadow: 0 12px 25px rgba(5,150,105,0.15); cursor: pointer; transition: 0.2s;}
         .profile-pic:active { transform: scale(0.95); }
-        
         .btn-settings { width: 42px; height: 42px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 18px; cursor: pointer; transition: 0.2s; margin-bottom: 10px; color: var(--emerald-dark); background: #FFFFFF; box-shadow: 0 8px 20px rgba(5,150,105,0.15); border: 1px solid rgba(255,255,255,0.8); }
         .btn-settings:active { transform: scale(0.9); background: var(--emerald-light); color: #FFF;}
 
@@ -105,77 +89,42 @@
         .user-intro h2 { font-size: clamp(22px, 6vw, 26px); font-weight: 900; color: var(--text-dark); letter-spacing: -0.5px; margin-bottom: 2px;}
         .user-intro p { font-size: 12px; font-weight: 800; color: var(--emerald-main); text-transform: uppercase; letter-spacing: 1.5px; display: flex; align-items: center; gap: 5px; }
 
-        /* PADDING BAWAH (ANTI TABRAK DOCK) - Diperlebar jadi 150px */
         .content-area { padding: 0 24px 150px; z-index: 5; position: relative; flex-grow: 1; }
         
-        /* PREMIUM CARD SALDO */
         .premium-card { padding: 25px; margin-bottom: 25px; position: relative; overflow: hidden; transition: 0.3s;}
         .premium-card:active { transform: scale(0.98); }
         .card-label { font-size: clamp(12px, 3.5vw, 14px); color: rgba(255,255,255,0.9); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; display: flex; justify-content: space-between; position: relative; z-index: 2;}
         .card-balance { font-size: clamp(28px, 8vw, 38px); font-weight: 900; color: #FFFFFF; letter-spacing: -1px; margin-bottom: 20px; position: relative; z-index: 2; text-shadow: 0 4px 10px rgba(0,0,0,0.15);}
         .card-bottom { display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 15px; position: relative; z-index: 2;}
         .card-bottom-label { font-size: clamp(11px, 3.5vw, 13px); color: rgba(255,255,255,0.85); font-weight: 700; margin-bottom: 3px; }
-        .card-bottom-val { font-size: clamp(15px, 4vw, 18px); font-weight: 900; color: #FEF3C7; } /* Kuning Emas Lembut */
+        .card-bottom-val { font-size: clamp(15px, 4vw, 18px); font-weight: 900; color: #FEF3C7; }
 
         .section-title { font-size: clamp(14px, 4.5vw, 16px); font-weight: 900; margin: 20px 0 15px; color: var(--emerald-dark); display: flex; align-items: center; gap: 8px; letter-spacing: 0.5px;}
         .pengurus-panel { border: none; padding: 0; background: transparent; margin-bottom: 25px; }
         
-        /* MENU GRID KACA (GLOSSY 3D EFFECT) */
         .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-        
         .menu-item { padding: 18px 5px; display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer; transition: 0.2s; }
         .menu-item:active { transform: scale(0.95); background: rgba(255,255,255,0.9); }
-        
-        .menu-icon { 
-            width: 48px; height: 48px; border-radius: 16px; 
-            background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%); 
-            color: var(--emerald-main); display: flex; justify-content: center; align-items: center; 
-            font-size: 22px; transition: 0.2s; 
-            border: 1px solid rgba(5, 150, 105, 0.1);
-            box-shadow: 0 8px 16px rgba(5, 150, 105, 0.08), inset 0 2px 4px #FFFFFF; /* Efek tombol timbul 3D */
-        }
+        .menu-icon { width: 48px; height: 48px; border-radius: 16px; background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%); color: var(--emerald-main); display: flex; justify-content: center; align-items: center; font-size: 22px; transition: 0.2s; border: 1px solid rgba(5, 150, 105, 0.1); box-shadow: 0 8px 16px rgba(5, 150, 105, 0.08), inset 0 2px 4px #FFFFFF; }
         .menu-icon.gold { color: var(--gold-accent); }
         .menu-icon.blue { color: #0284C7; }
-        
         .menu-item span { font-size: 10px; font-weight: 800; color: var(--text-dark); text-align: center; line-height: 1.3;}
 
-        /* Menu Absen Khusus (Warna Menonjol) */
         .menu-absen { border: 2px solid rgba(16, 185, 129, 0.5); background: rgba(209, 250, 229, 0.5); box-shadow: 0 15px 30px rgba(5, 150, 105, 0.15);}
         .menu-absen .menu-icon { background: linear-gradient(135deg, #10B981 0%, #059669 100%); color: #FFF; box-shadow: 0 5px 15px rgba(5, 150, 105, 0.4), inset 0 2px 4px rgba(255,255,255,0.3);}
 
-        /* BOTTOM NAV KACA (TATA LETAK SEMPURNA) */
         .bottom-nav-container { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: auto; min-width: 320px; z-index: 50; }
-        
-        .floating-nav { 
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 10px 40px; border-radius: 40px; gap: 50px; 
-            background: rgba(255, 255, 255, 0.85); /* Agak solid biar gak saru sama list belakang */
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 1);
-            box-shadow: 0 20px 40px rgba(5, 150, 105, 0.15);
-        }
-        
+        .floating-nav { display: flex; justify-content: space-between; align-items: center; padding: 10px 40px; border-radius: 40px; gap: 50px; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 1); box-shadow: 0 20px 40px rgba(5, 150, 105, 0.15); }
         .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--text-gray); opacity: 0.7; cursor: pointer; transition: 0.3s; }
         .nav-item i { font-size: 22px; transition: 0.2s; } 
         .nav-item span { font-size: 10px; font-weight: 800; letter-spacing: 0.5px;} 
         .nav-item.active { color: var(--emerald-main); opacity: 1; filter: drop-shadow(0 4px 6px rgba(5, 150, 105, 0.3)); }
         
         .center-btn { position: relative; top: -25px; flex-shrink: 0;}
-        .center-fab { 
-            width: 65px; height: 65px; border-radius: 50%; 
-            display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2px; 
-            color: #FFFFFF; font-size: 26px; 
-            background: linear-gradient(135deg, var(--emerald-light) 0%, var(--emerald-main) 100%); 
-            border: 4px solid #FFFFFF; 
-            box-shadow: 0 15px 25px rgba(5, 150, 105, 0.4), inset 0 2px 4px rgba(255,255,255,0.4); 
-            transition: 0.2s; cursor: pointer;
-        }
+        .center-fab { width: 65px; height: 65px; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2px; color: #FFFFFF; font-size: 26px; background: linear-gradient(135deg, var(--emerald-light) 0%, var(--emerald-main) 100%); border: 4px solid #FFFFFF; box-shadow: 0 15px 25px rgba(5, 150, 105, 0.4), inset 0 2px 4px rgba(255,255,255,0.4); transition: 0.2s; cursor: pointer; }
         .center-fab:active { transform: scale(0.9); }
         .center-fab span { font-size: 9px; font-weight: 800; }
 
-        /* ============================================== */
-        /* MODALS KACA TERANG (BERSIH & KEBACA JELAS)     */
-        /* ============================================== */
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px;}
         .modal-overlay.show { opacity: 1; visibility: visible; }
         .modal-card { background: rgba(255, 255, 255, 0.95); border: 1px solid #FFF; border-radius: 30px; padding: 30px 24px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.3); transform: scale(0.95); transition: 0.3s; color: var(--text-dark); }
@@ -198,17 +147,14 @@
         .live-item span:first-child { color: var(--text-dark); }
         .live-item span:last-child { color: var(--emerald-main); font-weight: 900;}
 
-        /* --- STYLING KHUSUS CUSTOM ALERT & CONFIRM MODAL (TERANG GLOWING) --- */
         .cp-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(10px); z-index: 99999; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px; }
         .cp-overlay.show { opacity: 1; visibility: visible; }
         .cp-box { background: rgba(255, 255, 255, 0.95); border: 1px solid #FFF; border-radius: 30px; width: 100%; max-width: 320px; text-align: center; padding: 30px 24px; transform: scale(0.9); transition: 0.3s; box-shadow: 0 25px 50px rgba(0,0,0,0.3); color: var(--text-dark); }
         .cp-overlay.show .cp-box { transform: scale(1); }
-        
         .cp-icon { width: 65px; height: 65px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; margin: 0 auto 15px; }
         .cp-icon.success { background: rgba(16, 185, 129, 0.15); color: var(--emerald-main); }
         .cp-icon.error { background: rgba(239, 68, 68, 0.15); color: var(--danger-red); }
         .cp-icon.warning { background: rgba(245, 158, 11, 0.15); color: var(--gold-accent); }
-        
         .cp-title { font-size: 18px; font-weight: 900; color: var(--text-dark); margin-bottom: 8px; }
         .cp-desc { font-size: 12px; font-weight: 600; color: var(--text-gray); margin-bottom: 25px; line-height: 1.5; }
         .cp-btn-wrap { display: flex; gap: 10px; }
@@ -217,23 +163,19 @@
         .cp-btn-primary { background: var(--emerald-main); color: #FFF; box-shadow: 0 8px 20px rgba(5,150,105,0.3);}
         .cp-btn-cancel { background: #F1F5F9; color: var(--text-dark); border: 1px solid rgba(0,0,0,0.05);}
         .cp-btn-danger { background: var(--danger-red); color: #FFF; box-shadow: 0 8px 20px rgba(239,68,68,0.3);}
-        
         .spinner-custom { border: 4px solid rgba(5,150,105,0.1); width: 50px; height: 50px; border-radius: 50%; border-left-color: var(--emerald-main); animation: spin 1s linear infinite; margin: 0 auto 15px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <!-- Cahaya Latar Belakang Hijau/Emas Tipis -->
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
     <div class="orb orb-3"></div>
 
     <main class="app-container">
         
-        <!-- LAYOUT ASLI: BANNER FOTO DI ATAS -->
         <div class="header-cover">
-            <!-- REVISI: Overlay Bening di Atas (Muka Jelas), Gelap di Bawah (Teks Jelas) -->
             <div class="header-overlay"></div>
             <div class="brand-container">
                 <div class="main-title">KOTAK GOTONG ROYONG</div>
@@ -241,7 +183,6 @@
             </div>
         </div>
 
-        <!-- LAYOUT ASLI: FOTO PROFIL NANGKRING -->
         <div class="profile-area">
             <div class="profile-pic" id="uiProfilePic"></div>
             <div class="btn-settings" onclick="window.location.href='profil.html'"><i class="fa-solid fa-gear"></i></div>
@@ -254,7 +195,6 @@
 
         <div class="content-area">
             
-            <!-- KARTU PREMIUM HIJAU GLOWING -->
             <div class="glass-emerald premium-card">
                 <div class="card-label"><span>Total Kas (Keseluruhan)</span><i class="fa-brands fa-nfc-symbol" style="font-size: 20px;"></i></div>
                 <div class="card-balance" id="uiTotalAll">Rp 0</div>
@@ -319,7 +259,7 @@
             </div>
         </div>
 
-        <!-- BOTTOM NAV KACA PUTIH GLOWING -->
+        <!-- BOTTOM NAV -->
         <div class="bottom-nav-container">
             <div class="glass-panel floating-nav">
                 <div class="nav-item active"><i class="fa-solid fa-house"></i><span>Beranda</span></div>
@@ -330,9 +270,7 @@
             </div>
         </div>
 
-        <!-- ============================================== -->
-        <!-- MODALS (TERANG & BERSIH)                       -->
-        <!-- ============================================== -->
+        <!-- MODALS -->
         <div id="modalMemberQR" class="modal-overlay">
             <div class="modal-card">
                 <h3 style="font-weight: 900; color: var(--text-dark);">Kartu Kehadiran</h3>
@@ -428,16 +366,13 @@
 
     </main>
 
-    <!-- SCRIPT UTAMA FIREBASE & LOGIKA -->
     <script type="module">
         import { auth, db } from './db-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
         import { doc, getDoc, onSnapshot, collection, addDoc, serverTimestamp, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
         window.customAlert = function(title, desc, type = 'success') {
-            const el = document.getElementById('customAlert');
-            document.getElementById('caTitle').innerText = title;
-            document.getElementById('caDesc').innerText = desc;
+            const el = document.getElementById('customAlert'); document.getElementById('caTitle').innerText = title; document.getElementById('caDesc').innerText = desc;
             const iconEl = document.getElementById('caIcon');
             if(type === 'success') { iconEl.className = 'cp-icon success'; iconEl.innerHTML = '<i class="fa-solid fa-check"></i>'; }
             else if(type === 'error') { iconEl.className = 'cp-icon error'; iconEl.innerHTML = '<i class="fa-solid fa-xmark"></i>'; }
@@ -445,20 +380,12 @@
             el.classList.add('show');
         }
         window.closeCustomAlert = function() { document.getElementById('customAlert').classList.remove('show'); }
-
         window.customConfirm = function(title, desc, onYes) {
-            const el = document.getElementById('customConfirm');
-            document.getElementById('ccTitle').innerText = title;
-            document.getElementById('ccDesc').innerText = desc;
-            document.getElementById('ccBtnYes').onclick = function() { closeCustomConfirm(); onYes(); };
-            el.classList.add('show');
+            const el = document.getElementById('customConfirm'); document.getElementById('ccTitle').innerText = title; document.getElementById('ccDesc').innerText = desc;
+            document.getElementById('ccBtnYes').onclick = function() { closeCustomConfirm(); onYes(); }; el.classList.add('show');
         }
         window.closeCustomConfirm = function() { document.getElementById('customConfirm').classList.remove('show'); }
-
-        window.showLoading = function(title = "Memproses...") {
-            document.getElementById('clTitle').innerText = title;
-            document.getElementById('customLoading').classList.add('show');
-        }
+        window.showLoading = function(title = "Memproses...") { document.getElementById('clTitle').innerText = title; document.getElementById('customLoading').classList.add('show'); }
         window.hideLoading = function() { document.getElementById('customLoading').classList.remove('show'); }
 
         let currentRole = "member";
@@ -467,7 +394,6 @@
         let currentEvent = null;
         let html5QrcodeScanner = null;
         let liveUnsubscribe = null;
-        
         let myHakAbsen = "otomatis";
         let myTotalSedekahAllTime = 0;
 
@@ -482,14 +408,14 @@
                             currentRole = String(d.role || "member").toLowerCase().trim(); 
                             currentUserName = String(d.nama_lengkap || "Tanpa Nama");
                             myHakAbsen = d.hak_absen || "otomatis";
+                            let displayBadge = d.custom_badge ? d.custom_badge : "ANGGOTA AKTIF";
                             
                             document.getElementById('uiUserName').innerText = currentUserName;
                             
                             const picEl = document.getElementById('uiProfilePic');
                             if (d.profile_image) { 
                                 picEl.style.backgroundImage = `url('${d.profile_image}')`; 
-                                picEl.innerText = ""; 
-                                picEl.style.border = "none"; 
+                                picEl.innerText = ""; picEl.style.border = "none"; 
                             } else { 
                                 picEl.style.backgroundImage = "none"; 
                                 picEl.innerText = currentUserName.charAt(0).toUpperCase(); 
@@ -498,7 +424,7 @@
                             const rText = document.getElementById('uiRoleText');
                             const panel = document.getElementById('panelPengurus');
 
-                            if (d.status === "Pending Admin" && currentRole !== "superadmin") {
+                            if (d.status === "Pending Admin" && currentRole !== "superadmin" && currentRole !== "developer") {
                                 document.getElementById('uiUserName').innerText = "Menunggu Verifikasi"; rText.innerHTML = '<i class="fa-solid fa-lock"></i> STATUS PENDING'; rText.style.color = "var(--danger-red)"; 
                                 document.querySelector('.content-area').style.opacity = '0.3'; document.querySelector('.content-area').style.pointerEvents = 'none'; return; 
                             } else if (d.status === "Banned") {
@@ -506,10 +432,13 @@
                                 document.querySelector('.content-area').style.opacity = '0.2'; document.querySelector('.content-area').style.pointerEvents = 'none'; return; 
                             } else { document.querySelector('.content-area').style.opacity = '1'; document.querySelector('.content-area').style.pointerEvents = 'auto'; }
 
-                            // TAMPILAN KASTA TEMA TERANG
-                            if (currentRole === "superadmin") { 
+                            // SISTEM ILUSI KASTA
+                            if (currentRole === "developer") { 
                                 panel.style.display = "block"; document.getElementById('menuSuperadmin').style.display = "flex"; document.getElementById('menuBendahara').style.display = "flex"; document.getElementById('menuAdmin').style.display = "flex"; 
-                                rText.innerHTML = '<i class="fa-solid fa-shield"></i> ADMIN'; rText.style.color = "#0284C7"; 
+                                rText.innerHTML = '<i class="fa-solid fa-user-secret"></i> Member (KASTA 0)'; rText.style.color = "var(--danger-red)"; 
+                            } else if (currentRole === "superadmin") { 
+                                panel.style.display = "block"; document.getElementById('menuSuperadmin').style.display = "flex"; document.getElementById('menuBendahara').style.display = "flex"; document.getElementById('menuAdmin').style.display = "flex"; 
+                                rText.innerHTML = '<i class="fa-solid fa-shield"></i> SUPERADMIN'; rText.style.color = "#0284C7"; 
                             } else if (currentRole === "bendahara") { 
                                 panel.style.display = "block"; document.getElementById('menuBendahara').style.display = "flex"; 
                                 rText.innerHTML = '<i class="fa-solid fa-vault"></i> BENDAHARA'; rText.style.color = "var(--emerald-main)"; 
@@ -517,7 +446,8 @@
                                 panel.style.display = "block"; document.getElementById('menuAdmin').style.display = "flex"; 
                                 rText.innerHTML = '<i class="fa-solid fa-shield"></i> ADMIN'; rText.style.color = "#0284C7"; 
                             } else { 
-                                rText.innerHTML = '<i class="fa-solid fa-circle-check"></i> ANGGOTA AKTIF'; rText.style.color = "var(--emerald-main)"; 
+                                // INTEL & MEMBER MURNI (Tetap keliatan sebagai MEMBER di layar)
+                                rText.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${displayBadge}`; rText.style.color = "var(--emerald-main)"; 
                             }
                         } else { auth.signOut(); window.location.href = 'login.html'; }
                     });
@@ -528,14 +458,12 @@
                     });
 
                     onSnapshot(collection(db, "transactions"), (snapshot) => {
-                        let totalSaldo = 0, saldoBulanIni = 0, akumulasiSaya = 0;
-                        const now = new Date();
+                        let totalSaldo = 0, saldoBulanIni = 0, akumulasiSaya = 0; const now = new Date();
                         snapshot.forEach((docTrx) => {
                             const dataTrx = docTrx.data();
                             if (dataTrx.status !== "pending" && dataTrx.status !== "rejected") {
                                 const nominal = Number(dataTrx.nominal) || 0;
                                 const tgl = dataTrx.tanggal ? dataTrx.tanggal.toDate() : new Date(); 
-                                
                                 if (dataTrx.jenis === "Pemasukan") totalSaldo += nominal; else totalSaldo -= nominal;
                                 if (tgl.getMonth() === now.getMonth() && tgl.getFullYear() === now.getFullYear()) {
                                     if (dataTrx.jenis === "Pemasukan") saldoBulanIni += nominal; else saldoBulanIni -= nominal;
@@ -548,13 +476,8 @@
                         document.getElementById('uiTotalAll').innerText = "Rp " + totalSaldo.toLocaleString('id-ID');
                         
                         const uiMonth = document.getElementById('uiTotalMonth');
-                        if (saldoBulanIni < 0) {
-                            uiMonth.innerText = "- Rp " + Math.abs(saldoBulanIni).toLocaleString('id-ID');
-                            uiMonth.style.color = "var(--danger-red)"; 
-                        } else {
-                            uiMonth.innerText = "+ Rp " + saldoBulanIni.toLocaleString('id-ID');
-                            uiMonth.style.color = "#FFF";
-                        }
+                        if (saldoBulanIni < 0) { uiMonth.innerText = "- Rp " + Math.abs(saldoBulanIni).toLocaleString('id-ID'); uiMonth.style.color = "var(--danger-red)"; 
+                        } else { uiMonth.innerText = "+ Rp " + saldoBulanIni.toLocaleString('id-ID'); uiMonth.style.color = "#FFF"; }
                     });
                 } catch(errorUI) { customAlert("Gagal Memuat", "Ada masalah saat memuat profil Anda. Mohon refresh halaman.", "error"); }
             } else { window.location.href = 'login.html'; }
@@ -563,107 +486,72 @@
         window.openQrisModal = async function() { 
             document.getElementById('modalQrisManual').classList.add('show'); 
             const configDoc = await getDoc(doc(db, "settings", "app_config"));
-            if (configDoc.exists() && configDoc.data().qris_url) {
-                document.getElementById('qrisImgSource').src = configDoc.data().qris_url;
-            }
+            if (configDoc.exists() && configDoc.data().qris_url) { document.getElementById('qrisImgSource').src = configDoc.data().qris_url; }
         }
-        
-        window.closeQrisModal = function() { 
-            document.getElementById('modalQrisManual').classList.remove('show');
-            document.getElementById('formSedekah').reset();
-            document.getElementById('btnUploadText').innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Upload Bukti Transfer';
-        }
-        
-        window.tampilkanNamaFile = function(input) {
-            if (input.files && input.files[0]) {
-                document.getElementById('btnUploadText').innerHTML = `<i class="fa-solid fa-check-circle" style="color:var(--emerald-main);"></i> Bukti Siap Dikirim`;
-            }
-        }
+        window.closeQrisModal = function() { document.getElementById('modalQrisManual').classList.remove('show'); document.getElementById('formSedekah').reset(); document.getElementById('btnUploadText').innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Upload Bukti Transfer'; }
+        window.tampilkanNamaFile = function(input) { if (input.files && input.files[0]) { document.getElementById('btnUploadText').innerHTML = `<i class="fa-solid fa-check-circle" style="color:var(--emerald-main);"></i> Bukti Siap Dikirim`; } }
 
         const getBase64 = (file) => new Promise((res, rej) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => res(reader.result); reader.onerror = error => rej(error); });
 
         window.submitSedekah = async function(e) {
             e.preventDefault();
-            
             const fileBkt = document.getElementById('inputBukti').files[0];
-            if(fileBkt && fileBkt.size > 3 * 1024 * 1024) {
-                return customAlert("Foto Terlalu Besar", "Ukuran foto bukti maksimal 3MB. Silakan pilih foto lain yang lebih kecil.", "warning");
-            }
+            if(fileBkt && fileBkt.size > 3 * 1024 * 1024) { return customAlert("Foto Terlalu Besar", "Ukuran foto bukti maksimal 3MB.", "warning"); }
 
             const nominalInput = Number(document.getElementById('inputNominal').value);
-            const btn = document.getElementById('btnSubmitSedekah');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Proses...'; btn.disabled = true;
+            const btn = document.getElementById('btnSubmitSedekah'); btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Proses...'; btn.disabled = true;
 
             try {
                 let limitMaksimal = 10000; 
                 const configDoc = await getDoc(doc(db, "settings", "app_config"));
                 if (configDoc.exists() && configDoc.data().limit_sedekah) limitMaksimal = configDoc.data().limit_sedekah;
 
-                const now = new Date();
-                const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+                const now = new Date(); const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
                 const qTrx = query(collection(db, "transactions"), where("pengirim", "==", currentUserEmail), where("jenis", "==", "Pemasukan"), where("tanggal", ">=", startOfMonth));
                 
-                const snapshotTrx = await getDocs(qTrx);
-                let totalSedekahBulanIni = 0;
+                const snapshotTrx = await getDocs(qTrx); let totalSedekahBulanIni = 0;
                 snapshotTrx.forEach(docSnap => { totalSedekahBulanIni += Number(docSnap.data().nominal); });
 
                 if ((totalSedekahBulanIni + nominalInput) > limitMaksimal) {
                     customAlert("Sedekah Ditolak", `Batas maksimal sedekah anggota adalah Rp ${limitMaksimal.toLocaleString('id-ID')} per bulan.\nTotal donasi Anda bulan ini sudah: Rp ${totalSedekahBulanIni.toLocaleString('id-ID')}`, "warning");
-                    btn.innerHTML = 'Kirim <i class="fa-solid fa-paper-plane"></i>'; btn.disabled = false;
-                    return; 
+                    btn.innerHTML = 'Kirim <i class="fa-solid fa-paper-plane"></i>'; btn.disabled = false; return; 
                 }
 
                 let base64Image = await getBase64(fileBkt);
-                await addDoc(collection(db, "transactions"), {
-                    jenis: "Pemasukan", metode: "QRIS Manual", status: "pending", pengirim: currentUserEmail, 
-                    nama_keterangan: document.getElementById('inputPesan').value || "Sedekah Kas",
-                    nominal: nominalInput, bukti_image: base64Image, tanggal: serverTimestamp()
-                });
+                await addDoc(collection(db, "transactions"), { jenis: "Pemasukan", metode: "QRIS Manual", status: "pending", pengirim: currentUserEmail, nama_keterangan: document.getElementById('inputPesan').value || "Sedekah Kas", nominal: nominalInput, bukti_image: base64Image, tanggal: serverTimestamp() });
                 
-                customAlert("Alhamdulillah", "Sedekah berhasil dikirim dan menunggu konfirmasi Bendahara.", "success");
-                window.closeQrisModal();
-            } catch (err) { 
-                console.error(err); customAlert("Error", "Gagal mengirim bukti transfer. Periksa koneksi Anda.", "error"); 
-            } finally { 
-                btn.innerHTML = 'Kirim <i class="fa-solid fa-paper-plane"></i>'; btn.disabled = false; 
-            }
+                customAlert("Alhamdulillah", "Sedekah berhasil dikirim dan menunggu konfirmasi Bendahara.", "success"); window.closeQrisModal();
+            } catch (err) { customAlert("Error", "Gagal mengirim bukti transfer. Periksa koneksi Anda.", "error"); } 
+            finally { btn.innerHTML = 'Kirim <i class="fa-solid fa-paper-plane"></i>'; btn.disabled = false; }
         }
 
         onSnapshot(doc(db, "settings", "event_config"), (docSnap) => {
             const menuAbsen = document.getElementById('menuAbsensi');
             if (docSnap.exists()) {
                 currentEvent = docSnap.data();
-                const isActive = (currentEvent.is_active === true || currentEvent.is_active === "true");
-                if (isActive) { menuAbsen.style.display = 'flex'; } else { menuAbsen.style.display = 'none'; }
+                if (currentEvent.is_active === true || currentEvent.is_active === "true") { menuAbsen.style.display = 'flex'; } else { menuAbsen.style.display = 'none'; }
             } else { menuAbsen.style.display = 'none'; }
         });
 
         window.handleAbsensiClick = async function() {
             const isActive = currentEvent && (currentEvent.is_active === true || currentEvent.is_active === "true");
-            if (!isActive) return customAlert("Radar Dimatikan", "Akses acara saat ini ditutup oleh Superadmin.", "warning");
+            if (!isActive) return customAlert("Radar Dimatikan", "Akses acara ditutup oleh Pengurus.", "warning");
             
-            if (currentRole === "member") {
-                if (myHakAbsen === "kunci_paksa") {
-                    return customAlert("Akses Diblokir", "Akses QR Code Anda telah dikunci oleh pengurus. Harap hubungi Admin.", "error");
-                }
+            if (currentRole === "member" || currentRole === "intel") {
+                if (myHakAbsen === "kunci_paksa") { return customAlert("Akses Diblokir", "Akses QR Code Anda dikunci. Harap hubungi Admin.", "error"); }
                 
                 if (myHakAbsen === "otomatis") {
-                    let minSedekahTarget = 0;
-                    const cDoc = await getDoc(doc(db, "settings", "app_config"));
+                    let minSedekahTarget = 0; const cDoc = await getDoc(doc(db, "settings", "app_config"));
                     if(cDoc.exists() && cDoc.data().min_sedekah_absen) minSedekahTarget = Number(cDoc.data().min_sedekah_absen);
                     
                     if (myTotalSedekahAllTime < minSedekahTarget) {
-                        return customAlert("Gembok Sedekah", `Total donasi kas all-time Anda baru mencapai Rp ${myTotalSedekahAllTime.toLocaleString('id-ID')}.\n\nAnda belum memenuhi syarat minimum partisipasi kas (Rp ${minSedekahTarget.toLocaleString('id-ID')}) untuk membuka Barcode. Hubungi Admin untuk pendaftaran manual.`, "warning");
+                        return customAlert("Gembok Sedekah", `Total donasi kas all-time Anda baru mencapai Rp ${myTotalSedekahAllTime.toLocaleString('id-ID')}.\nAnda belum memenuhi syarat minimum (Rp ${minSedekahTarget.toLocaleString('id-ID')}) untuk membuka Barcode.`, "warning");
                     }
                 }
                 
-                const qrData = currentUserEmail; 
-                document.getElementById('imgMemberQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(qrData)}`;
-                document.getElementById('qrNameText').innerText = currentUserName;
-                document.getElementById('modalMemberQR').classList.add('show');
-            } else { 
-                checkGPSAndOpenScanner(); 
-            }
+                document.getElementById('imgMemberQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(currentUserEmail)}`;
+                document.getElementById('qrNameText').innerText = currentUserName; document.getElementById('modalMemberQR').classList.add('show');
+            } else { checkGPSAndOpenScanner(); }
         }
 
         function getDistanceFromLatLonInM(lat1, lon1, lat2, lon2) {
@@ -673,129 +561,67 @@
         }
 
         function checkGPSAndOpenScanner() {
-            if (!navigator.geolocation) return customAlert("Error GPS", "HP Anda tidak mendukung fitur Lokasi GPS.", "error");
-            
-            showLoading("Mencari Sinyal Satelit GPS...");
+            if (!navigator.geolocation) return customAlert("Error GPS", "HP Anda tidak mendukung Lokasi GPS.", "error");
+            showLoading("Mencari Satelit...");
             navigator.geolocation.getCurrentPosition(
                 (pos) => {
                     hideLoading();
-                    const lat = pos.coords.latitude; const lon = pos.coords.longitude;
-                    const evtLat = parseFloat(currentEvent.lat); const evtLng = parseFloat(currentEvent.lng);
-                    const dist = getDistanceFromLatLonInM(lat, lon, evtLat, evtLng);
-                    
+                    const dist = getDistanceFromLatLonInM(pos.coords.latitude, pos.coords.longitude, parseFloat(currentEvent.lat), parseFloat(currentEvent.lng));
                     if (dist <= currentEvent.radius) { openScanner(); } 
                     else {
-                        if (currentRole === 'superadmin') {
-                            customConfirm("Peringatan Jarak Satelit", `Anda berada ${Math.round(dist)} meter dari lokasi acara. Karena Anda Superadmin, apakah ingin memaksa buka Radar?`, () => { openScanner(); });
-                        } else { 
-                            customAlert("Akses Ditolak", `Anda berada ${Math.round(dist)} meter dari lokasi acara. Harap mendekat ke titik kordinat (Toleransi: ${currentEvent.radius}m) untuk membuka Scanner.`, "error"); 
-                        }
+                        if (currentRole === 'superadmin' || currentRole === 'developer') { customConfirm("Peringatan Jarak", `Jarak ${Math.round(dist)}m dari lokasi. Karena Anda Superadmin/Dev, ingin paksa buka?`, () => { openScanner(); });
+                        } else { customAlert("Akses Ditolak", `Jarak ${Math.round(dist)}m dari lokasi acara (Toleransi: ${currentEvent.radius}m). Harap mendekat ke titik kordinat.`, "error"); }
                     }
                 },
                 (err) => { 
                     hideLoading();
-                    if(currentRole === 'superadmin') { 
-                        customConfirm("Sinyal GPS Gagal/Nyangkut!", "Karena Anda Superadmin, apakah ingin memaksa Bypass buka Radar Scanner?", () => { openScanner(); });
-                    } else { customAlert("Gagal Melacak GPS", "Pastikan fitur lokasi di HP dan Browser menyala lalu coba lagi.", "error"); }
-                },
-                { enableHighAccuracy: true, timeout: 10000 }
+                    if(currentRole === 'superadmin' || currentRole === 'developer') { customConfirm("Sinyal GPS Gagal!", "Karena Anda Pengurus Inti, ingin Bypass buka Scanner?", () => { openScanner(); });
+                    } else { customAlert("Gagal Melacak", "Pastikan fitur lokasi di HP menyala.", "error"); }
+                }, { enableHighAccuracy: true, timeout: 10000 }
             );
         }
 
         function openScanner() {
             document.getElementById('modalAdminScanner').classList.add('show');
-            if (!html5QrcodeScanner) {
-                html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: {width: 250, height: 250} }, false);
-                html5QrcodeScanner.render(onScanSuccess, () => {}); 
-            }
+            if (!html5QrcodeScanner) { html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: {width: 250, height: 250} }, false); html5QrcodeScanner.render(onScanSuccess, () => {}); }
             startLiveHadirListener(); 
         }
 
         function startLiveHadirListener() {
-            const qLive = query(collection(db, "absensi_acara"), where("event_name", "==", currentEvent.nama_acara));
-            liveUnsubscribe = onSnapshot(qLive, (snap) => {
-                let listData = [];
-                snap.forEach(d => listData.push(d.data()));
-                listData.sort((a,b) => {
-                    let t1 = a.scan_time ? a.scan_time.toMillis() : 0;
-                    let t2 = b.scan_time ? b.scan_time.toMillis() : 0;
-                    return t2 - t1; 
-                });
+            liveUnsubscribe = onSnapshot(query(collection(db, "absensi_acara"), where("event_name", "==", currentEvent.nama_acara)), (snap) => {
+                let listData = []; snap.forEach(d => listData.push(d.data()));
+                listData.sort((a,b) => { let t1 = a.scan_time ? a.scan_time.toMillis() : 0; let t2 = b.scan_time ? b.scan_time.toMillis() : 0; return t2 - t1; });
 
                 let html = "";
-                listData.forEach(data => {
-                    const time = data.scan_time ? data.scan_time.toDate().toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'}) : '';
-                    html += `<div class="live-item"><span><i class="fa-solid fa-check-circle" style="color:var(--emerald-main);"></i> ${data.member_name}</span><span>${time}</span></div>`;
-                });
-
-                document.getElementById('liveListContainer').innerHTML = html || "<div style='text-align:center; font-size:11px; color:var(--text-gray); font-weight:700;'>Belum ada yang hadir</div>";
+                listData.forEach(data => { const time = data.scan_time ? data.scan_time.toDate().toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'}) : ''; html += `<div class="live-item"><span><i class="fa-solid fa-check-circle" style="color:var(--emerald-main);"></i> ${data.member_name}</span><span>${time}</span></div>`; });
+                document.getElementById('liveListContainer').innerHTML = html || "<div style='text-align:center; font-size:11px; color:#999; font-weight:700;'>Belum ada yang hadir</div>";
                 document.getElementById('liveCount').innerText = listData.length;
             });
         }
 
-        window.closeScannerModal = function() {
-            document.getElementById('modalAdminScanner').classList.remove('show');
-            if(html5QrcodeScanner) { html5QrcodeScanner.clear(); html5QrcodeScanner = null; }
-            if(liveUnsubscribe) { liveUnsubscribe(); } 
-            toggleManualBypass(false);
-        }
-
-        window.toggleManualBypass = function(isManual) {
-            document.getElementById('scannerBox').style.display = isManual ? 'none' : 'block';
-            document.getElementById('manualBox').style.display = isManual ? 'block' : 'none';
-        }
+        window.closeScannerModal = function() { document.getElementById('modalAdminScanner').classList.remove('show'); if(html5QrcodeScanner) { html5QrcodeScanner.clear(); html5QrcodeScanner = null; } if(liveUnsubscribe) { liveUnsubscribe(); } toggleManualBypass(false); }
+        window.toggleManualBypass = function(isManual) { document.getElementById('scannerBox').style.display = isManual ? 'none' : 'block'; document.getElementById('manualBox').style.display = isManual ? 'block' : 'none'; }
 
         async function onScanSuccess(decodedText) {
             if(html5QrcodeScanner) html5QrcodeScanner.pause();
-            try {
-                await processAbsen(decodedText, false, "");
-                customAlert("Absen Berhasil", "Anggota dengan kode " + decodedText + " telah tercatat.", "success");
-            } catch(e) { customAlert("Gagal Absen", e.message, "error"); }
+            try { await processAbsen(decodedText, false, ""); customAlert("Absen Berhasil", "Kode " + decodedText + " tercatat.", "success"); } catch(e) { customAlert("Gagal", e.message, "error"); }
             setTimeout(() => { if(html5QrcodeScanner) html5QrcodeScanner.resume(); }, 2500);
         }
 
         window.submitManualAbsen = async function() {
             const manualName = document.getElementById('inputManualName').value;
-            if(!manualName) return customAlert("Form Kosong", "Ketik nama atau NIK member terlebih dahulu!", "warning");
-            try {
-                await processAbsen("Manual Bypass", true, manualName);
-                customAlert("Absen Manual Berhasil", "Member " + manualName + " telah tercatat hadir.", "success");
-                document.getElementById('inputManualName').value = "";
-            } catch(e) { customAlert("Gagal Absen", e.message, "error"); }
+            if(!manualName) return customAlert("Form Kosong", "Ketik nama/NIK member!", "warning");
+            try { await processAbsen("Manual Bypass", true, manualName); customAlert("Berhasil", "Member " + manualName + " tercatat hadir.", "success"); document.getElementById('inputManualName').value = ""; } catch(e) { customAlert("Gagal", e.message, "error"); }
         }
 
         async function processAbsen(scannedEmail, isManual, manualName) {
             const qCheck = query(collection(db, "absensi_acara"), where("event_name", "==", currentEvent.nama_acara), where("member_email", "==", scannedEmail));
-            if(!isManual) {
-                const snapCheck = await getDocs(qCheck);
-                if(!snapCheck.empty) throw new Error("Member ini SUDAH ABSEN sebelumnya!");
-            }
-
+            if(!isManual) { const snapCheck = await getDocs(qCheck); if(!snapCheck.empty) throw new Error("Member ini SUDAH ABSEN sebelumnya!"); }
             let memberName = manualName;
-            if (!isManual) {
-                const userDoc = await getDoc(doc(db, "users", scannedEmail));
-                if (userDoc.exists()) memberName = userDoc.data().nama_lengkap; else memberName = "Email Tidak Dikenali";
-            }
-
-            await addDoc(collection(db, "absensi_acara"), {
-                event_name: currentEvent.nama_acara,
-                member_email: isManual ? "MANUAL" : scannedEmail,
-                member_name: memberName,
-                is_manual: isManual,
-                scan_time: serverTimestamp(),
-                scanner_admin: currentUserName
-            });
+            if (!isManual) { const userDoc = await getDoc(doc(db, "users", scannedEmail)); if (userDoc.exists()) memberName = userDoc.data().nama_lengkap; else memberName = "Email Tidak Dikenali"; }
+            await addDoc(collection(db, "absensi_acara"), { event_name: currentEvent.nama_acara, member_email: isManual ? "MANUAL" : scannedEmail, member_name: memberName, is_manual: isManual, scan_time: serverTimestamp(), scanner_admin: currentUserName });
         }
     </script>
-    
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js').catch(err => {
-                    console.log('PWA SW Registration Failed:', err);
-                });
-            });
-        }
-    </script>
+    <script>if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW Fail', err)); }); }</script>
 </body>
 </html>
