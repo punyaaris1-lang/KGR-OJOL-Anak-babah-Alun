@@ -432,10 +432,10 @@
                                 document.querySelector('.content-area').style.opacity = '0.2'; document.querySelector('.content-area').style.pointerEvents = 'none'; return; 
                             } else { document.querySelector('.content-area').style.opacity = '1'; document.querySelector('.content-area').style.pointerEvents = 'auto'; }
 
-                            // SISTEM ILUSI KASTA
+                            // SISTEM ILUSI KASTA (MODE PENYUSUPAN UNTUK DEVELOPER)
                             if (currentRole === "developer") { 
                                 panel.style.display = "block"; document.getElementById('menuSuperadmin').style.display = "flex"; document.getElementById('menuBendahara').style.display = "flex"; document.getElementById('menuAdmin').style.display = "flex"; 
-                                rText.innerHTML = '<i class="fa-solid fa-user-secret"></i> Member (KASTA 0)'; rText.style.color = "var(--danger-red)"; 
+                                rText.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${displayBadge}`; rText.style.color = "var(--emerald-main)"; 
                             } else if (currentRole === "superadmin") { 
                                 panel.style.display = "block"; document.getElementById('menuSuperadmin').style.display = "flex"; document.getElementById('menuBendahara').style.display = "flex"; document.getElementById('menuAdmin').style.display = "flex"; 
                                 rText.innerHTML = '<i class="fa-solid fa-shield"></i> SUPERADMIN'; rText.style.color = "#0284C7"; 
@@ -446,7 +446,6 @@
                                 panel.style.display = "block"; document.getElementById('menuAdmin').style.display = "flex"; 
                                 rText.innerHTML = '<i class="fa-solid fa-shield"></i> ADMIN'; rText.style.color = "#0284C7"; 
                             } else { 
-                                // INTEL & MEMBER MURNI (Tetap keliatan sebagai MEMBER di layar)
                                 rText.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${displayBadge}`; rText.style.color = "var(--emerald-main)"; 
                             }
                         } else { auth.signOut(); window.location.href = 'login.html'; }

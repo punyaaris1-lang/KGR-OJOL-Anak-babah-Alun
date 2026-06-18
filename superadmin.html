@@ -12,103 +12,113 @@
     
     <style>
         :root { 
-            --emerald-main: #059669; --emerald-dark: #064E3B; 
-            --gold-accent: #FBBF24; --danger-red: #EF4444; --warning-yellow: #F59E0B;
-            --text-dark: #0F172A; --text-gray: #64748B; 
+            --bg-base: #F4F6F5; --text-dark: #111827; --text-gray: #4B5563; 
+            --emerald-main: #059669; --emerald-dark: #064E3B; --gold-accent: #FBBF24;
+            --color-danger: #DC2626; --color-warning: #F59E0B; --color-info: #0284C7;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
         
         body { background-color: #E2E8E4; display: flex; justify-content: center; min-height: 100vh; overflow: hidden; position: relative; color: var(--text-dark); margin: 0;}
 
-        /* NEON ORBS TERANG */
-        .orb { position: absolute; border-radius: 50%; filter: blur(70px); z-index: 0; animation: float 10s infinite alternate ease-in-out;}
-        .orb-1 { top: 10%; right: -10%; width: 250px; height: 250px; background: rgba(5, 150, 105, 0.2); }
-        .orb-2 { bottom: 10%; left: -10%; width: 300px; height: 300px; background: rgba(5, 150, 105, 0.15); animation-delay: -5s;}
-        @keyframes float { 0% { transform: translate(0, 0); } 100% { transform: translate(30px, 50px); } }
+        /* ORBS CAHAYA GLOWING DI BACKGROUND */
+        .orb { position: absolute; border-radius: 50%; filter: blur(60px); z-index: 0; animation: float 10s infinite alternate ease-in-out;}
+        .orb-1 { top: 5%; right: -10%; width: 250px; height: 250px; background: rgba(5, 150, 105, 0.15); }
+        .orb-2 { bottom: 5%; left: -10%; width: 300px; height: 300px; background: rgba(5, 150, 105, 0.1); animation-delay: -5s;}
+        @keyframes float { 0% { transform: translate(0, 0); } 100% { transform: translate(20px, 30px); } }
 
-        .app-container { width: 100%; max-width: 480px; background: transparent; display: flex; flex-direction: column; height: 100dvh; position: relative; z-index: 10; overflow-x: hidden; overflow-y: hidden; }
-        @media (min-width: 600px) { .app-container { height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 40px 80px rgba(0,0,0,0.15); border: 8px solid #FFFFFF; margin: auto; background: rgba(244, 246, 245, 0.85); backdrop-filter: blur(20px);} }
+        .app-container { 
+            width: 100%; max-width: 480px; 
+            background: linear-gradient(135deg, rgba(240, 253, 244, 0.8) 0%, rgba(226, 232, 228, 0.9) 100%);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            display: flex; flex-direction: column; height: 100dvh; position: relative; z-index: 10; overflow-x: hidden; overflow-y: hidden; 
+        }
+        @media (min-width: 600px) { .app-container { height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 30px 60px rgba(0,0,0,0.15); border: 8px solid #FFFFFF; margin: auto;} }
 
         /* EXECUTIVE HEADER KACA TERANG */
-        .exec-header { background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(20px); padding: 40px 24px 10px; color: var(--text-dark); position: relative; z-index: 10; border-bottom: 1px solid #FFF; }
+        .exec-header { background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding: 40px 24px 10px; color: var(--text-dark); position: relative; z-index: 10; border-bottom: 1px solid #FFF; box-shadow: 0 10px 25px rgba(5, 150, 105, 0.05);}
         .header-top { display: flex; align-items: center; gap: 15px; margin-bottom: 20px;}
-        .btn-back { width: 40px; height: 40px; border-radius: 12px; background: #FFF; display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text-dark); transition: 0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.05);}
+        .btn-back { width: 40px; height: 40px; border-radius: 12px; background: #FFF; border: 1px solid #FFF; display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text-dark); transition: 0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.05);}
         .btn-back:active { transform: scale(0.9); background: var(--emerald-main); color: #FFF; }
         .header-top h1 { font-size: 18px; font-weight: 900; letter-spacing: 0.5px; text-transform: uppercase;}
         
-        .nav-tabs { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none;}
+        /* HORIZONTAL TABS */
+        .nav-tabs { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none;}
         .nav-tabs::-webkit-scrollbar { display: none; }
-        .tab-btn { flex-shrink: 0; padding: 10px 18px; border-radius: 12px; font-size: 11px; font-weight: 800; background: #FFF; color: var(--text-gray); cursor: pointer; border: 1px solid rgba(0,0,0,0.05); transition: 0.2s; text-transform: uppercase; letter-spacing: 0.5px;}
-        .tab-btn.active { background: var(--emerald-main); color: #FFF; border-color: var(--emerald-main); box-shadow: 0 5px 15px rgba(5,150,105,0.3);}
+        .tab-btn { flex-shrink: 0; padding: 10px 18px; border-radius: 12px; font-size: 11px; font-weight: 800; background: #FFF; color: var(--text-gray); cursor: pointer; border: 1px solid #FFF; transition: 0.2s; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 5px 15px rgba(0,0,0,0.02);}
+        .tab-btn.active { background: var(--emerald-main); color: #FFF; border-color: var(--emerald-main); box-shadow: 0 5px 15px rgba(5,150,105,0.2);}
 
-        .content-area { flex-grow: 1; overflow-y: auto; padding: 20px 20px 100px; scrollbar-width: none; }
+        .content-area { flex-grow: 1; overflow-y: auto; padding: 25px 20px 100px; scrollbar-width: none; }
         .content-area::-webkit-scrollbar { display: none; }
+
         .view-section { display: none; animation: fadeIn 0.4s ease; }
         .view-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .hrd-filters { display: flex; gap: 8px; margin-bottom: 20px; padding: 6px; background: rgba(255,255,255,0.5); border-radius: 16px; border: 1px solid #FFF;}
+        /* HRD FILTER PILLS */
+        .hrd-filters { display: flex; gap: 8px; margin-bottom: 20px; background: rgba(255,255,255,0.5); backdrop-filter: blur(10px); padding: 6px; border-radius: 16px; border: 1px solid #FFF; box-shadow: 0 5px 15px rgba(5,150,105,0.05);}
         .hrd-pill { flex: 1; padding: 10px; border-radius: 12px; font-size: 11px; font-weight: 800; text-align: center; cursor: pointer; transition: 0.2s; color: var(--text-gray); border: none; background: transparent;}
-        .hrd-pill.active { background: var(--emerald-main); color: #FFF; box-shadow: 0 4px 10px rgba(5,150,105,0.3);}
-        .badge-count { background: var(--danger-red); color: #FFF; padding: 2px 6px; border-radius: 6px; font-size: 9px; margin-left: 5px; vertical-align: middle;}
+        .hrd-pill.active { background: var(--emerald-main); color: #FFF; box-shadow: 0 4px 10px rgba(5,150,105,0.2);}
+        .badge-count { background: var(--color-danger); color: #FFF; padding: 2px 6px; border-radius: 6px; font-size: 9px; margin-left: 5px; vertical-align: middle;}
 
-        .data-card { background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(15px); border-radius: 20px; padding: 18px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; border: 1px solid #FFF; box-shadow: 0 10px 25px rgba(5, 150, 105, 0.05);}
-        .data-card:active { transform: scale(0.98); background: rgba(255,255,255,0.9); }
+        /* CARDS KACA MENGKILAP */
+        .data-card { background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(15px); border-radius: 20px; padding: 18px; margin-bottom: 12px; box-shadow: 0 10px 25px rgba(5, 150, 105, 0.05), inset 0 0 10px rgba(255,255,255,0.8); border: 1px solid #FFF; display: flex; justify-content: space-between; align-items: center; transition: 0.2s;}
+        .data-card:active { transform: scale(0.98); }
         .dc-info h4 { font-size: 14px; font-weight: 900; color: var(--text-dark); margin-bottom: 4px; text-transform: uppercase;}
         .dc-info p { font-size: 11px; font-weight: 600; color: var(--text-gray); display: flex; align-items: center; gap: 5px; margin-bottom: 6px;}
         .status-tag { font-size: 9px; font-weight: 800; padding: 4px 8px; border-radius: 6px; text-transform: uppercase;}
-        .st-pending { background: rgba(245, 158, 11, 0.15); color: var(--gold-accent); }
-        .st-active { background: rgba(16, 185, 129, 0.15); color: var(--emerald-main); }
-        .st-banned { background: rgba(239, 68, 68, 0.15); color: var(--danger-red); }
+        .st-pending { background: #FEF3C7; color: #D97706; }
+        .st-active { background: #D1FAE5; color: #059669; }
+        .st-banned { background: #FEE2E2; color: #DC2626; }
         
-        .btn-edit-round { width: 40px; height: 40px; border-radius: 50%; background: #FFF; color: var(--emerald-main); border: 1px solid #FFF; font-size: 16px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.05);}
+        .btn-edit-round { width: 40px; height: 40px; border-radius: 50%; background: #FFF; color: var(--emerald-main); border: 1px solid #FFF; font-size: 16px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; box-shadow: 0 5px 15px rgba(5,150,105,0.1);}
         .btn-edit-round:active { transform: scale(0.9); background: var(--emerald-main); color: #FFF;}
 
-        .form-section { background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(15px); border-radius: 24px; padding: 25px 20px; margin-bottom: 20px; border: 1px solid #FFF; box-shadow: 0 10px 25px rgba(5, 150, 105, 0.05);}
+        /* MODERN FORMS KACA */
+        .form-section { background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(15px); border-radius: 24px; padding: 25px 20px; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(5, 150, 105, 0.05), inset 0 0 10px rgba(255,255,255,0.8); border: 1px solid #FFF;}
         .section-title { font-size: 14px; font-weight: 900; color: var(--text-dark); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px;}
         .section-title i { color: var(--emerald-main); font-size: 18px;}
         
-        .form-group { margin-bottom: 16px; text-align: left;}
+        .form-group { margin-bottom: 16px; }
         .form-label { display: block; font-size: 11px; font-weight: 800; color: var(--text-gray); margin-bottom: 6px; text-transform: uppercase;}
-        .form-input, .form-select { width: 100%; padding: 15px; border-radius: 12px; border: 2px solid rgba(0,0,0,0.06); font-size: 13px; font-weight: 700; color: var(--text-dark); outline: none; background: #F8FAFC; transition: 0.2s;}
+        .form-input, .form-select { width: 100%; padding: 15px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.6); font-size: 13px; font-weight: 700; color: var(--text-dark); outline: none; background: rgba(255,255,255,0.8); transition: 0.2s;}
         .form-input:focus, .form-select:focus { border-color: var(--emerald-main); background: #FFF; box-shadow: 0 5px 15px rgba(5,150,105,0.1);}
         
         .btn-primary { width: 100%; padding: 16px; border-radius: 14px; font-size: 13px; font-weight: 900; background: var(--text-dark); color: #FFF; border: none; cursor: pointer; transition: 0.2s; box-shadow: 0 8px 20px rgba(0,0,0,0.15); display: flex; justify-content: center; align-items: center; gap: 8px;}
         .btn-primary:active { transform: scale(0.96); }
 
-        /* MODAL KACA TERANG */
-        .modal-overlay, .cp-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s;}
-        .modal-overlay { align-items: flex-end; padding: 0; }
-        .cp-overlay { padding: 20px; }
-        .modal-overlay.show, .cp-overlay.show { opacity: 1; visibility: visible; }
-        
-        .modal-content { background: rgba(255, 255, 255, 0.95); border: 1px solid #FFF; border-radius: 32px 32px 0 0; padding: 30px 24px 40px; width: 100%; max-width: 480px; transform: translateY(100%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1); box-shadow: 0 -10px 40px rgba(0,0,0,0.2); color: var(--text-dark); max-height: 85vh; overflow-y: auto;}
+        /* MODAL BOUNCY TERANG */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: flex-end; z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s ease; }
+        .modal-overlay.show { opacity: 1; visibility: visible; }
+        .modal-content { background: rgba(255,255,255,0.95); border: 1px solid #FFF; border-radius: 32px 32px 0 0; padding: 30px 24px 40px; width: 100%; max-width: 480px; transform: translateY(100%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1); max-height: 85vh; overflow-y: auto; box-shadow: 0 -10px 40px rgba(0,0,0,0.2);}
         .modal-overlay.show .modal-content { transform: translateY(0); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-        .modal-header h3 { font-size: 18px; font-weight: 900; }
-        .btn-close-modal { width: 34px; height: 34px; border-radius: 50%; border: none; background: #F1F5F9; display: flex; justify-content: center; align-items: center; font-size: 16px; cursor: pointer; color: var(--text-dark); transition: 0.2s;}
+        .modal-header h3 { font-size: 18px; font-weight: 900; color: var(--text-dark); }
+        .btn-close-modal { width: 34px; height: 34px; border-radius: 50%; border: none; background: #F4F6F5; display: flex; justify-content: center; align-items: center; font-size: 16px; cursor: pointer; color: var(--text-dark); transition: 0.2s;}
         .btn-close-modal:active { transform: scale(0.9); }
 
-        .empty-state { text-align: center; padding: 40px 20px; color: var(--text-gray); border: 2px dashed rgba(0,0,0,0.1); border-radius: 20px; }
+        .empty-state { text-align: center; padding: 40px 20px; color: var(--text-gray); border: 2px dashed rgba(255,255,255,0.5); border-radius: 20px; }
         .empty-state i { font-size: 35px; margin-bottom: 10px; opacity: 0.4; }
         .empty-state p { font-size: 13px; font-weight: 700; }
 
         /* CUSTOM POPUP TERANG GLOWING */
-        .cp-box { background: rgba(255, 255, 255, 0.95); border: 1px solid #FFF; border-radius: 30px; width: 100%; max-width: 320px; text-align: center; padding: 30px 24px; transform: scale(0.9); transition: 0.3s; box-shadow: 0 25px 50px rgba(0,0,0,0.2); color: var(--text-dark); }
+        .cp-overlay { position: fixed; inset: 0; background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(8px); z-index: 99999; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px; }
+        .cp-overlay.show { opacity: 1; visibility: visible; }
+        .cp-box { background: rgba(255,255,255,0.95); border: 1px solid #FFF; border-radius: 28px; width: 100%; max-width: 320px; text-align: center; padding: 30px 24px; transform: scale(0.9); transition: 0.3s; box-shadow: 0 25px 50px rgba(0,0,0,0.2); }
         .cp-overlay.show .cp-box { transform: scale(1); }
         .cp-icon { width: 65px; height: 65px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; margin: 0 auto 15px; }
         .cp-icon.success { background: rgba(16, 185, 129, 0.15); color: var(--emerald-main); }
-        .cp-icon.error { background: rgba(239, 68, 68, 0.15); color: var(--danger-red); }
-        .cp-icon.warning { background: rgba(245, 158, 11, 0.15); color: var(--gold-accent); }
-        .cp-title { font-size: 18px; font-weight: 900; margin-bottom: 8px; }
+        .cp-icon.error { background: rgba(239, 68, 68, 0.15); color: var(--color-danger); }
+        .cp-icon.warning { background: rgba(245, 158, 11, 0.15); color: var(--color-warning); }
+        .cp-icon.info { background: rgba(2, 132, 199, 0.15); color: var(--color-info); }
+        .cp-title { font-size: 18px; font-weight: 900; color: var(--text-dark); margin-bottom: 8px; }
         .cp-desc { font-size: 12px; font-weight: 600; color: var(--text-gray); margin-bottom: 25px; line-height: 1.5; }
         .cp-btn-wrap { display: flex; gap: 10px; }
         .cp-btn { flex: 1; padding: 15px; border-radius: 14px; font-size: 13px; font-weight: 800; border: none; cursor: pointer; transition: 0.2s; }
         .cp-btn:active { transform: scale(0.95); }
-        .cp-btn-primary { background: var(--emerald-main); color: #FFF; width: 100%; box-shadow: 0 8px 20px rgba(5,150,105,0.3);}
-        .cp-btn-cancel { background: #F1F5F9; color: var(--text-dark); border: 1px solid rgba(0,0,0,0.05);}
-        .cp-btn-danger { background: var(--danger-red); color: #FFF; box-shadow: 0 8px 20px rgba(239,68,68,0.3);}
+        .cp-btn-primary { background: var(--emerald-main); color: #FFF; width: 100%; box-shadow: 0 5px 15px rgba(5,150,105,0.2);}
+        .cp-btn-cancel { background: #F4F6F5; color: var(--text-dark); }
+        .cp-btn-danger { background: var(--color-danger); color: #FFF; box-shadow: 0 5px 15px rgba(220,38,38,0.2);}
         
         .spinner-custom { border: 4px solid rgba(5,150,105,0.1); width: 50px; height: 50px; border-radius: 50%; border-left-color: var(--emerald-main); animation: spin 1s linear infinite; margin: 0 auto 15px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -116,6 +126,7 @@
 </head>
 <body>
     
+    <!-- CUSTOM ALERTS -->
     <div class="cp-overlay" id="customAlert">
         <div class="cp-box">
             <div class="cp-icon success" id="caIcon"><i class="fa-solid fa-check"></i></div>
@@ -168,7 +179,7 @@
                 <!-- MENU KHUSUS DEVELOPER (KASTA 0) -->
                 <button class="tab-btn dev-only" style="display:none;" onclick="switchNavTab('viewRadar', this)"><i class="fa-solid fa-satellite-dish"></i> Radar</button>
                 <button class="tab-btn dev-only" style="display:none;" onclick="switchNavTab('viewSistem', this)"><i class="fa-solid fa-gear"></i> Sistem</button>
-                <button class="tab-btn dev-only" style="display:none; color: var(--danger-red);" onclick="switchNavTab('viewMatriks', this)"><i class="fa-solid fa-user-secret"></i> Matriks Kasta</button>
+                <button class="tab-btn dev-only" style="display:none; color: var(--color-danger);" onclick="switchNavTab('viewMatriks', this)"><i class="fa-solid fa-user-secret"></i> Matriks Kasta</button>
             </div>
         </div>
 
@@ -257,7 +268,7 @@
             <!-- TAB 5: MATRIKS KASTA - SENJATA RAHASIA DEVELOPER (HANYA DEVELOPER) -->
             <div id="viewMatriks" class="view-section dev-only" style="display:none;">
                 <div class="form-section" style="border-color: rgba(239, 68, 68, 0.3); background: rgba(254, 226, 226, 0.3);">
-                    <div class="section-title" style="color: var(--danger-red);"><i class="fa-solid fa-mask"></i> Matriks Ilusi & Kasta</div>
+                    <div class="section-title" style="color: var(--color-danger);"><i class="fa-solid fa-mask"></i> Matriks Ilusi & Kasta</div>
                     <p style="font-size: 11px; font-weight: 700; color: var(--text-gray); margin-bottom: 20px; line-height: 1.5;">Gunakan panel ini untuk memberikan akses intel / admin bayangan kepada anggota tanpa mengubah tampilan badge mereka di buku kontak.</p>
                     
                     <form id="formMatriks" onsubmit="saveMatriks(event)">
@@ -280,7 +291,7 @@
                                 <option value="bendahara">Bendahara (Kas)</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn-primary" style="background: var(--danger-red);"><i class="fa-solid fa-syringe"></i> Suntikkan Kasta</button>
+                        <button type="submit" class="btn-primary" style="background: var(--color-danger);"><i class="fa-solid fa-syringe"></i> Suntikkan Kasta</button>
                     </form>
                 </div>
             </div>
@@ -359,7 +370,7 @@
             </div>
             
             <div style="display: flex; gap: 10px; margin-top: 25px;">
-                <button type="button" class="btn-primary" style="flex: 1; background: rgba(239, 68, 68, 0.15); color: var(--danger-red); box-shadow: none;" onclick="actionTrx('reject')"><i class="fa-solid fa-xmark"></i> Tolak</button>
+                <button type="button" class="btn-primary" style="flex: 1; background: rgba(239, 68, 68, 0.15); color: var(--color-danger); box-shadow: none;" onclick="actionTrx('reject')"><i class="fa-solid fa-xmark"></i> Tolak</button>
                 <button type="button" class="btn-primary" style="flex: 1; background: var(--emerald-main);" onclick="actionTrx('approve')"><i class="fa-solid fa-check"></i> Terima Uang</button>
             </div>
         </div>
@@ -396,8 +407,7 @@
         }
         function decryptData(encoded) {
             if (!encoded) return "";
-            try {
-                let decoded = decodeURIComponent(escape(atob(encoded))); return decoded.split("").map(char => String.fromCharCode(char.charCodeAt(0) - CRYPTO_OFFSET)).join("");
+            try { let decoded = decodeURIComponent(escape(atob(encoded))); return decoded.split("").map(char => String.fromCharCode(char.charCodeAt(0) - CRYPTO_OFFSET)).join("");
             } catch(e) { return encoded; } 
         }
 
@@ -413,30 +423,28 @@
                 const docSnap = await getDoc(doc(db, "users", user.email));
                 if (docSnap.exists()) {
                     currentUserRole = (docSnap.data().role || "member").toLowerCase();
-                    // Developer & Superadmin & Bendahara & Admin
                     if (["developer", "superadmin", "admin", "bendahara"].includes(currentUserRole)) {
                         initAdminPanel();
-                    } else { window.location.href = 'index.html'; } // Kick intel & member murni dari halaman ini
+                    } else { window.location.href = 'index.html'; } 
                 }
             } else { window.location.href = 'login.html'; }
         });
 
         function initAdminPanel() {
-            // DEVELOPER (Kasta 0): Buka semua gembok rahasia
             if (currentUserRole === 'developer') {
                 document.getElementById('uiHeaderTitle').innerText = "Arsitek Sistem (Kasta 0)";
                 document.querySelectorAll('.dev-only').forEach(el => el.style.display = 'block');
                 loadConfigData();
             } else if (currentUserRole === 'superadmin') {
-                document.getElementById('uiHeaderTitle').innerText = "Superadmin (Kasta 1)";
+                document.getElementById('uiHeaderTitle').innerText = "SUPERADMIN (KASTA 1)";
             }
 
-            // ATUR DROPDOWN ROLE BERDASARKAN KASTA YANG LOGIN
             const roleSelect = document.getElementById('editRole');
-            if (currentUserRole === 'developer') {
-                roleSelect.innerHTML = `<option value="member">Member</option><option value="admin">Admin</option><option value="bendahara">Bendahara</option><option value="superadmin">Superadmin</option><option value="developer">⭐ Developer (Dewa)</option>`;
+            
+            // 🔥 Gembok sementara dibuka biar Superadmin bisa milih opsi Developer buat naik pangkat! 🔥
+            if (currentUserRole === 'developer' || currentUserRole === 'superadmin') {
+                roleSelect.innerHTML = `<option value="member">Member</option><option value="intel">Intel (Bayangan)</option><option value="admin">Admin</option><option value="bendahara">Bendahara</option><option value="superadmin">Superadmin</option><option value="developer">⭐ Developer (Dewa)</option>`;
             } else {
-                // Superadmin (Bang Deny) tidak bisa ngangkat orang jadi Superadmin/Developer.
                 roleSelect.innerHTML = `<option value="member">Member</option><option value="admin">Admin</option><option value="bendahara">Bendahara</option>`;
             }
 
@@ -449,9 +457,6 @@
             document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active')); document.getElementById(viewId).classList.add('active');
         }
 
-        // ==============================================
-        // TAB 1: HRD & ANGGOTA (KASTA 0 & 1)
-        // ==============================================
         window.filterHrd = function(state, el) {
             document.querySelectorAll('.hrd-pill').forEach(p => p.classList.remove('active')); el.classList.add('active');
             filterHrdState = state; renderAnggota();
@@ -469,7 +474,6 @@
                 document.getElementById('badgePendingCount').innerText = pendingCount;
                 renderAnggota();
                 
-                // Load Dropdown Matriks
                 if(currentUserRole === 'developer') loadMatriksUsers();
             });
         }
@@ -495,9 +499,8 @@
                 const hakAbsen = u.hak_absen || "otomatis";
                 let hakIcon = '';
                 if(hakAbsen === 'buka_paksa') hakIcon = '<i class="fa-solid fa-lock-open" style="color:var(--emerald-main); margin-left:5px;" title="Bypass Barcode"></i>';
-                else if(hakAbsen === 'kunci_paksa') hakIcon = '<i class="fa-solid fa-lock" style="color:var(--danger-red); margin-left:5px;" title="Barcode Dikunci"></i>';
+                else if(hakAbsen === 'kunci_paksa') hakIcon = '<i class="fa-solid fa-lock" style="color:var(--color-danger); margin-left:5px;" title="Barcode Dikunci"></i>';
 
-                // Ilusi Tag jika intel (Superadmin tetep taunya dia Member secara visual di sini, kecuali diedit)
                 const dispRole = u.custom_badge || u.role || "member";
 
                 return `
@@ -522,18 +525,12 @@
             document.getElementById('editWa').value = u.no_wa || "";
             document.getElementById('editNik').value = decryptData(u.nik || "");
             
-            // PENGAMAN SUPERADMIN: Bang Deny gak boleh ganti role punya Intel / Developer biar ilusi gak hancur.
             const roleSelect = document.getElementById('editRole');
             if (currentUserRole !== 'developer' && (u.role === 'developer' || u.role === 'intel')) {
-                roleSelect.disabled = true; // Kunci dropdown
-                // Set value buatan biar dropdown gak error visual
-                let opt = document.createElement('option'); opt.value = u.role; opt.text = "Akses Khusus (Terkunci)";
-                roleSelect.appendChild(opt);
-                roleSelect.value = u.role;
-            } else {
-                roleSelect.disabled = false;
-                roleSelect.value = (u.role || "member").toLowerCase();
+                // Di kondisi asli nanti Bang Deny gak bisa ngedit ini. 
+                // Tapi saat ini lu masih kebaca Superadmin, jadi IF di atas (baris 350-an) udah lu buka gemboknya sementara.
             }
+            roleSelect.value = (u.role || "member").toLowerCase();
 
             document.getElementById('editStatus').value = u.status || "Active";
             document.getElementById('editHakAbsen').value = u.hak_absen || "otomatis";
@@ -553,28 +550,19 @@
                     no_wa: document.getElementById('editWa').value,
                     nik: encNik,
                     status: document.getElementById('editStatus').value,
-                    hak_absen: document.getElementById('editHakAbsen').value
+                    hak_absen: document.getElementById('editHakAbsen').value,
+                    role: document.getElementById('editRole').value 
                 };
 
-                // Hanya update role jika dropdown tidak di-disable (Bukan Bang Deny yang lagi ngedit Intel)
-                if(!document.getElementById('editRole').disabled) {
-                    updates.role = document.getElementById('editRole').value;
-                }
-
                 await updateDoc(doc(db, "users", email), updates);
-                hideLoading(); customAlert("Berhasil", "Data anggota berhasil dimoderasi.", "success");
+                hideLoading(); customAlert("Berhasil", "Data anggota berhasil dimoderasi. (Jika ubah kasta sendiri, silahkan Refresh halaman)", "success");
                 document.getElementById('modalEditMember').classList.remove('show');
             } catch(error) { hideLoading(); customAlert("Gagal", "Error menyimpan data.", "error"); }
         }
 
-        // ==============================================
-        // SENJATA RAHASIA DEVELOPER (MATRIKS KASTA)
-        // ==============================================
         window.loadMatriksUsers = function() {
             let options = '<option value="">-- Pilih Anggota Intel --</option>';
-            allUsers.forEach(u => {
-                options += `<option value="${u.email}">${u.nama_lengkap} (${u.email})</option>`;
-            });
+            allUsers.forEach(u => { options += `<option value="${u.email}">${u.nama_lengkap} (${u.email})</option>`; });
             document.getElementById('matriksSelectUser').innerHTML = options;
         }
 
@@ -605,9 +593,6 @@
             } catch(error) { hideLoading(); customAlert("Gagal", "Gagal menyuntikkan kasta.", "error"); }
         }
 
-        // ==============================================
-        // TAB 2: VERIFIKASI KAS
-        // ==============================================
         let pendingKas = [];
         function loadKasPending() {
             onSnapshot(query(collection(db, "transactions"), orderBy("tanggal", "desc")), (snap) => {
@@ -655,9 +640,6 @@
             });
         }
 
-        // ==============================================
-        // TAB 3 & 4: SISTEM & RADAR (HANYA DEVELOPER)
-        // ==============================================
         async function loadConfigData() {
             const sys = await getDoc(doc(db, "settings", "app_config"));
             if(sys.exists()) {
