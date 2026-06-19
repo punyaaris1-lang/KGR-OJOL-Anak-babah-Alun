@@ -77,32 +77,33 @@
         .app-container::-webkit-scrollbar { display: none; }
         @media (min-width: 600px) { .app-container { max-width: 480px; height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 40px 80px rgba(0,0,0,0.15); border: 8px solid #FFFFFF; margin: auto; background: rgba(244, 246, 245, 0.85); backdrop-filter: blur(20px);} }
 
-        /* HEADER FIX: MENGGUNAKAN FOTO CROP DARI USER */
+        /* HEADER FIX: ESTETIKA PRESISI (TIDAK ADA RUANG KOSONG) */
         .header-cover { 
-            position: relative; width: 100%; height: 280px; min-height: 280px; flex-shrink: 0; 
-            background-image: url('bg-header.jpg'); /* PASTIKAN FILE CROP LU DINAMAIN INI */
-            background-size: cover; 
-            background-position: center center; /* Sempurna di tengah */
+            position: relative; width: 100%; height: 275px; min-height: 275px; flex-shrink: 0; 
+            background-color: #0F172A; /* Warna dasar jika foto telat load */
+            background-image: url('bg-header.jpg'); 
+            background-size: cover; /* Pastikan selalu memenuhi ruang tanpa bolong */
+            background-position: center center; /* Fokus wajah presisi di tengah */
             background-repeat: no-repeat;
             border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; z-index: 1; 
             box-shadow: 0 15px 35px rgba(5, 150, 105, 0.15); 
         }
         .header-overlay { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 100%); 
+            background: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0.9) 100%); 
             border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; 
         }
 
-        /* LOGO FIX: DITURUNKAN PRESISI */
+        /* LOGO FIX: POSISI DIANGKAT SEDIKIT BIAR GAK NABRAK PROFIL */
         .brand-container { 
-            position: absolute; top: auto; bottom: 0px; left: 0; width: 100%; 
+            position: absolute; top: auto; bottom: 25px; left: 0; width: 100%; 
             text-align: center; z-index: 10; padding: 0 20px; 
         }
 
         /* PROFILE LAYOUT (KIRI FOTO, KANAN NAMA + GEAR) */
         .profile-container { 
             display: flex; justify-content: space-between; align-items: flex-start; 
-            padding: 0 24px; margin-top: -20px; 
+            padding: 0 24px; margin-top: -25px; 
             position: relative; z-index: 10; margin-bottom: 25px;
         }
         .profile-pic { 
@@ -236,7 +237,7 @@
 
     <!-- SPLASH SCREEN ANIMATION DENGAN TYPEWRITER -->
     <div id="splashScreen">
-        <img src="logo.png" class="splash-logo" alt="Logo KGR">
+        <img src="logo2.png" class="splash-logo" alt="Logo KGR">
         <div class="splash-text" id="typewriterText"></div>
     </div>
 
@@ -249,8 +250,8 @@
         <div class="header-cover">
             <div class="header-overlay"></div>
             <div class="brand-container">
-                <!-- LOGO DENGAN TRANSLATE Y SUPAYA TURUN PRESISI -->
-                <img src="logo.png" alt="Ojol Anak Babah Alun" style="width: 75%; max-width: 220px; filter: drop-shadow(0px 8px 15px rgba(0,0,0,0.8)); margin: 0 auto; display: block; transform: translateY(12px);">
+                <!-- LOGO UKURAN IDEAL & POSISI AMAN (TIDAK NABRAK PROFIL) -->
+                <img src="logo.png" alt="Ojol Anak Babah Alun" style="width: 70%; max-width: 210px; filter: drop-shadow(0px 8px 15px rgba(0,0,0,0.8)); margin: 0 auto; display: block;">
             </div>
         </div>
 
@@ -440,7 +441,7 @@
 
     <!-- SCRIPT JAVASCRIPT UNTUK EFEK TYPEWRITER (MESIN TIK) -->
     <script>
-        const textToType = "MEMUPUK BERKAH\nLEWAT SEDEKAH";
+        const textToType = "MEMUPUK BERKAH\nDENGAN SEDEKAH...";
         const twElement = document.getElementById('typewriterText');
         let twIndex = 0;
         
@@ -456,8 +457,8 @@
             }
         }
         
-        // Mulai ngetik setelah jeda dikit (400ms)
-        setTimeout(typeWriter, 400);
+        // Mulai ngetik setelah jeda dikit (300ms)
+        setTimeout(typeWriter, 300);
     </script>
 
     <script type="module">
