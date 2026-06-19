@@ -31,15 +31,14 @@
         
         body { 
             background-color: var(--bg-base); 
-            display: flex; justify-content: center; 
-            align-items: flex-start; /* FIX CELAH PUTIH: Memaksa aplikasi nempel ke langit-langit layar */
+            display: flex; justify-content: center; align-items: flex-start; 
             min-height: 100vh; margin: 0; overflow: hidden; position: relative;
             color: var(--text-dark);
         }
 
-        /* SPLASH SCREEN ANIMATION (TYPEWRITER) */
+        /* SPLASH SCREEN ANIMATION */
         #splashScreen {
-            position: fixed; inset: 0; background: #0F172A; 
+            position: fixed; inset: 0; background: #059669; 
             z-index: 9999999; display: flex; flex-direction: column; justify-content: center; align-items: center;
             transition: opacity 0.6s ease, visibility 0.6s ease, transform 0.6s ease;
         }
@@ -47,7 +46,7 @@
         .splash-logo { width: 220px; animation: pulseGlow 1.5s infinite alternate ease-in-out; }
         
         .splash-text { 
-            margin-top: 25px; font-size: 13px; font-weight: 800; color: var(--emerald-main); 
+            margin-top: 25px; font-size: 13px; font-weight: 800; color: var(--gold-accent); 
             letter-spacing: 1.5px; text-transform: uppercase; text-align: center; 
             line-height: 1.6; min-height: 45px; 
         }
@@ -78,11 +77,11 @@
         .app-container::-webkit-scrollbar { display: none; }
         @media (min-width: 600px) { .app-container { max-width: 480px; height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 40px 80px rgba(0,0,0,0.15); border: 8px solid #FFFFFF; margin: auto; background: rgba(244, 246, 245, 0.85); backdrop-filter: blur(20px);} }
 
-        /* HEADER & PHOTO */
+        /* HEADER & LOGO DI BAWAH */
         .header-cover { 
-            position: relative; width: 100%; height: 260px; min-height: 260px; flex-shrink: 0; 
+            position: relative; width: 100%; height: 280px; min-height: 280px; flex-shrink: 0; 
             background-color: #0F172A; 
-            background-image: url('bg-header.jpg'); /* File crop lu */
+            background-image: url('bg-header.jpg'); 
             background-size: cover; 
             background-position: center center; 
             background-repeat: no-repeat;
@@ -91,52 +90,56 @@
         }
         .header-overlay { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            /* Gelap di atas buat teks profil, dan gelap di bawah buat logo */
-            background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 35%, rgba(0,0,0,0.85) 100%); 
+            /* Bagian atas transparan biar muka jelas, bagian bawah hitam pekat buat logo */
+            background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.95) 100%); 
             border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; 
         }
 
-        /* NEW: TOP PROFILE BAR (M-Banking Style) */
-        .top-profile-bar {
-            position: absolute; top: 25px; left: 0; width: 100%;
-            padding: 0 24px; display: flex; justify-content: space-between; align-items: center;
-            z-index: 20;
+        .brand-container { 
+            position: absolute; bottom: 15px; left: 0; width: 100%; 
+            text-align: center; z-index: 10; padding: 0 20px; 
+            display: flex; justify-content: center;
         }
-        .top-profile-left { display: flex; align-items: center; gap: 12px; }
-        .top-profile-pic {
-            width: 48px; height: 48px; border-radius: 50%; border: 2px solid #FFF;
-            background-color: #F8FAFC; background-size: cover; background-position: center;
-            display: flex; justify-content: center; align-items: center; font-weight: 800; font-size: 20px; color: var(--emerald-main);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        .brand-container img {
+            width: 80%; max-width: 190px; /* Ukuran compact biar gak nutupin kaki bapak2 */
+            filter: drop-shadow(0px 5px 15px rgba(0,0,0,0.8));
         }
-        .top-profile-text h2 { 
-            font-size: 15px; font-weight: 900; color: #FFF; margin-bottom: 2px; 
-            text-shadow: 0 2px 4px rgba(0,0,0,0.6); letter-spacing: 0.5px;
-        }
-        .top-profile-text p { 
-            font-size: 9px; font-weight: 800; color: var(--emerald-light); 
-            text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 4px; 
-            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
-        }
-        
-        .top-btn-settings {
-            width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px);
-            display: flex; justify-content: center; align-items: center; color: #FFF; font-size: 18px; 
-            border: 1px solid rgba(255,255,255,0.4); cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-        .top-btn-settings:active { transform: scale(0.9); background: var(--emerald-main); border-color: var(--emerald-main);}
 
-        /* NEW: CENTER LOGO AT THE CURVE */
-        .center-logo-container {
-            position: relative; z-index: 10; 
-            margin-top: -55px; /* Narik logo ke atas supaya memotong garis lengkung header */
-            display: flex; justify-content: center; 
-            margin-bottom: 25px;
+        /* NEW PROFILE SECTION (DI BAWAH FOTO) */
+        .profile-section { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 20px 24px; z-index: 10; position: relative; 
         }
-        .center-logo-container img {
-            width: 170px; /* Ukuran pas, tidak nabrak, tidak kekecilan */
-            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.4));
+        .profile-left { display: flex; align-items: center; gap: 15px; }
+        
+        .profile-pic { 
+            width: 65px; height: 65px; border-radius: 50%; 
+            display: flex; justify-content: center; align-items: center; 
+            font-size: 26px; font-weight: 900; color: var(--emerald-main); 
+            background-size: cover; background-position: center; border: 3px solid #FFFFFF; 
+            background-color: #F8FAFC; box-shadow: 0 8px 20px rgba(5,150,105,0.15); 
+            cursor: pointer; transition: 0.2s; flex-shrink: 0;
         }
+        .profile-pic:active { transform: scale(0.95); }
+        
+        .profile-info { display: flex; flex-direction: column; }
+        .profile-info h2 { 
+            font-size: 20px; font-weight: 900; color: var(--text-dark); 
+            letter-spacing: -0.5px; margin-bottom: 2px;
+        }
+        .profile-info p { 
+            font-size: 11px; font-weight: 800; color: var(--emerald-main); 
+            text-transform: uppercase; letter-spacing: 1px; display: flex; 
+            align-items: center; gap: 4px; 
+        }
+
+        .btn-settings { 
+            width: 42px; height: 42px; border-radius: 50%; display: flex; justify-content: center; align-items: center; 
+            font-size: 18px; cursor: pointer; transition: 0.2s; 
+            color: var(--emerald-dark); background: #FFFFFF; box-shadow: 0 8px 20px rgba(5,150,105,0.1); 
+            border: 1px solid rgba(0,0,0,0.05); 
+        }
+        .btn-settings:active { transform: scale(0.9); background: var(--emerald-light); color: #FFF;}
 
         .content-area { padding: 0 24px 150px; z-index: 5; position: relative; flex-grow: 1; }
         
@@ -164,7 +167,7 @@
         .card-bottom-label { font-size: clamp(11px, 3.5vw, 13px); color: rgba(255,255,255,0.85); font-weight: 700; margin-bottom: 3px; }
         .card-bottom-val { font-size: clamp(15px, 4vw, 18px); font-weight: 900; color: #FEF3C7; }
 
-        .section-title { font-size: clamp(14px, 4.5vw, 16px); font-weight: 900; margin: 20px 0 15px; color: var(--emerald-dark); display: flex; align-items: center; gap: 8px; letter-spacing: 0.5px;}
+        .section-title { font-size: clamp(14px, 4.5vw, 16px); font-weight: 900; margin: 10px 0 15px; color: var(--emerald-dark); display: flex; align-items: center; gap: 8px; letter-spacing: 0.5px;}
         .pengurus-panel { border: none; padding: 0; background: transparent; margin-bottom: 25px; }
         
         .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
@@ -249,23 +252,22 @@
         
         <div class="header-cover">
             <div class="header-overlay"></div>
-            
-            <!-- TOP PROFILE BAR (M-BANKING STYLE) -->
-            <div class="top-profile-bar">
-                <div class="top-profile-left">
-                    <div class="top-profile-pic" id="uiProfilePic"></div>
-                    <div class="top-profile-text">
-                        <h2 id="uiUserName">Memuat...</h2>
-                        <p id="uiRoleText"><i class="fa-solid fa-spinner fa-spin"></i> Mengecek Data</p>
-                    </div>
-                </div>
-                <div class="top-btn-settings" onclick="window.location.href='profil.html'"><i class="fa-solid fa-gear"></i></div>
+            <div class="brand-container">
+                <!-- LOGO DENGAN UKURAN PAS, BERADA MURNI DI AREA HITAM -->
+                <img src="logo.png" alt="Ojol Anak Babah Alun">
             </div>
         </div>
 
-        <!-- NEW: CENTER LOGO OVERLAPPING CURVE -->
-        <div class="center-logo-container">
-            <img src="logo.png" alt="Ojol Anak Babah Alun">
+        <!-- NEW PROFILE SECTION (DI LUAR FOTO, BERSIH & ELEGAN) -->
+        <div class="profile-section">
+            <div class="profile-left">
+                <div class="profile-pic" id="uiProfilePic"></div>
+                <div class="profile-info">
+                    <h2 id="uiUserName">Memuat...</h2>
+                    <p id="uiRoleText"><i class="fa-solid fa-spinner fa-spin"></i> Mengecek Data</p>
+                </div>
+            </div>
+            <div class="btn-settings" onclick="window.location.href='profil.html'"><i class="fa-solid fa-gear"></i></div>
         </div>
 
         <div class="content-area">
@@ -443,7 +445,7 @@
 
     <!-- SCRIPT JAVASCRIPT UNTUK EFEK TYPEWRITER (MESIN TIK) -->
     <script>
-        const textToType = "MEMUPUK BERKAH\nLEWAT SEDEKAH";
+        const textToType = "MEMUPUK BERKAH\nDENGAN SEDEKAH";
         const twElement = document.getElementById('typewriterText');
         let twIndex = 0;
         
@@ -505,15 +507,16 @@
                             currentRole = String(d.role || "member").toLowerCase().trim(); 
                             currentUserName = String(d.nama_lengkap || "Tanpa Nama");
                             myHakAbsen = d.hak_absen || "otomatis";
-                            let displayBadge = d.custom_badge ? d.custom_badge : "ANGGOTA AKTIF";
                             
-                            // SET NAMA DI TOP PROFILE BAR
+                            // DEFAULT BADGE DIUBAH JADI MEMBER
+                            let displayBadge = d.custom_badge ? d.custom_badge : "MEMBER";
+                            
                             document.getElementById('uiUserName').innerText = currentUserName;
                             
                             const picEl = document.getElementById('uiProfilePic');
                             if (d.profile_image) { 
                                 picEl.style.backgroundImage = `url('${d.profile_image}')`; 
-                                picEl.innerText = ""; picEl.style.border = "2px solid #FFF"; 
+                                picEl.innerText = ""; 
                             } else { 
                                 picEl.style.backgroundImage = "none"; 
                                 picEl.innerText = currentUserName.charAt(0).toUpperCase(); 
@@ -534,21 +537,21 @@
                                 return; 
                             } else { document.querySelector('.content-area').style.opacity = '1'; document.querySelector('.content-area').style.pointerEvents = 'auto'; }
 
-                            // SISTEM ILUSI KASTA
+                            // SISTEM ILUSI KASTA (SEKARANG LANGSUNG TARIK NAMA BADGE AJA)
                             if (currentRole === "developer") { 
                                 panel.style.display = "block"; document.getElementById('menuSuperadmin').style.display = "flex"; document.getElementById('menuBendahara').style.display = "flex"; document.getElementById('menuAdmin').style.display = "flex"; 
-                                rText.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${displayBadge}`; rText.style.color = "var(--emerald-light)"; 
+                                rText.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${displayBadge}`; rText.style.color = "var(--emerald-main)"; 
                             } else if (currentRole === "superadmin") { 
                                 panel.style.display = "block"; document.getElementById('menuSuperadmin').style.display = "flex"; document.getElementById('menuBendahara').style.display = "flex"; document.getElementById('menuAdmin').style.display = "flex"; 
-                                rText.innerHTML = '<i class="fa-solid fa-shield"></i> SUPERADMIN'; rText.style.color = "#38BDF8"; 
+                                rText.innerHTML = '<i class="fa-solid fa-shield"></i> SUPERADMIN'; rText.style.color = "#0284C7"; 
                             } else if (currentRole === "bendahara") { 
                                 panel.style.display = "block"; document.getElementById('menuBendahara').style.display = "flex"; 
-                                rText.innerHTML = '<i class="fa-solid fa-vault"></i> BENDAHARA'; rText.style.color = "var(--emerald-light)"; 
+                                rText.innerHTML = '<i class="fa-solid fa-vault"></i> BENDAHARA'; rText.style.color = "var(--emerald-main)"; 
                             } else if (currentRole === "admin") { 
                                 panel.style.display = "block"; document.getElementById('menuAdmin').style.display = "flex"; 
-                                rText.innerHTML = '<i class="fa-solid fa-shield"></i> ADMIN'; rText.style.color = "#38BDF8"; 
+                                rText.innerHTML = '<i class="fa-solid fa-shield"></i> ADMIN'; rText.style.color = "#0284C7"; 
                             } else { 
-                                rText.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${displayBadge}`; rText.style.color = "var(--emerald-light)"; 
+                                rText.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${displayBadge}`; rText.style.color = "var(--emerald-main)"; 
                             }
 
                             // HIDE SPLASH SCREEN SETELAH ANIMASI KETIK SELESAI (2.8 DETIK)
