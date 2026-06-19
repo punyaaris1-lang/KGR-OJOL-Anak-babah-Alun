@@ -36,7 +36,7 @@
             color: var(--text-dark);
         }
 
-        /* SPLASH SCREEN ANIMATION */
+        /* SPLASH SCREEN ANIMATION (NEW TYPEWRITER) */
         #splashScreen {
             position: fixed; inset: 0; background: #0F172A; 
             z-index: 9999999; display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -44,13 +44,19 @@
         }
         #splashScreen.hide { opacity: 0; visibility: hidden; transform: scale(1.1); }
         .splash-logo { width: 220px; animation: pulseGlow 1.5s infinite alternate ease-in-out; }
-        .splash-text { margin-top: 20px; font-size: 11px; font-weight: 800; color: var(--emerald-main); letter-spacing: 2px; text-transform: uppercase; animation: blink 1s infinite alternate; }
-
+        
+        .splash-text { 
+            margin-top: 25px; font-size: 13px; font-weight: 800; color: var(--emerald-main); 
+            letter-spacing: 1.5px; text-transform: uppercase; text-align: center; 
+            line-height: 1.6; min-height: 45px; 
+        }
+        .splash-text::after { content: '|'; animation: blinkCursor 0.7s infinite; color: #FFF;}
+        
         @keyframes pulseGlow {
             0% { transform: scale(0.95); filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.3)); }
             100% { transform: scale(1.05); filter: drop-shadow(0 0 30px rgba(245, 158, 11, 0.8)); }
         }
-        @keyframes blink { 0% { opacity: 0.5; } 100% { opacity: 1; } }
+        @keyframes blinkCursor { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
         /* BACKGROUND ORBS */
         .orb { position: absolute; border-radius: 50%; filter: blur(60px); z-index: 0; animation: float 12s infinite alternate ease-in-out;}
@@ -71,29 +77,32 @@
         .app-container::-webkit-scrollbar { display: none; }
         @media (min-width: 600px) { .app-container { max-width: 480px; height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 40px 80px rgba(0,0,0,0.15); border: 8px solid #FFFFFF; margin: auto; background: rgba(244, 246, 245, 0.85); backdrop-filter: blur(20px);} }
 
-        /* HEADER & LOGO MURNI */
+        /* HEADER FIX: FOTO PUSH KE ATAS */
         .header-cover { 
-            position: relative; width: 100%; height: 280px; min-height: 280px; flex-shrink: 0; 
-            background-image: url('1000417166.jpg'); background-size: cover; 
-            background-position: center bottom; /* PUSH FOTO KE ATAS */
+            position: relative; width: 100%; height: 300px; min-height: 300px; flex-shrink: 0; 
+            background-image: url('1000417166.jpg'); 
+            background-size: 130%; /* Zoom in paksa biar tembok hilang */
+            background-position: center bottom; /* Nempel mentok ke bawah */
+            background-repeat: no-repeat;
             border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; z-index: 1; 
             box-shadow: 0 15px 35px rgba(5, 150, 105, 0.15); 
         }
         .header-overlay { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            background: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.8) 100%); /* Bawah digelapin buat logo */
+            background: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.8) 100%); 
             border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; 
         }
 
+        /* LOGO FIX: TURUN MENTOK */
         .brand-container { 
-            position: absolute; top: auto; bottom: 35px; left: 0; width: 100%; 
+            position: absolute; top: auto; bottom: 8px; left: 0; width: 100%; 
             text-align: center; z-index: 10; padding: 0 20px; 
         }
 
-        /* NEW PROFILE LAYOUT (KIRI FOTO, KANAN NAMA + GEAR) */
+        /* PROFILE LAYOUT (KIRI FOTO, KANAN NAMA + GEAR) */
         .profile-container { 
             display: flex; justify-content: space-between; align-items: flex-start; 
-            padding: 0 24px; margin-top: -25px; /* Foto profil lebih turun */
+            padding: 0 24px; margin-top: -25px; 
             position: relative; z-index: 10; margin-bottom: 25px;
         }
         .profile-pic { 
@@ -108,7 +117,7 @@
         
         .user-info-right {
             display: flex; flex-direction: column; align-items: flex-end; text-align: right;
-            margin-top: -15px; /* Narik area kanan sedikit nabrak header atas */
+            margin-top: -15px; 
         }
         .btn-settings { 
             width: 42px; height: 42px; border-radius: 50%; display: flex; justify-content: center; align-items: center; 
@@ -225,10 +234,10 @@
 </head>
 <body>
 
-    <!-- SPLASH SCREEN ANIMATION -->
+    <!-- SPLASH SCREEN ANIMATION DENGAN TYPEWRITER -->
     <div id="splashScreen">
         <img src="logo.png" class="splash-logo" alt="Logo KGR">
-        <div class="splash-text">Memupuk Berkah Melalui Sedekah..</div>
+        <div class="splash-text" id="typewriterText"></div>
     </div>
 
     <div class="orb orb-1"></div>
@@ -240,12 +249,12 @@
         <div class="header-cover">
             <div class="header-overlay"></div>
             <div class="brand-container">
-                <!-- LOGO DENGAN EFEK SHADOW DI BAWAH FOTO -->
-                <img src="logo.png" alt="Ojol Anak Babah Alun" style="width: 85%; max-width: 260px; filter: drop-shadow(0px 8px 20px rgba(0,0,0,0.8)); margin: 0 auto; display: block;">
+                <!-- LOGO DENGAN EFEK SHADOW, UKURAN LEBIH COMPACT & TURUN -->
+                <img src="logo.png" alt="Ojol Anak Babah Alun" style="width: 75%; max-width: 220px; filter: drop-shadow(0px 8px 15px rgba(0,0,0,0.8)); margin: 0 auto; display: block;">
             </div>
         </div>
 
-        <!-- NEW PROFILE LAYOUT -->
+        <!-- PROFILE LAYOUT (KIRI FOTO, KANAN NAMA + GEAR) -->
         <div class="profile-container">
             <div class="profile-pic" id="uiProfilePic"></div>
             
@@ -429,6 +438,28 @@
 
     </main>
 
+    <!-- SCRIPT JAVASCRIPT UNTUK EFEK TYPEWRITER (MESIN TIK) -->
+    <script>
+        const textToType = "MEMUPUK BERKAH\nLEWAT SEDEKAH";
+        const twElement = document.getElementById('typewriterText');
+        let twIndex = 0;
+        
+        function typeWriter() {
+            if (twIndex < textToType.length) {
+                if(textToType.charAt(twIndex) === '\n') {
+                    twElement.innerHTML += '<br>';
+                } else {
+                    twElement.innerHTML += textToType.charAt(twIndex);
+                }
+                twIndex++;
+                setTimeout(typeWriter, 60); // Kecepatan ketik (60ms)
+            }
+        }
+        
+        // Mulai ngetik setelah jeda dikit (400ms)
+        setTimeout(typeWriter, 400);
+    </script>
+
     <script type="module">
         import { auth, db } from './db-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
@@ -490,16 +521,16 @@
                             if (d.status === "Pending Admin" && currentRole !== "superadmin" && currentRole !== "developer") {
                                 document.getElementById('uiUserName').innerText = "Menunggu Verifikasi"; rText.innerHTML = '<i class="fa-solid fa-lock"></i> STATUS PENDING'; rText.style.color = "var(--danger-red)"; 
                                 document.querySelector('.content-area').style.opacity = '0.3'; document.querySelector('.content-area').style.pointerEvents = 'none';
-                                setTimeout(() => { document.getElementById('splashScreen').classList.add('hide'); }, 1500);
+                                setTimeout(() => { document.getElementById('splashScreen').classList.add('hide'); }, 2800);
                                 return; 
                             } else if (d.status === "Banned") {
                                 document.getElementById('uiUserName').innerText = "AKUN DIBLOKIR"; rText.innerHTML = '<i class="fa-solid fa-ban"></i> DIBEKUKAN'; rText.style.color = "var(--danger-red)"; 
                                 document.querySelector('.content-area').style.opacity = '0.2'; document.querySelector('.content-area').style.pointerEvents = 'none';
-                                setTimeout(() => { document.getElementById('splashScreen').classList.add('hide'); }, 1500);
+                                setTimeout(() => { document.getElementById('splashScreen').classList.add('hide'); }, 2800);
                                 return; 
                             } else { document.querySelector('.content-area').style.opacity = '1'; document.querySelector('.content-area').style.pointerEvents = 'auto'; }
 
-                            // SISTEM ILUSI KASTA (MODE PENYUSUPAN UNTUK DEVELOPER)
+                            // SISTEM ILUSI KASTA
                             if (currentRole === "developer") { 
                                 panel.style.display = "block"; document.getElementById('menuSuperadmin').style.display = "flex"; document.getElementById('menuBendahara').style.display = "flex"; document.getElementById('menuAdmin').style.display = "flex"; 
                                 rText.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${displayBadge}`; rText.style.color = "var(--emerald-main)"; 
@@ -516,8 +547,8 @@
                                 rText.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${displayBadge}`; rText.style.color = "var(--emerald-main)"; 
                             }
 
-                            // HIDE SPLASH SCREEN SETELAH LOADING PROFIL BERHASIL
-                            setTimeout(() => { document.getElementById('splashScreen').classList.add('hide'); }, 1500);
+                            // HIDE SPLASH SCREEN SETELAH ANIMASI KETIK SELESAI (2.8 DETIK)
+                            setTimeout(() => { document.getElementById('splashScreen').classList.add('hide'); }, 2800);
 
                         } else { auth.signOut(); window.location.href = 'login.html'; }
                     });
