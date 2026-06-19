@@ -467,27 +467,39 @@
 
     </main>
 
-    <!-- SCRIPT JAVASCRIPT UNTUK EFEK TYPEWRITER (MESIN TIK) -->
-    <script>
-        const textToType = "MEMUPUK BERKAH\nDENGAN SEDEKAH";
-        const twElement = document.getElementById('typewriterText');
-        let twIndex = 0;
+        <script>
+        const splashScreen = document.getElementById('splashScreen');
         
-        function typeWriter() {
-            if (twIndex < textToType.length) {
-                if(textToType.charAt(twIndex) === '\n') {
-                    twElement.innerHTML += '<br>';
-                } else {
-                    twElement.innerHTML += textToType.charAt(twIndex);
+        // 1. Cek apakah user sudah melihat splash screen di sesi ini
+        if (sessionStorage.getItem('splashSudahMuncul')) {
+            // Jika sudah, langsung musnahkan splash screen secepat kilat
+            splashScreen.style.display = 'none';
+        } else {
+            // Jika belum, tandai bahwa sekarang dia sudah melihatnya
+            sessionStorage.setItem('splashSudahMuncul', 'true');
+            
+            // 2. Jalankan animasi Typewriter (Mesin Tik)
+            const textToType = "MEMUPUK BERKAH\nDENGAN SEDEKAH";
+            const twElement = document.getElementById('typewriterText');
+            let twIndex = 0;
+            
+            function typeWriter() {
+                if (twIndex < textToType.length) {
+                    if(textToType.charAt(twIndex) === '\n') {
+                        twElement.innerHTML += '<br>';
+                    } else {
+                        twElement.innerHTML += textToType.charAt(twIndex);
+                    }
+                    twIndex++;
+                    setTimeout(typeWriter, 60); // Kecepatan ketik (60ms)
                 }
-                twIndex++;
-                setTimeout(typeWriter, 60); // Kecepatan ketik (60ms)
             }
+            
+            // Mulai ngetik setelah jeda dikit (400ms)
+            setTimeout(typeWriter, 400);
         }
-        
-        // Mulai ngetik setelah jeda dikit (400ms)
-        setTimeout(typeWriter, 400);
     </script>
+
 
     <script type="module">
         import { auth, db } from './db-config.js';
