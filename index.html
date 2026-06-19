@@ -38,7 +38,7 @@
 
         /* SPLASH SCREEN ANIMATION */
         #splashScreen {
-            position: fixed; inset: 0; background: #059669; 
+            position: fixed; inset: 0; background: #FFFFFF; 
             z-index: 9999999; display: flex; flex-direction: column; justify-content: center; align-items: center;
             transition: opacity 0.6s ease, visibility 0.6s ease, transform 0.6s ease;
         }
@@ -77,7 +77,7 @@
         .app-container::-webkit-scrollbar { display: none; }
         @media (min-width: 600px) { .app-container { max-width: 480px; height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 40px 80px rgba(0,0,0,0.15); border: 8px solid #FFFFFF; margin: auto; background: rgba(244, 246, 245, 0.85); backdrop-filter: blur(20px);} }
 
-        /* HEADER & LOGO DI BAWAH */
+        /* HEADER */
         .header-cover { 
             position: relative; width: 100%; height: 280px; min-height: 280px; flex-shrink: 0; 
             background-color: #0F172A; 
@@ -90,22 +90,25 @@
         }
         .header-overlay { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            /* Bagian atas transparan biar muka jelas, bagian bawah hitam pekat buat logo */
             background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.95) 100%); 
             border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; 
         }
 
+        /* LOGO FIX: UKURAN LEBIH BESAR & TURUN PAS DI BATAS HITAM */
         .brand-container { 
-            position: absolute; bottom: 15px; left: 0; width: 100%; 
+            position: absolute; 
+            bottom: 8px; /* Diturunkan supaya pas duduk di garis lengkung hitam */
+            left: 0; width: 100%; 
             text-align: center; z-index: 10; padding: 0 20px; 
             display: flex; justify-content: center;
         }
         .brand-container img {
-            width: 80%; max-width: 190px; /* Ukuran compact biar gak nutupin kaki bapak2 */
-            filter: drop-shadow(0px 5px 15px rgba(0,0,0,0.8));
+            width: 85%; 
+            max-width: 230px; /* Diperbesar dari 190px jadi 230px */
+            filter: drop-shadow(0px 8px 18px rgba(0,0,0,0.9));
         }
 
-        /* NEW PROFILE SECTION (DI BAWAH FOTO) */
+        /* PROFILE SECTION */
         .profile-section { 
             display: flex; justify-content: space-between; align-items: center; 
             padding: 20px 24px; z-index: 10; position: relative; 
@@ -240,7 +243,7 @@
 
     <!-- SPLASH SCREEN ANIMATION DENGAN TYPEWRITER -->
     <div id="splashScreen">
-        <img src="logo1.png" class="splash-logo" alt="Logo KGR">
+        <img src="logo.png" class="splash-logo" alt="Logo KGR">
         <div class="splash-text" id="typewriterText"></div>
     </div>
 
@@ -253,12 +256,12 @@
         <div class="header-cover">
             <div class="header-overlay"></div>
             <div class="brand-container">
-                <!-- LOGO DENGAN UKURAN PAS, BERADA MURNI DI AREA HITAM -->
+                <!-- LOGO UKURAN LEBIH BESAR & DUDUK DI GARIS LENGKUNG -->
                 <img src="logo.png" alt="Ojol Anak Babah Alun">
             </div>
         </div>
 
-        <!-- NEW PROFILE SECTION (DI LUAR FOTO, BERSIH & ELEGAN) -->
+        <!-- PROFILE SECTION -->
         <div class="profile-section">
             <div class="profile-left">
                 <div class="profile-pic" id="uiProfilePic"></div>
