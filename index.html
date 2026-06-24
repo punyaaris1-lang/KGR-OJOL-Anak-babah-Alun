@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#F4F6F5">
+    <meta name="theme-color" content="#0F172A" id="metaThemeColor">
     <meta name="description" content="Kotak Gotong Royong - Ojol Anak Babah Alun">
     <title>Dashboard - KGR</title>
     
@@ -15,55 +15,88 @@
     
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
+    <!-- MENCEGAH KEDIP TEMA (FOUC) -->
+    <script>
+        const savedTheme = localStorage.getItem('kgr_theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
+
     <style>
+        /* VARIABEL MESIN TEMA (DARK/LIGHT) */
         :root {
-            --bg-base: #F4F6F5; 
-            --text-dark: #0F172A; 
-            --text-gray: #64748B; 
+            /* TEMA LIGHT */
+            --bg-body: #F4F6F5;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --card-border: rgba(255, 255, 255, 1);
+            --modal-bg: rgba(255, 255, 255, 0.95);
+            --input-bg: #F8FAFC;
+            --input-border: rgba(0, 0, 0, 0.08);
+            --header-fade: linear-gradient(to bottom, rgba(244,246,245,0) 0%, rgba(244,246,245,0.8) 60%, #F4F6F5 100%);
+            --menu-icon-bg: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
+            --menu-icon-shadow: 0 8px 16px rgba(5, 150, 105, 0.08), inset 0 2px 4px #FFFFFF;
+            
             --emerald-dark: #064E3B; 
             --emerald-main: #059669; 
-            --emerald-light: #10B981;
             --gold-accent: #F59E0B; 
-            --danger-red: #EF4444; 
+            --danger-red: #EF4444;
+        }
+
+        [data-theme="dark"] {
+            /* TEMA DARK (DEFAULT) */
+            --bg-body: #0F172A;
+            --text-main: #FFFFFF;
+            --text-muted: rgba(255,255,255,0.6);
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --modal-bg: rgba(30, 41, 59, 0.95);
+            --input-bg: rgba(255, 255, 255, 0.05);
+            --input-border: rgba(255, 255, 255, 0.1);
+            --header-fade: linear-gradient(to bottom, rgba(15,23,42,0) 0%, rgba(15,23,42,0.8) 60%, #0F172A 100%);
+            --menu-icon-bg: rgba(255,255,255,0.1);
+            --menu-icon-shadow: inset 0 2px 5px rgba(255,255,255,0.1);
+            
+            --emerald-dark: #022C22; 
+            --gold-accent: #FBBF24; 
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
         
         body { 
-            background-color: var(--bg-base); 
+            background-color: var(--bg-body); color: var(--text-main);
             width: 100%; min-height: 100vh; margin: 0; overflow-x: hidden; position: relative;
-            color: var(--text-dark);
             display: flex; justify-content: center; align-items: flex-start; 
+            transition: background-color 0.4s ease, color 0.4s ease;
         }
 
         /* SPLASH SCREEN ANIMATION */
         #splashScreen {
-            position: fixed; inset: 0; background: #0F172A; 
+            position: fixed; inset: 0; background: var(--bg-body); 
             z-index: 9999999; display: flex; flex-direction: column; justify-content: center; align-items: center;
             transition: opacity 0.6s ease, visibility 0.6s ease, transform 0.6s ease;
         }
         #splashScreen.hide { opacity: 0; visibility: hidden; transform: scale(1.1); }
-        .splash-logo { width: 220px; animation: pulseGlow 1.5s infinite alternate ease-in-out; }
+        .splash-logo { width: 150px; animation: pulseGlow 1.5s infinite alternate ease-in-out; }
         
         .splash-text { 
             margin-top: 25px; font-size: 13px; font-weight: 800; color: var(--emerald-main); 
             letter-spacing: 1.5px; text-transform: uppercase; text-align: center; 
             line-height: 1.6; min-height: 45px; 
         }
-        .splash-text::after { content: '|'; animation: blinkCursor 0.7s infinite; color: #FFF;}
+        .splash-text::after { content: '|'; animation: blinkCursor 0.7s infinite; color: var(--text-main);}
         
         @keyframes pulseGlow {
-            0% { transform: scale(0.95); filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.3)); }
-            100% { transform: scale(1.05); filter: drop-shadow(0 0 30px rgba(245, 158, 11, 0.8)); }
+            0% { transform: scale(0.95); filter: drop-shadow(0 0 10px rgba(5, 150, 105, 0.3)); }
+            100% { transform: scale(1.05); filter: drop-shadow(0 0 30px rgba(245, 158, 11, 0.6)); }
         }
         @keyframes blinkCursor { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
         /* BACKGROUND ORBS */
         .orb { position: absolute; border-radius: 50%; filter: blur(60px); z-index: 0; animation: float 12s infinite alternate ease-in-out;}
-        .orb-1 { top: 20%; left: calc(50% - 250px); width: 300px; height: 300px; background: rgba(16, 185, 129, 0.15); }
+        .orb-1 { top: 20%; left: calc(50% - 250px); width: 300px; height: 300px; background: rgba(5, 150, 105, 0.15); }
         .orb-2 { bottom: 10%; right: calc(50% - 250px); width: 350px; height: 350px; background: rgba(5, 150, 105, 0.1); animation-delay: -5s;}
         .orb-3 { top: 45%; right: calc(50% - 150px); width: 200px; height: 200px; background: rgba(245, 158, 11, 0.1); animation-duration: 8s;}
-
         @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(25px, 40px) scale(1.1); } }
 
         .app-container { 
@@ -75,93 +108,72 @@
             scrollbar-width: none;
         }
         .app-container::-webkit-scrollbar { display: none; }
-        
         @media (min-width: 600px) { 
             .app-container { 
                 height: 90vh; max-height: 850px; border-radius: 40px; 
-                box-shadow: 0 40px 80px rgba(0,0,0,0.15); border: 8px solid #FFFFFF; 
-                margin-top: 5vh; background: rgba(244, 246, 245, 0.95); 
-                backdrop-filter: blur(20px); 
+                box-shadow: 0 40px 80px rgba(0,0,0,0.15); border: 8px solid var(--card-border); 
+                margin-top: 5vh; background: var(--bg-body); 
             } 
         }
 
-        /* HEADER */
+        /* HEADER DENGAN GAMBAR */
         .header-cover { 
             position: relative; width: 100%; height: 280px; min-height: 280px; flex-shrink: 0; 
-            background-color: #0F172A; 
             background-image: url('bg-header.jpg'); 
             background-size: cover; background-position: center center; background-repeat: no-repeat;
             border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; z-index: 1; 
-            box-shadow: 0 15px 35px rgba(5, 150, 105, 0.15); 
         }
         .header-overlay { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.95) 100%); 
+            background: var(--header-fade); transition: background 0.4s ease;
             border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; 
         }
 
         .brand-container { 
-            position: absolute; bottom: 8px; left: 0; width: 100%; 
+            position: absolute; top: 50px; left: 0; width: 100%; 
             text-align: center; z-index: 10; padding: 0 20px; 
-            display: flex; justify-content: center;
         }
-        .brand-container img {
-            width: 85%; max-width: 230px; 
-            filter: drop-shadow(0px 8px 18px rgba(0,0,0,0.9));
-        }
+        .main-title { font-size: clamp(20px, 5.5vw, 24px); font-weight: 900; letter-spacing: 1px; text-transform: uppercase; color: #FFFFFF; text-shadow: 0 2px 10px rgba(0,0,0,0.8); margin-bottom: 2px; }
+        .sub-title { font-size: clamp(11px, 3vw, 13px); font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--gold-accent); text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
 
-        /* PROFILE SECTION */
-        .profile-section { 
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 20px 24px; z-index: 10; position: relative; 
-        }
-        .profile-left { display: flex; align-items: center; gap: 15px; }
+        /* PROFILE SECTION & TOMBOL TEMA */
+        .profile-area { display: flex; justify-content: space-between; align-items: flex-end; padding: 0 24px; margin-top: -50px; position: relative; z-index: 10; }
         
         .profile-pic { 
-            width: 65px; height: 65px; border-radius: 50%; 
+            width: clamp(80px, 22vw, 90px); height: clamp(80px, 22vw, 90px); border-radius: 50%; 
             display: flex; justify-content: center; align-items: center; 
-            font-size: 26px; font-weight: 900; color: var(--emerald-main); 
-            background-size: cover; background-position: center; border: 3px solid #FFFFFF; 
-            background-color: #F8FAFC; box-shadow: 0 8px 20px rgba(5,150,105,0.15); 
-            cursor: pointer; transition: 0.2s; flex-shrink: 0;
+            font-size: clamp(32px, 8vw, 40px); font-weight: 900; color: var(--gold-accent); 
+            background-size: cover; background-position: center; border: 3px solid var(--card-border); 
+            background-color: var(--card-bg); box-shadow: 0 8px 20px rgba(0,0,0,0.15); 
         }
-        .profile-pic:active { transform: scale(0.95); }
         
-        .profile-info { display: flex; flex-direction: column; }
-        .profile-info h2 { 
-            font-size: 20px; font-weight: 900; color: var(--text-dark); 
-            letter-spacing: -0.5px; margin-bottom: 2px;
-        }
-        .profile-info p { 
-            font-size: 11px; font-weight: 800; color: var(--emerald-main); 
-            text-transform: uppercase; letter-spacing: 1px; display: flex; 
-            align-items: center; gap: 4px; 
-        }
-
         .btn-settings { 
             width: 42px; height: 42px; border-radius: 50%; display: flex; justify-content: center; align-items: center; 
             font-size: 18px; cursor: pointer; transition: 0.2s; 
-            color: var(--emerald-dark); background: #FFFFFF; box-shadow: 0 8px 20px rgba(5,150,105,0.1); 
-            border: 1px solid rgba(0,0,0,0.05); flex-shrink: 0;
+            color: var(--text-main); background: var(--card-bg); box-shadow: 0 8px 20px rgba(0,0,0,0.1); 
+            border: 1px solid var(--card-border); flex-shrink: 0;
         }
-        .btn-settings:active { transform: scale(0.9); background: var(--emerald-light); color: #FFF;}
+        .btn-settings:active { transform: scale(0.9); }
+
+        .user-intro { padding: 15px 24px 20px; z-index: 5; position: relative; }
+        .user-intro h2 { font-size: clamp(22px, 6vw, 26px); font-weight: 900; color: var(--text-main); letter-spacing: -0.5px; transition: 0.4s ease;}
+        .user-intro p { font-size: 12px; font-weight: 800; color: var(--emerald-main); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 4px; }
 
         .content-area { padding: 0 24px 150px; z-index: 5; position: relative; flex-grow: 1; }
         
         /* KACA PREMIUM */
         .glass-panel {
-            background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(25px) saturate(150%); 
-            -webkit-backdrop-filter: blur(25px) saturate(150%); border: 1px solid rgba(255, 255, 255, 1); 
-            box-shadow: 0 15px 35px rgba(5, 150, 105, 0.05), inset 0 0 20px rgba(255, 255, 255, 0.6); 
-            border-radius: 26px;
+            background: var(--card-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); 
+            border: 1px solid var(--card-border); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); 
+            border-radius: 20px; transition: background 0.4s ease, border-color 0.4s ease, color 0.4s ease;
         }
 
         .glass-emerald {
-            background: linear-gradient(135deg, rgba(5, 150, 105, 0.9) 0%, rgba(4, 120, 87, 0.95) 100%);
+            background: linear-gradient(135deg, rgba(5, 150, 105, 0.8) 0%, rgba(4, 120, 87, 0.95) 100%);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 20px 40px rgba(5, 150, 105, 0.25), inset 0 2px 10px rgba(255, 255, 255, 0.15);
-            color: #FFF; border-radius: 26px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(5, 150, 105, 0.25);
+            color: #FFF; border-radius: 24px;
         }
 
         .premium-card { padding: 25px; margin-bottom: 25px; position: relative; overflow: hidden; transition: 0.3s;}
@@ -170,21 +182,21 @@
         .card-balance { font-size: clamp(28px, 8vw, 38px); font-weight: 900; color: #FFFFFF; letter-spacing: -1px; margin-bottom: 20px; position: relative; z-index: 2; text-shadow: 0 4px 10px rgba(0,0,0,0.15);}
         .card-bottom { display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 15px; position: relative; z-index: 2;}
         .card-bottom-label { font-size: clamp(11px, 3.5vw, 13px); color: rgba(255,255,255,0.85); font-weight: 700; margin-bottom: 3px; }
-        .card-bottom-val { font-size: clamp(15px, 4vw, 18px); font-weight: 900; color: #FEF3C7; }
+        .card-bottom-val { font-size: clamp(15px, 4vw, 18px); font-weight: 900; color: var(--gold-accent); }
 
-        .section-title { font-size: clamp(14px, 4.5vw, 16px); font-weight: 900; margin: 10px 0 15px; color: var(--emerald-dark); display: flex; align-items: center; gap: 8px; letter-spacing: 0.5px;}
+        .section-title { font-size: clamp(14px, 4.5vw, 16px); font-weight: 900; margin: 10px 0 15px; color: var(--text-main); display: flex; align-items: center; gap: 8px; letter-spacing: 0.5px; transition: 0.4s ease;}
         .pengurus-panel { border: none; padding: 0; background: transparent; margin-bottom: 25px; }
         
         .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
         .menu-item { padding: 18px 5px; display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer; transition: 0.2s; }
-        .menu-item:active { transform: scale(0.95); background: rgba(255,255,255,0.9); }
-        .menu-icon { width: 48px; height: 48px; border-radius: 16px; background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%); color: var(--emerald-main); display: flex; justify-content: center; align-items: center; font-size: 22px; transition: 0.2s; border: 1px solid rgba(5, 150, 105, 0.1); box-shadow: 0 8px 16px rgba(5, 150, 105, 0.08), inset 0 2px 4px #FFFFFF; }
+        .menu-item:active { transform: scale(0.95); }
+        .menu-icon { width: 45px; height: 45px; border-radius: 14px; background: var(--menu-icon-bg); color: var(--emerald-main); display: flex; justify-content: center; align-items: center; font-size: 20px; transition: 0.4s ease; box-shadow: var(--menu-icon-shadow); border: 1px solid rgba(5,150,105,0.1);}
         .menu-icon.gold { color: var(--gold-accent); }
         .menu-icon.blue { color: #0284C7; }
-        .menu-item span { font-size: 10px; font-weight: 800; color: var(--text-dark); text-align: center; line-height: 1.3;}
+        .menu-item span { font-size: 10px; font-weight: 800; color: var(--text-main); text-align: center; line-height: 1.3; opacity: 0.9; transition: 0.4s ease;}
 
-        .menu-absen { border: 2px solid rgba(16, 185, 129, 0.5); background: rgba(209, 250, 229, 0.5); box-shadow: 0 15px 30px rgba(5, 150, 105, 0.15);}
-        .menu-absen .menu-icon { background: linear-gradient(135deg, #10B981 0%, #059669 100%); color: #FFF; box-shadow: 0 5px 15px rgba(5, 150, 105, 0.4), inset 0 2px 4px rgba(255,255,255,0.3);}
+        .menu-absen { border: 2px solid rgba(16, 185, 129, 0.4); background: rgba(5, 150, 105, 0.1); }
+        .menu-absen .menu-icon { background: rgba(5, 150, 105, 0.8); color: #FFF; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);}
 
         /* TOMBOL INSTALL APP PWA */
         .btn-install-pwa {
@@ -203,24 +215,22 @@
         }
         .floating-nav { 
             display: flex; justify-content: space-between; align-items: center; 
-            padding: 10px 40px; border-radius: 40px; 
-            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); 
-            border: 1px solid rgba(255, 255, 255, 1); box-shadow: 0 20px 40px rgba(5, 150, 105, 0.15); 
+            padding: 10px 40px; border-radius: 40px; gap: 40px;
         }
-        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--text-gray); opacity: 0.7; cursor: pointer; transition: 0.3s; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--text-muted); opacity: 0.7; cursor: pointer; transition: 0.3s; }
         .nav-item i { font-size: 22px; transition: 0.2s; } 
         .nav-item span { font-size: 10px; font-weight: 800; letter-spacing: 0.5px;} 
         .nav-item.active { color: var(--emerald-main); opacity: 1; filter: drop-shadow(0 4px 6px rgba(5, 150, 105, 0.3)); }
         
         .center-btn { position: relative; top: -25px; flex-shrink: 0;}
-        .center-fab { width: 65px; height: 65px; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2px; color: #FFFFFF; font-size: 26px; background: linear-gradient(135deg, var(--emerald-light) 0%, var(--emerald-main) 100%); border: 4px solid #FFFFFF; box-shadow: 0 15px 25px rgba(5, 150, 105, 0.4), inset 0 2px 4px rgba(255,255,255,0.4); transition: 0.2s; cursor: pointer; }
+        .center-fab { width: 65px; height: 65px; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2px; color: #FFFFFF; font-size: 24px; background: linear-gradient(135deg, var(--emerald-main) 0%, var(--emerald-dark) 100%); border: 4px solid var(--card-bg); box-shadow: 0 15px 25px rgba(5, 150, 105, 0.4); transition: 0.2s; cursor: pointer; }
         .center-fab:active { transform: scale(0.9); }
         .center-fab span { font-size: 9px; font-weight: 800; }
 
         /* MODALS & POPUPS */
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px;}
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px;}
         .modal-overlay.show { opacity: 1; visibility: visible; }
-        .modal-card { background: rgba(255, 255, 255, 0.95); border: 1px solid #FFF; border-radius: 30px; padding: 30px 24px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.3); transform: scale(0.95); transition: 0.3s; color: var(--text-dark); }
+        .modal-card { background: var(--modal-bg); border: 1px solid var(--card-border); border-radius: 30px; padding: 30px 24px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.3); transform: scale(0.95); transition: 0.3s; color: var(--text-main); }
         .modal-overlay.show .modal-card { transform: scale(1); }
         
         .qr-display { width: 220px; height: 220px; margin: 0 auto 20px; border: 4px solid var(--emerald-main); border-radius: 20px; padding: 10px; background: #FFF; box-shadow: 0 15px 30px rgba(5,150,105,0.15); }
@@ -228,43 +238,45 @@
 
         #reader { width: 100%; border-radius: 20px; overflow: hidden; border: 4px solid var(--emerald-main); margin-bottom: 20px; box-shadow: 0 15px 30px rgba(5,150,105,0.15); background: #FFF;}
 
-        .form-input { width: 100%; padding: 16px; border-radius: 14px; border: 2px solid rgba(0,0,0,0.06); background: #F8FAFC; color: var(--text-dark); font-size: 14px; font-weight: 700; outline: none; margin-bottom: 12px; transition: 0.2s;}
-        .form-input::placeholder { color: var(--text-gray); opacity: 0.6; }
-        .form-input:focus { border-color: var(--emerald-main); background: #FFF; box-shadow: 0 5px 15px rgba(5,150,105,0.1);}
+        .form-input { width: 100%; padding: 16px; border-radius: 14px; border: 1px solid var(--input-border); background: var(--input-bg); color: var(--text-main); font-size: 14px; font-weight: 700; outline: none; margin-bottom: 12px; transition: 0.2s;}
+        .form-input::placeholder { color: var(--text-muted); opacity: 0.6; }
+        .form-input:focus { border-color: var(--emerald-main); background: transparent; }
         
         .btn-action { width: 100%; padding: 16px; border-radius: 16px; font-size: 14px; font-weight: 900; background: var(--emerald-main); color: #FFF; border: none; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; box-shadow: 0 10px 20px rgba(5,150,105,0.25); transition: 0.2s;}
         .btn-action:active { transform: scale(0.95); }
-        .btn-outline { background: #F1F5F9; border: 1px solid rgba(0,0,0,0.05); color: var(--text-dark); box-shadow: none; }
+        .btn-outline { background: var(--input-bg); border: 1px solid var(--card-border); color: var(--text-main); box-shadow: none; }
 
-        .live-item { font-size: 11px; font-weight: 700; padding: 12px; border-bottom: 1px solid rgba(0,0,0,0.05); display: flex; justify-content: space-between; background: #FFF; border-radius: 12px; margin-bottom: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.02);}
-        .live-item span:first-child { color: var(--text-dark); }
+        .live-item { font-size: 11px; font-weight: 700; padding: 12px; border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; background: var(--input-bg); border-radius: 12px; margin-bottom: 5px;}
+        .live-item span:first-child { color: var(--text-main); }
         .live-item span:last-child { color: var(--emerald-main); font-weight: 900;}
 
         .cp-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(10px); z-index: 99999; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px; }
         .cp-overlay.show { opacity: 1; visibility: visible; }
-        .cp-box { background: rgba(255, 255, 255, 0.95); border: 1px solid #FFF; border-radius: 30px; width: 100%; max-width: 320px; text-align: center; padding: 30px 24px; transform: scale(0.9); transition: 0.3s; box-shadow: 0 25px 50px rgba(0,0,0,0.3); color: var(--text-dark); }
+        .cp-box { background: var(--modal-bg); border: 1px solid var(--card-border); border-radius: 30px; width: 100%; max-width: 320px; text-align: center; padding: 30px 24px; transform: scale(0.9); transition: 0.3s; box-shadow: 0 25px 50px rgba(0,0,0,0.3); color: var(--text-main); }
         .cp-overlay.show .cp-box { transform: scale(1); }
+        
         .cp-icon { width: 65px; height: 65px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; margin: 0 auto 15px; }
         .cp-icon.success { background: rgba(16, 185, 129, 0.15); color: var(--emerald-main); }
         .cp-icon.error { background: rgba(239, 68, 68, 0.15); color: var(--danger-red); }
         .cp-icon.warning { background: rgba(245, 158, 11, 0.15); color: var(--gold-accent); }
-        .cp-title { font-size: 18px; font-weight: 900; color: var(--text-dark); margin-bottom: 8px; }
-        .cp-desc { font-size: 12px; font-weight: 600; color: var(--text-gray); margin-bottom: 25px; line-height: 1.5; }
+        
+        .cp-title { font-size: 18px; font-weight: 900; color: var(--text-main); margin-bottom: 8px; }
+        .cp-desc { font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 25px; line-height: 1.5; }
         .cp-btn-wrap { display: flex; gap: 10px; }
         .cp-btn { flex: 1; padding: 15px; border-radius: 14px; font-size: 13px; font-weight: 800; border: none; cursor: pointer; transition: 0.2s; }
         .cp-btn:active { transform: scale(0.95); }
         .cp-btn-primary { background: var(--emerald-main); color: #FFF; box-shadow: 0 8px 20px rgba(5,150,105,0.3);}
-        .cp-btn-cancel { background: #F1F5F9; color: var(--text-dark); border: 1px solid rgba(0,0,0,0.05);}
+        .cp-btn-cancel { background: var(--input-bg); color: var(--text-main); border: 1px solid var(--card-border);}
         .cp-btn-danger { background: var(--danger-red); color: #FFF; box-shadow: 0 8px 20px rgba(239,68,68,0.3);}
-        .spinner-custom { border: 4px solid rgba(5,150,105,0.1); width: 50px; height: 50px; border-radius: 50%; border-left-color: var(--emerald-main); animation: spin 1s linear infinite; margin: 0 auto 15px; }
+        .spinner-custom { border: 4px solid var(--card-border); width: 50px; height: 50px; border-radius: 50%; border-left-color: var(--emerald-main); animation: spin 1s linear infinite; margin: 0 auto 15px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <!-- SPLASH SCREEN ANIMATION DENGAN SESSION STORAGE (ANTI MUNCUL TERUS) -->
+    <!-- SPLASH SCREEN ANIMATION (ANTI MUNCUL TERUS) -->
     <div id="splashScreen">
-        <img src="logo.png" class="splash-logo" alt="Logo KGR">
+        <img src="logo1.png" class="splash-logo" alt="Logo KGR">
         <div class="splash-text" id="typewriterText"></div>
     </div>
 
@@ -274,23 +286,30 @@
 
     <main class="app-container">
         
+        <!-- BANNER FOTO DI ATAS -->
         <div class="header-cover">
             <div class="header-overlay"></div>
             <div class="brand-container">
-                <img src="logo.png" alt="Ojol Anak Babah Alun">
+                <div class="main-title">KOTAK GOTONG ROYONG</div>
+                <div class="sub-title">OJOL ANAK BABAH ALUN</div>
             </div>
         </div>
 
-        <!-- PROFILE SECTION -->
-        <div class="profile-section">
-            <div class="profile-left">
-                <div class="profile-pic" id="uiProfilePic"></div>
-                <div class="profile-info">
-                    <h2 id="uiUserName">Memuat...</h2>
-                    <p id="uiRoleText"><i class="fa-solid fa-spinner fa-spin"></i> Mengecek Data</p>
+        <!-- PROFILE AREA & TOMBOL THEME + SETTINGS -->
+        <div class="profile-area">
+            <div class="profile-pic" id="uiProfilePic"></div>
+            <div style="display: flex; gap: 12px; margin-bottom: 10px;">
+                <!-- TOMBOL SWITCH DARK/LIGHT MODE -->
+                <div class="btn-settings" onclick="toggleTheme()" title="Ganti Tema">
+                    <i id="themeIcon" class="fa-solid fa-moon"></i>
                 </div>
+                <div class="btn-settings" onclick="window.location.href='profil.html'"><i class="fa-solid fa-gear"></i></div>
             </div>
-            <div class="btn-settings" onclick="window.location.href='profil.html'"><i class="fa-solid fa-gear"></i></div>
+        </div>
+
+        <div class="user-intro">
+            <h2 id="uiUserName">Memuat...</h2>
+            <p id="uiRoleText"><i class="fa-solid fa-spinner fa-spin"></i> Mengecek Data</p>
         </div>
 
         <div class="content-area">
@@ -317,10 +336,10 @@
                 <div class="pengurus-panel">
                     <div class="menu-grid" id="gridPengurus">
                         <div class="glass-panel menu-item" id="menuSuperadmin" style="display: none;" onclick="window.location.href='superadmin.html'">
-                            <div class="menu-icon gold"><i class="fa-solid fa-crown"></i></div><span>Sistem<br>Superadmin</span>
+                            <div class="menu-icon" style="color:var(--gold-accent);"><i class="fa-solid fa-crown"></i></div><span>Sistem<br>Superadmin</span>
                         </div>
                         <div class="glass-panel menu-item" id="menuBendahara" style="display: none;" onclick="window.location.href='superadmin.html'">
-                            <div class="menu-icon blue"><i class="fa-solid fa-vault"></i></div><span>Verifikasi<br>Sedekah</span>
+                            <div class="menu-icon" style="color: #0284C7;"><i class="fa-solid fa-vault"></i></div><span>Verifikasi<br>Sedekah</span>
                         </div>
                         <div class="glass-panel menu-item" id="menuAdmin" style="display: none;" onclick="window.location.href='superadmin.html'">
                             <div class="menu-icon"><i class="fa-solid fa-user-gear"></i></div><span>Kelola<br>Anggota</span>
@@ -338,14 +357,14 @@
             <div class="menu-grid">
                 
                 <div class="glass-panel menu-item menu-absen" id="menuAbsensi" style="display: none;" onclick="handleAbsensiClick()">
-                    <div class="menu-icon"><i class="fa-solid fa-satellite-dish"></i></div><span style="color: var(--emerald-dark);">Absensi<br>Acara</span>
+                    <div class="menu-icon"><i class="fa-solid fa-satellite-dish"></i></div><span>Absensi<br>Acara</span>
                 </div>
 
                 <div class="glass-panel menu-item" onclick="window.location.href='anggota.html'">
                     <div class="menu-icon"><i class="fa-solid fa-users"></i></div><span>Data<br>Anggota</span>
                 </div>
                 <div class="glass-panel menu-item" onclick="window.location.href='laporan.html'">
-                    <div class="menu-icon blue"><i class="fa-solid fa-file-invoice-dollar"></i></div><span>Laporan<br>Kas</span>
+                    <div class="menu-icon" style="color: #0284C7;"><i class="fa-solid fa-file-invoice-dollar"></i></div><span>Laporan<br>Kas</span>
                 </div>
                 
                 <div class="glass-panel menu-item" onclick="window.location.href='kegiatan.html'">
@@ -355,7 +374,7 @@
                     <div class="menu-icon"><i class="fa-solid fa-circle-info"></i></div><span>Pusat<br>Info</span>
                 </div>
                 <div class="glass-panel menu-item" onclick="window.location.href='donatur.html'">
-                    <div class="menu-icon gold"><i class="fa-solid fa-ranking-star"></i></div><span>Daftar<br>Donatur</span>
+                    <div class="menu-icon" style="color: var(--gold-accent);"><i class="fa-solid fa-ranking-star"></i></div><span>Daftar<br>Donatur</span>
                 </div>
                 
                 <div class="glass-panel menu-item" onclick="window.location.href='pengajuan.html'">
@@ -364,7 +383,7 @@
             </div>
         </div>
 
-        <!-- BOTTOM NAV -->
+        <!-- BOTTOM NAV KACA -->
         <div class="bottom-nav-container">
             <div class="glass-panel floating-nav">
                 <div class="nav-item active"><i class="fa-solid fa-house"></i><span>Beranda</span></div>
@@ -378,17 +397,17 @@
         <!-- MODALS -->
         <div id="modalMemberQR" class="modal-overlay">
             <div class="modal-card">
-                <h3 style="font-weight: 900; color: var(--text-dark);">Kartu Kehadiran</h3>
-                <p style="font-size: 11px; font-weight: 700; color: var(--text-gray); margin-bottom: 20px;">Tunjukkan QR Code ini kepada Admin Acara.</p>
+                <h3 style="font-weight: 900; color: var(--text-main);">Kartu Kehadiran</h3>
+                <p style="font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 20px;">Tunjukkan QR Code ini kepada Admin Acara.</p>
                 <div class="qr-display"><img id="imgMemberQR" src="" alt="Loading QR..."></div>
-                <h4 id="qrNameText" style="margin-bottom: 20px; color: var(--text-dark);">...</h4>
+                <h4 id="qrNameText" style="margin-bottom: 20px; color: var(--text-main);">...</h4>
                 <button type="button" class="btn-action btn-outline" onclick="document.getElementById('modalMemberQR').classList.remove('show')">Tutup</button>
             </div>
         </div>
 
         <div id="modalAdminScanner" class="modal-overlay">
             <div class="modal-card" style="padding: 20px;">
-                <h3 style="font-weight: 900; font-size: 16px; margin-bottom: 15px; color: var(--text-dark);"><i class="fa-solid fa-satellite-dish" style="color:var(--emerald-main)"></i> Radar Acara Aktif</h3>
+                <h3 style="font-weight: 900; font-size: 16px; margin-bottom: 15px; color: var(--text-main);"><i class="fa-solid fa-satellite-dish" style="color:var(--emerald-main)"></i> Radar Acara Aktif</h3>
                 
                 <div id="scannerBox">
                     <div id="reader"></div>
@@ -396,16 +415,16 @@
                 </div>
 
                 <div id="manualBox" style="display: none; text-align: left;">
-                    <label style="font-size: 11px; font-weight: 800; color: var(--text-gray);">Input Manual (Bypass Scanner)</label>
-                    <input type="text" id="inputManualName" class="form-input" placeholder="Ketik Nama Lengkap / NIK Member">
+                    <label style="font-size: 11px; font-weight: 800; color: var(--text-muted);">Input Manual (Bypass Scanner)</label>
+                    <input type="text" id="inputManualName" class="form-input" placeholder="Ketik Nama / NIK Member">
                     <button class="btn-action" style="margin-bottom: 10px;" onclick="submitManualAbsen()"><i class="fa-solid fa-check"></i> Hadirkan Member</button>
                     <button class="btn-action btn-outline" style="margin-bottom: 10px;" onclick="toggleManualBypass(false)"><i class="fa-solid fa-camera"></i> Kembali ke Kamera</button>
                 </div>
 
-                <div style="margin-top: 15px; border-top: 2px dashed rgba(0,0,0,0.1); padding-top: 15px;">
-                    <h4 style="font-size: 12px; font-weight: 800; text-align: left; margin-bottom: 10px; color: var(--text-dark);">Live Hadir: <span id="liveCount" style="color: var(--emerald-main);">0</span> Orang</h4>
-                    <div id="liveListContainer" style="max-height: 120px; overflow-y: auto; text-align: left; background: #F9FAFB; padding: 10px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.05);">
-                        <div style='text-align:center; font-size:11px; color:#999; font-weight: 700;'>Belum ada yang hadir</div>
+                <div style="margin-top: 15px; border-top: 2px dashed var(--card-border); padding-top: 15px;">
+                    <h4 style="font-size: 12px; font-weight: 800; text-align: left; margin-bottom: 10px; color: var(--text-main);">Live Hadir: <span id="liveCount" style="color: var(--emerald-main);">0</span> Orang</h4>
+                    <div id="liveListContainer" style="max-height: 120px; overflow-y: auto; text-align: left; background: var(--input-bg); padding: 10px; border-radius: 12px;">
+                        <div style='text-align:center; font-size:11px; color:var(--text-muted); font-weight: 700;'>Belum ada yang hadir</div>
                     </div>
                 </div>
 
@@ -415,8 +434,8 @@
 
         <div id="modalQrisManual" class="modal-overlay">
             <div class="modal-card">
-                <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 5px; color: var(--text-dark);">Scan QRIS Kas</h3>
-                <p style="font-size: 11px; font-weight: 700; color: var(--text-gray); margin-bottom: 20px;">KGR Ojol Anak Babah Alun</p>
+                <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 5px; color: var(--text-main);">Scan QRIS Kas</h3>
+                <p style="font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 20px;">KGR Ojol Anak Babah Alun</p>
                 
                 <div class="qr-display">
                     <img id="qrisImgSource" src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" alt="QRIS">
@@ -471,7 +490,7 @@
 
     </main>
 
-    <!-- SCRIPT KONTROL SPLASH SCREEN (ANTI MUNCUL TERUS) -->
+    <!-- SCRIPT KONTROL SPLASH SCREEN -->
     <script>
         const splashScreen = document.getElementById('splashScreen');
         if (sessionStorage.getItem('splashSudahMuncul')) {
@@ -492,37 +511,49 @@
         }
     </script>
 
-    <!-- SCRIPT LOGIKA TOMBOL INSTALL PWA -->
+    <!-- SCRIPT TEMA (DARK/LIGHT SWITCH) -->
+    <script>
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('themeIcon');
+            const metaTheme = document.getElementById('metaThemeColor');
+            if (theme === 'light') {
+                icon.className = 'fa-solid fa-moon'; 
+                metaTheme.setAttribute("content", "#F4F6F5");
+            } else {
+                icon.className = 'fa-solid fa-sun'; 
+                metaTheme.setAttribute("content", "#0F172A");
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            updateThemeIcon(savedTheme);
+        });
+
+        window.toggleTheme = function() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const targetTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            document.documentElement.setAttribute('data-theme', targetTheme);
+            localStorage.setItem('kgr_theme', targetTheme);
+            updateThemeIcon(targetTheme);
+        }
+    </script>
+
+    <!-- SCRIPT PWA INSTALL BUTTON -->
     <script>
         let deferredPrompt;
         const installBtn = document.getElementById('btnInstallPwa');
-
-        // Mencegah browser langsung memunculkan pop-up bawaan, kita simpan event-nya
         window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            // Tampilkan tombol emas kita
-            installBtn.style.display = 'flex';
+            e.preventDefault(); deferredPrompt = e; installBtn.style.display = 'flex';
         });
-
-        // Ketika tombol emas ditekan
         installBtn.addEventListener('click', async () => {
-            installBtn.style.display = 'none';
-            // Panggil pop-up install bawaan browser
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            console.log(`User memilih: ${outcome}`);
-            deferredPrompt = null;
+            installBtn.style.display = 'none'; deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice; deferredPrompt = null;
         });
-
-        // Sembunyikan tombol kalau aplikasinya memang sudah sukses ter-install
-        window.addEventListener('appinstalled', () => {
-            installBtn.style.display = 'none';
-            deferredPrompt = null;
-            console.log('PWA berhasil di-install');
-        });
+        window.addEventListener('appinstalled', () => { installBtn.style.display = 'none'; deferredPrompt = null; });
     </script>
 
+    <!-- SCRIPT FIREBASE UTAMA -->
     <script type="module">
         import { auth, db } from './db-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
@@ -533,7 +564,7 @@
             const iconEl = document.getElementById('caIcon');
             if(type === 'success') { iconEl.className = 'cp-icon success'; iconEl.innerHTML = '<i class="fa-solid fa-check"></i>'; }
             else if(type === 'error') { iconEl.className = 'cp-icon error'; iconEl.innerHTML = '<i class="fa-solid fa-xmark"></i>'; }
-            else { iconEl.className = 'cp-icon warning'; iconEl.innerHTML = '<i class="fa-solid fa-bell"></i>'; }
+            else { iconEl.className = 'cp-icon warning'; iconEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>'; }
             el.classList.add('show');
         }
         window.closeCustomAlert = function() { document.getElementById('customAlert').classList.remove('show'); }
@@ -594,12 +625,11 @@
                                 return; 
                             } else { document.querySelector('.content-area').style.opacity = '1'; document.querySelector('.content-area').style.pointerEvents = 'auto'; }
 
-                            if (currentRole === "developer") { 
+                            // PENGAKUAN ROLE
+                            if (currentRole === "developer" || currentRole === "superadmin") { 
                                 panel.style.display = "block"; document.getElementById('menuSuperadmin').style.display = "flex"; document.getElementById('menuBendahara').style.display = "flex"; document.getElementById('menuAdmin').style.display = "flex"; 
-                                rText.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${displayBadge}`; rText.style.color = "var(--emerald-main)"; 
-                            } else if (currentRole === "superadmin") { 
-                                panel.style.display = "block"; document.getElementById('menuSuperadmin').style.display = "flex"; document.getElementById('menuBendahara').style.display = "flex"; document.getElementById('menuAdmin').style.display = "flex"; 
-                                rText.innerHTML = '<i class="fa-solid fa-shield"></i> SUPERADMIN'; rText.style.color = "#0284C7"; 
+                                rText.innerHTML = currentRole === "developer" ? `<i class="fa-solid fa-code"></i> DEVELOPER` : '<i class="fa-solid fa-shield"></i> SUPERADMIN'; 
+                                rText.style.color = "#0284C7"; 
                             } else if (currentRole === "bendahara") { 
                                 panel.style.display = "block"; document.getElementById('menuBendahara').style.display = "flex"; 
                                 rText.innerHTML = '<i class="fa-solid fa-vault"></i> BENDAHARA'; rText.style.color = "var(--emerald-main)"; 
@@ -610,7 +640,7 @@
                                 rText.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${displayBadge}`; rText.style.color = "var(--emerald-main)"; 
                             }
 
-                            setTimeout(() => { document.getElementById('splashScreen').classList.add('hide'); }, 2800);
+                            setTimeout(() => { document.getElementById('splashScreen').classList.add('hide'); }, 2500);
 
                         } else { auth.signOut(); window.location.href = 'login.html'; }
                     });
@@ -640,7 +670,7 @@
                         
                         const uiMonth = document.getElementById('uiTotalMonth');
                         if (saldoBulanIni < 0) { uiMonth.innerText = "- Rp " + Math.abs(saldoBulanIni).toLocaleString('id-ID'); uiMonth.style.color = "var(--danger-red)"; 
-                        } else { uiMonth.innerText = "+ Rp " + saldoBulanIni.toLocaleString('id-ID'); uiMonth.style.color = "#FFF"; }
+                        } else { uiMonth.innerText = "+ Rp " + saldoBulanIni.toLocaleString('id-ID'); uiMonth.style.color = "var(--gold-accent)"; }
                     });
                 } catch(errorUI) { customAlert("Gagal Memuat", "Ada masalah saat memuat profil Anda. Mohon refresh halaman.", "error"); }
             } else { window.location.href = 'login.html'; }
@@ -757,7 +787,7 @@
 
                 let html = "";
                 listData.forEach(data => { const time = data.scan_time ? data.scan_time.toDate().toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'}) : ''; html += `<div class="live-item"><span><i class="fa-solid fa-check-circle" style="color:var(--emerald-main);"></i> ${data.member_name}</span><span>${time}</span></div>`; });
-                document.getElementById('liveListContainer').innerHTML = html || "<div style='text-align:center; font-size:11px; color:#999; font-weight:700;'>Belum ada yang hadir</div>";
+                document.getElementById('liveListContainer').innerHTML = html || "<div style='text-align:center; font-size:11px; color:var(--text-muted); font-weight:700;'>Belum ada yang hadir</div>";
                 document.getElementById('liveCount').innerText = listData.length;
             });
         }
