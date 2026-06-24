@@ -33,10 +33,10 @@
             background-color: var(--bg-base); 
             width: 100%; min-height: 100vh; margin: 0; overflow-x: hidden; position: relative;
             color: var(--text-dark);
-            display: flex; justify-content: center; align-items: flex-start; /* Fix layar lebar */
+            display: flex; justify-content: center; align-items: flex-start; 
         }
 
-        /* SPLASH SCREEN ANIMATION (TYPEWRITER) */
+        /* SPLASH SCREEN ANIMATION */
         #splashScreen {
             position: fixed; inset: 0; background: #0F172A; 
             z-index: 9999999; display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -66,13 +66,9 @@
 
         @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(25px, 40px) scale(1.1); } }
 
-        /* KUNCI LAYOUT: ANTI TERPOTONG DI HP LEBAR */
         .app-container { 
-            width: 100%; 
-            max-width: 480px; /* Batas wajar HP */
-            margin: 0 auto; /* Tengahin mutlak */
-            height: 100dvh; 
-            background: transparent; 
+            width: 100%; max-width: 480px; margin: 0 auto; 
+            height: 100dvh; background: transparent; 
             position: relative; z-index: 10; 
             overflow-x: hidden; overflow-y: auto; 
             display: flex; flex-direction: column; 
@@ -94,9 +90,7 @@
             position: relative; width: 100%; height: 280px; min-height: 280px; flex-shrink: 0; 
             background-color: #0F172A; 
             background-image: url('bg-header.jpg'); 
-            background-size: cover; 
-            background-position: center center; 
-            background-repeat: no-repeat;
+            background-size: cover; background-position: center center; background-repeat: no-repeat;
             border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; z-index: 1; 
             box-shadow: 0 15px 35px rgba(5, 150, 105, 0.15); 
         }
@@ -106,17 +100,13 @@
             border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; 
         }
 
-        /* LOGO FIX */
         .brand-container { 
-            position: absolute; 
-            bottom: 8px; 
-            left: 0; width: 100%; 
+            position: absolute; bottom: 8px; left: 0; width: 100%; 
             text-align: center; z-index: 10; padding: 0 20px; 
             display: flex; justify-content: center;
         }
         .brand-container img {
-            width: 85%; 
-            max-width: 230px; 
+            width: 85%; max-width: 230px; 
             filter: drop-shadow(0px 8px 18px rgba(0,0,0,0.9));
         }
 
@@ -196,6 +186,16 @@
         .menu-absen { border: 2px solid rgba(16, 185, 129, 0.5); background: rgba(209, 250, 229, 0.5); box-shadow: 0 15px 30px rgba(5, 150, 105, 0.15);}
         .menu-absen .menu-icon { background: linear-gradient(135deg, #10B981 0%, #059669 100%); color: #FFF; box-shadow: 0 5px 15px rgba(5, 150, 105, 0.4), inset 0 2px 4px rgba(255,255,255,0.3);}
 
+        /* TOMBOL INSTALL APP PWA */
+        .btn-install-pwa {
+            width: 100%; padding: 18px; border-radius: 18px; font-size: 14px; font-weight: 900; 
+            background: linear-gradient(135deg, var(--gold-accent) 0%, #F59E0B 100%); 
+            color: #0F172A; border: none; margin-bottom: 25px; cursor: pointer; transition: 0.2s; 
+            display: none; justify-content: center; align-items: center; gap: 10px;
+            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.3);
+        }
+        .btn-install-pwa:active { transform: scale(0.96); box-shadow: 0 5px 10px rgba(245, 158, 11, 0.2); }
+
         /* BOTTOM NAV CENTERED */
         .bottom-nav-container { 
             position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); 
@@ -262,9 +262,9 @@
 </head>
 <body>
 
-    <!-- SPLASH SCREEN ANIMATION DENGAN TYPEWRITER -->
+    <!-- SPLASH SCREEN ANIMATION DENGAN SESSION STORAGE (ANTI MUNCUL TERUS) -->
     <div id="splashScreen">
-        <img src="logo1.png" class="splash-logo" alt="Logo KGR">
+        <img src="logo.png" class="splash-logo" alt="Logo KGR">
         <div class="splash-text" id="typewriterText"></div>
     </div>
 
@@ -277,7 +277,6 @@
         <div class="header-cover">
             <div class="header-overlay"></div>
             <div class="brand-container">
-                <!-- LOGO UKURAN LEBIH BESAR & DUDUK DI GARIS LENGKUNG -->
                 <img src="logo.png" alt="Ojol Anak Babah Alun">
             </div>
         </div>
@@ -329,6 +328,11 @@
                     </div>
                 </div>
             </div>
+
+            <!-- TOMBOL INSTALL PWA (SEMBUNYI JIKA SUDAH DIINSTALL) -->
+            <button id="btnInstallPwa" class="btn-install-pwa">
+                <i class="fa-brands fa-google-play" style="font-size: 18px;"></i> Install Aplikasi KGR ke Layar HP
+            </button>
 
             <h3 class="section-title">Menu Anggota</h3>
             <div class="menu-grid">
@@ -467,39 +471,57 @@
 
     </main>
 
-        <script>
+    <!-- SCRIPT KONTROL SPLASH SCREEN (ANTI MUNCUL TERUS) -->
+    <script>
         const splashScreen = document.getElementById('splashScreen');
-        
-        // 1. Cek apakah user sudah melihat splash screen di sesi ini
         if (sessionStorage.getItem('splashSudahMuncul')) {
-            // Jika sudah, langsung musnahkan splash screen secepat kilat
             splashScreen.style.display = 'none';
         } else {
-            // Jika belum, tandai bahwa sekarang dia sudah melihatnya
             sessionStorage.setItem('splashSudahMuncul', 'true');
-            
-            // 2. Jalankan animasi Typewriter (Mesin Tik)
-            const textToType = "MEMUPUK BERKAH\nDENGAN SEDEKAH";
+            const textToType = "MEMUPUK BERKAH\nLEWAT SEDEKAH";
             const twElement = document.getElementById('typewriterText');
             let twIndex = 0;
-            
             function typeWriter() {
                 if (twIndex < textToType.length) {
-                    if(textToType.charAt(twIndex) === '\n') {
-                        twElement.innerHTML += '<br>';
-                    } else {
-                        twElement.innerHTML += textToType.charAt(twIndex);
-                    }
-                    twIndex++;
-                    setTimeout(typeWriter, 60); // Kecepatan ketik (60ms)
+                    if(textToType.charAt(twIndex) === '\n') { twElement.innerHTML += '<br>'; } 
+                    else { twElement.innerHTML += textToType.charAt(twIndex); }
+                    twIndex++; setTimeout(typeWriter, 60); 
                 }
             }
-            
-            // Mulai ngetik setelah jeda dikit (400ms)
             setTimeout(typeWriter, 400);
         }
     </script>
 
+    <!-- SCRIPT LOGIKA TOMBOL INSTALL PWA -->
+    <script>
+        let deferredPrompt;
+        const installBtn = document.getElementById('btnInstallPwa');
+
+        // Mencegah browser langsung memunculkan pop-up bawaan, kita simpan event-nya
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            // Tampilkan tombol emas kita
+            installBtn.style.display = 'flex';
+        });
+
+        // Ketika tombol emas ditekan
+        installBtn.addEventListener('click', async () => {
+            installBtn.style.display = 'none';
+            // Panggil pop-up install bawaan browser
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`User memilih: ${outcome}`);
+            deferredPrompt = null;
+        });
+
+        // Sembunyikan tombol kalau aplikasinya memang sudah sukses ter-install
+        window.addEventListener('appinstalled', () => {
+            installBtn.style.display = 'none';
+            deferredPrompt = null;
+            console.log('PWA berhasil di-install');
+        });
+    </script>
 
     <script type="module">
         import { auth, db } from './db-config.js';
@@ -544,7 +566,6 @@
                             currentUserName = String(d.nama_lengkap || "Tanpa Nama");
                             myHakAbsen = d.hak_absen || "otomatis";
                             
-                            // DEFAULT BADGE DIUBAH JADI MEMBER
                             let displayBadge = d.custom_badge ? d.custom_badge : "MEMBER";
                             
                             document.getElementById('uiUserName').innerText = currentUserName;
@@ -573,7 +594,6 @@
                                 return; 
                             } else { document.querySelector('.content-area').style.opacity = '1'; document.querySelector('.content-area').style.pointerEvents = 'auto'; }
 
-                            // SISTEM ILUSI KASTA (SEKARANG LANGSUNG TARIK NAMA BADGE AJA)
                             if (currentRole === "developer") { 
                                 panel.style.display = "block"; document.getElementById('menuSuperadmin').style.display = "flex"; document.getElementById('menuBendahara').style.display = "flex"; document.getElementById('menuAdmin').style.display = "flex"; 
                                 rText.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${displayBadge}`; rText.style.color = "var(--emerald-main)"; 
@@ -590,7 +610,6 @@
                                 rText.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${displayBadge}`; rText.style.color = "var(--emerald-main)"; 
                             }
 
-                            // HIDE SPLASH SCREEN SETELAH ANIMASI KETIK SELESAI (2.8 DETIK)
                             setTimeout(() => { document.getElementById('splashScreen').classList.add('hide'); }, 2800);
 
                         } else { auth.signOut(); window.location.href = 'login.html'; }
