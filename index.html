@@ -729,11 +729,20 @@
                 const configDoc = await getDoc(doc(db, "settings", "app_config"));
                 if (configDoc.exists() && configDoc.data().limit_sedekah) limitMaksimal = configDoc.data().limit_sedekah;
 
-                const now = new Date(); const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-                const qTrx = query(collection(db, "transactions"), where("pengirim", "==", currentUserEmail), where("jenis", "==", "Pemasukan"), where("tanggal", ">=", startOfMonth));
+                                const now = new Date(); const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+                // BYPASS FIREBASE INDEX: Tarik semua pemasukan member ini, lalu filter tanggalnya secara manual
+                const qTrx = query(collection(db, "transactions"), where("pengirim", "==", currentUserEmail), where("jenis", "==", "Pemasukan"));
                 
                 const snapshotTrx = await getDocs(qTrx); let totalSedekahBulanIni = 0;
-                snapshotTrx.forEach(docSnap => { totalSedekahBulanIni += Number(docSnap.data().nominal); });
+                snapshotTrx.forEach(docSnap => { 
+                    const data = docSnap.data();
+                    const tgl = data.tanggal ? data.tanggal.toDate() : new Date();
+                    // Hitung hanya yang masuk bulan ini
+                    if (tgl >= startOfMonth) {
+                        totalSedekahBulanIni += Number(data.nominal); 
+                    }
+                });
+
 
                 if ((totalSedekahBulanIni + nominalAwal) > limitMaksimal) {
                     customAlert("Limit Tercapai", `Batas maksimal sedekah kas adalah Rp ${limitMaksimal.toLocaleString('id-ID')} per bulan.\nTotal donasi Anda bulan ini: Rp ${totalSedekahBulanIni.toLocaleString('id-ID')}`, "warning");
