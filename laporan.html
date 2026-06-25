@@ -478,7 +478,25 @@
             });
         }
 
-        const getBase64 = (file) => new Promise((res, rej) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => res(reader.result); reader.onerror = error => rej(error); });
+      // MESIN AUTO-COMPRESS (Ngecilin foto dari 3MB jadi ~150KB)
+const getBase64 = (file) => new Promise((res, rej) => { 
+    const reader = new FileReader(); reader.readAsDataURL(file); 
+    reader.onload = (event) => {
+        const img = new Image(); img.src = event.target.result;
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const MAX_WIDTH = 800; // Maksimal resolusi HD
+            let scaleSize = MAX_WIDTH / img.width;
+            if(scaleSize > 1) scaleSize = 1;
+            canvas.width = MAX_WIDTH; canvas.height = img.height * scaleSize;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            res(canvas.toDataURL('image/jpeg', 0.6)); // Kualitas JPEG 60%
+        }
+    }; 
+    reader.onerror = error => rej(error); 
+});
+
 
         window.submitTrx = async function(e) {
             e.preventDefault();

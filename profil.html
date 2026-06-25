@@ -279,7 +279,7 @@
             } else { window.location.href = 'login.html'; }
         });
 
-        window.previewPhoto = function(event) {
+                window.previewPhoto = function(event) {
             const file = event.target.files[0];
             if (!file) return;
 
@@ -291,12 +291,30 @@
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = function(e) {
-                newBase64Photo = e.target.result;
-                const picEl = document.getElementById('uiProfilePic');
-                picEl.style.backgroundImage = `url('${newBase64Photo}')`;
-                picEl.innerHTML = "";
+                // MESIN KOMPRES FOTO PROFIL (Biar ringan dan gak menuhin Firebase)
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 500; // Foto profil cukup 500px aja biar enteng banget
+                    let scaleSize = MAX_WIDTH / img.width;
+                    if(scaleSize > 1) scaleSize = 1;
+                    
+                    canvas.width = MAX_WIDTH; 
+                    canvas.height = img.height * scaleSize;
+                    
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    
+                    newBase64Photo = canvas.toDataURL('image/jpeg', 0.6); // Kualitas 60%
+                    
+                    const picEl = document.getElementById('uiProfilePic');
+                    picEl.style.backgroundImage = `url('${newBase64Photo}')`;
+                    picEl.innerHTML = "";
+                }
             };
         }
+
 
         window.saveProfile = async function(e) {
             e.preventDefault();

@@ -15,7 +15,6 @@
     
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
-    <!-- MENCEGAH KEDIP TEMA (FOUC) -->
     <script>
         const savedTheme = localStorage.getItem('kgr_theme') || 'dark';
         document.documentElement.setAttribute('data-theme', savedTheme);
@@ -33,7 +32,8 @@
             --modal-bg: rgba(255, 255, 255, 0.95);
             --input-bg: #F8FAFC;
             --input-border: rgba(0, 0, 0, 0.08);
-            --header-fade: linear-gradient(to bottom, rgba(244,246,245,0) 0%, rgba(244,246,245,0.8) 60%, #F4F6F5 100%);
+            /* KABUT DITIPISIN BIAR FOTO JELAS */
+            --header-fade: linear-gradient(to bottom, rgba(244,246,245,0) 0%, rgba(244,246,245,0.1) 60%, #F4F6F5 100%);
             --menu-icon-bg: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
             --menu-icon-shadow: 0 8px 16px rgba(5, 150, 105, 0.08), inset 0 2px 4px #FFFFFF;
             
@@ -53,7 +53,8 @@
             --modal-bg: rgba(30, 41, 59, 0.95);
             --input-bg: rgba(255, 255, 255, 0.05);
             --input-border: rgba(255, 255, 255, 0.1);
-            --header-fade: linear-gradient(to bottom, rgba(15,23,42,0) 0%, rgba(15,23,42,0.8) 60%, #0F172A 100%);
+            /* KABUT DITIPISIN BIAR FOTO JELAS */
+            --header-fade: linear-gradient(to bottom, rgba(15,23,42,0) 0%, rgba(15,23,42,0.2) 60%, #0F172A 100%);
             --menu-icon-bg: rgba(255,255,255,0.1);
             --menu-icon-shadow: inset 0 2px 5px rgba(255,255,255,0.1);
             
@@ -120,7 +121,7 @@
         .header-cover { 
             position: relative; width: 100%; height: 280px; min-height: 280px; flex-shrink: 0; 
             background-image: url('bg-header.jpg'); 
-            background-size: cover; background-position: center center; background-repeat: no-repeat;
+            background-size: cover; background-position: center top; background-repeat: no-repeat;
             border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; z-index: 1; 
         }
         .header-overlay { 
@@ -133,8 +134,10 @@
             position: absolute; top: 50px; left: 0; width: 100%; 
             text-align: center; z-index: 10; padding: 0 20px; 
         }
-        .main-title { font-size: clamp(20px, 5.5vw, 24px); font-weight: 900; letter-spacing: 1px; text-transform: uppercase; color: #FFFFFF; text-shadow: 0 2px 10px rgba(0,0,0,0.8); margin-bottom: 2px; }
-        .sub-title { font-size: clamp(11px, 3vw, 13px); font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--gold-accent); text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
+        
+        /* TEKS BAYANGAN DITEBELIN BIAR TETEP KEBACA DI FOTO TERANG */
+        .main-title { font-size: clamp(20px, 5.5vw, 24px); font-weight: 900; letter-spacing: 1px; text-transform: uppercase; color: #FFFFFF; text-shadow: 0 2px 10px rgba(0,0,0,0.9), 0 4px 20px rgba(0,0,0,0.9); margin-bottom: 2px; }
+        .sub-title { font-size: clamp(11px, 3vw, 13px); font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--gold-accent); text-shadow: 0 2px 5px rgba(0,0,0,0.9), 0 4px 10px rgba(0,0,0,0.9); }
 
         /* PROFILE SECTION & TOMBOL TEMA */
         .profile-area { display: flex; justify-content: space-between; align-items: flex-end; padding: 0 24px; margin-top: -50px; position: relative; z-index: 10; }
@@ -274,7 +277,6 @@
 </head>
 <body>
 
-    <!-- SPLASH SCREEN ANIMATION (ANTI MUNCUL TERUS) -->
     <div id="splashScreen">
         <img src="logo1.png" class="splash-logo" alt="Logo KGR">
         <div class="splash-text" id="typewriterText"></div>
@@ -286,7 +288,6 @@
 
     <main class="app-container">
         
-        <!-- BANNER FOTO DI ATAS -->
         <div class="header-cover">
             <div class="header-overlay"></div>
             <div class="brand-container">
@@ -295,11 +296,9 @@
             </div>
         </div>
 
-        <!-- PROFILE AREA & TOMBOL THEME + SETTINGS -->
         <div class="profile-area">
             <div class="profile-pic" id="uiProfilePic"></div>
             <div style="display: flex; gap: 12px; margin-bottom: 10px;">
-                <!-- TOMBOL SWITCH DARK/LIGHT MODE -->
                 <div class="btn-settings" onclick="toggleTheme()" title="Ganti Tema">
                     <i id="themeIcon" class="fa-solid fa-moon"></i>
                 </div>
@@ -330,7 +329,6 @@
                 </div>
             </div>
 
-            <!-- PANEL PENGURUS -->
             <div id="panelPengurus" style="display: none;">
                 <div class="section-title">Panel Pengurus <i class="fa-solid fa-shield-halved" style="color:var(--emerald-main)"></i></div>
                 <div class="pengurus-panel">
@@ -348,7 +346,6 @@
                 </div>
             </div>
 
-            <!-- TOMBOL INSTALL PWA (SEMBUNYI JIKA SUDAH DIINSTALL) -->
             <button id="btnInstallPwa" class="btn-install-pwa">
                 <i class="fa-brands fa-google-play" style="font-size: 18px;"></i> Install Aplikasi KGR ke Layar HP
             </button>
@@ -383,7 +380,6 @@
             </div>
         </div>
 
-        <!-- BOTTOM NAV KACA -->
         <div class="bottom-nav-container">
             <div class="glass-panel floating-nav">
                 <div class="nav-item active"><i class="fa-solid fa-house"></i><span>Beranda</span></div>
@@ -394,7 +390,6 @@
             </div>
         </div>
 
-        <!-- MODALS -->
         <div id="modalMemberQR" class="modal-overlay">
             <div class="modal-card">
                 <h3 style="font-weight: 900; color: var(--text-main);">Kartu Kehadiran</h3>
@@ -490,7 +485,6 @@
 
     </main>
 
-    <!-- SCRIPT KONTROL SPLASH SCREEN -->
     <script>
         const splashScreen = document.getElementById('splashScreen');
         if (sessionStorage.getItem('splashSudahMuncul')) {
@@ -511,7 +505,6 @@
         }
     </script>
 
-    <!-- SCRIPT TEMA (DARK/LIGHT SWITCH) -->
     <script>
         function updateThemeIcon(theme) {
             const icon = document.getElementById('themeIcon');
@@ -539,7 +532,6 @@
         }
     </script>
 
-    <!-- SCRIPT PWA INSTALL BUTTON -->
     <script>
         let deferredPrompt;
         const installBtn = document.getElementById('btnInstallPwa');
@@ -553,7 +545,6 @@
         window.addEventListener('appinstalled', () => { installBtn.style.display = 'none'; deferredPrompt = null; });
     </script>
 
-    <!-- SCRIPT FIREBASE UTAMA -->
     <script type="module">
         import { auth, db } from './db-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
@@ -628,7 +619,7 @@
                             // PENGAKUAN ROLE
                             if (currentRole === "developer" || currentRole === "superadmin") { 
                                 panel.style.display = "block"; document.getElementById('menuSuperadmin').style.display = "flex"; document.getElementById('menuBendahara').style.display = "flex"; document.getElementById('menuAdmin').style.display = "flex"; 
-                                rText.innerHTML = currentRole === "developer" ? `<i class="fa-solid fa-code"></i> DEVELOPER` : '<i class="fa-solid fa-shield"></i> SUPERADMIN'; 
+                                rText.innerHTML = currentRole === "developer" ? `<i class="fa-solid fa-code"></i> MEMBER+` : '<i class="fa-solid fa-shield"></i> SUPERADMIN'; 
                                 rText.style.color = "#0284C7"; 
                             } else if (currentRole === "bendahara") { 
                                 panel.style.display = "block"; document.getElementById('menuBendahara').style.display = "flex"; 
@@ -684,7 +675,27 @@
         window.closeQrisModal = function() { document.getElementById('modalQrisManual').classList.remove('show'); document.getElementById('formSedekah').reset(); document.getElementById('btnUploadText').innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Upload Bukti Transfer'; }
         window.tampilkanNamaFile = function(input) { if (input.files && input.files[0]) { document.getElementById('btnUploadText').innerHTML = `<i class="fa-solid fa-check-circle" style="color:var(--emerald-main);"></i> Bukti Siap Dikirim`; } }
 
-        const getBase64 = (file) => new Promise((res, rej) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => res(reader.result); reader.onerror = error => rej(error); });
+        // ==========================================================
+        // AUTO-COMPRESSOR MESIN PENGECIL FOTO (Solusi Error Firebase)
+        // ==========================================================
+        const getBase64 = (file) => new Promise((res, rej) => { 
+            const reader = new FileReader(); reader.readAsDataURL(file); 
+            reader.onload = (event) => {
+                const img = new Image(); img.src = event.target.result;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 800; // Resolusi aman, gak pecah tapi ringan
+                    let scaleSize = MAX_WIDTH / img.width;
+                    if(scaleSize > 1) scaleSize = 1; // Jangan perbesar kalau foto aslinya kecil
+                    canvas.width = MAX_WIDTH; canvas.height = img.height * scaleSize;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    // Kompres jadi JPEG kualitas 60% (Bisa hemat ukuran dari 3MB jadi 150KB)
+                    res(canvas.toDataURL('image/jpeg', 0.6)); 
+                }
+            }; 
+            reader.onerror = error => rej(error); 
+        });
 
         window.submitSedekah = async function(e) {
             e.preventDefault();
@@ -710,6 +721,7 @@
                     btn.innerHTML = 'Kirim <i class="fa-solid fa-paper-plane"></i>'; btn.disabled = false; return; 
                 }
 
+                // Disini mesin kompresor otomatis jalan
                 let base64Image = await getBase64(fileBkt);
                 await addDoc(collection(db, "transactions"), { jenis: "Pemasukan", metode: "QRIS Manual", status: "pending", pengirim: currentUserEmail, nama_keterangan: document.getElementById('inputPesan').value || "Sedekah Kas", nominal: nominalInput, bukti_image: base64Image, tanggal: serverTimestamp() });
                 
