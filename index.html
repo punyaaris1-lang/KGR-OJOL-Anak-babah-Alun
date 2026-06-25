@@ -15,6 +15,7 @@
     
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
+    <!-- MENCEGAH KEDIP TEMA (FOUC) -->
     <script>
         const savedTheme = localStorage.getItem('kgr_theme') || 'dark';
         document.documentElement.setAttribute('data-theme', savedTheme);
@@ -277,6 +278,7 @@
 </head>
 <body>
 
+    <!-- SPLASH SCREEN ANIMATION (ANTI MUNCUL TERUS) -->
     <div id="splashScreen">
         <img src="logo1.png" class="splash-logo" alt="Logo KGR">
         <div class="splash-text" id="typewriterText"></div>
@@ -288,6 +290,7 @@
 
     <main class="app-container">
         
+        <!-- BANNER FOTO DI ATAS -->
         <div class="header-cover">
             <div class="header-overlay"></div>
             <div class="brand-container">
@@ -296,9 +299,11 @@
             </div>
         </div>
 
+        <!-- PROFILE AREA & TOMBOL THEME + SETTINGS -->
         <div class="profile-area">
             <div class="profile-pic" id="uiProfilePic"></div>
             <div style="display: flex; gap: 12px; margin-bottom: 10px;">
+                <!-- TOMBOL SWITCH DARK/LIGHT MODE -->
                 <div class="btn-settings" onclick="toggleTheme()" title="Ganti Tema">
                     <i id="themeIcon" class="fa-solid fa-moon"></i>
                 </div>
@@ -308,6 +313,7 @@
 
         <div class="user-intro">
             <h2 id="uiUserName">Memuat...</h2>
+            <!-- UBAH DISINI KALAU MAU GANTI NAMA BADGE DI MASA DEPAN -->
             <p id="uiRoleText"><i class="fa-solid fa-spinner fa-spin"></i> Mengecek Data</p>
         </div>
 
@@ -329,6 +335,7 @@
                 </div>
             </div>
 
+            <!-- PANEL PENGURUS -->
             <div id="panelPengurus" style="display: none;">
                 <div class="section-title">Panel Pengurus <i class="fa-solid fa-shield-halved" style="color:var(--emerald-main)"></i></div>
                 <div class="pengurus-panel">
@@ -346,6 +353,7 @@
                 </div>
             </div>
 
+            <!-- TOMBOL INSTALL PWA (SEMBUNYI JIKA SUDAH DIINSTALL) -->
             <button id="btnInstallPwa" class="btn-install-pwa">
                 <i class="fa-brands fa-google-play" style="font-size: 18px;"></i> Install Aplikasi KGR ke Layar HP
             </button>
@@ -380,6 +388,7 @@
             </div>
         </div>
 
+        <!-- BOTTOM NAV KACA -->
         <div class="bottom-nav-container">
             <div class="glass-panel floating-nav">
                 <div class="nav-item active"><i class="fa-solid fa-house"></i><span>Beranda</span></div>
@@ -390,6 +399,7 @@
             </div>
         </div>
 
+        <!-- MODALS -->
         <div id="modalMemberQR" class="modal-overlay">
             <div class="modal-card">
                 <h3 style="font-weight: 900; color: var(--text-main);">Kartu Kehadiran</h3>
@@ -437,13 +447,14 @@
                 </div>
 
                 <form id="formSedekah" onsubmit="submitSedekah(event)">
-                    <input type="number" id="inputNominal" class="form-input" placeholder="Nominal (Cth: 50000)" required style="text-align: center; font-size: 18px; font-weight: 900;">
+                    <input type="number" id="inputNominal" class="form-input" placeholder="Nominal (Minimal 1000)" required style="text-align: center; font-size: 18px; font-weight: 900;">
                     <input type="text" id="inputPesan" class="form-input" placeholder="Pesan / Doa (Opsional)">
 
                     <div style="position:relative; width:100%; margin-bottom:15px;">
-                        <input type="file" id="inputBukti" accept="image/*" required onchange="tampilkanNamaFile(this)" style="position:absolute; left:0; top:0; width:100%; height:100%; opacity:0; z-index:2; cursor:pointer;">
+                        <!-- FOTO OPSIONAL -->
+                        <input type="file" id="inputBukti" accept="image/*" onchange="tampilkanNamaFile(this)" style="position:absolute; left:0; top:0; width:100%; height:100%; opacity:0; z-index:2; cursor:pointer;">
                         <div id="btnUploadText" class="btn-outline" style="width:100%; padding:15px; border-radius:14px; border:2px dashed var(--emerald-main); font-size:13px; font-weight:800; display:flex; justify-content:center; align-items:center; gap:8px; transition:0.2s;">
-                            <i class="fa-solid fa-cloud-arrow-up"></i> Upload Bukti Transfer
+                            <i class="fa-solid fa-cloud-arrow-up"></i> Upload Bukti (Opsional)
                         </div>
                     </div>
 
@@ -485,6 +496,7 @@
 
     </main>
 
+    <!-- SCRIPT KONTROL SPLASH SCREEN -->
     <script>
         const splashScreen = document.getElementById('splashScreen');
         if (sessionStorage.getItem('splashSudahMuncul')) {
@@ -505,6 +517,7 @@
         }
     </script>
 
+    <!-- SCRIPT TEMA (DARK/LIGHT SWITCH) -->
     <script>
         function updateThemeIcon(theme) {
             const icon = document.getElementById('themeIcon');
@@ -532,6 +545,7 @@
         }
     </script>
 
+    <!-- SCRIPT PWA INSTALL BUTTON -->
     <script>
         let deferredPrompt;
         const installBtn = document.getElementById('btnInstallPwa');
@@ -545,6 +559,7 @@
         window.addEventListener('appinstalled', () => { installBtn.style.display = 'none'; deferredPrompt = null; });
     </script>
 
+    <!-- SCRIPT FIREBASE UTAMA -->
     <script type="module">
         import { auth, db } from './db-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
@@ -619,7 +634,7 @@
                             // PENGAKUAN ROLE
                             if (currentRole === "developer" || currentRole === "superadmin") { 
                                 panel.style.display = "block"; document.getElementById('menuSuperadmin').style.display = "flex"; document.getElementById('menuBendahara').style.display = "flex"; document.getElementById('menuAdmin').style.display = "flex"; 
-                                rText.innerHTML = currentRole === "developer" ? `<i class="fa-solid fa-code"></i> MEMBER+` : '<i class="fa-solid fa-shield"></i> SUPERADMIN'; 
+                                rText.innerHTML = currentRole === "developer" ? `<i class="fa-solid fa-code"></i>Member+` : '<i class="fa-solid fa-shield"></i> SUPERADMIN'; 
                                 rText.style.color = "#0284C7"; 
                             } else if (currentRole === "bendahara") { 
                                 panel.style.display = "block"; document.getElementById('menuBendahara').style.display = "flex"; 
@@ -672,26 +687,23 @@
             const configDoc = await getDoc(doc(db, "settings", "app_config"));
             if (configDoc.exists() && configDoc.data().qris_url) { document.getElementById('qrisImgSource').src = configDoc.data().qris_url; }
         }
-        window.closeQrisModal = function() { document.getElementById('modalQrisManual').classList.remove('show'); document.getElementById('formSedekah').reset(); document.getElementById('btnUploadText').innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Upload Bukti Transfer'; }
+        window.closeQrisModal = function() { document.getElementById('modalQrisManual').classList.remove('show'); document.getElementById('formSedekah').reset(); document.getElementById('btnUploadText').innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Upload Bukti (Opsional)'; }
         window.tampilkanNamaFile = function(input) { if (input.files && input.files[0]) { document.getElementById('btnUploadText').innerHTML = `<i class="fa-solid fa-check-circle" style="color:var(--emerald-main);"></i> Bukti Siap Dikirim`; } }
 
-        // ==========================================================
-        // AUTO-COMPRESSOR MESIN PENGECIL FOTO (Solusi Error Firebase)
-        // ==========================================================
+        // MESIN AUTO-COMPRESS (Ngecilin foto 3MB jadi cuma ~150KB biar Firestore gak jebol)
         const getBase64 = (file) => new Promise((res, rej) => { 
             const reader = new FileReader(); reader.readAsDataURL(file); 
             reader.onload = (event) => {
                 const img = new Image(); img.src = event.target.result;
                 img.onload = () => {
                     const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 800; // Resolusi aman, gak pecah tapi ringan
+                    const MAX_WIDTH = 800; // Maksimal lebar foto 800px (Kualitas HD)
                     let scaleSize = MAX_WIDTH / img.width;
                     if(scaleSize > 1) scaleSize = 1; // Jangan perbesar kalau foto aslinya kecil
                     canvas.width = MAX_WIDTH; canvas.height = img.height * scaleSize;
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    // Kompres jadi JPEG kualitas 60% (Bisa hemat ukuran dari 3MB jadi 150KB)
-                    res(canvas.toDataURL('image/jpeg', 0.6)); 
+                    res(canvas.toDataURL('image/jpeg', 0.6)); // Kualitas JPEG 60% (Sangat irit memori)
                 }
             }; 
             reader.onerror = error => rej(error); 
@@ -700,10 +712,17 @@
         window.submitSedekah = async function(e) {
             e.preventDefault();
             const fileBkt = document.getElementById('inputBukti').files[0];
-            if(fileBkt && fileBkt.size > 3 * 1024 * 1024) { return customAlert("Foto Terlalu Besar", "Ukuran foto bukti maksimal 3MB.", "warning"); }
+            const btn = document.getElementById('btnSubmitSedekah'); 
 
-            const nominalInput = Number(document.getElementById('inputNominal').value);
-            const btn = document.getElementById('btnSubmitSedekah'); btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Proses...'; btn.disabled = true;
+            // LOGIKA KODE UNIK
+            const nominalAwal = Number(document.getElementById('inputNominal').value);
+            if (nominalAwal < 1000) return customAlert("Nominal Terlalu Kecil", "Minimal sedekah kas adalah Rp 1.000", "warning");
+            
+            const kodeUnik = Math.floor(Math.random() * 999) + 1;
+            const nominalAkhir = nominalAwal + kodeUnik;
+
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses...'; 
+            btn.disabled = true;
 
             try {
                 let limitMaksimal = 10000; 
@@ -716,18 +735,47 @@
                 const snapshotTrx = await getDocs(qTrx); let totalSedekahBulanIni = 0;
                 snapshotTrx.forEach(docSnap => { totalSedekahBulanIni += Number(docSnap.data().nominal); });
 
-                if ((totalSedekahBulanIni + nominalInput) > limitMaksimal) {
-                    customAlert("Sedekah Ditolak", `Batas maksimal sedekah anggota adalah Rp ${limitMaksimal.toLocaleString('id-ID')} per bulan.\nTotal donasi Anda bulan ini sudah: Rp ${totalSedekahBulanIni.toLocaleString('id-ID')}`, "warning");
+                if ((totalSedekahBulanIni + nominalAwal) > limitMaksimal) {
+                    customAlert("Limit Tercapai", `Batas maksimal sedekah kas adalah Rp ${limitMaksimal.toLocaleString('id-ID')} per bulan.\nTotal donasi Anda bulan ini: Rp ${totalSedekahBulanIni.toLocaleString('id-ID')}`, "warning");
                     btn.innerHTML = 'Kirim <i class="fa-solid fa-paper-plane"></i>'; btn.disabled = false; return; 
                 }
 
-                // Disini mesin kompresor otomatis jalan
-                let base64Image = await getBase64(fileBkt);
-                await addDoc(collection(db, "transactions"), { jenis: "Pemasukan", metode: "QRIS Manual", status: "pending", pengirim: currentUserEmail, nama_keterangan: document.getElementById('inputPesan').value || "Sedekah Kas", nominal: nominalInput, bukti_image: base64Image, tanggal: serverTimestamp() });
+                let base64Image = "";
+                if(fileBkt) {
+                    if(fileBkt.size > 3 * 1024 * 1024) throw new Error("Ukuran foto maksimal 3MB.");
+                    base64Image = await getBase64(fileBkt);
+                }
+
+                await addDoc(collection(db, "transactions"), { 
+                    jenis: "Pemasukan", 
+                    metode: "QRIS Manual", 
+                    status: "pending", 
+                    pengirim: currentUserEmail, 
+                    nama_keterangan: document.getElementById('inputPesan').value || "Sedekah Kas", 
+                    nominal: nominalAkhir, 
+                    bukti_image: base64Image, 
+                    tanggal: serverTimestamp() 
+                });
                 
-                customAlert("Alhamdulillah", "Sedekah berhasil dikirim dan menunggu konfirmasi Bendahara.", "success"); window.closeQrisModal();
-            } catch (err) { customAlert("Error", "Gagal mengirim bukti transfer. Periksa koneksi Anda.", "error"); } 
-            finally { btn.innerHTML = 'Kirim <i class="fa-solid fa-paper-plane"></i>'; btn.disabled = false; }
+                customAlert(
+                    "Catat Angkanya!", 
+                    `Sistem telah menambahkan kode unik. Harap transfer TEPAT SEBESAR:\n\nRp ${nominalAkhir.toLocaleString('id-ID')}\n\nJika nominal berbeda, admin akan kesulitan memverifikasi saldo Anda.`, 
+                    "success"
+                ); 
+                window.closeQrisModal();
+
+            } catch (err) { 
+                console.error(err);
+                let errorMsg = err.message;
+                if(errorMsg.includes("Missing or insufficient permissions")) {
+                    errorMsg = "Akses Ditolak oleh Server. Cek pengaturan 'Rules' Firebase Anda.";
+                }
+                customAlert("Gagal Mengirim", errorMsg, "error"); 
+            } 
+            finally { 
+                btn.innerHTML = 'Kirim <i class="fa-solid fa-paper-plane"></i>'; 
+                btn.disabled = false; 
+            }
         }
 
         onSnapshot(doc(db, "settings", "event_config"), (docSnap) => {
