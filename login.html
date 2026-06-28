@@ -70,7 +70,6 @@
         .form-group i.eye-icon { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--text-gray); font-size: 16px; cursor: pointer; transition: 0.2s; padding: 5px;}
         .form-group i.eye-icon:active { transform: translateY(-50%) scale(0.8); color: var(--emerald-main); }
         
-        /* Padding dikanan dilebarin dikit biar text gak ketumpuk icon mata */
         .form-input { 
             width: 100%; padding: 16px 45px 16px 45px; border-radius: 14px; border: 2px solid rgba(0,0,0,0.06); 
             font-size: 13px; font-weight: 700; color: var(--text-dark); outline: none; background: #F8FAFC; transition: 0.2s;
@@ -110,13 +109,20 @@
         .cp-btn-cancel { background: #F1F5F9; color: var(--text-dark); border: 1px solid rgba(0,0,0,0.05);}
         .cp-btn-danger { background: var(--danger-red); color: #FFF; box-shadow: 0 8px 20px rgba(239,68,68,0.3);}
 
-        /* ANIMASI TYPEWRITER (LIGHT) */
-        .intro-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-base); z-index: 9999; display: none; flex-direction: column; justify-content: center; align-items: center; }
+        /* ANIMASI TYPEWRITER TERBARU (Sesuai Logo KGR) */
+        .intro-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0F172A; z-index: 9999; display: none; flex-direction: column; justify-content: center; align-items: center; }
         .intro-overlay.active { display: flex; }
+        
+        /* Animasi Logo KGR Berdenyut */
+        @keyframes pulseGlow {
+            0% { transform: scale(0.95); filter: drop-shadow(0 0 10px rgba(5, 150, 105, 0.3)); }
+            100% { transform: scale(1.05); filter: drop-shadow(0 0 30px rgba(245, 158, 11, 0.6)); }
+        }
+
         .typewriter-box { text-align: center; padding: 20px; }
-        .type-line-1 { font-size: clamp(22px, 6vw, 26px); font-weight: 900; color: var(--text-dark); margin-bottom: 5px; min-height: 32px; letter-spacing: 1px; }
-        .type-line-2 { font-size: 14px; font-weight: 800; color: var(--emerald-main); min-height: 18px; letter-spacing: 2px; }
-        .cursor { display: inline-block; width: 3px; height: 1em; background: var(--emerald-main); vertical-align: middle; margin-left: 2px; animation: blink 0.7s infinite; }
+        .type-line-1 { font-size: clamp(20px, 6vw, 24px); font-weight: 900; color: var(--emerald-main); margin-bottom: 5px; min-height: 32px; letter-spacing: 1.5px; text-transform: uppercase;}
+        .type-line-2 { font-size: clamp(20px, 6vw, 24px); font-weight: 900; color: var(--emerald-main); min-height: 32px; letter-spacing: 1.5px; text-transform: uppercase;}
+        .cursor { display: inline-block; width: 3px; height: 1em; background: #FFFFFF; vertical-align: middle; margin-left: 4px; animation: blink 0.7s infinite; }
         .cursor.hidden { display: none; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
     </style>
@@ -144,8 +150,9 @@
         </div>
     </div>
 
+    <!-- ANIMASI BARU DENGAN LOGO KGR -->
     <div id="introAnimation" class="intro-overlay">
-        <div class="logo-icon" style="margin-bottom: 30px; transform: scale(1.2);"><i class="fa-solid fa-hands-holding-child"></i></div>
+        <img src="logo1.png" alt="Logo KGR" style="width: 150px; animation: pulseGlow 1.5s infinite alternate ease-in-out; margin-bottom: 25px;">
         <div class="typewriter-box">
             <div class="type-line-1"><span id="text1"></span><span id="cursor1" class="cursor"></span></div>
             <div class="type-line-2"><span id="text2"></span><span id="cursor2" class="cursor hidden"></span></div>
@@ -174,7 +181,6 @@
                     <div class="form-group">
                         <i class="fa-solid fa-lock input-icon"></i>
                         <input type="password" id="logPass" class="form-input" placeholder="Password" required>
-                        <!-- ICON MATA UNTUK TOGGLE PASSWORD -->
                         <i class="fa-solid fa-eye eye-icon" onclick="togglePassword('logPass', this)"></i>
                     </div>
                     <button type="submit" class="btn-auth" id="btnLoginSubmit">Masuk Aplikasi <i class="fa-solid fa-right-to-bracket"></i></button>
@@ -195,7 +201,6 @@
                     <div class="form-group" style="margin-bottom: 10px;">
                         <i class="fa-solid fa-lock input-icon"></i>
                         <input type="password" id="regPass" class="form-input" placeholder="Password (Min. 6 huruf)" required minlength="6">
-                        <!-- ICON MATA UNTUK TOGGLE PASSWORD DAFTAR -->
                         <i class="fa-solid fa-eye eye-icon" onclick="togglePassword('regPass', this)"></i>
                     </div>
                     <button type="submit" class="btn-auth" id="btnRegisterSubmit">Daftar Akun Baru <i class="fa-solid fa-user-plus"></i></button>
@@ -375,7 +380,6 @@
             } catch (error) { 
                 let errorMsg = error.message.replace('Firebase: ', '');
                 
-                // Menerjemahkan Error Firebase ke Bahasa Manusia
                 if (error.code === 'auth/invalid-email') errorMsg = "Format penulisan email tidak valid.";
                 else if (error.code === 'auth/user-not-found') errorMsg = "Email ini belum terdaftar di sistem KGR.";
                 else if (error.code === 'auth/wrong-password') errorMsg = "Password yang Anda masukkan salah.";
@@ -391,12 +395,23 @@
 
         window.playTypewriterAndRedirect = async function() {
             document.getElementById('introAnimation').classList.add('active');
-            const typeText = async (text, element) => { for (let i = 0; i < text.length; i++) { element.innerHTML += text.charAt(i); await new Promise(r => setTimeout(r, 40)); } };
-            await typeText("KOTAK GOTONG ROYONG", document.getElementById('text1'));
-            document.getElementById('cursor1').classList.add('hidden'); document.getElementById('cursor2').classList.remove('hidden'); 
+            
+            // KUNCI PENTING: Ngasih tau index.html kalau animasi udah dimainkan
+            // Biar gak muter loading dua kali!
+            sessionStorage.setItem('splashSudahMuncul', 'true');
+            
+            const typeText = async (text, element) => { for (let i = 0; i < text.length; i++) { element.innerHTML += text.charAt(i); await new Promise(r => setTimeout(r, 50)); } };
+            
+            await typeText("MENCARI BERKAH", document.getElementById('text1'));
+            document.getElementById('cursor1').classList.add('hidden'); 
+            document.getElementById('cursor2').classList.remove('hidden'); 
+            
             await new Promise(r => setTimeout(r, 200)); 
-            await typeText("ANAK OJOL BABAH ALUN", document.getElementById('text2'));
-            setTimeout(() => { window.location.href = 'index.html'; }, 800);
+            
+            await typeText("LEWAT SEDEKAH", document.getElementById('text2'));
+            
+            // Redirect dipercepat dikit biar gak kelamaan nunggu
+            setTimeout(() => { window.location.href = 'index.html'; }, 600);
         }
     </script>
     <script>
