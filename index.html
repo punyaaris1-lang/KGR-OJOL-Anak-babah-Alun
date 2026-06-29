@@ -718,7 +718,7 @@
             const nominalAwal = Number(document.getElementById('inputNominal').value);
             if (nominalAwal < 1000) return customAlert("Nominal Terlalu Kecil", "Minimal sedekah kas adalah Rp 1.000", "warning");
             
-            const kodeUnik = Math.floor(Math.random() * 999) + 1;
+            const kodeUnik = Math.floor(Math.random() * 59) + 1;
             const nominalAkhir = nominalAwal + kodeUnik;
 
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses...'; 
