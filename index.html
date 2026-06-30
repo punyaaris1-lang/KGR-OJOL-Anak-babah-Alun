@@ -24,7 +24,6 @@
     <style>
         /* VARIABEL MESIN TEMA (DARK/LIGHT) */
         :root {
-            /* TEMA LIGHT */
             --bg-body: #F4F6F5;
             --text-main: #0F172A;
             --text-muted: #64748B;
@@ -44,7 +43,6 @@
         }
 
         [data-theme="dark"] {
-            /* TEMA DARK (DEFAULT) */
             --bg-body: #0F172A;
             --text-main: #FFFFFF;
             --text-muted: rgba(255,255,255,0.6);
@@ -224,6 +222,20 @@
             <p id="uiRoleText"><i class="fa-solid fa-spinner fa-spin"></i> Mengecek Data</p>
         </div>
 
+        <!-- SCRIPT ANTI LEMOT (MEMORI INSTAN) -->
+        <script>
+            // Trik biar profil langsung muncul tanpa nunggu Firebase mikir
+            if(localStorage.getItem('kgr_nama')) document.getElementById('uiUserName').innerText = localStorage.getItem('kgr_nama');
+            if(localStorage.getItem('kgr_badge')) document.getElementById('uiRoleText').innerHTML = localStorage.getItem('kgr_badge');
+            if(localStorage.getItem('kgr_badge_color')) document.getElementById('uiRoleText').style.color = localStorage.getItem('kgr_badge_color');
+            if(localStorage.getItem('kgr_pic')) {
+                const pic = localStorage.getItem('kgr_pic');
+                const el = document.getElementById('uiProfilePic');
+                if(pic.length > 5) { el.style.backgroundImage = `url('${pic}')`; el.innerText = ""; }
+                else { el.style.backgroundImage = "none"; el.innerText = pic; }
+            }
+        </script>
+
         <div class="content-area">
             
             <div class="glass-emerald premium-card">
@@ -241,6 +253,16 @@
                     </div>
                 </div>
             </div>
+
+            <!-- SCRIPT ANTI LEMOT BAGIAN KAS -->
+            <script>
+                if(localStorage.getItem('kgr_saldo_all')) document.getElementById('uiTotalAll').innerText = localStorage.getItem('kgr_saldo_all');
+                if(localStorage.getItem('kgr_saldo_month')) {
+                    const m = document.getElementById('uiTotalMonth');
+                    m.innerText = localStorage.getItem('kgr_saldo_month');
+                    m.style.color = localStorage.getItem('kgr_saldo_month_color') || "var(--gold-accent)";
+                }
+            </script>
 
             <!-- PANEL PENGURUS -->
             <div id="panelPengurus" style="display: none;">
@@ -424,7 +446,7 @@
             splashScreen.style.display = 'none';
         } else {
             sessionStorage.setItem('splashSudahMuncul', 'true');
-            const textToType = "MEMUPUK BERKAH\nLEWAT SEDEKAH";
+            const textToType = "MEMUPUK BERKAH\nDENGAN SEDEKAH";
             const twElement = document.getElementById('typewriterText');
             let twIndex = 0;
             function typeWriter() {
@@ -504,7 +526,6 @@
         let myHakAbsen = "otomatis";
         let myTotalSedekahAllTime = 0;
         
-        // Variabel penampung nominal unik
         let nominalFinalSedekah = 0;
 
         onAuthStateChanged(auth, async (user) => {
@@ -520,41 +541,64 @@
                             
                             let displayBadge = d.custom_badge ? d.custom_badge : "MEMBER";
                             document.getElementById('uiUserName').innerText = currentUserName;
+                            // SIMPAN NAMA KE MEMORI HP
+                            localStorage.setItem('kgr_nama', currentUserName);
                             
                             const picEl = document.getElementById('uiProfilePic');
-                            if (d.profile_image) { picEl.style.backgroundImage = `url('${d.profile_image}')`; picEl.innerText = ""; } 
-                            else { picEl.style.backgroundImage = "none"; picEl.innerText = currentUserName.charAt(0).toUpperCase(); }
+                            if (d.profile_image) { 
+                                picEl.style.backgroundImage = `url('${d.profile_image}')`; 
+                                picEl.innerText = ""; 
+                                localStorage.setItem('kgr_pic', d.profile_image); // SIMPAN FOTO
+                            } else { 
+                                const initial = currentUserName.charAt(0).toUpperCase();
+                                picEl.style.backgroundImage = "none"; 
+                                picEl.innerText = initial; 
+                                localStorage.setItem('kgr_pic', initial); // SIMPAN INISIAL
+                            }
 
                             const rText = document.getElementById('uiRoleText');
                             const panel = document.getElementById('panelPengurus');
+                            let roleHtml = "";
 
                             if (d.status === "Pending Admin" && currentRole !== "superadmin" && currentRole !== "developer") {
-                                document.getElementById('uiUserName').innerText = "Menunggu Verifikasi"; rText.innerHTML = '<i class="fa-solid fa-lock"></i> STATUS PENDING'; rText.style.color = "var(--danger-red)"; 
+                                document.getElementById('uiUserName').innerText = "Menunggu Verifikasi"; 
+                                roleHtml = '<i class="fa-solid fa-lock"></i> STATUS PENDING'; 
+                                rText.style.color = "var(--danger-red)"; 
                                 document.querySelector('.content-area').style.opacity = '0.3'; document.querySelector('.content-area').style.pointerEvents = 'none';
                                 setTimeout(() => { document.getElementById('splashScreen').classList.add('hide'); }, 2800);
-                                return; 
                             } else if (d.status === "Banned") {
-                                document.getElementById('uiUserName').innerText = "AKUN DIBLOKIR"; rText.innerHTML = '<i class="fa-solid fa-ban"></i> DIBEKUKAN'; rText.style.color = "var(--danger-red)"; 
+                                document.getElementById('uiUserName').innerText = "AKUN DIBLOKIR"; 
+                                roleHtml = '<i class="fa-solid fa-ban"></i> DIBEKUKAN'; 
+                                rText.style.color = "var(--danger-red)"; 
                                 document.querySelector('.content-area').style.opacity = '0.2'; document.querySelector('.content-area').style.pointerEvents = 'none';
                                 setTimeout(() => { document.getElementById('splashScreen').classList.add('hide'); }, 2800);
-                                return; 
-                            } else { document.querySelector('.content-area').style.opacity = '1'; document.querySelector('.content-area').style.pointerEvents = 'auto'; }
-
-                            if (currentRole === "developer" || currentRole === "superadmin") { 
-                                panel.style.display = "block"; document.getElementById('menuSuperadmin').style.display = "flex"; document.getElementById('menuBendahara').style.display = "flex"; document.getElementById('menuAdmin').style.display = "flex"; 
-                                rText.innerHTML = currentRole === "developer" ? `<i class="fa-solid fa-code"></i>Member+` : '<i class="fa-solid fa-shield"></i> SUPERADMIN'; 
-                                rText.style.color = "#0284C7"; 
-                            } else if (currentRole === "bendahara") { 
-                                panel.style.display = "block"; document.getElementById('menuBendahara').style.display = "flex"; 
-                                rText.innerHTML = '<i class="fa-solid fa-vault"></i> BENDAHARA'; rText.style.color = "var(--emerald-main)"; 
-                            } else if (currentRole === "admin") { 
-                                panel.style.display = "block"; document.getElementById('menuAdmin').style.display = "flex"; 
-                                rText.innerHTML = '<i class="fa-solid fa-shield"></i> ADMIN'; rText.style.color = "#0284C7"; 
                             } else { 
-                                rText.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${displayBadge}`; rText.style.color = "var(--emerald-main)"; 
+                                document.querySelector('.content-area').style.opacity = '1'; document.querySelector('.content-area').style.pointerEvents = 'auto'; 
+                                
+                                if (currentRole === "developer" || currentRole === "superadmin") { 
+                                    panel.style.display = "block"; document.getElementById('menuSuperadmin').style.display = "flex"; document.getElementById('menuBendahara').style.display = "flex"; document.getElementById('menuAdmin').style.display = "flex"; 
+                                    roleHtml = currentRole === "developer" ? `<i class="fa-solid fa-code"></i>Member+` : '<i class="fa-solid fa-shield"></i> SUPERADMIN'; 
+                                    rText.style.color = "#0284C7"; 
+                                } else if (currentRole === "bendahara") { 
+                                    panel.style.display = "block"; document.getElementById('menuBendahara').style.display = "flex"; 
+                                    roleHtml = '<i class="fa-solid fa-vault"></i> BENDAHARA'; 
+                                    rText.style.color = "var(--emerald-main)"; 
+                                } else if (currentRole === "admin") { 
+                                    panel.style.display = "block"; document.getElementById('menuAdmin').style.display = "flex"; 
+                                    roleHtml = '<i class="fa-solid fa-shield"></i> ADMIN'; 
+                                    rText.style.color = "#0284C7"; 
+                                } else { 
+                                    roleHtml = `<i class="fa-solid fa-circle-check"></i> ${displayBadge}`; 
+                                    rText.style.color = "var(--emerald-main)"; 
+                                }
+                                setTimeout(() => { document.getElementById('splashScreen').classList.add('hide'); }, 2500);
                             }
 
-                            setTimeout(() => { document.getElementById('splashScreen').classList.add('hide'); }, 2500);
+                            // SIMPAN BADGE KE MEMORI HP
+                            rText.innerHTML = roleHtml;
+                            localStorage.setItem('kgr_badge', roleHtml);
+                            localStorage.setItem('kgr_badge_color', rText.style.color);
+
                         } else { auth.signOut(); window.location.href = 'login.html'; }
                     });
 
@@ -579,11 +623,24 @@
                         });
                         
                         myTotalSedekahAllTime = akumulasiSaya;
-                        document.getElementById('uiTotalAll').innerText = "Rp " + totalSaldo.toLocaleString('id-ID');
+                        const teksTotal = "Rp " + totalSaldo.toLocaleString('id-ID');
+                        document.getElementById('uiTotalAll').innerText = teksTotal;
+                        
+                        // SIMPAN SALDO KE MEMORI HP
+                        localStorage.setItem('kgr_saldo_all', teksTotal);
                         
                         const uiMonth = document.getElementById('uiTotalMonth');
-                        if (saldoBulanIni < 0) { uiMonth.innerText = "- Rp " + Math.abs(saldoBulanIni).toLocaleString('id-ID'); uiMonth.style.color = "var(--danger-red)"; 
-                        } else { uiMonth.innerText = "+ Rp " + saldoBulanIni.toLocaleString('id-ID'); uiMonth.style.color = "var(--gold-accent)"; }
+                        if (saldoBulanIni < 0) { 
+                            uiMonth.innerText = "- Rp " + Math.abs(saldoBulanIni).toLocaleString('id-ID'); 
+                            uiMonth.style.color = "var(--danger-red)"; 
+                            localStorage.setItem('kgr_saldo_month', uiMonth.innerText);
+                            localStorage.setItem('kgr_saldo_month_color', "var(--danger-red)");
+                        } else { 
+                            uiMonth.innerText = "+ Rp " + saldoBulanIni.toLocaleString('id-ID'); 
+                            uiMonth.style.color = "var(--gold-accent)"; 
+                            localStorage.setItem('kgr_saldo_month', uiMonth.innerText);
+                            localStorage.setItem('kgr_saldo_month_color', "var(--gold-accent)");
+                        }
                     });
                 } catch(errorUI) { customAlert("Gagal Memuat", "Ada masalah saat memuat profil Anda. Mohon refresh halaman.", "error"); }
             } else { window.location.href = 'login.html'; }
