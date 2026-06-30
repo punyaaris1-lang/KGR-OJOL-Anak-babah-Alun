@@ -16,62 +16,37 @@
     </script>
 
     <style>
-        /* VARIABEL MESIN TEMA */
         :root { 
-            --bg-body: #0F172A; 
-            --text-main: #FFFFFF; 
-            --text-gray: rgba(255,255,255,0.6); 
-            --emerald-main: #059669; 
-            --emerald-dark: #022C22; 
-            --gold-accent: #FBBF24;
-            --color-danger: #EF4444; 
-            --color-warning: #F59E0B; 
-            --color-info: #38BDF8;
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --card-border: rgba(255, 255, 255, 0.1);
-            --modal-bg: rgba(30, 41, 59, 0.95);
-            --input-bg: rgba(255, 255, 255, 0.05);
-            --header-bg: rgba(15, 23, 42, 0.7);
+            --bg-body: #0F172A; --text-main: #FFFFFF; --text-gray: rgba(255,255,255,0.6); 
+            --emerald-main: #059669; --emerald-dark: #022C22; --gold-accent: #FBBF24;
+            --color-danger: #EF4444; --color-warning: #F59E0B; --color-info: #38BDF8;
+            --card-bg: rgba(255, 255, 255, 0.05); --card-border: rgba(255, 255, 255, 0.1);
+            --modal-bg: rgba(30, 41, 59, 0.95); --input-bg: rgba(255, 255, 255, 0.05); --header-bg: rgba(15, 23, 42, 0.7);
         }
 
         [data-theme="light"] {
-            --bg-body: #F4F6F5; 
-            --text-main: #111827; 
-            --text-gray: #4B5563; 
-            --emerald-dark: #064E3B; 
-            --card-bg: rgba(255, 255, 255, 0.6);
-            --card-border: #FFFFFF;
-            --modal-bg: rgba(255, 255, 255, 0.95);
-            --input-bg: #F8FAFC;
-            --color-danger: #DC2626;
-            --color-info: #0284C7;
-            --header-bg: rgba(255, 255, 255, 0.5);
+            --bg-body: #F4F6F5; --text-main: #111827; --text-gray: #4B5563; --emerald-dark: #064E3B; 
+            --card-bg: rgba(255, 255, 255, 0.6); --card-border: #FFFFFF; --modal-bg: rgba(255, 255, 255, 0.95);
+            --input-bg: #F8FAFC; --color-danger: #DC2626; --color-info: #0284C7; --header-bg: rgba(255, 255, 255, 0.5);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
-        
         body { background-color: var(--bg-body); color: var(--text-main); display: flex; justify-content: center; min-height: 100vh; overflow: hidden; position: relative; margin: 0; transition: background-color 0.4s ease, color 0.4s ease;}
 
-        /* ORBS CAHAYA GLOWING DI BACKGROUND */
         .orb { position: absolute; border-radius: 50%; filter: blur(60px); z-index: 0; animation: float 10s infinite alternate ease-in-out;}
         .orb-1 { top: 5%; right: -10%; width: 250px; height: 250px; background: rgba(5, 150, 105, 0.15); }
         .orb-2 { bottom: 5%; left: -10%; width: 300px; height: 300px; background: rgba(5, 150, 105, 0.1); animation-delay: -5s;}
         @keyframes float { 0% { transform: translate(0, 0); } 100% { transform: translate(20px, 30px); } }
 
-        .app-container { 
-            width: 100%; max-width: 480px; background: transparent;
-            display: flex; flex-direction: column; height: 100dvh; position: relative; z-index: 10; overflow-x: hidden; overflow-y: hidden; 
-        }
+        .app-container { width: 100%; max-width: 480px; background: transparent; display: flex; flex-direction: column; height: 100dvh; position: relative; z-index: 10; overflow-x: hidden; overflow-y: hidden; }
         @media (min-width: 600px) { .app-container { height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 30px 60px rgba(0,0,0,0.15); border: 8px solid var(--card-border); margin: auto;} }
 
-        /* EXECUTIVE HEADER KACA TERANG */
         .exec-header { background: var(--header-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding: 40px 24px 10px; position: relative; z-index: 10; border-bottom: 1px solid var(--card-border); box-shadow: 0 10px 25px rgba(0,0,0,0.05); transition: 0.4s ease;}
         .header-top { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 20px;}
         .btn-back { width: 40px; height: 40px; border-radius: 12px; background: var(--card-bg); border: 1px solid var(--card-border); display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text-main); transition: 0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.05);}
         .btn-back:active { transform: scale(0.9); background: var(--emerald-main); color: #FFF; }
         .header-top h1 { font-size: 18px; font-weight: 900; letter-spacing: 0.5px; text-transform: uppercase; flex-grow: 1;}
         
-        /* HORIZONTAL TABS */
         .nav-tabs { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none;}
         .nav-tabs::-webkit-scrollbar { display: none; }
         .tab-btn { flex-shrink: 0; padding: 10px 18px; border-radius: 12px; font-size: 11px; font-weight: 800; background: var(--card-bg); color: var(--text-gray); cursor: pointer; border: 1px solid var(--card-border); transition: 0.2s; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 5px 15px rgba(0,0,0,0.02);}
@@ -79,18 +54,15 @@
 
         .content-area { flex-grow: 1; overflow-y: auto; padding: 25px 20px 100px; scrollbar-width: none; }
         .content-area::-webkit-scrollbar { display: none; }
-
         .view-section { display: none; animation: fadeIn 0.4s ease; }
         .view-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* HRD FILTER PILLS */
         .hrd-filters { display: flex; gap: 8px; margin-bottom: 20px; background: var(--card-bg); backdrop-filter: blur(10px); padding: 6px; border-radius: 16px; border: 1px solid var(--card-border); box-shadow: 0 5px 15px rgba(0,0,0,0.05);}
         .hrd-pill { flex: 1; padding: 10px; border-radius: 12px; font-size: 11px; font-weight: 800; text-align: center; cursor: pointer; transition: 0.2s; color: var(--text-gray); border: none; background: transparent;}
         .hrd-pill.active { background: var(--emerald-main); color: #FFF; box-shadow: 0 4px 10px rgba(5,150,105,0.2);}
         .badge-count { background: var(--color-danger); color: #FFF; padding: 2px 6px; border-radius: 6px; font-size: 9px; margin-left: 5px; vertical-align: middle;}
 
-        /* CARDS KACA MENGKILAP */
         .data-card { background: var(--card-bg); backdrop-filter: blur(15px); border-radius: 20px; padding: 18px; margin-bottom: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; transition: 0.2s;}
         .data-card:active { transform: scale(0.98); }
         .dc-info { flex-grow: 1; overflow: hidden; }
@@ -105,11 +77,9 @@
         .btn-edit-round { width: 40px; height: 40px; border-radius: 50%; background: var(--input-bg); color: var(--emerald-main); border: 1px solid var(--card-border); font-size: 14px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.05);}
         .btn-edit-round:active { transform: scale(0.9); }
 
-        /* MODERN FORMS KACA */
         .form-section { background: var(--card-bg); backdrop-filter: blur(15px); border-radius: 24px; padding: 25px 20px; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid var(--card-border);}
         .section-title { font-size: 14px; font-weight: 900; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px;}
         .section-title i { color: var(--emerald-main); font-size: 18px;}
-        
         .form-group { margin-bottom: 16px; }
         .form-label { display: block; font-size: 11px; font-weight: 800; color: var(--text-gray); margin-bottom: 6px; text-transform: uppercase;}
         .form-input, .form-select { width: 100%; padding: 15px; border-radius: 12px; border: 2px solid var(--card-border); font-size: 13px; font-weight: 700; color: var(--text-main); outline: none; background: var(--input-bg); transition: 0.2s;}
@@ -118,7 +88,6 @@
         .btn-primary { width: 100%; padding: 16px; border-radius: 14px; font-size: 13px; font-weight: 900; background: var(--emerald-main); color: #FFF; border: none; cursor: pointer; transition: 0.2s; box-shadow: 0 8px 20px rgba(5,150,105,0.3); display: flex; justify-content: center; align-items: center; gap: 8px;}
         .btn-primary:active { transform: scale(0.96); }
 
-        /* MODAL BOUNCY TERANG/DARK */
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: flex-end; z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s ease; }
         .modal-overlay.show { opacity: 1; visibility: visible; }
         .modal-content { background: var(--modal-bg); border: 1px solid var(--card-border); border-radius: 32px 32px 0 0; padding: 30px 24px 40px; width: 100%; max-width: 480px; transform: translateY(100%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1); max-height: 85vh; overflow-y: auto; box-shadow: 0 -10px 40px rgba(0,0,0,0.3);}
@@ -132,7 +101,6 @@
         .empty-state i { font-size: 35px; margin-bottom: 10px; opacity: 0.4; }
         .empty-state p { font-size: 13px; font-weight: 700; }
 
-        /* CUSTOM POPUP TERANG GLOWING */
         .cp-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); z-index: 99999; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px; }
         .cp-overlay.show { opacity: 1; visibility: visible; }
         .cp-box { background: var(--modal-bg); border: 1px solid var(--card-border); border-radius: 28px; width: 100%; max-width: 320px; text-align: center; padding: 30px 24px; transform: scale(0.9); transition: 0.3s; box-shadow: 0 25px 50px rgba(0,0,0,0.3); }
@@ -157,38 +125,10 @@
 </head>
 <body>
     
-    <div class="cp-overlay" id="customAlert">
-        <div class="cp-box">
-            <div class="cp-icon success" id="caIcon"><i class="fa-solid fa-check"></i></div>
-            <h3 class="cp-title" id="caTitle">Pemberitahuan</h3>
-            <p class="cp-desc" id="caDesc">Pesan</p>
-            <button class="cp-btn cp-btn-primary" onclick="closeCustomAlert()">Mengerti</button>
-        </div>
-    </div>
-    <div class="cp-overlay" id="customConfirm">
-        <div class="cp-box">
-            <div class="cp-icon warning"><i class="fa-solid fa-triangle-exclamation"></i></div>
-            <h3 class="cp-title" id="ccTitle">Konfirmasi</h3>
-            <p class="cp-desc" id="ccDesc">Apakah Anda yakin?</p>
-            <div class="cp-btn-wrap">
-                <button class="cp-btn cp-btn-cancel" onclick="closeCustomConfirm()">Batal</button>
-                <button class="cp-btn cp-btn-danger" id="ccBtnYes">Ya, Eksekusi</button>
-            </div>
-        </div>
-    </div>
-    <div class="cp-overlay" id="customLoading">
-        <div class="cp-box" style="padding: 40px 20px;">
-            <div class="spinner-custom"></div>
-            <h3 class="cp-title" id="clTitle" style="margin-bottom: 0;">Memproses...</h3>
-        </div>
-    </div>
-
-    <div class="cp-overlay" id="modalImage" onclick="closeImageView()">
-        <div class="cp-box" style="padding: 10px; background: transparent; box-shadow: none; border:none; max-width: 450px;" onclick="event.stopPropagation()">
-            <img id="imgViewerSrc" src="" style="width: 100%; border-radius: 24px; border: 4px solid var(--card-border); max-height: 70vh; object-fit: contain;">
-            <button class="btn-close-modal" style="margin: 15px auto 0;" onclick="closeImageView()"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-    </div>
+    <div class="cp-overlay" id="customAlert"><div class="cp-box"><div class="cp-icon success" id="caIcon"><i class="fa-solid fa-check"></i></div><h3 class="cp-title" id="caTitle">Pemberitahuan</h3><p class="cp-desc" id="caDesc">Pesan</p><button class="cp-btn cp-btn-primary" onclick="closeCustomAlert()">Mengerti</button></div></div>
+    <div class="cp-overlay" id="customConfirm"><div class="cp-box"><div class="cp-icon warning"><i class="fa-solid fa-triangle-exclamation"></i></div><h3 class="cp-title" id="ccTitle">Konfirmasi</h3><p class="cp-desc" id="ccDesc">Apakah Anda yakin?</p><div class="cp-btn-wrap"><button class="cp-btn cp-btn-cancel" onclick="closeCustomConfirm()">Batal</button><button class="cp-btn cp-btn-danger" id="ccBtnYes">Ya, Eksekusi</button></div></div></div>
+    <div class="cp-overlay" id="customLoading"><div class="cp-box" style="padding: 40px 20px;"><div class="spinner-custom"></div><h3 class="cp-title" id="clTitle" style="margin-bottom: 0;">Memproses...</h3></div></div>
+    <div class="cp-overlay" id="modalImage" onclick="closeImageView()"><div class="cp-box" style="padding: 10px; background: transparent; box-shadow: none; border:none; max-width: 450px;" onclick="event.stopPropagation()"><img id="imgViewerSrc" src="" style="width: 100%; border-radius: 24px; border: 4px solid var(--card-border); max-height: 70vh; object-fit: contain;"><button class="btn-close-modal" style="margin: 15px auto 0;" onclick="closeImageView()"><i class="fa-solid fa-xmark"></i></button></div></div>
 
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
@@ -197,23 +137,22 @@
         <div class="exec-header">
             <div class="header-top">
                 <div class="btn-back" onclick="window.location.href='index.html'"><i class="fa-solid fa-arrow-left"></i></div>
-                <h1 id="uiHeaderTitle">Panel Pengurus</h1>
+                <h1 id="uiHeaderTitle">Pusat Kendali</h1>
                 <div class="btn-back" onclick="toggleTheme()" title="Ganti Tema"><i id="themeIcon" class="fa-solid fa-moon"></i></div>
             </div>
             
             <div class="nav-tabs" id="mainTabs">
-                <button class="tab-btn active" onclick="switchNavTab('viewAnggota', this)"><i class="fa-solid fa-users"></i> Anggota</button>
-                <button class="tab-btn" onclick="switchNavTab('viewKas', this)"><i class="fa-solid fa-vault"></i> Kas</button>
-                
-                <button class="tab-btn dev-only" style="display:none;" onclick="switchNavTab('viewRadar', this)"><i class="fa-solid fa-satellite-dish"></i> Radar</button>
-                <button class="tab-btn dev-only" style="display:none;" onclick="switchNavTab('viewSistem', this)"><i class="fa-solid fa-gear"></i> Sistem</button>
-                <button class="tab-btn dev-only" style="display:none; color: var(--color-danger);" onclick="switchNavTab('viewMatriks', this)"><i class="fa-solid fa-user-secret"></i> Matriks Kasta</button>
+                <button class="tab-btn" id="tabAnggota" style="display:none;" onclick="switchNavTab('viewAnggota', this)"><i class="fa-solid fa-users"></i> Anggota</button>
+                <button class="tab-btn" id="tabKas" style="display:none;" onclick="switchNavTab('viewKas', this)"><i class="fa-solid fa-vault"></i> Kas</button>
+                <button class="tab-btn" id="tabRadar" style="display:none;" onclick="switchNavTab('viewRadar', this)"><i class="fa-solid fa-satellite-dish"></i> Radar</button>
+                <button class="tab-btn" id="tabSistem" style="display:none;" onclick="switchNavTab('viewSistem', this)"><i class="fa-solid fa-gear"></i> Sistem</button>
+                <button class="tab-btn" id="tabMatriks" style="display:none; color: var(--color-danger);" onclick="switchNavTab('viewMatriks', this)"><i class="fa-solid fa-user-secret"></i> Matriks</button>
             </div>
         </div>
 
         <div class="content-area">
             
-            <div id="viewAnggota" class="view-section active">
+            <div id="viewAnggota" class="view-section">
                 <div class="hrd-filters">
                     <button class="hrd-pill active" onclick="filterHrd('Semua', this)">Semua Aktif</button>
                     <button class="hrd-pill" onclick="filterHrd('Pending', this)">Menunggu Aktivasi <span class="badge-count" id="badgePendingCount">0</span></button>
@@ -229,87 +168,50 @@
                 <div id="listKasContainer"></div>
             </div>
 
-            <div id="viewRadar" class="view-section dev-only" style="display:none;">
+            <div id="viewRadar" class="view-section">
                 <div class="form-section">
                     <div class="section-title"><i class="fa-solid fa-satellite-dish"></i> Kontrol Acara KGR</div>
                     <form id="formEvent" onsubmit="saveEventConfig(event)">
-                        <div class="form-group">
-                            <label class="form-label">Nama / Tema Acara</label>
-                            <input type="text" id="evName" class="form-input" required>
-                        </div>
+                        <div class="form-group"><label class="form-label">Nama / Tema Acara</label><input type="text" id="evName" class="form-input" required></div>
                         <div style="display: flex; gap: 10px;">
-                            <div class="form-group" style="flex: 1;">
-                                <label class="form-label">Latitude (GPS)</label>
-                                <input type="text" id="evLat" class="form-input" required>
-                            </div>
-                            <div class="form-group" style="flex: 1;">
-                                <label class="form-label">Longitude (GPS)</label>
-                                <input type="text" id="evLng" class="form-input" required>
-                            </div>
+                            <div class="form-group" style="flex: 1;"><label class="form-label">Latitude (GPS)</label><input type="text" id="evLat" class="form-input" required></div>
+                            <div class="form-group" style="flex: 1;"><label class="form-label">Longitude (GPS)</label><input type="text" id="evLng" class="form-input" required></div>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Radius Toleransi (Meter)</label>
-                            <input type="number" id="evRadius" class="form-input" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Status Saklar Radar</label>
-                            <select id="evActive" class="form-select">
-                                <option value="true">🟢 HIDUP (Menerima Absen)</option>
-                                <option value="false">🔴 MATI (Absen Ditutup)</option>
-                            </select>
+                        <div class="form-group"><label class="form-label">Radius Toleransi (Meter)</label><input type="number" id="evRadius" class="form-input" required></div>
+                        <div class="form-group"><label class="form-label">Status Saklar Radar</label>
+                            <select id="evActive" class="form-select"><option value="true">🟢 HIDUP (Menerima Absen)</option><option value="false">🔴 MATI (Absen Ditutup)</option></select>
                         </div>
                         <button type="submit" class="btn-primary" style="background: var(--emerald-main);"><i class="fa-solid fa-floppy-disk"></i> Simpan Konfigurasi</button>
                     </form>
                 </div>
-
                 <div class="form-section">
                     <div class="section-title"><i class="fa-solid fa-file-excel"></i> Rekap Absensi Terakhir</div>
                     <button class="btn-primary" style="background: var(--text-dark);" onclick="downloadAbsen()"><i class="fa-solid fa-download"></i> Download Excel (.csv)</button>
                 </div>
             </div>
 
-            <div id="viewSistem" class="view-section dev-only" style="display:none;">
+            <div id="viewSistem" class="view-section">
                 <div class="form-section">
                     <div class="section-title"><i class="fa-solid fa-server"></i> Parameter Otomasi Kas</div>
                     <form id="formSystem" onsubmit="saveAppConfig(event)">
-                        <div class="form-group">
-                            <label class="form-label">Limit Maksimal Sedekah (Bulan)</label>
-                            <input type="number" id="sysLimit" class="form-input" placeholder="Cth: 10000" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Syarat Sedekah Muncul Barcode (Rp)</label>
-                            <input type="number" id="sysSyarat" class="form-input" placeholder="Cth: 50000 (Akumulasi All-time)" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">URL Gambar QRIS (Format .jpg/.png/.svg)</label>
-                            <input type="url" id="sysQris" class="form-input" required>
-                        </div>
+                        <div class="form-group"><label class="form-label">Limit Maksimal Sedekah (Bulan)</label><input type="number" id="sysLimit" class="form-input" placeholder="Cth: 10000" required></div>
+                        <div class="form-group"><label class="form-label">Syarat Sedekah Muncul Barcode (Rp)</label><input type="number" id="sysSyarat" class="form-input" placeholder="Cth: 50000" required></div>
                         <button type="submit" class="btn-primary"><i class="fa-solid fa-gears"></i> Update Sistem</button>
                     </form>
                 </div>
             </div>
 
-            <div id="viewMatriks" class="view-section dev-only" style="display:none;">
+            <div id="viewMatriks" class="view-section">
                 <div class="form-section" style="border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.05);">
                     <div class="section-title" style="color: var(--color-danger);"><i class="fa-solid fa-mask"></i> Matriks Ilusi & Kasta</div>
-                    <p style="font-size: 11px; font-weight: 700; color: var(--text-gray); margin-bottom: 20px; line-height: 1.5;">Gunakan panel ini untuk memberikan akses intel / admin bayangan kepada anggota tanpa mengubah tampilan badge mereka di buku kontak.</p>
-                    
+                    <p style="font-size: 11px; font-weight: 700; color: var(--text-gray); margin-bottom: 20px; line-height: 1.5;">Berikan akses tanpa mengubah tampilan badge mereka di buku kontak.</p>
                     <form id="formMatriks" onsubmit="saveMatriks(event)">
-                        <div class="form-group">
-                            <label class="form-label">1. Pilih Target Anggota</label>
-                            <select id="matriksSelectUser" class="form-select" onchange="selectMatriksUser()" required>
-                                <option value="">-- Menarik Data --</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">2. Badge Tampilan di Layar (Ilusi)</label>
-                            <input type="text" id="matriksBadge" class="form-input" placeholder="Contoh: MEMBER" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">3. Role Mesin Asli (Kekuatan Ghaib)</label>
+                        <div class="form-group"><label class="form-label">1. Pilih Target Anggota</label><select id="matriksSelectUser" class="form-select" onchange="selectMatriksUser()" required><option value="">-- Menarik Data --</option></select></div>
+                        <div class="form-group"><label class="form-label">2. Badge Tampilan di Layar (Ilusi)</label><input type="text" id="matriksBadge" class="form-input" placeholder="Contoh: MEMBER" required></div>
+                        <div class="form-group"><label class="form-label">3. Role Mesin Asli (Kekuatan Ghaib)</label>
                             <select id="matriksRole" class="form-select" required>
                                 <option value="member">Murni Member (Tidak ada akses)</option>
-                                <option value="intel">Intel Lapangan (Bisa Pengajuan & Verifikasi)</option>
+                                <option value="intel">Intel Lapangan (Bisa Absen Manual dll)</option>
                                 <option value="admin">Admin Biasa</option>
                                 <option value="bendahara">Bendahara (Kas)</option>
                             </select>
@@ -322,73 +224,36 @@
         </div>
     </div>
 
+    <!-- MODAL EDIT MEMBER -->
     <div id="modalEditMember" class="modal-overlay">
         <div class="modal-content">
-            <div class="modal-header">
-                <h3>Moderasi Anggota</h3>
-                <button type="button" onclick="document.getElementById('modalEditMember').classList.remove('show')" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
-            </div>
+            <div class="modal-header"><h3>Moderasi Anggota</h3><button type="button" onclick="document.getElementById('modalEditMember').classList.remove('show')" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button></div>
             <form id="formEditUser" onsubmit="saveEditUser(event)">
                 <input type="hidden" id="editEmail">
-                <div class="form-group">
-                    <label class="form-label">Nama Sesuai KTP</label>
-                    <input type="text" id="editName" class="form-input" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">NIK (Rahasia & Terdekripsi)</label>
-                    <input type="text" id="editNik" class="form-input" style="background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.3); color: var(--gold-accent);" required maxlength="16" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Nomor WhatsApp</label>
-                    <input type="tel" id="editWa" class="form-input" required oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-                </div>
-                
+                <div class="form-group"><label class="form-label">Nama Sesuai KTP</label><input type="text" id="editName" class="form-input" required></div>
+                <div class="form-group"><label class="form-label">NIK (Rahasia & Terdekripsi)</label><input type="text" id="editNik" class="form-input" style="background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.3); color: var(--gold-accent);" required maxlength="16" oninput="this.value = this.value.replace(/[^0-9]/g, '');"></div>
+                <div class="form-group"><label class="form-label">Nomor WhatsApp</label><input type="tel" id="editWa" class="form-input" required oninput="this.value = this.value.replace(/[^0-9]/g, '');"></div>
                 <div style="display: flex; gap: 10px;">
-                    <div class="form-group" style="flex: 1;">
-                        <label class="form-label">Jabatan Standar</label>
-                        <select id="editRole" class="form-select">
-                            </select>
-                    </div>
-                    <div class="form-group" style="flex: 1;">
-                        <label class="form-label">Status Akun</label>
-                        <select id="editStatus" class="form-select">
-                            <option value="Active">Aktif / Disetujui</option>
-                            <option value="Pending Admin">Pending (Kunci)</option>
-                            <option value="Banned">Banned (Blokir)</option>
-                        </select>
+                    <div class="form-group" style="flex: 1;"><label class="form-label">Jabatan Standar</label><select id="editRole" class="form-select"></select></div>
+                    <div class="form-group" style="flex: 1;"><label class="form-label">Status Akun</label>
+                        <select id="editStatus" class="form-select"><option value="Active">Aktif / Disetujui</option><option value="Pending Admin">Pending (Kunci)</option><option value="Banned">Banned (Blokir)</option></select>
                     </div>
                 </div>
-
-                <div class="form-group" id="boxHakAbsen" style="border-top: 1px dashed var(--card-border); padding-top: 15px;">
-                    <label class="form-label" style="color: var(--emerald-main);"><i class="fa-solid fa-qrcode"></i> Bypass Akses Barcode Acara</label>
-                    <select id="editHakAbsen" class="form-select">
-                        <option value="otomatis">⚙️ Otomatis (Sesuai Limit Sistem)</option>
-                        <option value="buka_paksa">🟢 BUKA PAKSA (VIP / Selalu Muncul)</option>
-                        <option value="kunci_paksa">🔴 KUNCI PAKSA (Skorsing)</option>
-                    </select>
+                <div class="form-group" id="boxHakAbsen" style="border-top: 1px dashed var(--card-border); padding-top: 15px;"><label class="form-label" style="color: var(--emerald-main);"><i class="fa-solid fa-qrcode"></i> Bypass Akses Barcode Acara</label>
+                    <select id="editHakAbsen" class="form-select"><option value="otomatis">⚙️ Otomatis (Sesuai Limit Sistem)</option><option value="buka_paksa">🟢 BUKA PAKSA (VIP / Selalu Muncul)</option><option value="kunci_paksa">🔴 KUNCI PAKSA (Skorsing)</option></select>
                 </div>
-
                 <button type="submit" class="btn-primary" style="margin-top: 10px;"><i class="fa-solid fa-user-shield"></i> Simpan Perubahan</button>
             </form>
         </div>
     </div>
 
+    <!-- MODAL VERIFIKASI KAS (LOG NUMPANG LEWAT) -->
     <div id="modalApproveTrx" class="modal-overlay">
         <div class="modal-content">
-            <div class="modal-header">
-                <h3>Verifikasi Sedekah</h3>
-                <button type="button" onclick="document.getElementById('modalApproveTrx').classList.remove('show')" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
-            </div>
+            <div class="modal-header"><h3>Verifikasi Sedekah</h3><button type="button" onclick="document.getElementById('modalApproveTrx').classList.remove('show')" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button></div>
             <input type="hidden" id="apvTrxId">
-            <div class="form-group">
-                <label class="form-label">Nama Keterangan (Bisa diedit)</label>
-                <input type="text" id="apvTrxName" class="form-input" required>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Nominal (Bisa diedit jika salah)</label>
-                <input type="number" id="apvTrxNominal" class="form-input" required>
-            </div>
-            
+            <div class="form-group"><label class="form-label">Nama Keterangan (Bisa diedit)</label><input type="text" id="apvTrxName" class="form-input" required></div>
+            <div class="form-group"><label class="form-label">Nominal (Bisa diedit jika salah)</label><input type="number" id="apvTrxNominal" class="form-input" required></div>
             <div style="display: flex; gap: 10px; margin-top: 25px;">
                 <button type="button" class="btn-primary" style="flex: 1; background: rgba(239, 68, 68, 0.15); color: var(--color-danger); box-shadow: none;" onclick="actionTrx('reject')"><i class="fa-solid fa-xmark"></i> Tolak</button>
                 <button type="button" class="btn-primary" style="flex: 1; background: var(--emerald-main);" onclick="actionTrx('approve')"><i class="fa-solid fa-check"></i> Terima Uang</button>
@@ -398,39 +263,23 @@
 
     <script>
         function updateThemeIcon(theme) {
-            const icon = document.getElementById('themeIcon');
-            const metaTheme = document.getElementById('metaThemeColor');
-            if (theme === 'light') {
-                icon.className = 'fa-solid fa-moon'; 
-                metaTheme.setAttribute("content", "#F4F6F5");
-            } else {
-                icon.className = 'fa-solid fa-sun'; 
-                metaTheme.setAttribute("content", "#0F172A");
-            }
+            const icon = document.getElementById('themeIcon'); const metaTheme = document.getElementById('metaThemeColor');
+            if (theme === 'light') { icon.className = 'fa-solid fa-moon'; metaTheme.setAttribute("content", "#F4F6F5"); } 
+            else { icon.className = 'fa-solid fa-sun'; metaTheme.setAttribute("content", "#0F172A"); }
         }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            updateThemeIcon(savedTheme);
-        });
-
+        window.addEventListener('DOMContentLoaded', () => { updateThemeIcon(savedTheme); });
         window.toggleTheme = function() {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const targetTheme = currentTheme === 'light' ? 'dark' : 'light';
-            
-            document.documentElement.setAttribute('data-theme', targetTheme);
-            localStorage.setItem('kgr_theme', targetTheme);
-            updateThemeIcon(targetTheme);
+            const t = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', t); localStorage.setItem('kgr_theme', t); updateThemeIcon(t);
         }
     </script>
 
     <script type="module">
         import { auth, db } from './db-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
-        import { collection, onSnapshot, doc, getDoc, updateDoc, setDoc, query, orderBy, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+        // IMPORT "increment" BUAT NULIS PAPAN TULIS
+        import { collection, onSnapshot, doc, getDoc, updateDoc, setDoc, query, orderBy, getDocs, deleteDoc, serverTimestamp, increment } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-        // ==============================================
-        // CUSTOM MODALS
-        // ==============================================
         window.customAlert = function(title, desc, type = 'success') {
             const el = document.getElementById('customAlert'); document.getElementById('caTitle').innerText = title; document.getElementById('caDesc').innerText = desc;
             const iconEl = document.getElementById('caIcon');
@@ -440,28 +289,17 @@
             el.classList.add('show');
         }
         window.closeCustomAlert = function() { document.getElementById('customAlert').classList.remove('show'); }
-        window.customConfirm = function(title, desc, onYes) {
-            const el = document.getElementById('customConfirm'); document.getElementById('ccTitle').innerText = title; document.getElementById('ccDesc').innerText = desc;
-            document.getElementById('ccBtnYes').onclick = function() { closeCustomConfirm(); onYes(); }; el.classList.add('show');
-        }
+        window.customConfirm = function(title, desc, onYes) { const el = document.getElementById('customConfirm'); document.getElementById('ccTitle').innerText = title; document.getElementById('ccDesc').innerText = desc; document.getElementById('ccBtnYes').onclick = function() { closeCustomConfirm(); onYes(); }; el.classList.add('show'); }
         window.closeCustomConfirm = function() { document.getElementById('customConfirm').classList.remove('show'); }
         window.showLoading = function(title = "Memproses...") { document.getElementById('clTitle').innerText = title; document.getElementById('customLoading').classList.add('show'); }
         window.hideLoading = function() { document.getElementById('customLoading').classList.remove('show'); }
 
         const CRYPTO_OFFSET = 7;
-        function encryptData(plainText) {
-            if (!plainText) return ""; let shifted = plainText.split("").map(char => String.fromCharCode(char.charCodeAt(0) + CRYPTO_OFFSET)).join(""); return btoa(unescape(encodeURIComponent(shifted)));
-        }
-        function decryptData(encoded) {
-            if (!encoded) return "";
-            try { let decoded = decodeURIComponent(escape(atob(encoded))); return decoded.split("").map(char => String.fromCharCode(char.charCodeAt(0) - CRYPTO_OFFSET)).join("");
-            } catch(e) { return encoded; } 
-        }
+        function encryptData(plainText) { if (!plainText) return ""; let shifted = plainText.split("").map(char => String.fromCharCode(char.charCodeAt(0) + CRYPTO_OFFSET)).join(""); return btoa(unescape(encodeURIComponent(shifted))); }
+        function decryptData(encoded) { if (!encoded) return ""; try { let decoded = decodeURIComponent(escape(atob(encoded))); return decoded.split("").map(char => String.fromCharCode(char.charCodeAt(0) - CRYPTO_OFFSET)).join(""); } catch(e) { return encoded; } }
 
-        // ==============================================
-        // STATE MANAGEMENT DEWA
-        // ==============================================
         let currentUserRole = "member";
+        let currentUserName = "Pengurus";
         let allUsers = [];
         let filterHrdState = 'Semua';
 
@@ -470,6 +308,7 @@
                 const docSnap = await getDoc(doc(db, "users", user.email));
                 if (docSnap.exists()) {
                     currentUserRole = (docSnap.data().role || "member").toLowerCase();
+                    currentUserName = docSnap.data().nama_lengkap || "Pengurus";
                     if (["developer", "superadmin", "admin", "bendahara"].includes(currentUserRole)) {
                         initAdminPanel();
                     } else { window.location.href = 'index.html'; } 
@@ -478,50 +317,56 @@
         });
 
         function initAdminPanel() {
+            document.getElementById('tabAnggota').style.display = 'none'; document.getElementById('tabKas').style.display = 'none'; document.getElementById('tabRadar').style.display = 'none'; document.getElementById('tabSistem').style.display = 'none'; document.getElementById('tabMatriks').style.display = 'none';
+
             if (currentUserRole === 'developer') {
-                document.getElementById('uiHeaderTitle').innerText = "Arsitek Sistem (Kasta 0)";
-                document.querySelectorAll('.dev-only').forEach(el => el.style.display = 'block');
-                loadConfigData();
+                document.getElementById('uiHeaderTitle').innerText = "Arsitek Sistem (Dewa)";
+                document.getElementById('tabAnggota').style.display = 'block'; document.getElementById('tabKas').style.display = 'block'; document.getElementById('tabRadar').style.display = 'block'; document.getElementById('tabSistem').style.display = 'block'; document.getElementById('tabMatriks').style.display = 'block';
+                document.getElementById('tabAnggota').classList.add('active'); document.getElementById('viewAnggota').classList.add('active'); loadConfigData();
             } else if (currentUserRole === 'superadmin') {
-                document.getElementById('uiHeaderTitle').innerText = "SUPERADMIN";
+                document.getElementById('uiHeaderTitle').innerText = "Panglima Operasional";
+                document.getElementById('tabAnggota').style.display = 'block'; document.getElementById('tabKas').style.display = 'block'; document.getElementById('tabRadar').style.display = 'block';
+                document.getElementById('tabAnggota').classList.add('active'); document.getElementById('viewAnggota').classList.add('active');
+            } else if (currentUserRole === 'bendahara') {
+                document.getElementById('uiHeaderTitle').innerText = "Bendahara Kas";
+                document.getElementById('tabKas').style.display = 'block'; document.getElementById('tabKas').classList.add('active'); document.getElementById('viewKas').classList.add('active');
+            } else if (currentUserRole === 'admin') {
+                document.getElementById('uiHeaderTitle').innerText = "Admin Lapangan";
+                document.getElementById('tabAnggota').style.display = 'block'; document.getElementById('tabRadar').style.display = 'block';
+                document.getElementById('tabAnggota').classList.add('active'); document.getElementById('viewAnggota').classList.add('active');
             }
 
             const roleSelect = document.getElementById('editRole');
-            
-            // Gembok dibuka biar lu bisa ngatur Developer
             if (currentUserRole === 'developer' || currentUserRole === 'superadmin') {
-                roleSelect.innerHTML = `<option value="member">Member</option><option value="intel">Intel (Bayangan)</option><option value="admin">Admin</option><option value="bendahara">Bendahara</option><option value="superadmin">Superadmin</option><option value="developer">⭐ Developer (Dewa)</option>`;
-            } else {
-                roleSelect.innerHTML = `<option value="member">Member</option><option value="admin">Admin</option><option value="bendahara">Bendahara</option>`;
-            }
+                roleSelect.innerHTML = `<option value="member">Member</option><option value="intel">Intel (Bayangan)</option><option value="admin">Admin Lapangan</option><option value="bendahara">Bendahara Kas</option><option value="superadmin">Superadmin</option><option value="developer">⭐ Developer (Dewa)</option>`;
+            } else { roleSelect.innerHTML = `<option value="member">Member</option><option value="admin">Admin Lapangan</option><option value="bendahara">Bendahara Kas</option>`; }
 
-            loadAnggotaList();
-            loadKasPending();
+            if(currentUserRole !== 'bendahara') loadAnggotaList();
+            if(currentUserRole === 'developer' || currentUserRole === 'superadmin' || currentUserRole === 'bendahara') loadKasPending();
         }
 
-        window.switchNavTab = function(viewId, el) {
-            document.querySelectorAll('.nav-tabs .tab-btn').forEach(b => b.classList.remove('active')); el.classList.add('active');
-            document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active')); document.getElementById(viewId).classList.add('active');
-        }
-
-        window.filterHrd = function(state, el) {
-            document.querySelectorAll('.hrd-pill').forEach(p => p.classList.remove('active')); el.classList.add('active');
-            filterHrdState = state; renderAnggota();
-        }
+        window.switchNavTab = function(viewId, el) { document.querySelectorAll('.nav-tabs .tab-btn').forEach(b => b.classList.remove('active')); el.classList.add('active'); document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active')); document.getElementById(viewId).classList.add('active'); }
+        window.filterHrd = function(state, el) { document.querySelectorAll('.hrd-pill').forEach(p => p.classList.remove('active')); el.classList.add('active'); filterHrdState = state; renderAnggota(); }
         window.searchMember = function() { renderAnggota(); }
 
         function loadAnggotaList() {
             onSnapshot(collection(db, "users"), (snap) => {
-                allUsers = []; let pendingCount = 0;
+                allUsers = []; let pendingCount = 0; let aktifCount = 0;
                 snap.forEach(d => {
                     const data = d.data();
                     allUsers.push({ id: d.id, ...data });
                     if(data.status === "Pending Admin") pendingCount++;
+                    if(data.status !== "Banned" && data.status !== "Pending Admin") aktifCount++;
                 });
                 document.getElementById('badgePendingCount').innerText = pendingCount;
                 renderAnggota();
                 
                 if(currentUserRole === 'developer') loadMatriksUsers();
+
+                // UPDATE ANGKOTA AKTIF KE PAPAN TULIS (OTOMATIS)
+                if (currentUserRole === 'developer' || currentUserRole === 'superadmin') {
+                    setDoc(doc(db, "settings", "rekap_sistem"), { total_anggota: aktifCount }, { merge: true });
+                }
             });
         }
 
@@ -529,6 +374,9 @@
             const list = document.getElementById('listAnggotaContainer');
             const searchTxt = document.getElementById('searchUser').value.toLowerCase();
             
+            const deviceCounts = {};
+            allUsers.forEach(u => { if (u.device_id && u.status !== "Banned") { deviceCounts[u.device_id] = (deviceCounts[u.device_id] || 0) + 1; } });
+
             const filtered = allUsers.filter(u => {
                 const matchState = filterHrdState === 'Semua' ? (u.status !== 'Pending Admin') : (u.status === 'Pending Admin');
                 const cleanNik = decryptData(u.nik || "").toLowerCase();
@@ -540,187 +388,114 @@
 
             list.innerHTML = filtered.map(u => {
                 let stClass = "st-active"; let stText = "Aktif";
-                if(u.status === "Pending Admin") { stClass = "st-pending"; stText = "Pending"; }
-                else if(u.status === "Banned") { stClass = "st-banned"; stText = "Blokir"; }
+                if(u.status === "Pending Admin") { stClass = "st-pending"; stText = "Pending"; } else if(u.status === "Banned") { stClass = "st-banned"; stText = "Blokir"; }
 
-                const hakAbsen = u.hak_absen || "otomatis";
-                let hakIcon = '';
+                const hakAbsen = u.hak_absen || "otomatis"; let hakIcon = '';
                 if(hakAbsen === 'buka_paksa') hakIcon = '<i class="fa-solid fa-lock-open" style="color:var(--emerald-main); margin-left:5px;" title="Bypass Barcode"></i>';
                 else if(hakAbsen === 'kunci_paksa') hakIcon = '<i class="fa-solid fa-lock" style="color:var(--color-danger); margin-left:5px;" title="Barcode Dikunci"></i>';
 
-                const dispRole = u.custom_badge || u.role || "member";
-                
-                // TOMBOL DEWA: LEPAS KUNCI HP
-                const btnResetDevice = `<button class="btn-edit-round" style="color:var(--color-warning); border-color:var(--color-warning);" onclick="resetKunciHP('${u.email}', '${(u.nama_lengkap || "Anggota").replace(/'/g, "\\'")}')" title="Lepas Kunci HP (Ganti Perangkat)"><i class="fa-solid fa-unlock-keyhole"></i></button>`;
+                let dispRole = u.custom_badge || u.role || "member";
+                if (u.role === "intel" && currentUserRole === "developer") { dispRole = "MEMBER+ (Intel)"; }
 
-                return `
-                <div class="data-card">
-                    <div class="dc-info">
-                        <h4>${u.nama_lengkap || "Tanpa Nama"} ${hakIcon}</h4>
-                        <p><i class="fa-brands fa-whatsapp" style="color:#10B981;"></i> ${u.no_wa || "-"} | ${u.email}</p>
-                        <div>
-                            <span class="status-tag ${stClass}">${stText}</span>
-                            <span class="status-tag" style="background:var(--input-bg); color:var(--text-gray); margin-left:5px;">${dispRole}</span>
-                        </div>
-                    </div>
-                    <div class="card-actions">
-                        ${btnResetDevice}
-                        <button class="btn-edit-round" onclick="openEditMember('${u.email}')" title="Edit Anggota"><i class="fa-solid fa-pen-to-square"></i></button>
-                    </div>
-                </div>
-            `}).join('');
-        }
-
-        // ==========================================
-        // FITUR DEWA: RESET KUNCI PERANGKAT ANGGOTA
-        // ==========================================
-        window.resetKunciHP = function(emailMember, namaMember) {
-            customConfirm("Lepas Kunci Perangkat", `Apakah Anda yakin ingin mereset kunci HP untuk anggota bernama ${namaMember}?\n\nLakukan ini HANYA jika anggota bersangkutan lapor ganti HP / HP keriset.`, async () => {
-                showLoading("Membongkar Kunci...");
-                try {
-                    await updateDoc(doc(db, "users", emailMember), {
-                        device_id: "" 
-                    });
-                    hideLoading();
-                    customAlert("Gembok Terbuka!", `Kunci HP milik ${namaMember} berhasil direset. Anggota tersebut sudah bisa login pakai perangkat barunya.`, "success");
-                } catch (error) {
-                    hideLoading();
-                    console.error(error);
-                    customAlert("Gagal Reset", "Gagal melepaskan kunci. Cek koneksi Anda.", "error");
+                let warningKloning = "";
+                if (u.device_id && deviceCounts[u.device_id] > 1 && (currentUserRole === 'developer' || currentUserRole === 'superadmin')) {
+                    warningKloning = '<span class="status-tag st-banned" style="margin-left:5px;"><i class="fa-solid fa-triangle-exclamation"></i> Kloning HP</span>';
                 }
-            });
+                
+                let btnResetDevice = "";
+                if (currentUserRole === "developer") { btnResetDevice = `<button class="btn-edit-round" style="color:var(--color-warning); border-color:var(--color-warning);" onclick="resetKunciHP('${u.email}', '${(u.nama_lengkap || "Anggota").replace(/'/g, "\\'")}')" title="Lepas Kunci HP"><i class="fa-solid fa-unlock-keyhole"></i></button>`; }
+
+                return `<div class="data-card"><div class="dc-info"><h4>${u.nama_lengkap || "Tanpa Nama"} ${hakIcon}</h4><p><i class="fa-brands fa-whatsapp" style="color:#10B981;"></i> ${u.no_wa || "-"} | ${u.email}</p><div><span class="status-tag ${stClass}">${stText}</span><span class="status-tag" style="background:var(--input-bg); color:var(--text-gray); margin-left:5px;">${dispRole}</span>${warningKloning}</div></div><div class="card-actions">${btnResetDevice}<button class="btn-edit-round" onclick="openEditMember('${u.email}')" title="Edit Anggota"><i class="fa-solid fa-pen-to-square"></i></button></div></div>`
+            }).join('');
         }
+
+        window.resetKunciHP = function(emailMember, namaMember) { customConfirm("Lepas Kunci Perangkat", `Apakah Anda yakin ingin mereset kunci HP untuk anggota bernama ${namaMember}?`, async () => { showLoading("Membongkar Kunci..."); try { await updateDoc(doc(db, "users", emailMember), { device_id: "" }); hideLoading(); customAlert("Gembok Terbuka!", `Kunci HP milik ${namaMember} berhasil direset.`, "success"); } catch (error) { hideLoading(); customAlert("Gagal Reset", "Gagal melepaskan kunci.", "error"); } }); }
 
         window.openEditMember = function(email) {
             const u = allUsers.find(x => x.email === email); if(!u) return;
-            document.getElementById('editEmail').value = u.email;
-            document.getElementById('editName').value = u.nama_lengkap || "";
-            document.getElementById('editWa').value = u.no_wa || "";
-            document.getElementById('editNik').value = decryptData(u.nik || "");
-            
-            const roleSelect = document.getElementById('editRole');
-            roleSelect.value = (u.role || "member").toLowerCase();
-
-            document.getElementById('editStatus').value = u.status || "Active";
-            document.getElementById('editHakAbsen').value = u.hak_absen || "otomatis";
-            document.getElementById('modalEditMember').classList.add('show');
+            document.getElementById('editEmail').value = u.email; document.getElementById('editName').value = u.nama_lengkap || ""; document.getElementById('editWa').value = u.no_wa || ""; document.getElementById('editNik').value = decryptData(u.nik || ""); document.getElementById('editRole').value = (u.role || "member").toLowerCase(); document.getElementById('editStatus').value = u.status || "Active"; document.getElementById('editHakAbsen').value = u.hak_absen || "otomatis"; document.getElementById('modalEditMember').classList.add('show');
         }
 
         window.saveEditUser = async function(e) {
             e.preventDefault(); showLoading("Menyimpan Data Anggota...");
-            const email = document.getElementById('editEmail').value;
-            const newNik = document.getElementById('editNik').value;
+            const email = document.getElementById('editEmail').value; const newNik = document.getElementById('editNik').value;
             if(newNik.length !== 16) { hideLoading(); return customAlert("NIK Salah", "NIK harus berjumlah 16 digit.", "warning"); }
-
-            try {
-                const encNik = encryptData(newNik);
-                let updates = {
-                    nama_lengkap: document.getElementById('editName').value,
-                    no_wa: document.getElementById('editWa').value,
-                    nik: encNik,
-                    status: document.getElementById('editStatus').value,
-                    hak_absen: document.getElementById('editHakAbsen').value,
-                    role: document.getElementById('editRole').value 
-                };
-
-                await updateDoc(doc(db, "users", email), updates);
-                hideLoading(); customAlert("Berhasil", "Data anggota berhasil dimoderasi. (Jika ubah kasta sendiri, silahkan Refresh halaman)", "success");
-                document.getElementById('modalEditMember').classList.remove('show');
-            } catch(error) { hideLoading(); customAlert("Gagal", "Error menyimpan data.", "error"); }
+            try { const encNik = encryptData(newNik); let updates = { nama_lengkap: document.getElementById('editName').value, no_wa: document.getElementById('editWa').value, nik: encNik, status: document.getElementById('editStatus').value, hak_absen: document.getElementById('editHakAbsen').value, role: document.getElementById('editRole').value }; await updateDoc(doc(db, "users", email), updates); hideLoading(); customAlert("Berhasil", "Data anggota berhasil dimoderasi.", "success"); document.getElementById('modalEditMember').classList.remove('show'); } catch(error) { hideLoading(); customAlert("Gagal", "Error menyimpan data.", "error"); }
         }
 
-        window.loadMatriksUsers = function() {
-            let options = '<option value="">-- Pilih Anggota --</option>';
-            allUsers.forEach(u => { options += `<option value="${u.email}">${u.nama_lengkap} (${u.email})</option>`; });
-            document.getElementById('matriksSelectUser').innerHTML = options;
-        }
-
-        window.selectMatriksUser = function() {
-            const email = document.getElementById('matriksSelectUser').value;
-            const u = allUsers.find(x => x.email === email);
-            if(u) {
-                document.getElementById('matriksBadge').value = u.custom_badge || "MEMBER";
-                document.getElementById('matriksRole').value = u.role || "member";
-            } else {
-                document.getElementById('matriksBadge').value = ""; document.getElementById('matriksRole').value = "member";
-            }
-        }
-
-        window.saveMatriks = async function(e) {
-            e.preventDefault();
-            const email = document.getElementById('matriksSelectUser').value;
-            if(!email) return customAlert("Error", "Pilih anggota target terlebih dahulu.", "warning");
-
-            showLoading("Menyuntikkan Akses...");
-            try {
-                await updateDoc(doc(db, "users", email), {
-                    custom_badge: document.getElementById('matriksBadge').value.toUpperCase(),
-                    role: document.getElementById('matriksRole').value
-                });
-                hideLoading(); customAlert("Suntikan Berhasil", "Sistem Ilusi telah aktif untuk anggota ini.", "success");
-                document.getElementById('formMatriks').reset();
-            } catch(error) { hideLoading(); customAlert("Gagal", "Gagal menyuntikkan kasta.", "error"); }
-        }
+        window.loadMatriksUsers = function() { let options = '<option value="">-- Pilih Anggota --</option>'; allUsers.forEach(u => { options += `<option value="${u.email}">${u.nama_lengkap} (${u.email})</option>`; }); document.getElementById('matriksSelectUser').innerHTML = options; }
+        window.selectMatriksUser = function() { const email = document.getElementById('matriksSelectUser').value; const u = allUsers.find(x => x.email === email); if(u) { document.getElementById('matriksBadge').value = u.custom_badge || "MEMBER"; document.getElementById('matriksRole').value = u.role || "member"; } else { document.getElementById('matriksBadge').value = ""; document.getElementById('matriksRole').value = "member"; } }
+        window.saveMatriks = async function(e) { e.preventDefault(); const email = document.getElementById('matriksSelectUser').value; if(!email) return customAlert("Error", "Pilih anggota target terlebih dahulu.", "warning"); showLoading("Menyuntikkan Akses..."); try { await updateDoc(doc(db, "users", email), { custom_badge: document.getElementById('matriksBadge').value.toUpperCase(), role: document.getElementById('matriksRole').value }); hideLoading(); customAlert("Suntikan Berhasil", "Sistem Ilusi telah aktif untuk anggota ini.", "success"); document.getElementById('formMatriks').reset(); } catch(error) { hideLoading(); customAlert("Gagal", "Gagal menyuntikkan kasta.", "error"); } }
 
         let pendingKas = [];
         function loadKasPending() {
             onSnapshot(query(collection(db, "transactions"), orderBy("tanggal", "desc")), (snap) => {
-                pendingKas = [];
-                snap.forEach(d => { const data = d.data(); if(data.status === "pending" && data.jenis === "Pemasukan") pendingKas.push({ id: d.id, ...data }); });
-                renderKas();
+                pendingKas = []; snap.forEach(d => { const data = d.data(); if(data.status === "pending" && data.jenis === "Pemasukan") pendingKas.push({ id: d.id, ...data }); }); renderKas();
             });
         }
 
         function renderKas() {
             const list = document.getElementById('listKasContainer');
             if (pendingKas.length === 0) { list.innerHTML = '<div class="empty-state"><i class="fa-solid fa-check-double"></i><p>Semua bukti transfer sudah diverifikasi.</p></div>'; return; }
-
             list.innerHTML = pendingKas.map(k => {
                 const dateStr = k.tanggal ? k.tanggal.toDate().toLocaleDateString('id-ID') : '-';
-                return `
-                <div class="data-card" style="align-items: flex-start;">
-                    <div class="dc-info" style="flex:1;">
-                        <h4>${k.pengirim}</h4>
-                        <p><i class="fa-solid fa-calendar-day"></i> ${dateStr} | ${k.nama_keterangan || "Sedekah"}</p>
-                        <div style="font-size: 15px; font-weight: 900; color: var(--emerald-main); margin-top:8px;">Rp ${Number(k.nominal).toLocaleString('id-ID')}</div>
-                    </div>
-                    <div style="display:flex; flex-direction:column; gap:8px;">
-                        <button class="btn-edit-round" style="color:var(--color-info); border-color:var(--color-info);" onclick="viewImage('${k.bukti_image}')" title="Lihat Struk"><i class="fa-solid fa-image"></i></button>
-                        <button class="btn-edit-round" style="color:var(--emerald-main); border-color:var(--emerald-main);" onclick="openApproveKas('${k.id}')" title="Setujui/Tolak"><i class="fa-solid fa-clipboard-check"></i></button>
-                        <!-- TOMBOL TONG SAMPAH MERAH -->
-                        <button class="btn-edit-round" style="color:var(--color-danger); border-color:var(--color-danger);" onclick="tolakTrx('${k.id}')" title="Hapus Permanen"><i class="fa-solid fa-trash"></i></button>
-                    </div>
-                </div>
-            `}).join('');
+                let btnHapus = ""; if (currentUserRole === 'developer') { btnHapus = `<button class="btn-edit-round" style="color:var(--color-danger); border-color:var(--color-danger);" onclick="tolakTrx('${k.id}')" title="Hapus Permanen"><i class="fa-solid fa-trash"></i></button>`; }
+                return `<div class="data-card" style="align-items: flex-start;"><div class="dc-info" style="flex:1;"><h4>${k.pengirim}</h4><p><i class="fa-solid fa-calendar-day"></i> ${dateStr} | ${k.nama_keterangan || "Sedekah"}</p><div style="font-size: 15px; font-weight: 900; color: var(--emerald-main); margin-top:8px;">Rp ${Number(k.nominal).toLocaleString('id-ID')}</div></div><div style="display:flex; flex-direction:column; gap:8px;"><button class="btn-edit-round" style="color:var(--color-info); border-color:var(--color-info);" onclick="viewImage('${k.bukti_image}')" title="Lihat Struk"><i class="fa-solid fa-image"></i></button><button class="btn-edit-round" style="color:var(--emerald-main); border-color:var(--emerald-main);" onclick="openApproveKas('${k.id}')" title="Setujui/Tolak"><i class="fa-solid fa-clipboard-check"></i></button>${btnHapus}</div></div>`
+            }).join('');
         }
 
-        // FUNGSI BUAT MENGHAPUS TRANSAKSI BODONG PERMANEN
-        window.tolakTrx = async function(docId) {
-            customConfirm("Hapus Permanen?", "Yakin mau menghapus laporan sedekah ini dari sistem? (Data & gambar akan lenyap)", async () => {
-                showLoading("Membakar Data...");
-                try {
-                    await deleteDoc(doc(db, "transactions", docId));
-                    hideLoading();
-                    customAlert("Berhasil Dihapus!", "Laporan sedekah bodong telah dilenyapkan dari database.", "success");
-                } catch(e) {
-                    hideLoading();
-                    customAlert("Gagal Menghapus", e.message, "error");
-                }
-            });
-        }
+        window.tolakTrx = async function(docId) { customConfirm("Hapus Permanen?", "Yakin mau menghapus laporan sedekah ini dari sistem? (Data & gambar akan lenyap)", async () => { showLoading("Membakar Data..."); try { await deleteDoc(doc(db, "transactions", docId)); hideLoading(); customAlert("Berhasil Dihapus!", "Laporan sedekah bodong telah dilenyapkan dari database.", "success"); } catch(e) { hideLoading(); customAlert("Gagal Menghapus", e.message, "error"); } }); }
 
         window.viewImage = function(src) { document.getElementById('imgViewerSrc').src = src; document.getElementById('modalImage').classList.add('show'); }
         window.closeImageView = function() { document.getElementById('modalImage').classList.remove('show'); }
         window.openApproveKas = function(id) { const k = pendingKas.find(x => x.id === id); if(!k) return; document.getElementById('apvTrxId').value = k.id; document.getElementById('apvTrxName').value = k.nama_keterangan || "Sedekah"; document.getElementById('apvTrxNominal').value = k.nominal; document.getElementById('modalApproveTrx').classList.add('show'); }
 
+        // EKSEKUSI TERIMA UANG & TULIS KE PAPAN TULIS (AGGREGATION)
         window.actionTrx = async function(act) {
             const id = document.getElementById('apvTrxId').value;
-            const msg = act === 'approve' ? 'Yakin terima dan masukkan dana ini ke Kas?' : 'Yakin TOLAK bukti transfer ini? (Status akan menjadi Ditolak)';
+            const msg = act === 'approve' ? 'Yakin terima dan masukkan dana ini ke Kas?' : 'Yakin TOLAK bukti transfer ini?';
             customConfirm("Konfirmasi Verifikasi", msg, async () => {
                 showLoading();
                 try {
-                    if (act === 'approve') { await updateDoc(doc(db, "transactions", id), { status: "approved", nama_keterangan: document.getElementById('apvTrxName').value, nominal: Number(document.getElementById('apvTrxNominal').value) }); customAlert("Berhasil", "Dana masuk telah tercatat.", "success");
-                    } else { await updateDoc(doc(db, "transactions", id), { status: "rejected" }); customAlert("Ditolak", "Bukti transfer telah ditolak.", "success"); }
+                    if (act === 'approve') { 
+                        const nominalMasuk = Number(document.getElementById('apvTrxNominal').value);
+                        
+                        await updateDoc(doc(db, "transactions", id), { 
+                            status: "approved", 
+                            nama_keterangan: document.getElementById('apvTrxName').value, 
+                            nominal: nominalMasuk,
+                            dieksekusi_oleh: currentUserName,
+                            waktu_eksekusi: serverTimestamp()
+                        }); 
+
+                        // MESIN MANDOR: TAMBAH ANGKA DI PAPAN TULIS
+                        const rekapRef = doc(db, "settings", "rekap_sistem");
+                        const rekapSnap = await getDoc(rekapRef);
+                        const now = new Date(); const currentMonth = now.getMonth() + 1;
+                        let kasBulanIniBaru = nominalMasuk;
+
+                        if (rekapSnap.exists()) {
+                            const dataRekap = rekapSnap.data();
+                            if (dataRekap.bulan_aktif === currentMonth) {
+                                kasBulanIniBaru = (dataRekap.kas_bulan_ini || 0) + nominalMasuk;
+                            }
+                        }
+
+                        await setDoc(rekapRef, {
+                            total_kas: increment(nominalMasuk),
+                            bulan_aktif: currentMonth,
+                            kas_bulan_ini: kasBulanIniBaru
+                        }, { merge: true });
+
+                        customAlert("Berhasil", "Dana masuk telah tercatat di buku Kas.", "success");
+                    } else { 
+                        await updateDoc(doc(db, "transactions", id), { 
+                            status: "rejected",
+                            dieksekusi_oleh: currentUserName,
+                            waktu_eksekusi: serverTimestamp()
+                        }); 
+                        customAlert("Ditolak", "Bukti transfer telah ditolak.", "success"); 
+                    }
                     document.getElementById('modalApproveTrx').classList.remove('show');
                 } catch(e) { customAlert("Gagal", "Error memproses data.", "error"); } finally { hideLoading(); }
             });
@@ -728,56 +503,32 @@
 
         async function loadConfigData() {
             const sys = await getDoc(doc(db, "settings", "app_config"));
-            if(sys.exists()) {
-                document.getElementById('sysLimit').value = sys.data().limit_sedekah || 10000;
-                document.getElementById('sysSyarat').value = sys.data().min_sedekah_absen || 0; 
-                document.getElementById('sysQris').value = sys.data().qris_url || "";
-            }
+            if(sys.exists()) { document.getElementById('sysLimit').value = sys.data().limit_sedekah || 10000; document.getElementById('sysSyarat').value = sys.data().min_sedekah_absen || 0; }
             const evt = await getDoc(doc(db, "settings", "event_config"));
-            if(evt.exists()) {
-                document.getElementById('evName').value = evt.data().nama_acara || "";
-                document.getElementById('evLat').value = evt.data().lat || "";
-                document.getElementById('evLng').value = evt.data().lng || "";
-                document.getElementById('evRadius').value = evt.data().radius || 100;
-                document.getElementById('evActive').value = String(evt.data().is_active);
-            }
+            if(evt.exists()) { document.getElementById('evName').value = evt.data().nama_acara || ""; document.getElementById('evLat').value = evt.data().lat || ""; document.getElementById('evLng').value = evt.data().lng || ""; document.getElementById('evRadius').value = evt.data().radius || 100; document.getElementById('evActive').value = String(evt.data().is_active); }
         }
 
         window.saveAppConfig = async function(e) {
             e.preventDefault(); showLoading("Menyimpan Konfigurasi...");
-            try { await setDoc(doc(db, "settings", "app_config"), { limit_sedekah: Number(document.getElementById('sysLimit').value), min_sedekah_absen: Number(document.getElementById('sysSyarat').value), qris_url: document.getElementById('sysQris').value }, {merge: true}); hideLoading(); customAlert("Update Sistem", "Parameter aplikasi berhasil diubah.", "success");
-            } catch(err) { hideLoading(); customAlert("Gagal", "Sistem gagal menyimpan.", "error"); }
+            try { await setDoc(doc(db, "settings", "app_config"), { limit_sedekah: Number(document.getElementById('sysLimit').value), min_sedekah_absen: Number(document.getElementById('sysSyarat').value) }, {merge: true}); hideLoading(); customAlert("Update Sistem", "Parameter aplikasi berhasil diubah.", "success"); } catch(err) { hideLoading(); customAlert("Gagal", "Sistem gagal menyimpan.", "error"); }
         }
 
         window.saveEventConfig = async function(e) {
             e.preventDefault(); showLoading("Menyimpan Radar...");
-            try { await setDoc(doc(db, "settings", "event_config"), { nama_acara: document.getElementById('evName').value, lat: parseFloat(document.getElementById('evLat').value), lng: parseFloat(document.getElementById('evLng').value), radius: Number(document.getElementById('evRadius').value), is_active: document.getElementById('evActive').value === 'true' }, {merge: true}); hideLoading(); customAlert("Radar Update", "Konfigurasi acara berhasil disimpan.", "success");
-            } catch(err) { hideLoading(); customAlert("Gagal", "Gagal mengupdate Radar.", "error"); }
+            try { await setDoc(doc(db, "settings", "event_config"), { nama_acara: document.getElementById('evName').value, lat: parseFloat(document.getElementById('evLat').value), lng: parseFloat(document.getElementById('evLng').value), radius: Number(document.getElementById('evRadius').value), is_active: document.getElementById('evActive').value === 'true' }, {merge: true}); hideLoading(); customAlert("Radar Update", "Konfigurasi acara berhasil disimpan.", "success"); } catch(err) { hideLoading(); customAlert("Gagal", "Gagal mengupdate Radar.", "error"); }
         }
 
         window.downloadAbsen = async function() {
             showLoading("Menyiapkan Data Excel...");
             try {
-                const eventName = document.getElementById('evName').value;
-                if(!eventName) throw new Error("Nama acara belum diatur.");
-                const q = query(collection(db, "absensi_acara"), where("event_name", "==", eventName));
-                const snap = await getDocs(q);
+                const eventName = document.getElementById('evName').value; if(!eventName) throw new Error("Nama acara belum diatur.");
+                const q = query(collection(db, "absensi_acara"), where("event_name", "==", eventName)); const snap = await getDocs(q);
                 let csv = "data:text/csv;charset=utf-8,Waktu Scan,Nama Member,Email (ID),Sistem Absen,Admin Scanner\n";
-                snap.forEach(d => {
-                    const dt = d.data();
-                    const time = dt.scan_time ? dt.scan_time.toDate().toLocaleString('id-ID') : "";
-                    const type = dt.is_manual ? "Bypass/Manual" : "Scan QR";
-                    csv += `${time},${dt.member_name},${dt.member_email},${type},${dt.scanner_admin}\n`;
-                });
+                snap.forEach(d => { const dt = d.data(); const time = dt.scan_time ? dt.scan_time.toDate().toLocaleString('id-ID') : ""; const type = dt.is_manual ? "Bypass/Manual" : "Scan QR"; csv += `${time},${dt.member_name},${dt.member_email},${type},${dt.scanner_admin}\n`; });
                 const link = document.createElement("a"); link.href = encodeURI(csv); link.download = `Absensi_${eventName.replace(/ /g,'_')}.csv`; document.body.appendChild(link); link.click(); document.body.removeChild(link); hideLoading(); customAlert("Berhasil", "File Absensi telah diunduh.", "success");
             } catch(e) { hideLoading(); customAlert("Gagal", e.message, "error"); }
         }
     </script>
-    
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW Fail', err)); });
-        }
-    </script>
+    <script>if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW Fail', err)); }); }</script>
 </body>
 </html>
