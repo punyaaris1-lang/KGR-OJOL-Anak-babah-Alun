@@ -685,11 +685,28 @@
                         <div style="font-size: 15px; font-weight: 900; color: var(--emerald-main); margin-top:8px;">Rp ${Number(k.nominal).toLocaleString('id-ID')}</div>
                     </div>
                     <div style="display:flex; flex-direction:column; gap:8px;">
-                        <button class="btn-edit-round" style="color:var(--color-info); border-color:var(--color-info);" onclick="viewImage('${k.bukti_image}')"><i class="fa-solid fa-image"></i></button>
-                        <button class="btn-edit-round" style="color:var(--emerald-main); border-color:var(--emerald-main);" onclick="openApproveKas('${k.id}')"><i class="fa-solid fa-clipboard-check"></i></button>
+                        <button class="btn-edit-round" style="color:var(--color-info); border-color:var(--color-info);" onclick="viewImage('${k.bukti_image}')" title="Lihat Struk"><i class="fa-solid fa-image"></i></button>
+                        <button class="btn-edit-round" style="color:var(--emerald-main); border-color:var(--emerald-main);" onclick="openApproveKas('${k.id}')" title="Setujui/Tolak"><i class="fa-solid fa-clipboard-check"></i></button>
+                        <!-- TOMBOL TONG SAMPAH MERAH -->
+                        <button class="btn-edit-round" style="color:var(--color-danger); border-color:var(--color-danger);" onclick="tolakTrx('${k.id}')" title="Hapus Permanen"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 </div>
             `}).join('');
+        }
+
+        // FUNGSI BUAT MENGHAPUS TRANSAKSI BODONG PERMANEN
+        window.tolakTrx = async function(docId) {
+            customConfirm("Hapus Permanen?", "Yakin mau menghapus laporan sedekah ini dari sistem? (Data & gambar akan lenyap)", async () => {
+                showLoading("Membakar Data...");
+                try {
+                    await deleteDoc(doc(db, "transactions", docId));
+                    hideLoading();
+                    customAlert("Berhasil Dihapus!", "Laporan sedekah bodong telah dilenyapkan dari database.", "success");
+                } catch(e) {
+                    hideLoading();
+                    customAlert("Gagal Menghapus", e.message, "error");
+                }
+            });
         }
 
         window.viewImage = function(src) { document.getElementById('imgViewerSrc').src = src; document.getElementById('modalImage').classList.add('show'); }
@@ -698,7 +715,7 @@
 
         window.actionTrx = async function(act) {
             const id = document.getElementById('apvTrxId').value;
-            const msg = act === 'approve' ? 'Yakin terima dan masukkan dana ini ke Kas?' : 'Yakin TOLAK bukti transfer ini?';
+            const msg = act === 'approve' ? 'Yakin terima dan masukkan dana ini ke Kas?' : 'Yakin TOLAK bukti transfer ini? (Status akan menjadi Ditolak)';
             customConfirm("Konfirmasi Verifikasi", msg, async () => {
                 showLoading();
                 try {
