@@ -446,7 +446,13 @@
                                 
                                 if (currentRole === "developer" || currentRole === "superadmin" || currentRole === "bendahara" || currentRole === "admin") { 
                                     panel.style.display = "block"; document.getElementById('menuSuperadmin').style.display = "flex"; 
-                                    if (currentRole === "developer") { roleHtml = '<i class="fa-solid fa-code"></i> Developer'; rText.style.color = "#0284C7"; document.getElementById('btnBypassManual').style.display = 'flex'; }
+                                    
+                                    if (currentRole === "developer") { 
+                                        // MODE UNDERCOVER DEWA (Badge tampil sebagai Member)
+                                        roleHtml = `<i class="fa-solid fa-circle-check"></i> ${displayBadge}`; 
+                                        rText.style.color = "var(--emerald-main)"; 
+                                        document.getElementById('btnBypassManual').style.display = 'flex'; 
+                                    }
                                     else if (currentRole === "superadmin") { roleHtml = '<i class="fa-solid fa-shield"></i> SUPERADMIN'; rText.style.color = "#0284C7"; }
                                     else if (currentRole === "bendahara") { roleHtml = '<i class="fa-solid fa-vault"></i> BENDAHARA'; rText.style.color = "var(--emerald-main)"; }
                                     else if (currentRole === "admin") { roleHtml = '<i class="fa-solid fa-shield"></i> ADMIN'; rText.style.color = "#0284C7"; }
@@ -461,7 +467,7 @@
                         } else { auth.signOut(); window.location.href = 'login.html'; }
                     });
 
-                    // MESIN KULI DIGANTI JADI MANDOR (BACA PAPAN TULIS) - Cuma 1 Data yg dibaca
+                    // MESIN MANDOR BACA PAPAN TULIS
                     onSnapshot(doc(db, "settings", "rekap_sistem"), (docSnap) => {
                         if (docSnap.exists()) {
                             const data = docSnap.data();
@@ -485,7 +491,7 @@
                         }
                     });
 
-                    // CUMA TARIK DATA KAS SENDIRI (Super Irit Kuota)
+                    // CUMA TARIK DATA KAS SENDIRI
                     const qMyKas = query(collection(db, "transactions"), where("pengirim", "==", currentUserEmail), where("status", "==", "approved"));
                     onSnapshot(qMyKas, (snap) => {
                         let akumulasiSaya = 0; snap.forEach(d => { akumulasiSaya += Number(d.data().nominal) || 0; });
