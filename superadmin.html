@@ -13,97 +13,97 @@
     <script>
         const savedTheme = localStorage.getItem('kgr_theme') || 'dark';
         document.documentElement.setAttribute('data-theme', savedTheme);
+        localStorage.setItem('kgr_last_page', 'superadmin.html'); // SMART ROUTER
     </script>
 
     <style>
+        /* TEMA FLAT PREMIUM (VERSI HEMAT TAPI MEWAH) */
         :root { 
-            --bg-body: #0F172A; --text-main: #FFFFFF; --text-gray: rgba(255,255,255,0.6); 
-            --emerald-main: #059669; --emerald-dark: #022C22; --gold-accent: #FBBF24;
+            --bg-body: #F1F5F9; --text-main: #0F172A; --text-gray: #64748B; 
+            --emerald-main: #059669; --emerald-dark: #064E3B; --gold-accent: #F59E0B;
             --color-danger: #EF4444; --color-warning: #F59E0B; --color-info: #38BDF8;
-            --card-bg: rgba(255, 255, 255, 0.05); --card-border: rgba(255, 255, 255, 0.1);
-            --modal-bg: rgba(30, 41, 59, 0.95); --input-bg: rgba(255, 255, 255, 0.05); --header-bg: rgba(15, 23, 42, 0.7);
+            --card-bg: #FFFFFF; --card-border: #E2E8F0;
+            --modal-bg: #FFFFFF; --input-bg: #F8FAFC; --header-bg: #0F172A;
         }
 
-        [data-theme="light"] {
-            --bg-body: #F4F6F5; --text-main: #111827; --text-gray: #4B5563; --emerald-dark: #064E3B; 
-            --card-bg: rgba(255, 255, 255, 0.6); --card-border: #FFFFFF; --modal-bg: rgba(255, 255, 255, 0.95);
-            --input-bg: #F8FAFC; --color-danger: #DC2626; --color-info: #0284C7; --header-bg: rgba(255, 255, 255, 0.5);
+        [data-theme="dark"] {
+            --bg-body: #0F172A; --text-main: #F8FAFC; --text-gray: #94A3B8; --emerald-dark: #064E3B; 
+            --card-bg: #1E293B; --card-border: #334155; --modal-bg: #1E293B;
+            --input-bg: #0F172A; --color-danger: #DC2626; --color-info: #0284C7; --header-bg: #020617;
+            --emerald-main: #10B981; --gold-accent: #FBBF24;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg-body); color: var(--text-main); display: flex; justify-content: center; min-height: 100vh; overflow: hidden; position: relative; margin: 0; transition: background-color 0.4s ease, color 0.4s ease;}
+        body { background-color: var(--bg-body); color: var(--text-main); display: flex; justify-content: center; min-height: 100vh; overflow: hidden; position: relative; margin: 0; transition: background-color 0.3s ease, color 0.3s ease;}
 
-        .orb { position: absolute; border-radius: 50%; filter: blur(60px); z-index: 0; animation: float 10s infinite alternate ease-in-out;}
-        .orb-1 { top: 5%; right: -10%; width: 250px; height: 250px; background: rgba(5, 150, 105, 0.15); }
-        .orb-2 { bottom: 5%; left: -10%; width: 300px; height: 300px; background: rgba(5, 150, 105, 0.1); animation-delay: -5s;}
-        @keyframes float { 0% { transform: translate(0, 0); } 100% { transform: translate(20px, 30px); } }
+        .app-container { width: 100%; max-width: 480px; background: var(--bg-body); display: flex; flex-direction: column; height: 100dvh; position: relative; z-index: 10; overflow-x: hidden; overflow-y: hidden; }
+        @media (min-width: 600px) { .app-container { height: 90vh; max-height: 850px; border-radius: 30px; border: 8px solid var(--card-border); margin: auto;} }
 
-        .app-container { width: 100%; max-width: 480px; background: transparent; display: flex; flex-direction: column; height: 100dvh; position: relative; z-index: 10; overflow-x: hidden; overflow-y: hidden; }
-        @media (min-width: 600px) { .app-container { height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 30px 60px rgba(0,0,0,0.15); border: 8px solid var(--card-border); margin: auto;} }
-
-        .exec-header { background: var(--header-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding: 40px 24px 10px; position: relative; z-index: 10; border-bottom: 1px solid var(--card-border); box-shadow: 0 10px 25px rgba(0,0,0,0.05); transition: 0.4s ease;}
+        .exec-header { background: var(--header-bg); padding: 40px 24px 15px; position: relative; z-index: 10; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px;}
         .header-top { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 20px;}
-        .btn-back { width: 40px; height: 40px; border-radius: 12px; background: var(--card-bg); border: 1px solid var(--card-border); display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text-main); transition: 0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.05);}
-        .btn-back:active { transform: scale(0.9); background: var(--emerald-main); color: #FFF; }
-        .header-top h1 { font-size: 18px; font-weight: 900; letter-spacing: 0.5px; text-transform: uppercase; flex-grow: 1;}
+        .btn-back { width: 40px; height: 40px; border-radius: 12px; background: var(--card-bg); border: 2px solid var(--card-border); display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text-main); transition: 0.2s; }
+        .btn-back:active { transform: scale(0.9); }
+        .header-top h1 { font-size: 18px; font-weight: 900; letter-spacing: 0.5px; text-transform: uppercase; flex-grow: 1; color: #FFF; text-align: center;}
         
         .nav-tabs { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none;}
         .nav-tabs::-webkit-scrollbar { display: none; }
-        .tab-btn { flex-shrink: 0; padding: 10px 18px; border-radius: 12px; font-size: 11px; font-weight: 800; background: var(--card-bg); color: var(--text-gray); cursor: pointer; border: 1px solid var(--card-border); transition: 0.2s; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 5px 15px rgba(0,0,0,0.02);}
-        .tab-btn.active { background: var(--emerald-main); color: #FFF; border-color: var(--emerald-main); box-shadow: 0 5px 15px rgba(5,150,105,0.2);}
+        .tab-btn { flex-shrink: 0; padding: 10px 18px; border-radius: 12px; font-size: 11px; font-weight: 800; background: var(--card-bg); color: var(--text-gray); cursor: pointer; border: 2px solid var(--card-border); transition: 0.2s; text-transform: uppercase; letter-spacing: 0.5px;}
+        .tab-btn.active { background: var(--emerald-main); color: #FFF; border-color: var(--emerald-main); }
 
-        .content-area { flex-grow: 1; overflow-y: auto; padding: 25px 20px 100px; scrollbar-width: none; }
+        /* FIX SPASI BAWAH BIAR AMAN DI SCROLL */
+        .content-area { flex-grow: 1; overflow-y: auto; padding: 25px 20px 240px; scrollbar-width: none; }
         .content-area::-webkit-scrollbar { display: none; }
-        .view-section { display: none; animation: fadeIn 0.4s ease; }
+        
+        .view-section { display: none; animation: fadeIn 0.3s ease; }
         .view-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .hrd-filters { display: flex; gap: 8px; margin-bottom: 20px; background: var(--card-bg); backdrop-filter: blur(10px); padding: 6px; border-radius: 16px; border: 1px solid var(--card-border); box-shadow: 0 5px 15px rgba(0,0,0,0.05);}
+        .hrd-filters { display: flex; gap: 8px; margin-bottom: 20px; background: var(--card-bg); padding: 6px; border-radius: 16px; border: 1px solid var(--card-border); box-shadow: 0 4px 6px rgba(0,0,0,0.02);}
         .hrd-pill { flex: 1; padding: 10px; border-radius: 12px; font-size: 11px; font-weight: 800; text-align: center; cursor: pointer; transition: 0.2s; color: var(--text-gray); border: none; background: transparent;}
-        .hrd-pill.active { background: var(--emerald-main); color: #FFF; box-shadow: 0 4px 10px rgba(5,150,105,0.2);}
+        .hrd-pill.active { background: var(--emerald-main); color: #FFF; }
         .badge-count { background: var(--color-danger); color: #FFF; padding: 2px 6px; border-radius: 6px; font-size: 9px; margin-left: 5px; vertical-align: middle;}
 
-        .data-card { background: var(--card-bg); backdrop-filter: blur(15px); border-radius: 20px; padding: 18px; margin-bottom: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; transition: 0.2s;}
+        .data-card { background: var(--card-bg); border-radius: 20px; padding: 18px; margin-bottom: 12px; border: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; transition: 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.02);}
         .data-card:active { transform: scale(0.98); }
         .dc-info { flex-grow: 1; overflow: hidden; }
         .dc-info h4 { font-size: 14px; font-weight: 900; margin-bottom: 4px; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
         .dc-info p { font-size: 11px; font-weight: 600; color: var(--text-gray); display: flex; align-items: center; gap: 5px; margin-bottom: 6px;}
         .status-tag { font-size: 9px; font-weight: 800; padding: 4px 8px; border-radius: 6px; text-transform: uppercase;}
-        .st-pending { background: rgba(245, 158, 11, 0.15); color: var(--color-warning); }
-        .st-active { background: rgba(16, 185, 129, 0.15); color: var(--emerald-main); }
-        .st-banned { background: rgba(239, 68, 68, 0.15); color: var(--color-danger); }
+        .st-pending { background: rgba(245, 158, 11, 0.15); color: var(--color-warning); border: 1px solid rgba(245, 158, 11, 0.3);}
+        .st-active { background: rgba(16, 185, 129, 0.15); color: var(--emerald-main); border: 1px solid rgba(16, 185, 129, 0.3);}
+        .st-banned { background: rgba(239, 68, 68, 0.15); color: var(--color-danger); border: 1px solid rgba(239, 68, 68, 0.3);}
         
         .card-actions { display: flex; gap: 8px; }
-        .btn-edit-round { width: 40px; height: 40px; border-radius: 50%; background: var(--input-bg); color: var(--emerald-main); border: 1px solid var(--card-border); font-size: 14px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.05);}
+        .btn-edit-round { width: 40px; height: 40px; border-radius: 12px; background: var(--input-bg); color: var(--emerald-main); border: 2px solid var(--card-border); font-size: 14px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; }
         .btn-edit-round:active { transform: scale(0.9); }
 
-        .form-section { background: var(--card-bg); backdrop-filter: blur(15px); border-radius: 24px; padding: 25px 20px; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid var(--card-border);}
+        .form-section { background: var(--card-bg); border-radius: 24px; padding: 25px 20px; margin-bottom: 20px; border: 1px solid var(--card-border); box-shadow: 0 4px 6px rgba(0,0,0,0.02);}
         .section-title { font-size: 14px; font-weight: 900; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px;}
         .section-title i { color: var(--emerald-main); font-size: 18px;}
         .form-group { margin-bottom: 16px; }
         .form-label { display: block; font-size: 11px; font-weight: 800; color: var(--text-gray); margin-bottom: 6px; text-transform: uppercase;}
         .form-input, .form-select { width: 100%; padding: 15px; border-radius: 12px; border: 2px solid var(--card-border); font-size: 13px; font-weight: 700; color: var(--text-main); outline: none; background: var(--input-bg); transition: 0.2s;}
-        .form-input:focus, .form-select:focus { border-color: var(--emerald-main); background: transparent; }
+        .form-input:focus, .form-select:focus { border-color: var(--emerald-main); }
         
-        .btn-primary { width: 100%; padding: 16px; border-radius: 14px; font-size: 13px; font-weight: 900; background: var(--emerald-main); color: #FFF; border: none; cursor: pointer; transition: 0.2s; box-shadow: 0 8px 20px rgba(5,150,105,0.3); display: flex; justify-content: center; align-items: center; gap: 8px;}
+        .btn-primary { width: 100%; padding: 16px; border-radius: 14px; font-size: 13px; font-weight: 900; background: var(--emerald-main); color: #FFF; border: none; cursor: pointer; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px;}
         .btn-primary:active { transform: scale(0.96); }
 
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: flex-end; z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s ease; }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.85); display: flex; justify-content: center; align-items: flex-end; z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s ease; }
         .modal-overlay.show { opacity: 1; visibility: visible; }
-        .modal-content { background: var(--modal-bg); border: 1px solid var(--card-border); border-radius: 32px 32px 0 0; padding: 30px 24px 40px; width: 100%; max-width: 480px; transform: translateY(100%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1); max-height: 85vh; overflow-y: auto; box-shadow: 0 -10px 40px rgba(0,0,0,0.3);}
+        .modal-content { background: var(--modal-bg); border: 1px solid var(--card-border); border-radius: 32px 32px 0 0; padding: 30px 24px 40px; width: 100%; max-width: 480px; transform: translateY(100%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1); max-height: 85vh; overflow-y: auto; }
         .modal-overlay.show .modal-content { transform: translateY(0); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
         .modal-header h3 { font-size: 18px; font-weight: 900; }
-        .btn-close-modal { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--card-border); background: var(--input-bg); display: flex; justify-content: center; align-items: center; font-size: 16px; cursor: pointer; color: var(--text-main); transition: 0.2s;}
+        .btn-close-modal { width: 34px; height: 34px; border-radius: 12px; border: 2px solid var(--card-border); background: var(--input-bg); display: flex; justify-content: center; align-items: center; font-size: 16px; cursor: pointer; color: var(--text-main); transition: 0.2s;}
         .btn-close-modal:active { transform: scale(0.9); }
 
         .empty-state { text-align: center; padding: 40px 20px; color: var(--text-gray); border: 2px dashed var(--card-border); border-radius: 20px; }
         .empty-state i { font-size: 35px; margin-bottom: 10px; opacity: 0.4; }
         .empty-state p { font-size: 13px; font-weight: 700; }
 
-        .cp-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); z-index: 99999; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px; }
+        .cp-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85); z-index: 99999; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px; }
         .cp-overlay.show { opacity: 1; visibility: visible; }
-        .cp-box { background: var(--modal-bg); border: 1px solid var(--card-border); border-radius: 28px; width: 100%; max-width: 320px; text-align: center; padding: 30px 24px; transform: scale(0.9); transition: 0.3s; box-shadow: 0 25px 50px rgba(0,0,0,0.3); }
+        .cp-box { background: var(--modal-bg); border: 1px solid var(--card-border); border-radius: 28px; width: 100%; max-width: 320px; text-align: center; padding: 30px 24px; transform: scale(0.9); transition: 0.3s; box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
         .cp-overlay.show .cp-box { transform: scale(1); }
         .cp-icon { width: 65px; height: 65px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; margin: 0 auto 15px; }
         .cp-icon.success { background: rgba(16, 185, 129, 0.15); color: var(--emerald-main); }
@@ -114,10 +114,9 @@
         .cp-desc { font-size: 12px; font-weight: 600; color: var(--text-gray); margin-bottom: 25px; line-height: 1.5; }
         .cp-btn-wrap { display: flex; gap: 10px; }
         .cp-btn { flex: 1; padding: 15px; border-radius: 14px; font-size: 13px; font-weight: 800; border: none; cursor: pointer; transition: 0.2s; }
-        .cp-btn:active { transform: scale(0.95); }
-        .cp-btn-primary { background: var(--emerald-main); color: #FFF; width: 100%; box-shadow: 0 5px 15px rgba(5,150,105,0.3);}
-        .cp-btn-cancel { background: var(--input-bg); color: var(--text-main); border: 1px solid var(--card-border); }
-        .cp-btn-danger { background: var(--color-danger); color: #FFF; box-shadow: 0 5px 15px rgba(239,68,68,0.3);}
+        .cp-btn-primary { background: var(--emerald-main); color: #FFF; width: 100%;}
+        .cp-btn-cancel { background: var(--input-bg); color: var(--text-main); border: 2px solid var(--card-border); }
+        .cp-btn-danger { background: var(--color-danger); color: #FFF; }
         
         .spinner-custom { border: 4px solid var(--card-border); width: 50px; height: 50px; border-radius: 50%; border-left-color: var(--emerald-main); animation: spin 1s linear infinite; margin: 0 auto 15px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -128,10 +127,7 @@
     <div class="cp-overlay" id="customAlert"><div class="cp-box"><div class="cp-icon success" id="caIcon"><i class="fa-solid fa-check"></i></div><h3 class="cp-title" id="caTitle">Pemberitahuan</h3><p class="cp-desc" id="caDesc">Pesan</p><button class="cp-btn cp-btn-primary" onclick="closeCustomAlert()">Mengerti</button></div></div>
     <div class="cp-overlay" id="customConfirm"><div class="cp-box"><div class="cp-icon warning"><i class="fa-solid fa-triangle-exclamation"></i></div><h3 class="cp-title" id="ccTitle">Konfirmasi</h3><p class="cp-desc" id="ccDesc">Apakah Anda yakin?</p><div class="cp-btn-wrap"><button class="cp-btn cp-btn-cancel" onclick="closeCustomConfirm()">Batal</button><button class="cp-btn cp-btn-danger" id="ccBtnYes">Ya, Eksekusi</button></div></div></div>
     <div class="cp-overlay" id="customLoading"><div class="cp-box" style="padding: 40px 20px;"><div class="spinner-custom"></div><h3 class="cp-title" id="clTitle" style="margin-bottom: 0;">Memproses...</h3></div></div>
-    <div class="cp-overlay" id="modalImage" onclick="closeImageView()"><div class="cp-box" style="padding: 10px; background: transparent; box-shadow: none; border:none; max-width: 450px;" onclick="event.stopPropagation()"><img id="imgViewerSrc" src="" style="width: 100%; border-radius: 24px; border: 4px solid var(--card-border); max-height: 70vh; object-fit: contain;"><button class="btn-close-modal" style="margin: 15px auto 0;" onclick="closeImageView()"><i class="fa-solid fa-xmark"></i></button></div></div>
-
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
+    <div class="cp-overlay" id="modalImage" onclick="closeImageView()"><div class="cp-box" style="padding: 10px; background: var(--card-bg); max-width: 450px;" onclick="event.stopPropagation()"><img id="imgViewerSrc" src="" style="width: 100%; border-radius: 20px; border: 2px solid var(--card-border); max-height: 70vh; object-fit: contain;"><button class="btn-close-modal" style="margin: 15px auto 0;" onclick="closeImageView()"><i class="fa-solid fa-xmark"></i></button></div></div>
 
     <div class="app-container">
         <div class="exec-header">
@@ -186,7 +182,7 @@
                 </div>
                 <div class="form-section">
                     <div class="section-title"><i class="fa-solid fa-file-excel"></i> Rekap Absensi Terakhir</div>
-                    <button class="btn-primary" style="background: var(--text-dark);" onclick="downloadAbsen()"><i class="fa-solid fa-download"></i> Download Excel (.csv)</button>
+                    <button class="btn-primary" style="background: var(--text-main);" onclick="downloadAbsen()"><i class="fa-solid fa-download"></i> Download Excel (.csv)</button>
                 </div>
             </div>
 
@@ -224,7 +220,7 @@
         </div>
     </div>
 
-    <!-- MODAL EDIT MEMBER -->
+    <!-- MODAL EDIT MEMBER (DENGAN SENSOR NIK) -->
     <div id="modalEditMember" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header"><h3>Moderasi Anggota</h3><button type="button" onclick="document.getElementById('modalEditMember').classList.remove('show')" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button></div>
@@ -252,7 +248,7 @@
         </div>
     </div>
 
-    <!-- MODAL VERIFIKASI KAS (LOG NUMPANG LEWAT) -->
+    <!-- MODAL VERIFIKASI KAS -->
     <div id="modalApproveTrx" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header"><h3>Verifikasi Sedekah</h3><button type="button" onclick="document.getElementById('modalApproveTrx').classList.remove('show')" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button></div>
@@ -260,7 +256,7 @@
             <div class="form-group"><label class="form-label">Nama Keterangan (Bisa diedit)</label><input type="text" id="apvTrxName" class="form-input" required></div>
             <div class="form-group"><label class="form-label">Nominal (Bisa diedit jika salah)</label><input type="number" id="apvTrxNominal" class="form-input" required></div>
             <div style="display: flex; gap: 10px; margin-top: 25px;">
-                <button type="button" class="btn-primary" style="flex: 1; background: rgba(239, 68, 68, 0.15); color: var(--color-danger); box-shadow: none;" onclick="actionTrx('reject')"><i class="fa-solid fa-xmark"></i> Tolak</button>
+                <button type="button" class="btn-primary" style="flex: 1; background: rgba(239, 68, 68, 0.15); color: var(--color-danger);" onclick="actionTrx('reject')"><i class="fa-solid fa-xmark"></i> Tolak</button>
                 <button type="button" class="btn-primary" style="flex: 1; background: var(--emerald-main);" onclick="actionTrx('approve')"><i class="fa-solid fa-check"></i> Terima Uang</button>
             </div>
         </div>
@@ -269,7 +265,7 @@
     <script>
         function updateThemeIcon(theme) {
             const icon = document.getElementById('themeIcon'); const metaTheme = document.getElementById('metaThemeColor');
-            if (theme === 'light') { icon.className = 'fa-solid fa-moon'; metaTheme.setAttribute("content", "#F4F6F5"); } 
+            if (theme === 'light') { icon.className = 'fa-solid fa-moon'; metaTheme.setAttribute("content", "#F1F5F9"); } 
             else { icon.className = 'fa-solid fa-sun'; metaTheme.setAttribute("content", "#0F172A"); }
         }
         window.addEventListener('DOMContentLoaded', () => { updateThemeIcon(savedTheme); });
@@ -408,7 +404,7 @@
                 let btnResetDevice = "";
                 if (currentUserRole === "developer") { btnResetDevice = `<button class="btn-edit-round" style="color:var(--color-warning); border-color:var(--color-warning);" onclick="resetKunciHP('${u.email}', '${(u.nama_lengkap || "Anggota").replace(/'/g, "\\'")}')" title="Lepas Kunci HP"><i class="fa-solid fa-unlock-keyhole"></i></button>`; }
 
-                return `<div class="data-card"><div class="dc-info"><h4>${u.nama_lengkap || "Tanpa Nama"} ${hakIcon}</h4><p><i class="fa-brands fa-whatsapp" style="color:#10B981;"></i> ${u.no_wa || "-"} | ${u.email}</p><div><span class="status-tag ${stClass}">${stText}</span><span class="status-tag" style="background:var(--input-bg); color:var(--text-gray); margin-left:5px;">${dispRole}</span>${warningKloning}</div></div><div class="card-actions">${btnResetDevice}<button class="btn-edit-round" onclick="openEditMember('${u.email}')" title="Edit Anggota"><i class="fa-solid fa-pen-to-square"></i></button></div></div>`
+                return `<div class="data-card"><div class="dc-info"><h4>${u.nama_lengkap || "Tanpa Nama"} ${hakIcon}</h4><p><i class="fa-brands fa-whatsapp" style="color:#10B981;"></i> ${u.no_wa || "-"} | ${u.email}</p><div><span class="status-tag ${stClass}">${stText}</span><span class="status-tag" style="background:var(--input-bg); color:var(--text-gray); margin-left:5px; border: 1px solid var(--card-border);">${dispRole}</span>${warningKloning}</div></div><div class="card-actions">${btnResetDevice}<button class="btn-edit-round" onclick="openEditMember('${u.email}')" title="Edit Anggota"><i class="fa-solid fa-pen-to-square"></i></button></div></div>`
             }).join('');
         }
 
@@ -426,17 +422,11 @@
             let inputFormNik = document.getElementById('editNik');
             
             if (currentUserRole === "developer" || currentUserRole === "superadmin") {
-                // Dewa & Ketum: Bebas Buka
-                inputFormNik.value = nikAsli;
-                inputFormNik.readOnly = false;
+                inputFormNik.value = nikAsli; inputFormNik.readOnly = false;
             } else {
-                // Admin Lapangan: Disensor & Digembok
                 let nikSensor = nikAsli;
-                if (nikAsli && nikAsli.length >= 16) {
-                    nikSensor = nikAsli.substring(0, 6) + "******" + nikAsli.substring(12);
-                }
-                inputFormNik.value = nikSensor;
-                inputFormNik.readOnly = true; 
+                if (nikAsli && nikAsli.length >= 16) { nikSensor = nikAsli.substring(0, 6) + "******" + nikAsli.substring(12); }
+                inputFormNik.value = nikSensor; inputFormNik.readOnly = true; 
             }
             // ------------------------------------
 
@@ -448,41 +438,18 @@
         }
 
         window.saveEditUser = async function(e) {
-            e.preventDefault(); 
-            showLoading("Menyimpan Data Anggota...");
-            
+            e.preventDefault(); showLoading("Menyimpan Data Anggota...");
             const email = document.getElementById('editEmail').value; 
             const newNik = document.getElementById('editNik').value;
-            
-            if(newNik.length !== 16) { 
-                hideLoading(); 
-                return customAlert("NIK Salah", "NIK harus berjumlah 16 digit.", "warning"); 
-            }
+            if(newNik.length !== 16) { hideLoading(); return customAlert("NIK Salah", "NIK harus berjumlah 16 digit.", "warning"); }
             
             try { 
-                let updates = { 
-                    nama_lengkap: document.getElementById('editName').value, 
-                    no_wa: document.getElementById('editWa').value, 
-                    status: document.getElementById('editStatus').value, 
-                    hak_absen: document.getElementById('editHakAbsen').value, 
-                    role: document.getElementById('editRole').value 
-                }; 
-                
-                // SABUK PENGAMAN EKSTRA
-                // Hanya enkripsi dan simpan NIK jika tidak mengandung bintang (Bukan inputan Admin)
-                if (!newNik.includes('*')) {
-                    updates.nik = encryptData(newNik);
-                }
+                let updates = { nama_lengkap: document.getElementById('editName').value, no_wa: document.getElementById('editWa').value, status: document.getElementById('editStatus').value, hak_absen: document.getElementById('editHakAbsen').value, role: document.getElementById('editRole').value }; 
+                if (!newNik.includes('*')) { updates.nik = encryptData(newNik); } // SABUK PENGAMAN EKSTRA
 
                 await updateDoc(doc(db, "users", email), updates); 
-                
-                hideLoading(); 
-                customAlert("Berhasil", "Data anggota berhasil dimoderasi.", "success"); 
-                document.getElementById('modalEditMember').classList.remove('show'); 
-            } catch(error) { 
-                hideLoading(); 
-                customAlert("Gagal", "Error menyimpan data.", "error"); 
-            }
+                hideLoading(); customAlert("Berhasil", "Data anggota berhasil dimoderasi.", "success"); document.getElementById('modalEditMember').classList.remove('show'); 
+            } catch(error) { hideLoading(); customAlert("Gagal", "Error menyimpan data.", "error"); }
         }
 
         window.loadMatriksUsers = function() { let options = '<option value="">-- Pilih Anggota --</option>'; allUsers.forEach(u => { options += `<option value="${u.email}">${u.nama_lengkap} (${u.email})</option>`; }); document.getElementById('matriksSelectUser').innerHTML = options; }
@@ -492,17 +459,31 @@
         let pendingKas = [];
         function loadKasPending() {
             onSnapshot(query(collection(db, "transactions"), orderBy("tanggal", "desc")), (snap) => {
-                pendingKas = []; snap.forEach(d => { const data = d.data(); if(data.status === "pending" && data.jenis === "Pemasukan") pendingKas.push({ id: d.id, ...data }); }); renderKas();
+                pendingKas = []; 
+                snap.forEach(d => { 
+                    const data = d.data(); 
+                    // FILTER: BACA YANG PENDING (ADA STRUK) & MENUNGGU TRANSFER (LUPA PENCET)
+                    if((data.status === "pending" || data.status === "menunggu_transfer") && data.jenis === "Pemasukan") {
+                        pendingKas.push({ id: d.id, ...data }); 
+                    }
+                }); 
+                renderKas();
             });
         }
 
         function renderKas() {
             const list = document.getElementById('listKasContainer');
-            if (pendingKas.length === 0) { list.innerHTML = '<div class="empty-state"><i class="fa-solid fa-check-double"></i><p>Semua bukti transfer sudah diverifikasi.</p></div>'; return; }
+            if (pendingKas.length === 0) { list.innerHTML = '<div class="empty-state"><i class="fa-solid fa-check-double"></i><p>Semua antrean kas sudah kosong.</p></div>'; return; }
             list.innerHTML = pendingKas.map(k => {
                 const dateStr = k.tanggal ? k.tanggal.toDate().toLocaleDateString('id-ID') : '-';
-                let btnHapus = ""; if (currentUserRole === 'developer') { btnHapus = `<button class="btn-edit-round" style="color:var(--color-danger); border-color:var(--color-danger);" onclick="tolakTrx('${k.id}')" title="Hapus Permanen"><i class="fa-solid fa-trash"></i></button>`; }
-                return `<div class="data-card" style="align-items: flex-start;"><div class="dc-info" style="flex:1;"><h4>${k.pengirim}</h4><p><i class="fa-solid fa-calendar-day"></i> ${dateStr} | ${k.nama_keterangan || "Sedekah"}</p><div style="font-size: 15px; font-weight: 900; color: var(--emerald-main); margin-top:8px;">Rp ${Number(k.nominal).toLocaleString('id-ID')}</div></div><div style="display:flex; flex-direction:column; gap:8px;"><button class="btn-edit-round" style="color:var(--color-info); border-color:var(--color-info);" onclick="viewImage('${k.bukti_image}')" title="Lihat Struk"><i class="fa-solid fa-image"></i></button><button class="btn-edit-round" style="color:var(--emerald-main); border-color:var(--emerald-main);" onclick="openApproveKas('${k.id}')" title="Setujui/Tolak"><i class="fa-solid fa-clipboard-check"></i></button>${btnHapus}</div></div>`
+                
+                let btnHapus = ""; 
+                if (currentRole === 'developer') { btnHapus = `<button class="btn-edit-round" style="color:var(--color-danger); border-color:var(--color-danger);" onclick="tolakTrx('${k.id}')" title="Hapus Permanen"><i class="fa-solid fa-trash"></i></button>`; }
+                
+                // INDIKATOR STRUK VS TANPA STRUK (NIAT)
+                let btnStruk = k.bukti_image ? `<button class="btn-edit-round" style="color:var(--color-info); border-color:var(--color-info);" onclick="viewImage('${k.bukti_image}')" title="Lihat Struk"><i class="fa-solid fa-image"></i></button>` : `<div style="font-size:9px; font-weight:800; color:var(--color-warning); text-align:center; padding: 4px; border: 1px dashed var(--color-warning); border-radius:8px;">Tanpa<br>Struk</div>`;
+
+                return `<div class="data-card" style="align-items: flex-start;"><div class="dc-info" style="flex:1;"><h4>${k.pengirim}</h4><p><i class="fa-solid fa-calendar-day"></i> ${dateStr} | ${k.nama_keterangan || "Sedekah"}</p><div style="font-size: 15px; font-weight: 900; color: var(--emerald-main); margin-top:8px;">Rp ${Number(k.nominal).toLocaleString('id-ID')}</div></div><div style="display:flex; flex-direction:column; gap:8px;">${btnStruk}<button class="btn-edit-round" style="color:var(--emerald-main); border-color:var(--emerald-main);" onclick="openApproveKas('${k.id}')" title="Setujui/Tolak"><i class="fa-solid fa-clipboard-check"></i></button>${btnHapus}</div></div>`
             }).join('');
         }
 
@@ -510,7 +491,14 @@
 
         window.viewImage = function(src) { document.getElementById('imgViewerSrc').src = src; document.getElementById('modalImage').classList.add('show'); }
         window.closeImageView = function() { document.getElementById('modalImage').classList.remove('show'); }
-        window.openApproveKas = function(id) { const k = pendingKas.find(x => x.id === id); if(!k) return; document.getElementById('apvTrxId').value = k.id; document.getElementById('apvTrxName').value = k.nama_keterangan || "Sedekah"; document.getElementById('apvTrxNominal').value = k.nominal; document.getElementById('modalApproveTrx').classList.add('show'); }
+        
+        window.openApproveKas = function(id) { 
+            const k = pendingKas.find(x => x.id === id); if(!k) return; 
+            document.getElementById('apvTrxId').value = k.id; 
+            document.getElementById('apvTrxName').value = k.nama_keterangan || "Sedekah"; 
+            document.getElementById('apvTrxNominal').value = k.nominal; 
+            document.getElementById('modalApproveTrx').classList.add('show'); 
+        }
 
         window.actionTrx = async function(act) {
             const id = document.getElementById('apvTrxId').value;
