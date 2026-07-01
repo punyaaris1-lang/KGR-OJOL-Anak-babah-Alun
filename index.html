@@ -55,10 +55,9 @@
 
         html.skip-splash #splashScreen { display: none !important; }
         
-        /* FIX BUG POPUP DI HP LAMA: HAPUS "inset: 0" GANTI JADI "top/left/width/height" */
         #splashScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-body); z-index: 9999999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 0.6s ease; }
         #splashScreen.hide { opacity: 0; visibility: hidden; }
-        .splash-logo { width: 150px; animation: pulseGlow 1.5s infinite alternate ease-in-out; }
+        .splash-logo { width: 130px; animation: pulseGlow 1.5s infinite alternate ease-in-out; }
         .splash-text { margin-top: 25px; font-size: 13px; font-weight: 800; color: var(--emerald-main); letter-spacing: 1.5px; text-transform: uppercase; text-align: center; line-height: 1.6; min-height: 45px; }
         .splash-text::after { content: '|'; animation: blinkCursor 0.7s infinite; color: var(--text-main);}
         @keyframes pulseGlow { 0% { transform: scale(0.95); } 100% { transform: scale(1.05); } }
@@ -67,12 +66,11 @@
         .app-container { width: 100%; max-width: 480px; margin: 0 auto; height: 100dvh; position: relative; overflow-x: hidden; overflow-y: auto; display: flex; flex-direction: column; scrollbar-width: none; }
         .app-container::-webkit-scrollbar { display: none; }
 
-        /* WADAH HEADER ANTI BADAI (GAK BAKAL MENGKERUT LAGI) */
         .header-cover { 
             width: 100%; 
             height: 250px; 
             min-height: 250px;
-            flex-shrink: 0; /* INI KUNCI BIAR GAK AMBRUK! */
+            flex-shrink: 0; 
             background-image: url('bg-header.jpg'); 
             background-size: cover; 
             background-position: center; 
@@ -89,21 +87,21 @@
         
         .header-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.4); /* Efek gelap biar logo nyala */
+            background: rgba(0, 0, 0, 0.4); 
             border-bottom-left-radius: 40px;
             border-bottom-right-radius: 40px;
             z-index: 1;
         }
 
+        /* LOGO HEADER DIPERKECIL BIAR ELEGAN */
         .header-logo {
-            width: 85%;
-            max-width: 280px;
+            width: 180px; 
+            max-width: 60%;
             position: relative;
             z-index: 2;
             filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
         }
 
-        /* AREA PROFIL TEPAT DI BAWAH HEADER */
         .profile-area { 
             display: flex; justify-content: space-between; align-items: center; 
             padding: 0 24px; margin-top: -35px; position: relative; z-index: 10; 
@@ -130,7 +128,6 @@
         .user-intro h2 { font-size: 24px; font-weight: 900; color: var(--text-main); margin-bottom: 2px;}
         .user-intro p { font-size: 12px; font-weight: 800; color: var(--emerald-main); text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 5px;}
 
-        /* PADDING BAWAH BIAR KONTEN GAK KETUTUP MENU MELAYANG */
         .content-area { padding: 0 24px 150px; z-index: 5; position: relative; flex-grow: 1; }
         
         .solid-panel { background: var(--card-bg); border: 1px solid var(--card-border); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); border-radius: 20px; transition: 0.3s; }
@@ -158,7 +155,6 @@
 
         .btn-install-pwa { width: 100%; padding: 18px; border-radius: 18px; font-size: 14px; font-weight: 900; background: var(--gold-accent); color: #0F172A; border: none; margin-bottom: 25px; cursor: pointer; transition: 0.2s; display: none; justify-content: center; align-items: center; gap: 10px; box-shadow: 0 5px 15px rgba(245, 158, 11, 0.2); }
 
-        /* NAVIGASI KAPSUL MELAYANG DI TENGAH */
         .bottom-nav-container { 
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); 
             width: 90%; max-width: 400px; 
@@ -177,11 +173,10 @@
         .center-fab:active { transform: scale(0.9); }
         .center-fab span { font-size: 9px; font-weight: 800; }
 
-        /* PERBAIKAN FATAL BUG MODAL / POPUP: DIJAMIN NUTUPIN SELURUH LAYAR */
         .modal-overlay, .cp-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: rgba(15, 23, 42, 0.85); 
-            z-index: 999999; /* Z-INDEX DEWA BIAR GAK KETUTUP NAVIGASI */
+            z-index: 999999; 
             opacity: 0; visibility: hidden; transition: 0.3s; 
             display: flex; justify-content: center; align-items: center;
         }
@@ -225,11 +220,32 @@
 <body>
 
     <div id="splashScreen">
-        <img src="logo1.png" class="splash-logo" alt="Logo KGR">
+        <!-- NAMA FILE UDAH JADI logo.png -->
+        <img src="logo.png" class="splash-logo" alt="Logo KGR">
         <div class="splash-text" id="typewriterText"></div>
     </div>
 
-    <!-- SEMUA POPUP DAN MODAL HARUS DI LUAR AREA SCROLL (<main>) -->
+    <!-- SCRIPT MESIN KETIK DIBALIKIN -->
+    <script>
+        if (!document.documentElement.classList.contains('skip-splash')) { 
+            const textToType = "MENCARI BERKAH\nLEWAT SEDEKAH"; 
+            const twElement = document.getElementById('typewriterText'); 
+            let twIndex = 0;
+            function typeWriter() { 
+                if (twIndex < textToType.length) { 
+                    if(textToType.charAt(twIndex) === '\n') { 
+                        twElement.innerHTML += '<br>'; 
+                    } else { 
+                        twElement.innerHTML += textToType.charAt(twIndex); 
+                    } 
+                    twIndex++; 
+                    setTimeout(typeWriter, 60); 
+                } 
+            } 
+            setTimeout(typeWriter, 400);
+        }
+    </script>
+
     <div id="modalMemberQR" class="modal-overlay"><div class="modal-content"><div class="modal-header"><h3>Kartu Kehadiran</h3><button type="button" onclick="document.getElementById('modalMemberQR').classList.remove('show')" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button></div><div class="qr-display"><img id="imgMemberQR" src=""></div><h4 id="qrNameText" style="text-align:center; margin-bottom:20px;">...</h4></div></div>
     
     <div id="modalAdminScanner" class="modal-overlay">
@@ -278,18 +294,16 @@
         </div>
     </div>
 
-    <!-- POPUP PEMBERITAHUAN (PASTI MUNCUL DI TENGAH LAYAR SEKARANG) -->
     <div class="cp-overlay" id="customAlert"><div class="cp-box"><div class="cp-icon success" id="caIcon"><i class="fa-solid fa-check"></i></div><h3 class="cp-title" id="caTitle">Pemberitahuan</h3><p class="cp-desc" id="caDesc">Pesan di sini.</p><button class="cp-btn cp-btn-primary" onclick="closeCustomAlert()" style="width: 100%;">Tutup</button></div></div>
     <div class="cp-overlay" id="customConfirm"><div class="cp-box"><div class="cp-icon warning"><i class="fa-solid fa-triangle-exclamation"></i></div><h3 class="cp-title" id="ccTitle">Konfirmasi</h3><p class="cp-desc" id="ccDesc">Apakah Anda yakin?</p><div class="cp-btn-wrap"><button class="cp-btn cp-btn-cancel" onclick="closeCustomConfirm()">Batal</button><button class="cp-btn cp-btn-danger" id="ccBtnYes">Ya, Lanjutkan</button></div></div></div>
     <div class="cp-overlay" id="customLoading"><div class="cp-box" style="padding: 40px 20px;"><div class="spinner-custom"></div><h3 class="cp-title" id="clTitle" style="margin-bottom: 0;">Memproses...</h3></div></div>
-
-    <!-- MULAI AREA APLIKASI UTAMA (AREA SCROLL) -->
+    
     <main class="app-container">
         
-        <!-- HEADER MAHKOTA: GAMBAR GRUP + LOGO -->
         <div class="header-cover">
-            <div class="header-overlay"></div> <!-- Efek gelap biar logo kebaca jelas -->
-            <img src="logo1.png" class="header-logo" alt="Logo KGR">
+            <div class="header-overlay"></div> 
+            <!-- NAMA FILE UDAH JADI logo.png -->
+            <img src="logo.png" class="header-logo" alt="Logo KGR">
         </div>
 
         <div class="profile-area">
@@ -372,7 +386,6 @@
 
     </main>
 
-    <!-- NAVIGASI KAPSUL DI LUAR AREA SCROLL -->
     <div class="bottom-nav-container">
         <div class="nav-item active"><i class="fa-solid fa-house"></i><span>Beranda</span></div>
         <div class="nav-item center-btn" onclick="openQrisModal()">
