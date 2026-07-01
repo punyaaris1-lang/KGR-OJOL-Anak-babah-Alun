@@ -57,7 +57,7 @@
         
         #splashScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-body); z-index: 9999999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 0.6s ease; }
         #splashScreen.hide { opacity: 0; visibility: hidden; }
-        .splash-logo { width: 130px; animation: pulseGlow 1.5s infinite alternate ease-in-out; }
+        .splash-logo { width: 150px; animation: pulseGlow 1.5s infinite alternate ease-in-out; }
         .splash-text { margin-top: 25px; font-size: 13px; font-weight: 800; color: var(--emerald-main); letter-spacing: 1.5px; text-transform: uppercase; text-align: center; line-height: 1.6; min-height: 45px; }
         .splash-text::after { content: '|'; animation: blinkCursor 0.7s infinite; color: var(--text-main);}
         @keyframes pulseGlow { 0% { transform: scale(0.95); } 100% { transform: scale(1.05); } }
@@ -93,11 +93,12 @@
             z-index: 1;
         }
 
-        /* LOGO HEADER DIPERKECIL BIAR ELEGAN */
+        /* LOGO HEADER DIGEDEIN & DITURUNIN */
         .header-logo {
-            width: 180px; 
-            max-width: 60%;
+            width: 240px; 
+            max-width: 75%;
             position: relative;
+            margin-top: 35px; /* Dorong logo ke bawah biar nggak ngatung */
             z-index: 2;
             filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
         }
@@ -219,13 +220,13 @@
 </head>
 <body>
 
+    <!-- LOGO LOADING KEMBALI KE logo1.png -->
     <div id="splashScreen">
-        <!-- NAMA FILE UDAH JADI logo.png -->
-        <img src="logo.png" class="splash-logo" alt="Logo KGR">
+        <img src="logo1.png" class="splash-logo" alt="Logo KGR">
         <div class="splash-text" id="typewriterText"></div>
     </div>
 
-    <!-- SCRIPT MESIN KETIK DIBALIKIN -->
+    <!-- ANIMASI NGETIK DIBALIKIN -->
     <script>
         if (!document.documentElement.classList.contains('skip-splash')) { 
             const textToType = "MENCARI BERKAH\nLEWAT SEDEKAH"; 
@@ -302,7 +303,7 @@
         
         <div class="header-cover">
             <div class="header-overlay"></div> 
-            <!-- NAMA FILE UDAH JADI logo.png -->
+            <!-- LOGO HEADER MURNI PAKE logo.png -->
             <img src="logo.png" class="header-logo" alt="Logo KGR">
         </div>
 
