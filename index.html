@@ -54,7 +54,9 @@
         body { background-color: var(--bg-body); color: var(--text-main); width: 100%; min-height: 100vh; margin: 0; overflow-x: hidden; display: flex; justify-content: center; align-items: flex-start; transition: 0.3s; }
 
         html.skip-splash #splashScreen { display: none !important; }
-        #splashScreen { position: fixed; inset: 0; background: var(--bg-body); z-index: 9999999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 0.6s ease; }
+        
+        /* FIX BUG POPUP DI HP LAMA: HAPUS "inset: 0" GANTI JADI "top/left/width/height" */
+        #splashScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-body); z-index: 9999999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 0.6s ease; }
         #splashScreen.hide { opacity: 0; visibility: hidden; }
         .splash-logo { width: 150px; animation: pulseGlow 1.5s infinite alternate ease-in-out; }
         .splash-text { margin-top: 25px; font-size: 13px; font-weight: 800; color: var(--emerald-main); letter-spacing: 1.5px; text-transform: uppercase; text-align: center; line-height: 1.6; min-height: 45px; }
@@ -65,26 +67,43 @@
         .app-container { width: 100%; max-width: 480px; margin: 0 auto; height: 100dvh; position: relative; overflow-x: hidden; overflow-y: auto; display: flex; flex-direction: column; scrollbar-width: none; }
         .app-container::-webkit-scrollbar { display: none; }
 
-        /* WADAH HEADER ASLI */
+        /* WADAH HEADER ANTI BADAI (GAK BAKAL MENGKERUT LAGI) */
         .header-cover { 
             width: 100%; 
-            height: 240px; 
+            height: 250px; 
+            min-height: 250px;
+            flex-shrink: 0; /* INI KUNCI BIAR GAK AMBRUK! */
+            background-image: url('bg-header.jpg'); 
+            background-size: cover; 
+            background-position: center; 
+            background-color: #0F172A; 
             border-bottom-left-radius: 40px; 
             border-bottom-right-radius: 40px; 
-            overflow: hidden; /* Biar gambar melengkung ngikutin wadahnya */
             position: relative;
             z-index: 1;
-            background-color: var(--card-bg);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
         }
         
-        /* GAMBAR HEADER FULL */
-        .header-cover img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .header-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.4); /* Efek gelap biar logo nyala */
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+            z-index: 1;
         }
 
+        .header-logo {
+            width: 85%;
+            max-width: 280px;
+            position: relative;
+            z-index: 2;
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+        }
+
+        /* AREA PROFIL TEPAT DI BAWAH HEADER */
         .profile-area { 
             display: flex; justify-content: space-between; align-items: center; 
             padding: 0 24px; margin-top: -35px; position: relative; z-index: 10; 
@@ -95,6 +114,7 @@
             background-size: cover; background-position: center; 
             display: flex; justify-content: center; align-items: center; 
             font-size: 32px; font-weight: 900; color: var(--emerald-main);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
         .header-icons { display: flex; gap: 10px; margin-top: 10px; }
         .btn-settings { 
@@ -110,7 +130,8 @@
         .user-intro h2 { font-size: 24px; font-weight: 900; color: var(--text-main); margin-bottom: 2px;}
         .user-intro p { font-size: 12px; font-weight: 800; color: var(--emerald-main); text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 5px;}
 
-        .content-area { padding: 0 24px 180px; z-index: 5; position: relative; flex-grow: 1; }
+        /* PADDING BAWAH BIAR KONTEN GAK KETUTUP MENU MELAYANG */
+        .content-area { padding: 0 24px 150px; z-index: 5; position: relative; flex-grow: 1; }
         
         .solid-panel { background: var(--card-bg); border: 1px solid var(--card-border); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); border-radius: 20px; transition: 0.3s; }
         
@@ -156,11 +177,18 @@
         .center-fab:active { transform: scale(0.9); }
         .center-fab span { font-size: 9px; font-weight: 800; }
 
-        /* MODALS DI LUAR AREA SCROLL */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85); z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s; display: flex; justify-content: center; align-items: center;}
+        /* PERBAIKAN FATAL BUG MODAL / POPUP: DIJAMIN NUTUPIN SELURUH LAYAR */
+        .modal-overlay, .cp-overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(15, 23, 42, 0.85); 
+            z-index: 999999; /* Z-INDEX DEWA BIAR GAK KETUTUP NAVIGASI */
+            opacity: 0; visibility: hidden; transition: 0.3s; 
+            display: flex; justify-content: center; align-items: center;
+        }
         .modal-overlay { align-items: flex-end; padding: 0; }
-        .cp-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); z-index: 99999; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px; }
+        .cp-overlay { background: rgba(15, 23, 42, 0.7); padding: 20px; }
         .modal-overlay.show, .cp-overlay.show { opacity: 1; visibility: visible; }
+        
         .modal-content { background: var(--modal-bg); border-top: 1px solid var(--card-border); border-radius: 32px 32px 0 0; padding: 30px 24px 40px; width: 100%; max-width: 480px; transform: translateY(100%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1); box-shadow: 0 -10px 40px rgba(0,0,0,0.3); color: var(--text-main); max-height: 85vh; overflow-y: auto;}
         .modal-overlay.show .modal-content { transform: translateY(0); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
@@ -201,7 +229,7 @@
         <div class="splash-text" id="typewriterText"></div>
     </div>
 
-    <!-- AREA POPUP DAN MODAL (DIJAMIN GAK NYANGKUT DI BAWAH) -->
+    <!-- SEMUA POPUP DAN MODAL HARUS DI LUAR AREA SCROLL (<main>) -->
     <div id="modalMemberQR" class="modal-overlay"><div class="modal-content"><div class="modal-header"><h3>Kartu Kehadiran</h3><button type="button" onclick="document.getElementById('modalMemberQR').classList.remove('show')" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button></div><div class="qr-display"><img id="imgMemberQR" src=""></div><h4 id="qrNameText" style="text-align:center; margin-bottom:20px;">...</h4></div></div>
     
     <div id="modalAdminScanner" class="modal-overlay">
@@ -250,16 +278,18 @@
         </div>
     </div>
 
+    <!-- POPUP PEMBERITAHUAN (PASTI MUNCUL DI TENGAH LAYAR SEKARANG) -->
     <div class="cp-overlay" id="customAlert"><div class="cp-box"><div class="cp-icon success" id="caIcon"><i class="fa-solid fa-check"></i></div><h3 class="cp-title" id="caTitle">Pemberitahuan</h3><p class="cp-desc" id="caDesc">Pesan di sini.</p><button class="cp-btn cp-btn-primary" onclick="closeCustomAlert()" style="width: 100%;">Tutup</button></div></div>
     <div class="cp-overlay" id="customConfirm"><div class="cp-box"><div class="cp-icon warning"><i class="fa-solid fa-triangle-exclamation"></i></div><h3 class="cp-title" id="ccTitle">Konfirmasi</h3><p class="cp-desc" id="ccDesc">Apakah Anda yakin?</p><div class="cp-btn-wrap"><button class="cp-btn cp-btn-cancel" onclick="closeCustomConfirm()">Batal</button><button class="cp-btn cp-btn-danger" id="ccBtnYes">Ya, Lanjutkan</button></div></div></div>
     <div class="cp-overlay" id="customLoading"><div class="cp-box" style="padding: 40px 20px;"><div class="spinner-custom"></div><h3 class="cp-title" id="clTitle" style="margin-bottom: 0;">Memproses...</h3></div></div>
-    
-    <!-- MULAI AREA APLIKASI UTAMA -->
+
+    <!-- MULAI AREA APLIKASI UTAMA (AREA SCROLL) -->
     <main class="app-container">
         
-        <!-- FOTO HEADER ASLI KGR (PASTIKAN NAMA FILENYA bg-header.jpg atau sesuaiin) -->
+        <!-- HEADER MAHKOTA: GAMBAR GRUP + LOGO -->
         <div class="header-cover">
-            <img src="bg-header.jpg" alt="Header KGR">
+            <div class="header-overlay"></div> <!-- Efek gelap biar logo kebaca jelas -->
+            <img src="logo1.png" class="header-logo" alt="Logo KGR">
         </div>
 
         <div class="profile-area">
@@ -342,7 +372,7 @@
 
     </main>
 
-    <!-- NAVIGASI BAWAH DI LUAR AREA SCROLL BIAR GAK KETUTUP -->
+    <!-- NAVIGASI KAPSUL DI LUAR AREA SCROLL -->
     <div class="bottom-nav-container">
         <div class="nav-item active"><i class="fa-solid fa-house"></i><span>Beranda</span></div>
         <div class="nav-item center-btn" onclick="openQrisModal()">
@@ -362,7 +392,7 @@
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
         import { doc, getDoc, onSnapshot, collection, addDoc, updateDoc, deleteDoc, serverTimestamp, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-        window.customAlert = function(title, desc, type = 'success') { const el = document.getElementById('customAlert'); document.getElementById('caTitle').innerText = title; document.getElementById('caDesc').innerText = desc; const iconEl = document.getElementById('caIcon'); if(type === 'success') { iconEl.className = 'cp-icon success'; iconEl.innerHTML = '<i class="fa-solid fa-check"></i>'; } else if(type === 'error') { iconEl.className = 'cp-icon error'; iconEl.innerHTML = '<i class="fa-solid fa-xmark"></i>'; } el.classList.add('show'); }
+        window.customAlert = function(title, desc, type = 'success') { const el = document.getElementById('customAlert'); document.getElementById('caTitle').innerText = title; document.getElementById('caDesc').innerText = desc; const iconEl = document.getElementById('caIcon'); if(type === 'success') { iconEl.className = 'cp-icon success'; iconEl.innerHTML = '<i class="fa-solid fa-check"></i>'; } else if(type === 'error') { iconEl.className = 'cp-icon error'; iconEl.innerHTML = '<i class="fa-solid fa-xmark"></i>'; } else { iconEl.className = 'cp-icon warning'; iconEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>'; } el.classList.add('show'); }
         window.closeCustomAlert = function() { document.getElementById('customAlert').classList.remove('show'); }
         window.customConfirm = function(title, desc, onYes) { const el = document.getElementById('customConfirm'); document.getElementById('ccTitle').innerText = title; document.getElementById('ccDesc').innerText = desc; document.getElementById('ccBtnYes').onclick = function() { closeCustomConfirm(); onYes(); }; el.classList.add('show'); }
         window.closeCustomConfirm = function() { document.getElementById('customConfirm').classList.remove('show'); }
@@ -495,7 +525,7 @@
                 let base64Image = await getBase64(fileBkt);
                 await updateDoc(doc(db, "transactions", currentTrxId), { status: "pending", bukti_image: base64Image, nama_keterangan: document.getElementById('inputPesan').value || "Sedekah Kas", tanggal: serverTimestamp() });
                 
-                customAlert("Terkirim!", "Terima kasih, bukti sedekah berhasil dikirim dan menunggu verifikasi Bendahara.", "success"); window.closeQrisModal(); currentTrxId = null;
+                customAlert("Terkirim!", "Terima kasih, bukti sedekah dikirim dan menunggu verifikasi Bendahara.", "success"); window.closeQrisModal(); currentTrxId = null;
             } catch (err) { customAlert("Gagal Mengirim", err.message, "error"); } finally { btn.innerHTML = 'Saya Sudah Transfer <i class="fa-solid fa-check-double"></i>'; btn.disabled = false; }
         }
 
@@ -525,7 +555,7 @@
             showLoading("Mencari Satelit...");
             navigator.geolocation.getCurrentPosition(
                 (pos) => { hideLoading(); const dist = getDistanceFromLatLonInM(pos.coords.latitude, pos.coords.longitude, parseFloat(currentEvent.lat), parseFloat(currentEvent.lng));
-                    if (dist <= currentEvent.radius) { openScanner(); } else { if (currentRole === 'superadmin' || currentRole === 'developer') { customConfirm("Peringatan Jarak", `Jarak ${Math.round(dist)}m dari lokasi. Karena Anda Superadmin/Dev, ingin paksa buka?`, () => { openScanner(); }); } else { customAlert("Akses Ditolak", `Jarak ${Math.round(dist)}m dari lokasi acara (Toleransi: ${currentEvent.radius}m). Harap mendekat ke titik kordinat.`, "error"); } }
+                    if (dist <= currentEvent.radius) { openScanner(); } else { if (currentRole === 'superadmin' || currentRole === 'developer') { customConfirm("Peringatan Jarak", `Jarak ${Math.round(dist)}m dari lokasi. Karena Anda Superadmin/Dev, paksa buka?`, () => { openScanner(); }); } else { customAlert("Akses Ditolak", `Jarak ${Math.round(dist)}m dari lokasi acara (Toleransi: ${currentEvent.radius}m). Harap mendekat ke titik kordinat.`, "error"); } }
                 }, (err) => { hideLoading(); if(currentRole === 'superadmin' || currentRole === 'developer') { customConfirm("Sinyal GPS Gagal!", "Karena Anda Pengurus Inti, ingin Bypass buka Scanner?", () => { openScanner(); }); } else { customAlert("Gagal Melacak", "Pastikan fitur lokasi di HP menyala.", "error"); } }, { enableHighAccuracy: true, timeout: 10000 }
             );
         }
