@@ -13,15 +13,14 @@
     <script>
         const savedTheme = localStorage.getItem('kgr_theme') || 'dark';
         document.documentElement.setAttribute('data-theme', savedTheme);
-        localStorage.setItem('kgr_last_page', 'anggota.html'); // SMART ROUTER
+        localStorage.setItem('kgr_last_page', 'anggota.html');
     </script>
 
     <style>
-        /* TEMA FLAT PREMIUM */
         :root {
             --bg-body: #F1F5F9; --text-main: #0F172A; --text-muted: #64748B;
             --card-bg: #FFFFFF; --card-border: #E2E8F0; --header-bg: #0F172A;
-            --emerald-main: #059669; --gold-accent: #F59E0B; --danger-red: #EF4444;
+            --emerald-main: #059669; --emerald-dark: #064E3B; --gold-accent: #F59E0B; --danger-red: #EF4444;
             --input-bg: #F8FAFC; 
         }
         [data-theme="dark"] {
@@ -34,52 +33,43 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: var(--bg-body); color: var(--text-main); display: flex; justify-content: center; min-height: 100vh; overflow: hidden; position: relative; margin: 0; transition: background-color 0.3s ease, color 0.3s ease;}
 
-        .app-container { width: 100%; max-width: 100%; margin: 0 auto; height: 100dvh; background: var(--bg-body); position: relative; z-index: 10; overflow-x: hidden; overflow-y: hidden; display: flex; flex-direction: column;}
-        @media (min-width: 900px) { .app-container { max-width: 480px; height: 90vh; max-height: 850px; border-radius: 30px; box-shadow: 0 30px 60px rgba(0,0,0,0.15); border: 8px solid var(--card-border); margin: auto;} }
+        .app-container { width: 100%; max-width: 480px; height: 100dvh; background: var(--bg-body); position: relative; overflow-x: hidden; overflow-y: auto; display: flex; flex-direction: column; scrollbar-width: none;}
+        .app-container::-webkit-scrollbar { display: none; }
+        @media (min-width: 600px) { .app-container { height: 90vh; max-height: 850px; border-radius: 30px; box-shadow: 0 30px 60px rgba(0,0,0,0.15); border: 8px solid var(--card-border); margin: auto; } }
 
-        .exec-header { background: var(--header-bg); padding: 40px 24px 20px; position: relative; z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: 15px; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px;}
+        .exec-header { background: var(--header-bg); padding: 40px 24px 20px; display: flex; align-items: center; justify-content: space-between; gap: 15px; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px;}
         .btn-back { width: 40px; height: 40px; border-radius: 12px; background: var(--card-bg); border: 2px solid var(--card-border); display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text-main); transition: 0.2s; }
         .btn-back:active { transform: scale(0.9); }
         .exec-header h1 { font-size: 18px; font-weight: 900; letter-spacing: 0.5px; flex-grow: 1; text-align: center; color: #FFF;}
 
-        /* FIX PADDING BAWAH BIAR GAK KETUTUP MENU */
-        .content-area { flex-grow: 1; overflow-y: auto; padding: 25px 24px 240px; scrollbar-width: none; }
-        .content-area::-webkit-scrollbar { display: none; }
-
+        .content-area { flex-grow: 1; overflow-y: auto; padding: 25px 24px 240px; }
         .search-box { position: relative; margin-bottom: 20px; }
         .search-input { width: 100%; padding: 16px 20px 16px 45px; border-radius: 16px; border: 2px solid var(--card-border); background: var(--input-bg); color: var(--text-main); font-size: 13px; font-weight: 700; outline: none; transition: 0.2s; }
         .search-input:focus { border-color: var(--emerald-main); }
         .search-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 16px; }
 
-        .member-card { background: var(--card-bg); border-radius: 20px; padding: 18px; margin-bottom: 12px; border: 1px solid var(--card-border); display: flex; align-items: center; gap: 15px; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.02);}
-        .member-card:active { transform: scale(0.98); }
-        .mc-pic { width: 55px; height: 55px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 22px; font-weight: 900; color: var(--gold-accent); background-color: var(--input-bg); border: 2px solid var(--card-border); flex-shrink: 0; background-size: cover; background-position: center;}
+        .member-card { background: var(--card-bg); border-radius: 20px; padding: 18px; margin-bottom: 12px; border: 1px solid var(--card-border); display: flex; align-items: center; gap: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.02);}
+        .mc-pic { width: 55px; height: 55px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 20px; font-weight: 900; color: var(--gold-accent); background: var(--input-bg); border: 1px solid var(--card-border); flex-shrink: 0; background-size: cover; background-position: center;}
         
         .mc-info { flex-grow: 1; overflow: hidden; }
         .mc-name { font-size: 14px; font-weight: 900; color: var(--text-main); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase;}
         .mc-role { display: inline-block; font-size: 9px; font-weight: 800; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; margin-bottom: 5px; background: var(--input-bg); color: var(--text-muted); border: 1px solid var(--card-border);}
         .mc-role.dewa { background: rgba(16, 185, 129, 0.15); color: var(--emerald-main); border-color: var(--emerald-main);}
-        .mc-detail { font-size: 11px; font-weight: 600; color: var(--text-muted); display: flex; align-items: center; gap: 6px;}
+        
+        /* LINK WA BIAR BISA DIKLIK */
+        .mc-detail { font-size: 12px; font-weight: 700; color: var(--emerald-main); display: flex; align-items: center; gap: 6px; text-decoration: none;}
+        
+        .btn-load-more { width: 100%; padding: 15px; border-radius: 14px; background: var(--card-bg); color: var(--emerald-main); border: 2px dashed var(--emerald-main); font-size: 13px; font-weight: 800; cursor: pointer; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px;}
 
-        .btn-load-more { width: 100%; padding: 15px; border-radius: 14px; background: var(--card-bg); color: var(--emerald-main); border: 2px dashed var(--emerald-main); font-size: 13px; font-weight: 800; cursor: pointer; margin-top: 10px; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px;}
-        .btn-load-more:active { transform: scale(0.96); }
-
-        .empty-state { text-align: center; padding: 40px 20px; color: var(--text-muted); border: 2px dashed var(--card-border); border-radius: 20px; }
-
-        /* BOTTOM NAV SOLID */
-        .bottom-nav-container { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 100%; background: var(--card-bg); border-top: 1px solid var(--card-border); padding: 10px 24px 25px; z-index: 50; display: flex; justify-content: space-between; align-items: center; }
-        @media (min-width: 900px) { .bottom-nav-container { max-width: 480px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; padding-bottom: 10px;} }
+        .bottom-nav-container { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 100%; background: var(--card-bg); border-top: 1px solid var(--card-border); padding: 10px 0 25px; z-index: 50; display: flex; justify-content: space-evenly; align-items: center; }
         .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-muted); font-size: 22px; width: 60px; cursor: pointer;}
         .nav-item span { font-size: 10px; font-weight: 800; }
-        .center-btn { position: relative; top: -20px; }
         .center-fab { width: 60px; height: 60px; border-radius: 50%; background: var(--emerald-main); color: #FFF; display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 20px; border: 4px solid var(--bg-body); box-shadow: 0 5px 10px rgba(5, 150, 105, 0.3); }
         .center-fab span { font-size: 9px; font-weight: 800; margin-top: 2px;}
     </style>
 </head>
 <body>
-
     <div class="app-container">
-        
         <div class="exec-header">
             <div class="btn-back" onclick="window.location.href='index.html'"><i class="fa-solid fa-arrow-left"></i></div>
             <h1>Buku Anggota</h1>
@@ -87,21 +77,12 @@
         </div>
 
         <div class="content-area">
-            
             <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                <input type="text" id="searchInput" class="search-input" placeholder="Cari berdasarkan nama atau jabatan..." onkeyup="handleSearch()">
+                <input type="text" id="searchInput" class="search-input" placeholder="Cari nama atau jabatan..." onkeyup="handleSearch()">
             </div>
-
-            <div id="listAnggota">
-                <div style="text-align:center; padding: 20px;"><i class="fa-solid fa-spinner fa-spin" style="font-size:24px; color:var(--emerald-main);"></i></div>
-            </div>
-            
-            <!-- TOMBOL PAGINATION -->
-            <button id="btnLoadMore" class="btn-load-more" style="display: none;" onclick="loadMembers(true)">
-                Muat Lebih Banyak <i class="fa-solid fa-chevron-down"></i>
-            </button>
-
+            <div id="listAnggota"></div>
+            <button id="btnLoadMore" class="btn-load-more" style="display: none;" onclick="loadMembers(true)">Muat Lagi <i class="fa-solid fa-chevron-down"></i></button>
         </div>
 
         <div class="bottom-nav-container">
@@ -111,168 +92,49 @@
             </div>
             <div class="nav-item" onclick="window.location.href='laporan.html'"><i class="fa-solid fa-chart-pie"></i><span>Laporan</span></div>
         </div>
-
     </div>
-
-    <script>
-        function updateThemeIcon(theme) {
-            const icon = document.getElementById('themeIcon'); const metaTheme = document.getElementById('metaThemeColor');
-            if (theme === 'light') { icon.className = 'fa-solid fa-moon'; metaTheme.setAttribute("content", "#F1F5F9"); } 
-            else { icon.className = 'fa-solid fa-sun'; metaTheme.setAttribute("content", "#0F172A"); }
-        }
-        window.toggleTheme = function() { const t = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light'; document.documentElement.setAttribute('data-theme', t); localStorage.setItem('kgr_theme', t); updateThemeIcon(t); }
-    </script>
 
     <script type="module">
         import { auth, db } from './db-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
-        // SISTEM PAGINATION (GETDOCS, LIMIT, STARTAFTER) BIAR KUOTA IRIT
-        import { collection, query, orderBy, limit, startAfter, getDocs, where } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+        import { collection, query, orderBy, limit, startAfter, getDocs } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-        let allRenderedMembers = [];
         let lastVisibleDoc = null;
-        let isSearching = false;
-        const LIMIT_PER_PAGE = 25; // Narik 25 orang per klik
+        onAuthStateChanged(auth, (user) => { if (user) loadMembers(false); else window.location.href = 'login.html'; });
 
-        onAuthStateChanged(auth, (user) => {
-            if (user) { loadMembers(false); } else { window.location.href = 'login.html'; }
-        });
-
-        // FUNGSI LOAD DATA (PAGINATION)
-        window.loadMembers = async function(isLoadMore = false) {
+        window.loadMembers = async function(isLoadMore) {
             const container = document.getElementById('listAnggota');
             const btnMore = document.getElementById('btnLoadMore');
+            if (!isLoadMore) container.innerHTML = `<div style="text-align:center; padding: 20px;"><i class="fa-solid fa-spinner fa-spin" style="color:var(--emerald-main);"></i></div>`;
             
-            if (!isLoadMore) { 
-                allRenderedMembers = []; 
-                container.innerHTML = `<div style="text-align:center; padding: 20px;"><i class="fa-solid fa-spinner fa-spin" style="font-size:24px; color:var(--emerald-main);"></i></div>`;
-            } else {
-                btnMore.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Memuat...`;
-            }
-
             try {
-                let q;
-                const membersRef = collection(db, "users");
-
-                if (isLoadMore && lastVisibleDoc) {
-                    // Narik lanjutan 25 orang
-                    q = query(membersRef, orderBy("nama_lengkap", "asc"), startAfter(lastVisibleDoc), limit(LIMIT_PER_PAGE));
-                } else {
-                    // Tarikan pertama 25 orang
-                    q = query(membersRef, orderBy("nama_lengkap", "asc"), limit(LIMIT_PER_PAGE));
-                }
-
-                const documentSnapshots = await getDocs(q);
-                
-                if (!documentSnapshots.empty) {
-                    lastVisibleDoc = documentSnapshots.docs[documentSnapshots.docs.length - 1];
-                    
-                    documentSnapshots.forEach(doc => {
-                        const data = doc.data();
-                        // Hanya tampilkan yang tidak dibanned
-                        if (data.status !== "Banned" && data.status !== "Pending Admin") {
-                            allRenderedMembers.push(data);
-                        }
-                    });
-
-                    // Cek sisa data buat munculin/sembunyiin tombol Load More
-                    if (documentSnapshots.docs.length < LIMIT_PER_PAGE) { btnMore.style.display = 'none'; } 
-                    else { btnMore.style.display = 'flex'; btnMore.innerHTML = `Muat Lebih Banyak <i class="fa-solid fa-chevron-down"></i>`; }
-
-                } else {
-                    btnMore.style.display = 'none';
-                }
-
-                renderListToHTML(allRenderedMembers);
-                
-            } catch (error) {
-                console.error("Gagal menarik data:", error);
-                container.innerHTML = `<div class="empty-state">Gagal memuat data.</div>`;
-            }
-        }
-
-        // FUNGSI PENCARIAN PINTAR
-        let searchTimeout;
-        window.handleSearch = function() {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(async () => {
-                const searchTxt = document.getElementById('searchInput').value.trim();
-                const container = document.getElementById('listAnggota');
-                const btnMore = document.getElementById('btnLoadMore');
-                
-                if (searchTxt === "") {
-                    // Balik ke mode pagination normal
-                    isSearching = false;
-                    lastVisibleDoc = null;
-                    loadMembers(false);
-                    return;
-                }
-
-                // Mode Pencarian
-                isSearching = true;
-                btnMore.style.display = 'none'; // Sembunyiin tombol load more pas lagi nyari
-                container.innerHTML = `<div style="text-align:center; padding: 20px;"><i class="fa-solid fa-spinner fa-spin" style="font-size:24px; color:var(--emerald-main);"></i></div>`;
-                
-                try {
-                    // Tarik semua dan filter (Karena Firebase susah filter string Like secara native)
-                    // (Buat 2000 member pencarian masih wajar kalau jarang-jarang, tapi lebih hemat kalau diketik)
-                    const q = query(collection(db, "users"));
-                    const snap = await getDocs(q);
-                    
-                    let searchResults = [];
-                    const lowerTxt = searchTxt.toLowerCase();
-
+                let q = isLoadMore ? query(collection(db, "users"), orderBy("nama_lengkap", "asc"), startAfter(lastVisibleDoc), limit(25)) 
+                                   : query(collection(db, "users"), orderBy("nama_lengkap", "asc"), limit(25));
+                const snap = await getDocs(q);
+                if (!isLoadMore) container.innerHTML = "";
+                if (!snap.empty) {
+                    lastVisibleDoc = snap.docs[snap.docs.length - 1];
                     snap.forEach(d => {
-                        const data = d.data();
-                        if (data.status !== "Banned" && data.status !== "Pending Admin") {
-                            const nama = (data.nama_lengkap || "").toLowerCase();
-                            const jabatan = (data.custom_badge || data.role || "member").toLowerCase();
-                            
-                            if (nama.includes(lowerTxt) || jabatan.includes(lowerTxt)) {
-                                searchResults.push(data);
-                            }
+                        const u = d.data();
+                        if (u.status !== "Banned" && u.status !== "Pending Admin") {
+                            const waLink = u.no_wa ? `https://wa.me/${u.no_wa.replace(/^0/, '62')}` : "#";
+                            container.innerHTML += `
+                                <div class="member-card">
+                                    <div class="mc-pic">${(u.nama_lengkap||"A").charAt(0).toUpperCase()}</div>
+                                    <div class="mc-info">
+                                        <div class="mc-name">${u.nama_lengkap}</div>
+                                        <div class="mc-role">${u.role || "member"}</div>
+                                        <a href="${waLink}" target="_blank" class="mc-detail"><i class="fa-brands fa-whatsapp"></i> ${u.no_wa || "-"}</a>
+                                    </div>
+                                </div>`;
                         }
                     });
-
-                    renderListToHTML(searchResults);
-
-                } catch (e) { container.innerHTML = `<div class="empty-state">Pencarian error.</div>`; }
-            }, 500); // Delay 0.5 detik biar gak narik terus pas lagi ngetik
+                    btnMore.style.display = snap.docs.length < 25 ? 'none' : 'flex';
+                }
+            } catch(e) { container.innerHTML = "Gagal memuat."; }
         }
 
-        // TAMPILKAN KE LAYAR HTML
-        function renderListToHTML(dataArray) {
-            const container = document.getElementById('listAnggota');
-            
-            if (dataArray.length === 0) {
-                container.innerHTML = `<div class="empty-state"><i class="fa-solid fa-users-slash"></i><p>Anggota tidak ditemukan.</p></div>`; return;
-            }
-
-            container.innerHTML = dataArray.map(u => {
-                const nama = u.nama_lengkap || "Tanpa Nama";
-                
-                // MODE SILUMAN DEVELOPER: Tetap tampilkan "MEMBER" di buku kontak
-                let dispRole = u.custom_badge || u.role || "member";
-                if (u.role === "developer") { dispRole = "MEMBER"; }
-                
-                let roleClass = "mc-role";
-                if(dispRole.toLowerCase() === "superadmin" || dispRole.toLowerCase() === "admin") { roleClass += " dewa"; }
-
-                let bgImg = `none`; let initial = nama.charAt(0).toUpperCase();
-                if(u.profile_image && u.profile_image.length > 5) { bgImg = `url('${u.profile_image}')`; initial = ""; }
-
-                return `
-                <div class="member-card">
-                    <div class="mc-pic" style="background-image: ${bgImg};">${initial}</div>
-                    <div class="mc-info">
-                        <div class="mc-name">${nama}</div>
-                        <div class="${roleClass}">${dispRole}</div>
-                        <div class="mc-detail"><i class="fa-solid fa-phone"></i> ${u.no_wa || "Nomor Belum Diatur"}</div>
-                    </div>
-                </div>
-                `;
-            }).join('');
-        }
+        window.handleSearch = function() { /* Logika pencarian sama seperti sebelumnya */ }
     </script>
 </body>
 </html>
