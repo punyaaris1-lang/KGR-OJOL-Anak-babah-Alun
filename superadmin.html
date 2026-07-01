@@ -231,7 +231,12 @@
             <form id="formEditUser" onsubmit="saveEditUser(event)">
                 <input type="hidden" id="editEmail">
                 <div class="form-group"><label class="form-label">Nama Sesuai KTP</label><input type="text" id="editName" class="form-input" required></div>
-                <div class="form-group"><label class="form-label">NIK (Rahasia & Terdekripsi)</label><input type="text" id="editNik" class="form-input" style="background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.3); color: var(--gold-accent);" required maxlength="16" oninput="this.value = this.value.replace(/[^0-9]/g, '');"></div>
+                
+                <!-- KOLOM NIK YANG SUDAH TERPASANG SENSOR -->
+                <div class="form-group"><label class="form-label">NIK (Rahasia & Terdekripsi)</label>
+                    <input type="text" id="editNik" class="form-input" style="background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.3); color: var(--gold-accent);" required maxlength="16">
+                </div>
+                
                 <div class="form-group"><label class="form-label">Nomor WhatsApp</label><input type="tel" id="editWa" class="form-input" required oninput="this.value = this.value.replace(/[^0-9]/g, '');"></div>
                 <div style="display: flex; gap: 10px;">
                     <div class="form-group" style="flex: 1;"><label class="form-label">Jabatan Standar</label><select id="editRole" class="form-select"></select></div>
@@ -277,7 +282,6 @@
     <script type="module">
         import { auth, db } from './db-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
-        // IMPORT "increment" BUAT NULIS PAPAN TULIS
         import { collection, onSnapshot, doc, getDoc, updateDoc, setDoc, query, orderBy, getDocs, deleteDoc, serverTimestamp, increment } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
         window.customAlert = function(title, desc, type = 'success') {
@@ -363,7 +367,6 @@
                 
                 if(currentUserRole === 'developer') loadMatriksUsers();
 
-                // UPDATE ANGKOTA AKTIF KE PAPAN TULIS (OTOMATIS)
                 if (currentUserRole === 'developer' || currentUserRole === 'superadmin') {
                     setDoc(doc(db, "settings", "rekap_sistem"), { total_anggota: aktifCount }, { merge: true });
                 }
@@ -413,14 +416,73 @@
 
         window.openEditMember = function(email) {
             const u = allUsers.find(x => x.email === email); if(!u) return;
-            document.getElementById('editEmail').value = u.email; document.getElementById('editName').value = u.nama_lengkap || ""; document.getElementById('editWa').value = u.no_wa || ""; document.getElementById('editNik').value = decryptData(u.nik || ""); document.getElementById('editRole').value = (u.role || "member").toLowerCase(); document.getElementById('editStatus').value = u.status || "Active"; document.getElementById('editHakAbsen').value = u.hak_absen || "otomatis"; document.getElementById('modalEditMember').classList.add('show');
+            
+            document.getElementById('editEmail').value = u.email; 
+            document.getElementById('editName').value = u.nama_lengkap || ""; 
+            document.getElementById('editWa').value = u.no_wa || ""; 
+            
+            // --- MESIN SENSOR NIK DIBERLAKUKAN ---
+            let nikAsli = decryptData(u.nik || "");
+            let inputFormNik = document.getElementById('editNik');
+            
+            if (currentUserRole === "developer" || currentUserRole === "superadmin") {
+                // Dewa & Ketum: Bebas Buka
+                inputFormNik.value = nikAsli;
+                inputFormNik.readOnly = false;
+            } else {
+                // Admin Lapangan: Disensor & Digembok
+                let nikSensor = nikAsli;
+                if (nikAsli && nikAsli.length >= 16) {
+                    nikSensor = nikAsli.substring(0, 6) + "******" + nikAsli.substring(12);
+                }
+                inputFormNik.value = nikSensor;
+                inputFormNik.readOnly = true; 
+            }
+            // ------------------------------------
+
+            document.getElementById('editRole').value = (u.role || "member").toLowerCase(); 
+            document.getElementById('editStatus').value = u.status || "Active"; 
+            document.getElementById('editHakAbsen').value = u.hak_absen || "otomatis"; 
+            
+            document.getElementById('modalEditMember').classList.add('show');
         }
 
         window.saveEditUser = async function(e) {
-            e.preventDefault(); showLoading("Menyimpan Data Anggota...");
-            const email = document.getElementById('editEmail').value; const newNik = document.getElementById('editNik').value;
-            if(newNik.length !== 16) { hideLoading(); return customAlert("NIK Salah", "NIK harus berjumlah 16 digit.", "warning"); }
-            try { const encNik = encryptData(newNik); let updates = { nama_lengkap: document.getElementById('editName').value, no_wa: document.getElementById('editWa').value, nik: encNik, status: document.getElementById('editStatus').value, hak_absen: document.getElementById('editHakAbsen').value, role: document.getElementById('editRole').value }; await updateDoc(doc(db, "users", email), updates); hideLoading(); customAlert("Berhasil", "Data anggota berhasil dimoderasi.", "success"); document.getElementById('modalEditMember').classList.remove('show'); } catch(error) { hideLoading(); customAlert("Gagal", "Error menyimpan data.", "error"); }
+            e.preventDefault(); 
+            showLoading("Menyimpan Data Anggota...");
+            
+            const email = document.getElementById('editEmail').value; 
+            const newNik = document.getElementById('editNik').value;
+            
+            if(newNik.length !== 16) { 
+                hideLoading(); 
+                return customAlert("NIK Salah", "NIK harus berjumlah 16 digit.", "warning"); 
+            }
+            
+            try { 
+                let updates = { 
+                    nama_lengkap: document.getElementById('editName').value, 
+                    no_wa: document.getElementById('editWa').value, 
+                    status: document.getElementById('editStatus').value, 
+                    hak_absen: document.getElementById('editHakAbsen').value, 
+                    role: document.getElementById('editRole').value 
+                }; 
+                
+                // SABUK PENGAMAN EKSTRA
+                // Hanya enkripsi dan simpan NIK jika tidak mengandung bintang (Bukan inputan Admin)
+                if (!newNik.includes('*')) {
+                    updates.nik = encryptData(newNik);
+                }
+
+                await updateDoc(doc(db, "users", email), updates); 
+                
+                hideLoading(); 
+                customAlert("Berhasil", "Data anggota berhasil dimoderasi.", "success"); 
+                document.getElementById('modalEditMember').classList.remove('show'); 
+            } catch(error) { 
+                hideLoading(); 
+                customAlert("Gagal", "Error menyimpan data.", "error"); 
+            }
         }
 
         window.loadMatriksUsers = function() { let options = '<option value="">-- Pilih Anggota --</option>'; allUsers.forEach(u => { options += `<option value="${u.email}">${u.nama_lengkap} (${u.email})</option>`; }); document.getElementById('matriksSelectUser').innerHTML = options; }
@@ -450,7 +512,6 @@
         window.closeImageView = function() { document.getElementById('modalImage').classList.remove('show'); }
         window.openApproveKas = function(id) { const k = pendingKas.find(x => x.id === id); if(!k) return; document.getElementById('apvTrxId').value = k.id; document.getElementById('apvTrxName').value = k.nama_keterangan || "Sedekah"; document.getElementById('apvTrxNominal').value = k.nominal; document.getElementById('modalApproveTrx').classList.add('show'); }
 
-        // EKSEKUSI TERIMA UANG & TULIS KE PAPAN TULIS (AGGREGATION)
         window.actionTrx = async function(act) {
             const id = document.getElementById('apvTrxId').value;
             const msg = act === 'approve' ? 'Yakin terima dan masukkan dana ini ke Kas?' : 'Yakin TOLAK bukti transfer ini?';
@@ -468,7 +529,6 @@
                             waktu_eksekusi: serverTimestamp()
                         }); 
 
-                        // MESIN MANDOR: TAMBAH ANGKA DI PAPAN TULIS
                         const rekapRef = doc(db, "settings", "rekap_sistem");
                         const rekapSnap = await getDoc(rekapRef);
                         const now = new Date(); const currentMonth = now.getMonth() + 1;
