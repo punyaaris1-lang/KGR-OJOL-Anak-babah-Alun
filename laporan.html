@@ -134,6 +134,10 @@
             </div>
             <form id="formManual" onsubmit="submitManualTrx(event)">
                 <div class="form-group">
+                    <label class="form-label">Tanggal Transaksi</label>
+                    <input type="date" id="trxTanggal" class="form-input" required>
+                </div>
+                <div class="form-group">
                     <label class="form-label">Jenis Pembukuan</label>
                     <select id="trxJenis" class="form-select" onchange="togglePengirim()" required>
                         <option value="Pemasukan">Pemasukan (Uang Masuk)</option>
@@ -146,13 +150,15 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Tujuan / Keterangan</label>
-                    <input type="text" id="trxKet" class="form-input" placeholder="Contoh: Beli Air Mineral Kopdar" required>
+                    <input type="text" id="trxKet" class="form-input" placeholder="Contoh: Titipan Kas Anggota" required>
                 </div>
                 <div class="form-group" id="boxPengirim">
-                    <label class="form-label">Email / Nama Pengirim</label>
-                    <input type="text" id="trxPengirim" class="form-input" placeholder="Contoh: Hamba Allah">
+                    <label class="form-label">Nama Pengirim</label>
+                    <select id="trxPengirim" class="form-select">
+                        <option value="Hamba Allah">-- Hamba Allah (Luar Anggota) --</option>
+                        </select>
                 </div>
-                <button type="submit" class="btn-action"><i class="fa-solid fa-floppy-disk"></i> Simpan ke Laporan</button>
+                <button type="submit" class="btn-action" style="margin-top: 25px;"><i class="fa-solid fa-floppy-disk"></i> Simpan ke Laporan</button>
             </form>
         </div>
     </div>
@@ -167,7 +173,7 @@
         <div class="content-area">
             
             <button id="btnInputManual" class="btn-manual" style="display: none;" onclick="openModalManual()">
-                <i class="fa-solid fa-pen-to-square"></i> Input Transaksi Manual (Admin)
+                <i class="fa-solid fa-pen-to-square"></i> Input Transaksi Manual
             </button>
 
             <div class="total-card">
@@ -209,7 +215,7 @@
     <script type="module">
         import { auth, db } from './db-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
-        import { collection, query, orderBy, onSnapshot, doc, getDoc, addDoc, serverTimestamp, setDoc, increment, getDocs } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+        import { collection, query, orderBy, onSnapshot, doc, getDoc, addDoc, serverTimestamp, setDoc, increment, getDocs, Timestamp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
         window.customAlert = function(title, desc, type = 'success') { const el = document.getElementById('customAlert'); document.getElementById('caTitle').innerText = title; document.getElementById('caDesc').innerText = desc; const iconEl = document.getElementById('caIcon'); if(type === 'success') { iconEl.className = 'cp-icon success'; iconEl.innerHTML = '<i class="fa-solid fa-check"></i>'; } else if(type === 'error') { iconEl.className = 'cp-icon error'; iconEl.innerHTML = '<i class="fa-solid fa-xmark"></i>'; } else { iconEl.className = 'cp-icon warning'; iconEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>'; } el.classList.add('show'); }
         window.closeCustomAlert = function() { document.getElementById('customAlert').classList.remove('show'); }
@@ -224,7 +230,10 @@
                 if (docSnap.exists()) {
                     userRole = (docSnap.data().role || "member").toLowerCase();
                     currentUserName = docSnap.data().nama_lengkap || "Pengurus";
-                    if (["developer", "superadmin", "bendahara"].includes(userRole)) { document.getElementById('btnInputManual').style.display = 'flex'; }
+                    if (["developer", "superadmin", "bendahara"].includes(userRole)) { 
+                        document.getElementById('btnInputManual').style.display = 'flex'; 
+                        loadDropdownMember(); // Panggil fungsi narik nama member
+                    }
                     loadLaporanData();
                 }
 
@@ -234,8 +243,33 @@
             } else { window.location.href = 'login.html'; }
         });
 
+        // FUNGSI BUAT NGAMBIL NAMA MEMBER KE DROPDOWN
+        async function loadDropdownMember() {
+            try {
+                const snap = await getDocs(query(collection(db, "users"), orderBy("nama_lengkap", "asc")));
+                let options = '<option value="Hamba Allah">-- Hamba Allah (Non-Member) --</option>';
+                snap.forEach(d => {
+                    const u = d.data();
+                    if(u.status !== "Banned" && u.status !== "Pending Admin") {
+                        options += `<option value="${u.nama_lengkap}">${u.nama_lengkap}</option>`;
+                    }
+                });
+                document.getElementById('trxPengirim').innerHTML = options;
+            } catch(e) {
+                console.error("Gagal memuat list anggota:", e);
+            }
+        }
+
         window.togglePengirim = function() { const v = document.getElementById('trxJenis').value; document.getElementById('boxPengirim').style.display = v === 'Pemasukan' ? 'block' : 'none'; }
-        window.openModalManual = function() { document.getElementById('modalInputManual').classList.add('show'); document.getElementById('formManual').reset(); togglePengirim(); }
+        
+        window.openModalManual = function() { 
+            document.getElementById('modalInputManual').classList.add('show'); 
+            document.getElementById('formManual').reset(); 
+            // Set tanggal ke hari ini secara default pas dibuka
+            document.getElementById('trxTanggal').valueAsDate = new Date();
+            togglePengirim(); 
+        }
+        
         window.closeModalManual = function() { document.getElementById('modalInputManual').classList.remove('show'); }
 
         window.submitManualTrx = async function(e) {
@@ -244,19 +278,39 @@
                 const jenis = document.getElementById('trxJenis').value;
                 const nominal = Number(document.getElementById('trxNominal').value);
                 const ket = document.getElementById('trxKet').value;
-                const pengirim = jenis === 'Pemasukan' ? (document.getElementById('trxPengirim').value || "Hamba Allah") : "Sistem Kas";
+                const pengirim = jenis === 'Pemasukan' ? document.getElementById('trxPengirim').value : "Sistem Kas";
 
-                await addDoc(collection(db, "transactions"), { jenis: jenis, metode: "Input Manual", status: "approved", pengirim: pengirim, nama_keterangan: ket, nominal: nominal, tanggal: serverTimestamp(), dieksekusi_oleh: currentUserName });
+                // LOGIKA BUAT NGAMBIL TANGGAL MANUAL DAN JADIIN FORMAT FIREBASE (TIMESTAMP)
+                const tglInput = document.getElementById('trxTanggal').value;
+                let finalDate;
+                if(tglInput) {
+                    const [thn, bln, tgl] = tglInput.split('-');
+                    // Setup jam ke siang biar aman timezone
+                    const manualDate = new Date(thn, bln - 1, tgl, 12, 0, 0); 
+                    finalDate = Timestamp.fromDate(manualDate);
+                } else {
+                    finalDate = serverTimestamp();
+                }
+
+                await addDoc(collection(db, "transactions"), { 
+                    jenis: jenis, 
+                    metode: "Input Manual", 
+                    status: "approved", 
+                    pengirim: pengirim, 
+                    nama_keterangan: ket, 
+                    nominal: nominal, 
+                    tanggal: finalDate, // Tanggal masuk ke sini
+                    dieksekusi_oleh: currentUserName 
+                });
                 
                 const rekapRef = doc(db, "settings", "rekap_sistem");
                 const incValue = jenis === 'Pemasukan' ? nominal : -nominal;
                 await setDoc(rekapRef, { total_kas: increment(incValue) }, { merge: true });
 
-                hideLoading(); customAlert("Berhasil", "Transaksi manual tersimpan di pembukuan.", "success"); closeModalManual();
+                hideLoading(); customAlert("Berhasil", "Transaksi manual tersimpan dengan tanggal pilihan Anda.", "success"); closeModalManual();
             } catch (err) { hideLoading(); customAlert("Gagal", err.message, "error"); }
         }
 
-        // PERBAIKAN EXCEL: PAKAI "sep=," di baris pertama biar otomatis jadi tabel di Excel
         window.downloadLaporanExcel = async function() {
             showLoading("Menyiapkan Data Laporan...");
             try {
@@ -268,14 +322,12 @@
                     }
                 });
                 
-                // Urutkan manual (In-Memory Sort kebal crash)
                 rawData.sort((a,b) => {
                     let t1 = (a.tanggal && typeof a.tanggal.toMillis === 'function') ? a.tanggal.toMillis() : 0;
                     let t2 = (b.tanggal && typeof b.tanggal.toMillis === 'function') ? b.tanggal.toMillis() : 0;
                     return t2 - t1;
                 });
                 
-                // BOM UTF-8 dan Perintah Paksa Kolom (sep=,) buat Excel
                 let csvContent = "\uFEFFsep=,\nTanggal,ID Transaksi,Jenis,Metode Pembayaran,Keterangan / Tujuan,Nominal (Rp),Pengirim,Status Eksekusi,Dieksekusi Oleh\n";
                 
                 rawData.forEach(d => {
@@ -308,7 +360,6 @@
         }
 
         function loadLaporanData() {
-            // TARIK DATA TANPA FIREBASE ORDERBY & SORTING KEBAL CRASH (ANTI KOSONG)
             onSnapshot(collection(db, "transactions"), (snap) => {
                 try {
                     allDataLaporan = [];
@@ -318,7 +369,6 @@
                         } 
                     });
                     
-                    // Sort manual yang kebal terhadap data tanggal error
                     allDataLaporan.sort((a,b) => {
                         let t1 = (a.tanggal && typeof a.tanggal.toMillis === 'function') ? a.tanggal.toMillis() : 0;
                         let t2 = (b.tanggal && typeof b.tanggal.toMillis === 'function') ? b.tanggal.toMillis() : 0;
