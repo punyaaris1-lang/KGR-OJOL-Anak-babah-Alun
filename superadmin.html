@@ -184,6 +184,13 @@
             </div>
 
             <div id="viewSistem" class="view-section">
+                
+                <div class="form-section" style="border-color: var(--emerald-main); background: rgba(14, 155, 110, 0.05);">
+                    <div class="section-title" style="color: var(--emerald-main);"><i class="fa-solid fa-scale-balanced"></i> Sinkronisasi Saldo Akurat</div>
+                    <p style="font-size: 11px; font-weight: 700; color: var(--text-gray); margin-bottom: 20px; line-height: 1.5;">Gunakan tombol ini jika total uang di Beranda tidak sinkron dengan data di Laporan Kas akibat hapus/tambah data manual.</p>
+                    <button class="btn-primary" onclick="syncSaldoKas()"><i class="fa-solid fa-rotate"></i> Hitung Ulang & Sinkronkan Saldo</button>
+                </div>
+
                 <div class="form-section">
                     <div class="section-title"><i class="fa-solid fa-server"></i> Parameter Otomasi Kas</div>
                     <form id="formSystem" onsubmit="saveAppConfig(event)">
@@ -217,7 +224,6 @@
         </div>
     </div>
 
-    <!-- MODAL EDIT MEMBER (DENGAN SENSOR NIK) -->
     <div id="modalEditMember" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header"><h3>Moderasi Anggota</h3><button type="button" onclick="document.getElementById('modalEditMember').classList.remove('show')" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button></div>
@@ -244,7 +250,6 @@
         </div>
     </div>
 
-    <!-- MODAL VERIFIKASI KAS -->
     <div id="modalApproveTrx" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header"><h3>Verifikasi Sedekah</h3><button type="button" onclick="document.getElementById('modalApproveTrx').classList.remove('show')" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button></div>
@@ -358,10 +363,6 @@
                 renderAnggota();
                 
                 if(currentUserRole === 'developer') loadMatriksUsers();
-
-                if (currentUserRole === 'developer' || currentUserRole === 'superadmin') {
-                    setDoc(doc(db, "settings", "rekap_sistem"), { total_anggota: aktifCount }, { merge: true });
-                }
             });
         }
 
@@ -450,9 +451,64 @@
         window.selectMatriksUser = function() { const email = document.getElementById('matriksSelectUser').value; const u = allUsers.find(x => x.email === email); if(u) { document.getElementById('matriksBadge').value = u.custom_badge || "MEMBER"; document.getElementById('matriksRole').value = u.role || "member"; } else { document.getElementById('matriksBadge').value = ""; document.getElementById('matriksRole').value = "member"; } }
         window.saveMatriks = async function(e) { e.preventDefault(); const email = document.getElementById('matriksSelectUser').value; if(!email) return customAlert("Error", "Pilih anggota target terlebih dahulu.", "warning"); showLoading("Menyuntikkan Akses..."); try { await updateDoc(doc(db, "users", email), { custom_badge: document.getElementById('matriksBadge').value.toUpperCase(), role: document.getElementById('matriksRole').value }); hideLoading(); customAlert("Suntikan Berhasil", "Sistem Ilusi telah aktif untuk anggota ini.", "success"); document.getElementById('formMatriks').reset(); } catch(error) { hideLoading(); customAlert("Gagal", "Gagal menyuntikkan kasta.", "error"); } }
 
+        // SINKRONISASI ULANG SALDO KAS (FITUR DEWA ANTI NYANGKUT)
+        window.syncSaldoKas = async function() {
+            customConfirm("Sinkronisasi Total?", "Sistem akan membaca dan menghitung ulang 100% data transaksi sejak aplikasi ini berdiri untuk memastikan Saldo Kas sangat presisi. Lanjutkan?", async () => {
+                showLoading("Menghitung Ulang Saldo...");
+                try {
+                    const snap = await getDocs(query(collection(db, "transactions")));
+                    let totalAll = 0;
+                    let totalBulanIni = 0;
+                    
+                    const now = new Date();
+                    const currentMonth = now.getMonth();
+                    const currentYear = now.getFullYear();
+
+                    let aktifCount = 0;
+                    const usersSnap = await getDocs(collection(db, "users"));
+                    usersSnap.forEach(u => {
+                        const ud = u.data();
+                        if(ud.status !== "Banned" && ud.status !== "Pending Admin") aktifCount++;
+                    });
+
+                    snap.forEach(d => {
+                        const data = d.data();
+                        if (data.status === "approved") {
+                            const isMasuk = data.jenis === "Pemasukan";
+                            const nom = Number(data.nominal) || 0;
+                            
+                            // Hitung All Time
+                            if (isMasuk) totalAll += nom;
+                            else totalAll -= nom;
+
+                            // Hitung Bulan Ini Saja
+                            if (data.tanggal) {
+                                const trxDate = typeof data.tanggal.toDate === 'function' ? data.tanggal.toDate() : new Date(data.tanggal);
+                                if (trxDate.getMonth() === currentMonth && trxDate.getFullYear() === currentYear) {
+                                    if (isMasuk) totalBulanIni += nom;
+                                    else totalBulanIni -= nom;
+                                }
+                            }
+                        }
+                    });
+
+                    await setDoc(doc(db, "settings", "rekap_sistem"), {
+                        total_kas: totalAll,
+                        kas_bulan_ini: totalBulanIni,
+                        bulan_aktif: currentMonth + 1, // +1 karena getMonth() mulai dari 0
+                        total_anggota: aktifCount
+                    }, { merge: true });
+
+                    hideLoading();
+                    customAlert("Sinkronisasi Selesai!", `Sistem sukses mereset nilai.\nTotal Kas: Rp ${totalAll.toLocaleString('id-ID')}\nBulan Ini: Rp ${totalBulanIni.toLocaleString('id-ID')}`, "success");
+                } catch(e) {
+                    hideLoading(); customAlert("Gagal Sinkronisasi", e.message, "error");
+                }
+            });
+        }
+
         let pendingKas = [];
         
-        // PERBAIKAN FATAL ANTREAN KOSONG: PAKE IN-MEMORY SORTING
         function loadKasPending() {
             onSnapshot(collection(db, "transactions"), (snap) => {
                 pendingKas = []; 
@@ -463,10 +519,9 @@
                     }
                 }); 
                 
-                // Urutkan manual pakai javascript (Bebas dari limitasi index firebase)
                 pendingKas.sort((a,b) => {
-                    let t1 = a.tanggal ? a.tanggal.toMillis() : 0;
-                    let t2 = b.tanggal ? b.tanggal.toMillis() : 0;
+                    let t1 = (a.tanggal && typeof a.tanggal.toMillis === 'function') ? a.tanggal.toMillis() : 0;
+                    let t2 = (b.tanggal && typeof b.tanggal.toMillis === 'function') ? b.tanggal.toMillis() : 0;
                     return t2 - t1;
                 });
                 
@@ -478,10 +533,10 @@
             const list = document.getElementById('listKasContainer');
             if (pendingKas.length === 0) { list.innerHTML = '<div class="empty-state"><i class="fa-solid fa-check-double"></i><p>Semua antrean kas sudah kosong.</p></div>'; return; }
             list.innerHTML = pendingKas.map(k => {
-                const dateStr = k.tanggal ? k.tanggal.toDate().toLocaleDateString('id-ID') : '-';
+                const dateStr = k.tanggal && typeof k.tanggal.toDate === 'function' ? k.tanggal.toDate().toLocaleDateString('id-ID') : '-';
                 
                 let btnHapus = ""; 
-                if (currentRole === 'developer') { btnHapus = `<button class="btn-edit-round" style="color:var(--color-danger); border-color:var(--color-danger);" onclick="tolakTrx('${k.id}')" title="Hapus Permanen"><i class="fa-solid fa-trash"></i></button>`; }
+                if (currentUserRole === 'developer') { btnHapus = `<button class="btn-edit-round" style="color:var(--color-danger); border-color:var(--color-danger);" onclick="tolakTrx('${k.id}')" title="Hapus Permanen"><i class="fa-solid fa-trash"></i></button>`; }
                 
                 let btnStruk = k.bukti_image ? `<button class="btn-edit-round" style="color:var(--color-info); border-color:var(--color-info);" onclick="viewImage('${k.bukti_image}')" title="Lihat Struk"><i class="fa-solid fa-image"></i></button>` : `<div style="font-size:9px; font-weight:800; color:var(--color-warning); text-align:center; padding: 4px; border: 1px dashed var(--color-warning); border-radius:8px;">Tanpa<br>Struk</div>`;
 
@@ -579,6 +634,5 @@
             } catch(e) { hideLoading(); customAlert("Gagal", e.message, "error"); }
         }
     </script>
-    <script>if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW Fail', err)); }); }</script>
 </body>
 </html>
