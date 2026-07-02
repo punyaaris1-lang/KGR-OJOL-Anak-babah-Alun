@@ -30,18 +30,11 @@
     </script>
 
     <style>
-        /* TEMA ASLI KGR FLAT PREMIUM */
         :root {
-            --bg-body: #EAF4F1; 
-            --text-main: #0F172A; 
-            --text-muted: #64748B;
-            --card-bg: #FFFFFF; 
-            --card-border: rgba(0,0,0,0.05); 
-            --emerald-main: #0E9B6E; 
-            --gold-accent: #F59E0B; 
-            --danger-red: #EF4444;
-            --input-bg: #F8FAFC; 
-            --modal-bg: #FFFFFF;
+            --bg-body: #EAF4F1; --text-main: #0F172A; --text-muted: #64748B;
+            --card-bg: #FFFFFF; --card-border: rgba(0,0,0,0.05); 
+            --emerald-main: #0E9B6E; --gold-accent: #F59E0B; --danger-red: #EF4444;
+            --input-bg: #F8FAFC; --modal-bg: #FFFFFF;
         }
         [data-theme="dark"] {
             --bg-body: #0F172A; --text-main: #F8FAFC; --text-muted: #94A3B8;
@@ -54,7 +47,6 @@
         body { background-color: var(--bg-body); color: var(--text-main); width: 100%; min-height: 100vh; margin: 0; overflow-x: hidden; display: flex; justify-content: center; align-items: flex-start; transition: 0.3s; }
 
         html.skip-splash #splashScreen { display: none !important; }
-        
         #splashScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-body); z-index: 9999999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 0.6s ease; }
         #splashScreen.hide { opacity: 0; visibility: hidden; }
         .splash-logo { width: 150px; animation: pulseGlow 1.5s infinite alternate ease-in-out; }
@@ -66,84 +58,28 @@
         .app-container { width: 100%; max-width: 480px; margin: 0 auto; height: 100dvh; position: relative; overflow-x: hidden; overflow-y: auto; display: flex; flex-direction: column; scrollbar-width: none; }
         .app-container::-webkit-scrollbar { display: none; }
 
-        /* HEADER IMAGE - DISET TOP CENTER BIAR MUKA AMAN */
         .header-cover { 
-            width: 100%; 
-            height: 250px; 
-            min-height: 250px;
-            flex-shrink: 0; 
-            background-image: url('bg-header.jpg'); 
-            background-size: cover; 
-            background-position: top center; /* Wajah prioritas kelihatan */
-            background-color: #0F172A; 
-            border-bottom-left-radius: 40px; 
-            border-bottom-right-radius: 40px; 
-            position: relative;
-            z-index: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end; /* Logo didorong ke paling bawah */
-            align-items: center;
-            padding-bottom: 25px; /* Jarak logo dari garis lengkung */
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            width: 100%; height: 250px; min-height: 250px; flex-shrink: 0; 
+            background-image: url('bg-header.jpg'); background-size: cover; background-position: top center; 
+            background-color: #0F172A; border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; 
+            position: relative; z-index: 1; display: flex; flex-direction: column; justify-content: flex-end; 
+            align-items: center; padding-bottom: 25px; box-shadow: 0 10px 20px rgba(0,0,0,0.15);
         }
+        .header-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.6) 100%); border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; z-index: 1; }
+        .header-logo { width: 240px; max-width: 75%; position: relative; margin-top: 35px; z-index: 2; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5)); }
+
+        .profile-container { display: flex; justify-content: space-between; align-items: flex-start; padding: 0 24px; margin-top: -40px; position: relative; z-index: 10; }
+        .profile-pic { width: 85px; height: 85px; border-radius: 50%; border: 4px solid var(--bg-body); background-color: var(--card-bg); background-size: cover; background-position: center; display: flex; justify-content: center; align-items: center; font-size: 32px; font-weight: 900; color: var(--emerald-main); box-shadow: 0 4px 10px rgba(0,0,0,0.1); flex-shrink: 0; }
         
-        .header-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.6) 100%); /* Bawah digelapin biar logo nyala */
-            border-bottom-left-radius: 40px;
-            border-bottom-right-radius: 40px;
-            z-index: 1;
-        }
-
-        /* LOGO KGR DI HEADER */
-        .header-logo {
-            width: 220px; /* Ukuran pas biar elegan */
-            max-width: 80%;
-            position: relative;
-            z-index: 2;
-            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
-        }
-
-        /* LAYOUT MENYAMPING (INLINE) SESUAI SCREENSHOT */
-        .profile-container { 
-            display: flex; justify-content: space-between; align-items: flex-start; 
-            padding: 0 24px; margin-top: -40px; position: relative; z-index: 10; 
-        }
-        
-        .profile-pic { 
-            width: 85px; height: 85px; border-radius: 50%; 
-            border: 4px solid var(--bg-body); background-color: var(--card-bg);
-            background-size: cover; background-position: center; 
-            display: flex; justify-content: center; align-items: center; 
-            font-size: 32px; font-weight: 900; color: var(--emerald-main);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            flex-shrink: 0;
-        }
-
-        /* NAMA DAN ROLE DI BAWAH GARIS HEADER */
-        .profile-details {
-            flex-grow: 1;
-            margin-left: 15px;
-            margin-top: 45px; /* Diturunin biar sejajar di bawah header */
-        }
+        .profile-details { flex-grow: 1; margin-left: 15px; margin-top: 45px; }
         .profile-details h2 { font-size: 22px; font-weight: 900; color: var(--text-main); margin-bottom: 2px; letter-spacing: -0.5px;}
         .profile-details p { font-size: 11px; font-weight: 800; color: var(--emerald-main); text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 5px;}
 
-        /* ICON GEAR DAN MOON */
         .header-icons { display: flex; gap: 10px; margin-top: 45px; }
-        .btn-settings { 
-            width: 40px; height: 40px; border-radius: 50%; 
-            background: var(--card-bg); color: var(--text-main);
-            display: flex; justify-content: center; align-items: center; 
-            font-size: 16px; cursor: pointer; border: 2px solid var(--card-border);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: 0.2s;
-        }
+        .btn-settings { width: 40px; height: 40px; border-radius: 50%; background: var(--card-bg); color: var(--text-main); display: flex; justify-content: center; align-items: center; font-size: 16px; cursor: pointer; border: 2px solid var(--card-border); box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: 0.2s; }
         .btn-settings:active { transform: scale(0.9); }
 
-        /* PADDING BAWAH BIAR KONTEN GAK KETUTUP MENU MELAYANG */
         .content-area { padding: 20px 24px 150px; z-index: 5; position: relative; flex-grow: 1; }
-        
         .solid-panel { background: var(--card-bg); border: 1px solid var(--card-border); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); border-radius: 20px; transition: 0.3s; }
         
         .premium-card { background: var(--emerald-main); padding: 25px; margin-bottom: 25px; border-radius: 24px; color: #FFF; box-shadow: 0 10px 20px rgba(14, 155, 110, 0.25); position: relative; overflow: hidden;}
@@ -163,39 +99,22 @@
         .menu-icon.gold { color: var(--gold-accent); }
         .menu-icon.blue { color: #0284C7; }
         .menu-item span { font-size: 11px; font-weight: 800; color: var(--text-main); text-align: center; line-height: 1.3; }
-
         .menu-absen { border: 2px solid var(--emerald-main); }
         .menu-absen .menu-icon { background: var(--emerald-main); color: #FFF; border: none;}
 
         .btn-install-pwa { width: 100%; padding: 18px; border-radius: 18px; font-size: 14px; font-weight: 900; background: var(--gold-accent); color: #0F172A; border: none; margin-bottom: 25px; cursor: pointer; transition: 0.2s; display: none; justify-content: center; align-items: center; gap: 10px; box-shadow: 0 5px 15px rgba(245, 158, 11, 0.2); }
 
-        /* NAVIGASI KAPSUL MELAYANG DI TENGAH */
-        .bottom-nav-container { 
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); 
-            width: 90%; max-width: 400px; 
-            background: var(--card-bg); border-radius: 40px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
-            display: flex; justify-content: space-around; align-items: center; 
-            padding: 10px 0; z-index: 50; border: 1px solid var(--card-border);
-        }
+        .bottom-nav-container { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: var(--card-bg); border-radius: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: flex; justify-content: space-around; align-items: center; padding: 10px 0; z-index: 50; border: 1px solid var(--card-border);}
         .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-muted); opacity: 0.8; cursor: pointer; transition: 0.3s; width: 60px; }
         .nav-item i { font-size: 20px; transition: 0.2s; } 
         .nav-item span { font-size: 10px; font-weight: 800; } 
         .nav-item.active { color: var(--emerald-main); opacity: 1; }
-        
         .center-btn { position: relative; top: -25px; flex-shrink: 0;}
         .center-fab { width: 65px; height: 65px; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2px; color: #FFFFFF; font-size: 22px; background: linear-gradient(135deg, #10B981, #059669); border: 5px solid var(--bg-body); box-shadow: 0 10px 20px rgba(5, 150, 105, 0.3); transition: 0.2s; cursor: pointer; }
         .center-fab:active { transform: scale(0.9); }
         .center-fab span { font-size: 9px; font-weight: 800; }
 
-        /* MODALS DI LUAR AREA SCROLL */
-        .modal-overlay, .cp-overlay { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(15, 23, 42, 0.85); 
-            z-index: 999999; 
-            opacity: 0; visibility: hidden; transition: 0.3s; 
-            display: flex; justify-content: center; align-items: center;
-        }
+        .modal-overlay, .cp-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.85); z-index: 999999; opacity: 0; visibility: hidden; transition: 0.3s; display: flex; justify-content: center; align-items: center;}
         .modal-overlay { align-items: flex-end; padding: 0; }
         .cp-overlay { background: rgba(15, 23, 42, 0.7); padding: 20px; }
         .modal-overlay.show, .cp-overlay.show { opacity: 1; visibility: visible; }
@@ -235,13 +154,11 @@
 </head>
 <body>
 
-    <!-- LOADING SPLASH (MENGGUNAKAN logo1.png) -->
     <div id="splashScreen">
         <img src="logo1.png" class="splash-logo" alt="Logo KGR">
         <div class="splash-text" id="typewriterText"></div>
     </div>
 
-    <!-- ANIMASI KETIK (DIAKTIFKAN KEMBALI) -->
     <script>
         if (!document.documentElement.classList.contains('skip-splash')) { 
             const textToType = "MENCARI BERKAH\nLEWAT SEDEKAH"; 
@@ -262,7 +179,6 @@
         }
     </script>
 
-    <!-- SEMUA POPUP DAN MODAL HARUS DI LUAR AREA SCROLL (<main>) -->
     <div id="modalMemberQR" class="modal-overlay"><div class="modal-content"><div class="modal-header"><h3>Kartu Kehadiran</h3><button type="button" onclick="document.getElementById('modalMemberQR').classList.remove('show')" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button></div><div class="qr-display"><img id="imgMemberQR" src=""></div><h4 id="qrNameText" style="text-align:center; margin-bottom:20px;">...</h4></div></div>
     
     <div id="modalAdminScanner" class="modal-overlay">
@@ -285,6 +201,7 @@
         </div>
     </div>
 
+    <!-- MODAL SEDEKAH DENGAN FITUR AUTO-SAVE SESSION BIAR GAK AMNESIA -->
     <div id="modalQrisManual" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header"><h3>Sedekah Kas</h3><button type="button" onclick="closeQrisModal()" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button></div>
@@ -304,7 +221,7 @@
                     <div id="btnUploadText" class="btn-outline" style="width:100%; padding:15px; border-radius:14px; border:2px dashed var(--danger-red); color: var(--danger-red); font-size:13px; font-weight:800; display:flex; justify-content:center; align-items:center; gap:8px;"><i class="fa-solid fa-cloud-arrow-up"></i> Upload Bukti (WAJIB) *</div>
                 </div>
                 <div style="display: flex; gap: 10px;">
-                    <button type="button" class="btn-action btn-outline" style="flex: 1;" onclick="kembaliQrisStep1()">Kembali</button>
+                    <button type="button" class="btn-action btn-outline" style="flex: 1;" onclick="kembaliQrisStep1()">Batalkan</button>
                     <button type="submit" class="btn-action" id="btnSubmitSedekah" style="flex: 1.5;">Saya Sudah Transfer <i class="fa-solid fa-check-double"></i></button>
                 </div>
             </form>
@@ -315,17 +232,13 @@
     <div class="cp-overlay" id="customConfirm"><div class="cp-box"><div class="cp-icon warning"><i class="fa-solid fa-triangle-exclamation"></i></div><h3 class="cp-title" id="ccTitle">Konfirmasi</h3><p class="cp-desc" id="ccDesc">Apakah Anda yakin?</p><div class="cp-btn-wrap"><button class="cp-btn cp-btn-cancel" onclick="closeCustomConfirm()">Batal</button><button class="cp-btn cp-btn-danger" id="ccBtnYes">Ya, Lanjutkan</button></div></div></div>
     <div class="cp-overlay" id="customLoading"><div class="cp-box" style="padding: 40px 20px;"><div class="spinner-custom"></div><h3 class="cp-title" id="clTitle" style="margin-bottom: 0;">Memproses...</h3></div></div>
     
-    <!-- MULAI AREA APLIKASI UTAMA (AREA SCROLL) -->
     <main class="app-container">
         
-        <!-- HEADER MAHKOTA: GAMBAR GRUP + LOGO -->
         <div class="header-cover">
-            <div class="header-overlay"></div>
-            <!-- LOGO HEADER DI HALAMAN UTAMA (MENGGUNAKAN logo.png) -->
+            <div class="header-overlay"></div> 
             <img src="logo.png" class="header-logo" alt="Logo KGR">
         </div>
 
-        <!-- LAYOUT PROFIL INLINE (MENYAMPING) SESUAI DESAIN -->
         <div class="profile-container">
             <div class="profile-pic" id="uiProfilePic"></div>
             
@@ -404,10 +317,8 @@
                 </div>
             </div>
         </div>
-
     </main>
 
-    <!-- NAVIGASI KAPSUL DI LUAR AREA SCROLL -->
     <div class="bottom-nav-container">
         <div class="nav-item active"><i class="fa-solid fa-house"></i><span>Beranda</span></div>
         <div class="nav-item center-btn" onclick="openQrisModal()">
@@ -439,6 +350,20 @@
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentUserEmail = user.email;
+
+                // MEMULIHKAN SESI SEDEKAH JIKA ADA (AUTO-SAVE)
+                const savedTrxId = localStorage.getItem('kgr_pending_trx_id');
+                const savedTrxNom = localStorage.getItem('kgr_pending_trx_nom');
+                if (savedTrxId && savedTrxNom) {
+                    currentTrxId = savedTrxId;
+                    nominalFinalSedekah = Number(savedTrxNom);
+                    document.getElementById('teksNominalUnik').innerText = "Rp " + nominalFinalSedekah.toLocaleString('id-ID');
+                    document.getElementById('qrisStep1').style.display = "none";
+                    document.getElementById('qrisStep2').style.display = "block";
+                    document.getElementById('modalQrisManual').classList.add('show');
+                    customAlert("Sesi Dipulihkan", "Sistem mendeteksi Anda belum mengupload bukti transfer sebelumnya. Silahkan lanjutkan.", "warning");
+                }
+
                 try {
                     onSnapshot(doc(db, "users", user.email), (docSnap) => {
                         if (docSnap.exists()) {
@@ -517,9 +442,34 @@
             } else { window.location.href = 'login.html'; }
         });
 
-        window.openQrisModal = function() { document.getElementById('modalQrisManual').classList.add('show'); document.getElementById('qrisStep1').style.display = "block"; document.getElementById('qrisStep2').style.display = "none"; document.getElementById('inputNominal').value = ""; document.getElementById('inputPesan').value = ""; document.getElementById('inputBukti').value = ""; document.getElementById('btnUploadText').innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Upload Bukti (WAJIB) *'; document.getElementById('btnUploadText').style.borderColor = 'var(--danger-red)'; document.getElementById('btnUploadText').style.color = 'var(--danger-red)'; nominalFinalSedekah = 0; currentTrxId = null; }
+        window.openQrisModal = function() { 
+            const savedTrxId = localStorage.getItem('kgr_pending_trx_id');
+            if(savedTrxId) {
+                document.getElementById('qrisStep1').style.display = "none";
+                document.getElementById('qrisStep2').style.display = "block";
+            } else {
+                document.getElementById('qrisStep1').style.display = "block"; 
+                document.getElementById('qrisStep2').style.display = "none"; 
+                document.getElementById('inputNominal').value = ""; 
+                document.getElementById('inputPesan').value = ""; 
+                document.getElementById('inputBukti').value = ""; 
+                document.getElementById('btnUploadText').innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Upload Bukti (WAJIB) *'; 
+                document.getElementById('btnUploadText').style.borderColor = 'var(--danger-red)'; 
+                document.getElementById('btnUploadText').style.color = 'var(--danger-red)'; 
+                nominalFinalSedekah = 0; 
+                currentTrxId = null; 
+            }
+            document.getElementById('modalQrisManual').classList.add('show'); 
+        }
+
         window.closeQrisModal = function() { document.getElementById('modalQrisManual').classList.remove('show'); }
-        window.kembaliQrisStep1 = async function() { if(currentTrxId) { try { await deleteDoc(doc(db, "transactions", currentTrxId)); } catch(e) {} currentTrxId = null; } document.getElementById('qrisStep2').style.display = "none"; document.getElementById('qrisStep1').style.display = "block"; }
+        
+        window.kembaliQrisStep1 = async function() { 
+            if(currentTrxId) { try { await deleteDoc(doc(db, "transactions", currentTrxId)); } catch(e) {} currentTrxId = null; } 
+            localStorage.removeItem('kgr_pending_trx_id'); localStorage.removeItem('kgr_pending_trx_nom');
+            document.getElementById('qrisStep2').style.display = "none"; document.getElementById('qrisStep1').style.display = "block"; 
+        }
+        
         window.tampilkanNamaFile = function(input) { if (input.files && input.files[0]) { document.getElementById('btnUploadText').innerHTML = `<i class="fa-solid fa-check-circle" style="color:var(--emerald-main);"></i> Bukti Siap Dikirim`; document.getElementById('btnUploadText').style.borderColor = 'var(--emerald-main)'; document.getElementById('btnUploadText').style.color = 'var(--text-main)'; } }
 
         const getBase64 = (file) => new Promise((res, rej) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = (event) => { const img = new Image(); img.src = event.target.result; img.onload = () => { const canvas = document.createElement('canvas'); const MAX_WIDTH = 800; let scaleSize = MAX_WIDTH / img.width; if(scaleSize > 1) scaleSize = 1; canvas.width = MAX_WIDTH; canvas.height = img.height * scaleSize; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, canvas.width, canvas.height); res(canvas.toDataURL('image/jpeg', 0.6)); } }; reader.onerror = error => rej(error); });
@@ -534,7 +484,13 @@
             showLoading("Membuat ID Transaksi...");
             try {
                 const docRef = await addDoc(collection(db, "transactions"), { jenis: "Pemasukan", metode: "QRIS Manual", status: "menunggu_transfer", pengirim: currentUserEmail, nama_keterangan: document.getElementById('inputPesan').value || "Sedekah Kas", nominal: nominalFinalSedekah, tanggal: serverTimestamp() });
-                currentTrxId = docRef.id; hideLoading();
+                currentTrxId = docRef.id; 
+                
+                // SIMPAN ID DAN NOMINAL KE MEMORI HP (ANTI AMNESIA)
+                localStorage.setItem('kgr_pending_trx_id', currentTrxId);
+                localStorage.setItem('kgr_pending_trx_nom', nominalFinalSedekah);
+
+                hideLoading();
                 document.getElementById('teksNominalUnik').innerText = "Rp " + nominalFinalSedekah.toLocaleString('id-ID'); 
                 document.getElementById('qrisStep1').style.display = "none"; document.getElementById('qrisStep2').style.display = "block";
             } catch(e) { hideLoading(); customAlert("Gagal Membuat ID", "Terjadi kesalahan jaringan.", "error"); }
@@ -560,6 +516,10 @@
                 let base64Image = await getBase64(fileBkt);
                 await updateDoc(doc(db, "transactions", currentTrxId), { status: "pending", bukti_image: base64Image, nama_keterangan: document.getElementById('inputPesan').value || "Sedekah Kas", tanggal: serverTimestamp() });
                 
+                // BERSIHKAN MEMORI HP KALAU SUDAH BERHASIL
+                localStorage.removeItem('kgr_pending_trx_id');
+                localStorage.removeItem('kgr_pending_trx_nom');
+
                 customAlert("Terkirim!", "Terima kasih, bukti sedekah dikirim dan menunggu verifikasi Bendahara.", "success"); window.closeQrisModal(); currentTrxId = null;
             } catch (err) { customAlert("Gagal Mengirim", err.message, "error"); } finally { btn.innerHTML = 'Saya Sudah Transfer <i class="fa-solid fa-check-double"></i>'; btn.disabled = false; }
         }
