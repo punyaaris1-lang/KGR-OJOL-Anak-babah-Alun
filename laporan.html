@@ -59,7 +59,8 @@
         .ft-btn { flex: 1; padding: 10px; border-radius: 12px; font-size: 11px; font-weight: 800; text-align: center; cursor: pointer; transition: 0.2s; color: var(--text-muted); border: none; background: transparent;}
         .ft-btn.active { background: var(--emerald-main); color: #FFF; }
 
-        .trx-card { background: var(--card-bg); border-radius: 20px; padding: 16px; margin-bottom: 12px; border: 1px solid var(--card-border); display: flex; align-items: center; gap: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.02);}
+        .trx-card { background: var(--card-bg); border-radius: 20px; padding: 16px; margin-bottom: 12px; border: 1px solid var(--card-border); box-shadow: 0 4px 6px rgba(0,0,0,0.02);}
+        .trx-body { display: flex; align-items: center; gap: 15px; }
         .trx-icon { width: 45px; height: 45px; border-radius: 14px; display: flex; justify-content: center; align-items: center; font-size: 18px; flex-shrink: 0; background: var(--input-bg);}
         .trx-icon.in { color: var(--emerald-main); }
         .trx-icon.out { color: var(--danger-red); }
@@ -115,7 +116,11 @@
         .cp-icon.warning { background: rgba(245, 158, 11, 0.15); color: var(--gold-accent); }
         .cp-title { font-size: 18px; font-weight: 900; margin-bottom: 8px; }
         .cp-desc { font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 25px; line-height: 1.5; }
-        .cp-btn-primary { background: var(--emerald-main); color: #FFF; width: 100%; padding: 15px; border-radius: 14px; font-size: 13px; font-weight: 800; border: none; cursor: pointer;}
+        .cp-btn-wrap { display: flex; gap: 10px; }
+        .cp-btn { flex: 1; padding: 15px; border-radius: 14px; font-size: 13px; font-weight: 800; border: none; cursor: pointer; transition: 0.2s; }
+        .cp-btn-primary { background: var(--emerald-main); color: #FFF;}
+        .cp-btn-cancel { background: var(--input-bg); color: var(--text-main); border: 2px solid var(--card-border);}
+        .cp-btn-danger { background: var(--danger-red); color: #FFF;}
         
         .spinner-custom { border: 4px solid var(--card-border); width: 50px; height: 50px; border-radius: 50%; border-left-color: var(--emerald-main); animation: spin 1s linear infinite; margin: 0 auto 15px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -123,7 +128,8 @@
 </head>
 <body>
 
-    <div class="cp-overlay" id="customAlert"><div class="cp-box"><div class="cp-icon success" id="caIcon"><i class="fa-solid fa-check"></i></div><h3 class="cp-title" id="caTitle">Pemberitahuan</h3><p class="cp-desc" id="caDesc">Pesan di sini.</p><button class="cp-btn-primary" onclick="closeCustomAlert()">Tutup</button></div></div>
+    <div class="cp-overlay" id="customAlert"><div class="cp-box"><div class="cp-icon success" id="caIcon"><i class="fa-solid fa-check"></i></div><h3 class="cp-title" id="caTitle">Pemberitahuan</h3><p class="cp-desc" id="caDesc">Pesan di sini.</p><button class="cp-btn cp-btn-primary" style="width: 100%;" onclick="closeCustomAlert()">Tutup</button></div></div>
+    <div class="cp-overlay" id="customConfirm"><div class="cp-box"><div class="cp-icon warning"><i class="fa-solid fa-triangle-exclamation"></i></div><h3 class="cp-title" id="ccTitle">Konfirmasi</h3><p class="cp-desc" id="ccDesc">Apakah Anda yakin?</p><div class="cp-btn-wrap"><button class="cp-btn cp-btn-cancel" onclick="closeCustomConfirm()">Batal</button><button class="cp-btn cp-btn-danger" id="ccBtnYes">Ya, Hapus</button></div></div></div>
     <div class="cp-overlay" id="customLoading"><div class="cp-box" style="padding: 40px 20px;"><div class="spinner-custom"></div><h3 class="cp-title" id="clTitle" style="margin-bottom: 0;">Memproses...</h3></div></div>
 
     <div id="modalInputManual" class="modal-overlay">
@@ -153,9 +159,9 @@
                     <input type="text" id="trxKet" class="form-input" placeholder="Contoh: Titipan Kas Anggota" required>
                 </div>
                 <div class="form-group" id="boxPengirim">
-                    <label class="form-label">Nama Pengirim</label>
+                    <label class="form-label">Pilih Member (Sangat Penting!)</label>
                     <select id="trxPengirim" class="form-select">
-                        <option value="Hamba Allah">-- Hamba Allah (Luar Anggota) --</option>
+                        <option value="Hamba Allah">-- Hamba Allah (Non-Member) --</option>
                         </select>
                 </div>
                 <button type="submit" class="btn-action" style="margin-top: 25px;"><i class="fa-solid fa-floppy-disk"></i> Simpan ke Laporan</button>
@@ -215,14 +221,16 @@
     <script type="module">
         import { auth, db } from './db-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
-        import { collection, query, orderBy, onSnapshot, doc, getDoc, addDoc, serverTimestamp, setDoc, increment, getDocs, Timestamp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+        import { collection, query, orderBy, onSnapshot, doc, getDoc, addDoc, serverTimestamp, setDoc, increment, getDocs, Timestamp, deleteDoc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
         window.customAlert = function(title, desc, type = 'success') { const el = document.getElementById('customAlert'); document.getElementById('caTitle').innerText = title; document.getElementById('caDesc').innerText = desc; const iconEl = document.getElementById('caIcon'); if(type === 'success') { iconEl.className = 'cp-icon success'; iconEl.innerHTML = '<i class="fa-solid fa-check"></i>'; } else if(type === 'error') { iconEl.className = 'cp-icon error'; iconEl.innerHTML = '<i class="fa-solid fa-xmark"></i>'; } else { iconEl.className = 'cp-icon warning'; iconEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>'; } el.classList.add('show'); }
         window.closeCustomAlert = function() { document.getElementById('customAlert').classList.remove('show'); }
+        window.customConfirm = function(title, desc, onYes) { const el = document.getElementById('customConfirm'); document.getElementById('ccTitle').innerText = title; document.getElementById('ccDesc').innerText = desc; document.getElementById('ccBtnYes').onclick = function() { closeCustomConfirm(); onYes(); }; el.classList.add('show'); }
+        window.closeCustomConfirm = function() { document.getElementById('customConfirm').classList.remove('show'); }
         window.showLoading = function(title = "Memproses...") { document.getElementById('clTitle').innerText = title; document.getElementById('customLoading').classList.add('show'); }
         window.hideLoading = function() { document.getElementById('customLoading').classList.remove('show'); }
 
-        let userRole = "member"; let currentUserName = "Admin"; let allDataLaporan = []; let filterState = 'semua';
+        let userRole = "member"; let currentUserName = "Admin"; let allDataLaporan = []; let filterState = 'semua'; let memberMap = {}; 
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -232,7 +240,7 @@
                     currentUserName = docSnap.data().nama_lengkap || "Pengurus";
                     if (["developer", "superadmin", "bendahara"].includes(userRole)) { 
                         document.getElementById('btnInputManual').style.display = 'flex'; 
-                        loadDropdownMember(); // Panggil fungsi narik nama member
+                        loadDropdownMember(); 
                     }
                     loadLaporanData();
                 }
@@ -243,15 +251,17 @@
             } else { window.location.href = 'login.html'; }
         });
 
-        // FUNGSI BUAT NGAMBIL NAMA MEMBER KE DROPDOWN
+        // NAMA MEMBER DIAMBIL, TAPI YG DIKIRIM KE DB ADALAH "EMAIL" (Biar match ke Donatur)
         async function loadDropdownMember() {
             try {
                 const snap = await getDocs(query(collection(db, "users"), orderBy("nama_lengkap", "asc")));
-                let options = '<option value="Hamba Allah">-- Hamba Allah (Non-Member) --</option>';
+                let options = '<option value="Hamba Allah">-- Hamba Allah (Luar Anggota) --</option>';
                 snap.forEach(d => {
                     const u = d.data();
                     if(u.status !== "Banned" && u.status !== "Pending Admin") {
-                        options += `<option value="${u.nama_lengkap}">${u.nama_lengkap}</option>`;
+                        // Value = Email, Tampilan = Nama Lengkap
+                        options += `<option value="${u.email}">${u.nama_lengkap} (${u.email})</option>`;
+                        memberMap[u.email] = u.nama_lengkap; // Simpan map buat nampilin nama di laporan
                     }
                 });
                 document.getElementById('trxPengirim').innerHTML = options;
@@ -265,7 +275,6 @@
         window.openModalManual = function() { 
             document.getElementById('modalInputManual').classList.add('show'); 
             document.getElementById('formManual').reset(); 
-            // Set tanggal ke hari ini secara default pas dibuka
             document.getElementById('trxTanggal').valueAsDate = new Date();
             togglePengirim(); 
         }
@@ -280,35 +289,76 @@
                 const ket = document.getElementById('trxKet').value;
                 const pengirim = jenis === 'Pemasukan' ? document.getElementById('trxPengirim').value : "Sistem Kas";
 
-                // LOGIKA BUAT NGAMBIL TANGGAL MANUAL DAN JADIIN FORMAT FIREBASE (TIMESTAMP)
-                const tglInput = document.getElementById('trxTanggal').value;
-                let finalDate;
-                if(tglInput) {
-                    const [thn, bln, tgl] = tglInput.split('-');
-                    // Setup jam ke siang biar aman timezone
+                const tglInputStr = document.getElementById('trxTanggal').value;
+                let finalDate; let isBulanIni = false; const now = new Date();
+
+                if(tglInputStr) {
+                    const [thn, bln, tgl] = tglInputStr.split('-');
                     const manualDate = new Date(thn, bln - 1, tgl, 12, 0, 0); 
                     finalDate = Timestamp.fromDate(manualDate);
+                    // Ngecek kalau inputan masih di bulan dan tahun yg sama
+                    if(manualDate.getMonth() === now.getMonth() && manualDate.getFullYear() === now.getFullYear()) {
+                        isBulanIni = true;
+                    }
                 } else {
                     finalDate = serverTimestamp();
+                    isBulanIni = true;
                 }
 
                 await addDoc(collection(db, "transactions"), { 
                     jenis: jenis, 
                     metode: "Input Manual", 
                     status: "approved", 
-                    pengirim: pengirim, 
+                    pengirim: pengirim, // Ini bakal nyimpen EMAIL!
                     nama_keterangan: ket, 
                     nominal: nominal, 
-                    tanggal: finalDate, // Tanggal masuk ke sini
+                    tanggal: finalDate, 
                     dieksekusi_oleh: currentUserName 
                 });
                 
                 const rekapRef = doc(db, "settings", "rekap_sistem");
                 const incValue = jenis === 'Pemasukan' ? nominal : -nominal;
-                await setDoc(rekapRef, { total_kas: increment(incValue) }, { merge: true });
+                
+                let updateData = { total_kas: increment(incValue) };
+                // PERBAIKAN: Kalau inputnya bulan ini, Saldo Bulan Ini ikutan nambah!
+                if (isBulanIni) {
+                    updateData.kas_bulan_ini = increment(incValue);
+                }
+                
+                await setDoc(rekapRef, updateData, { merge: true });
 
-                hideLoading(); customAlert("Berhasil", "Transaksi manual tersimpan dengan tanggal pilihan Anda.", "success"); closeModalManual();
+                hideLoading(); customAlert("Berhasil", "Transaksi manual tersimpan. Klasemen dan saldo telah di-update.", "success"); closeModalManual();
             } catch (err) { hideLoading(); customAlert("Gagal", err.message, "error"); }
+        }
+
+        // FUNGSI HAPUS TRANSAKSI (KHUSUS DEVELOPER)
+        window.hapusTrxLaporan = async function(docId, nominal, isMasukStr) {
+            customConfirm("Hapus Permanen?", "Data transaksi akan dihapus dan Saldo Kas otomatis dikurangi. Lanjutkan?", async () => {
+                showLoading("Menghapus...");
+                try {
+                    const trxSnap = await getDoc(doc(db, "transactions", docId));
+                    if(!trxSnap.exists()) throw new Error("Data tidak ditemukan");
+                    const trxData = trxSnap.data();
+
+                    await deleteDoc(doc(db, "transactions", docId));
+                    
+                    const isMasuk = isMasukStr === 'true';
+                    const incValue = isMasuk ? -nominal : nominal;
+                    
+                    let updateData = { total_kas: increment(incValue) };
+
+                    if (trxData.tanggal) {
+                        const trxDate = trxData.tanggal.toDate();
+                        const now = new Date();
+                        if (trxDate.getMonth() === now.getMonth() && trxDate.getFullYear() === now.getFullYear()) {
+                            updateData.kas_bulan_ini = increment(incValue);
+                        }
+                    }
+
+                    await setDoc(doc(db, "settings", "rekap_sistem"), updateData, { merge: true });
+                    hideLoading(); customAlert("Dihapus", "Transaksi berhasil dicabut dari sistem.", "success");
+                } catch(e) { hideLoading(); customAlert("Gagal", e.message, "error"); }
+            });
         }
 
         window.downloadLaporanExcel = async function() {
@@ -316,11 +366,7 @@
             try {
                 const snap = await getDocs(collection(db, "transactions"));
                 let rawData = [];
-                snap.forEach(d => {
-                    if(d.data().status === "approved") {
-                        rawData.push({id: d.id, ...d.data()});
-                    }
-                });
+                snap.forEach(d => { if(d.data().status === "approved") { rawData.push({id: d.id, ...d.data()}); } });
                 
                 rawData.sort((a,b) => {
                     let t1 = (a.tanggal && typeof a.tanggal.toMillis === 'function') ? a.tanggal.toMillis() : 0;
@@ -336,7 +382,8 @@
                     const metode = d.metode || "-";
                     const ket = `"${(d.nama_keterangan || "-").replace(/"/g, '""')}"`;
                     const nom = d.nominal || 0;
-                    const pgr = `"${(d.pengirim || "-").replace(/"/g, '""')}"`;
+                    const rawPengirim = d.pengirim || "-";
+                    const pgr = `"${memberMap[rawPengirim] || rawPengirim}"`; // Translate email ke nama di Excel
                     const sts = d.status || "-";
                     const eks = `"${(d.dieksekusi_oleh || "-").replace(/"/g, '""')}"`;
                     
@@ -345,43 +392,27 @@
 
                 const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
                 const link = document.createElement("a");
-                const url = URL.createObjectURL(blob);
-                link.setAttribute("href", url);
+                link.setAttribute("href", URL.createObjectURL(blob));
                 link.setAttribute("download", `Laporan_Pembukuan_KGR_${new Date().toLocaleDateString('id-ID').replace(/\//g, '-')}.csv`);
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
-                hideLoading();
-                customAlert("Berhasil", "Laporan berhasil diunduh. Silakan buka file dengan Microsoft Excel.", "success");
-            } catch (error) {
-                hideLoading(); customAlert("Gagal Mengunduh", "Terjadi kesalahan saat membuat file excel.", "error");
-            }
+                document.body.appendChild(link); link.click(); document.body.removeChild(link);
+                hideLoading(); customAlert("Berhasil", "Laporan berhasil diunduh.", "success");
+            } catch (error) { hideLoading(); customAlert("Gagal Mengunduh", "Terjadi kesalahan sistem.", "error"); }
         }
 
         function loadLaporanData() {
             onSnapshot(collection(db, "transactions"), (snap) => {
                 try {
                     allDataLaporan = [];
-                    snap.forEach(d => { 
-                        if (d.data().status === "approved") { 
-                            allDataLaporan.push({ id: d.id, ...d.data() }); 
-                        } 
-                    });
+                    snap.forEach(d => { if (d.data().status === "approved") { allDataLaporan.push({ id: d.id, ...d.data() }); } });
                     
                     allDataLaporan.sort((a,b) => {
                         let t1 = (a.tanggal && typeof a.tanggal.toMillis === 'function') ? a.tanggal.toMillis() : 0;
                         let t2 = (b.tanggal && typeof b.tanggal.toMillis === 'function') ? b.tanggal.toMillis() : 0;
                         return t2 - t1;
                     });
-                    
                     renderLaporan();
-                } catch (err) {
-                    document.getElementById('listLaporan').innerHTML = '<div class="empty-state">Gagal menampilkan data. Cek koneksi Anda.</div>';
-                }
-            }, (error) => {
-                document.getElementById('listLaporan').innerHTML = '<div class="empty-state">Error membaca database. Izin ditolak.</div>';
-            });
+                } catch (err) { document.getElementById('listLaporan').innerHTML = '<div class="empty-state">Gagal menampilkan data. Cek koneksi Anda.</div>'; }
+            }, (error) => { document.getElementById('listLaporan').innerHTML = '<div class="empty-state">Error membaca database.</div>'; });
         }
 
         window.filterTrx = function(type, el) { document.querySelectorAll('.ft-btn').forEach(b => b.classList.remove('active')); el.classList.add('active'); filterState = type; renderLaporan(); }
@@ -400,7 +431,17 @@
                 const amountHtml = isMasuk ? `<div class="trx-amount in">+ Rp ${Number(d.nominal).toLocaleString('id-ID')}</div>` : `<div class="trx-amount out">- Rp ${Number(d.nominal).toLocaleString('id-ID')}</div>`;
                 const dateStr = d.tanggal && typeof d.tanggal.toDate === 'function' ? d.tanggal.toDate().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
                 
-                return `<div class="trx-card">${iconHtml}<div class="trx-info"><div class="trx-title">${d.nama_keterangan || (isMasuk ? "Sedekah Kas" : "Pengeluaran Kas")}</div><div class="trx-date">${dateStr}</div><div class="trx-badge"><i class="fa-solid fa-check-circle" style="color:var(--emerald-main);"></i> Oleh: ${d.dieksekusi_oleh || "Sistem"}</div></div>${amountHtml}</div>`;
+                // Ubah tampilan email jadi Nama Lengkap (kalo terdaftar)
+                const dispPengirim = memberMap[d.pengirim] || d.pengirim;
+
+                // TAMPILAN TOMBOL HAPUS (Khusus Dewa)
+                let btnHapus = "";
+                if (userRole === 'developer') {
+                    const isMskStr = isMasuk ? 'true' : 'false';
+                    btnHapus = `<div style="margin-top:10px; border-top:1px dashed var(--card-border); padding-top:8px; text-align:right;"><span style="color:var(--danger-red); font-size:10px; font-weight:800; cursor:pointer;" onclick="hapusTrxLaporan('${d.id}', ${d.nominal}, '${isMskStr}')"><i class="fa-solid fa-trash"></i> Hapus Baris Ini</span></div>`;
+                }
+                
+                return `<div class="trx-card"><div class="trx-body">${iconHtml}<div class="trx-info"><div class="trx-title">${d.nama_keterangan || "Sedekah Kas"}</div><div class="trx-date">${dateStr} • ${dispPengirim}</div><div class="trx-badge"><i class="fa-solid fa-check-circle" style="color:var(--emerald-main);"></i> Oleh: ${d.dieksekusi_oleh || "Sistem"}</div></div>${amountHtml}</div>${btnHapus}</div>`;
             }).join('');
         }
     </script>
